@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+//responsive font
+html {
+    @media(max-width: 1080px) {
+        font-size: 93.75%;
+        //16*0,9373= 15px
+    }
+    @media(max-width: 768px) {
+        font-size: 87.5%;
+        //16*0,875 = 14px
+    }
+}
+
+:root {
+    --bg_color: #FFEFDB;
+    --bg_heade_table: #EBD9C3;
+    --txt_color: #293352;
+    --gray_text: #aaaaaa;
+    --bg_navbar: #2E2E2E;
+    --green: #10B981;
+    --blue: #1464FF;
+    --orange: #FF9921;
+    --red: #FA5C4F;
+    --white: #FFFFFF;
+    --space: 7vw;
+}
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #8a8a8a;
+    border-radius: 10px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg_color);
+    color: var(--txt_color);
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 25px;
+    width: 372px;
+    height: 48px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+input[type=text],
+input[type=date],
+input[type=number],
+input[type=password] {
+    background: var(--white);
+    border: 1px solid var(--dark_check);
+    border-radius: .3rem;
+    height: 2.3rem;
+    outline: none;
+    padding: .2rem .5rem;
+    color: var(--txt_color);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 2px;
+    opacity: 1;
+    filter: invert(1);
+}
+
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-text,
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-year-field {
+    color: var(--bg_color);
+}
+
+.showDate::-webkit-datetime-edit-day-field,
+.showDate::-webkit-datetime-edit-text,
+.showDate::-webkit-datetime-edit-month-field,
+.showDate::-webkit-datetime-edit-year-field {
+    color: var(--white);
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type=radio] {
+    -webkit-appearance: none;
+    background-color: var(--dark_check);
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: .5px solid #fff;
+}
+
+input[type=radio]:checked {
+    background-color: var(--green);
+    accent-color: var(--green);
+    border: 4px solid var(--dark_check);
+}
+
+a {
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+.buttonPirula {
+    border-radius: 0.3rem;
+    font-weight: 500;
+    display: grid;
+    justify-content: center;
+    background-color: var(--green);
+    color: var(--white);
+    font-size: 0.6rem;
+    padding: 0.7rem;
+    cursor: pointer;
+}
+
+.buttonPirula:hover {
+    filter: brightness(.8);
+}
+
+// @include screen('mobile') {
+//      :root {
+//         --space: 3vw;
+//     }
+// }
+.negativeSpace_Hor {
+    padding: 0 var(--space);
+}
+
+.negativeSpace {
+    padding: 2rem var(--space);
+}
