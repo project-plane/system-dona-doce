@@ -1,11 +1,19 @@
 <template>
-  <Tutorial />
+  <div>
+    <TemplateLogin />
+  </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({
-  name: 'IndexPage',
-})
+<script>
+export default {
+  layout: 'login',
+}
 </script>
+
+<script setup>
+</script>
+
+<style lang="scss" scoped>
+</style>
+
+
