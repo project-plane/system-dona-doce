@@ -20,7 +20,7 @@ html {
     --bg_color: #FFEFDB;
     --bg_heade_table: #EBD9C3;
     --txt_color: #293352;
-    --gray_text: #aaaaaa;
+    --bg_opacity: #35353580;
     --bg_navbar: #2E2E2E;
     --green: #10B981;
     --blue: #1464FF;
@@ -28,6 +28,7 @@ html {
     --red: #FA5C4F;
     --white: #FFFFFF;
     --space: 7vw;
+    --border: #b9b9b9;
 }
 
 
@@ -55,11 +56,6 @@ body {
 button {
     cursor: pointer;
     border: none;
-    border-radius: 25px;
-    width: 372px;
-    height: 48px;
-    font-size: 1.2rem;
-    font-weight: bold;
 }
 
 input[type=text],
@@ -129,12 +125,26 @@ p {
 
 .buttonPirula {
     border-radius: 0.3rem;
-    font-weight: 500;
-    display: grid;
+    font-weight: bold;
+    display: flex;
     justify-content: center;
-    background-color: var(--green);
+    align-items: center;
+    background-color: var(--red);
     color: var(--white);
-    font-size: 0.6rem;
+    font-size: 1.2rem;
+    padding: 0.7rem;
+    cursor: pointer;
+}
+
+.buttonLogin {
+    border-radius: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--red);
+    color: var(--white);
+    font-size: 1.2rem;
     padding: 0.7rem;
     cursor: pointer;
 }

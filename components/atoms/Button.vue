@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <button class="buttonLogin">{{ title }}</button>
-  </div>
+  <button class="buttonPirula">{{ title }}</button>
 </template>
 
 <script setup lang="ts">

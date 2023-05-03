@@ -1,11 +1,16 @@
 <template>
   <div class="input_form">
-    <label for=""> Name </label>
-    <input type="text" placeholder="name" />
+    <Label>{{ label }}</Label>
+    <Input :type="type" :placeholder="placeholder" />
   </div>
 </template>
 
 <script setup lang="ts">
+defineProps<{
+  label: String
+  placeholder: String
+  type: String
+}>()
 </script>
 
 <style scoped>
