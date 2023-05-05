@@ -2,50 +2,90 @@
   <div class="content_user">
     <div class="negativeSpace">
       <Title>
-        <h1>Novo Cliente</h1>
+        <h1>Novo Funcionário</h1>
       </Title>
       <div class="input_create">
         <div class="input_column">
           <div class="input">
             <Label>Nome</Label>
-            <Input type="text" placeholder="Digite nome" />
+            <Input
+              type="text"
+              placeholder="Digite nome"
+              @textInput="valueModel"
+            />
           </div>
           <div class="input">
-            <Label>Email</Label>
-            <Input type="text" placeholder="Digite email" />
+            <Label>Sobre Nome</Label>
+            <Input
+              type="text"
+              placeholder="Digite sobre nome"
+              @textInput="valueModel"
+            />
           </div>
           <div class="input">
-            <Label>Senha</Label>
-            <Input type="password" placeholder="Digite senha" />
+            <Label>E-mail</Label>
+            <Input
+              type="text"
+              placeholder="Digite e-mail"
+              @textInput="valueModel"
+            />
           </div>
         </div>
         <div class="input_column">
-          <div class="input_add">
-            <div class="input">
-              <Label>Empresas</Label>
-              <Input type="password" placeholder="Digite empresa" />
-            </div>
-            <button>Adicionar</button>
+          <div class="input">
+            <Label>Senha</Label>
+            <Input
+              type="password"
+              placeholder="Digite senha"
+              @textInput="valueModel"
+            />
           </div>
-          <div class="list_empresa">
-            <p>Empresa 1</p>
-            <p>Empresa 2</p>
-            <p>Empresa 3</p>
-            <p>Empresa 4</p>
-            <p>Empresa 5</p>
-            <p>Empresa 6</p>
-            <p>Empresa 7</p>
-            <p>Empresa 8</p>
-            <p>Empresa 9</p>
+          <div class="input">
+            <Label>CPF</Label>
+            <Input
+              type="text"
+              placeholder="Digite CPF"
+              @textInput="valueModel"
+            />
           </div>
         </div>
       </div>
-      <Button title="Salvar" />
+      <Button @click.native="createUser" title="Salvar" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import httpUsers from '@/server/users'
+import { reactive } from 'vue'
+
+const dataUser = reactive({
+  name: '',
+  username: '',
+  email: '',
+  password: '',
+  cpf: '',
+  fone: 0,
+  is_enabled: true,
+  is_admin: true,
+  is_product: true,
+  is_stock: true,
+  is_revenues: true,
+})
+
+function valueModel(e: string) {
+  dataUser.name = e
+  dataUser.username = e
+  dataUser.email = e
+  dataUser.password = e
+  dataUser.cpf = e
+}
+
+async function createUser() {
+  await httpUsers.CreateUser(dataUser).then((res) => {
+    console.log(res)
+  })
+}
 </script>
 
 <style lang="scss" scoped>

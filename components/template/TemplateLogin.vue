@@ -5,27 +5,59 @@
         <p class="title">Dona</p>
         <p class="title">Doce</p>
       </div>
-      <div class="form_login">
-        <InputForm label="E-mail" placeholder="Digite seu e-mail" type="text" />
-        <InputForm
-          label="Senha"
-          placeholder="Digite sua senha"
-          type="password"
-        />
-        <div class="recupera_senha">
-          <p>Esqueci a minha senha</p>
+      <form action="" @submit.prevent="accessLogin">
+        <div class="form_login">
+          <Label>E-mail</Label>
+          <Input
+            @textInput="valueModel"
+            :type="type"
+            placeholder="Digite seu e-mail"
+          />
+          <Label>Password</Label>
+          <Input
+            @textInput="valueModel"
+            :type="type"
+            placeholder="Digite sua senha"
+          />
+          <div class="recupera_senha">
+            <p>Esqueci a minha senha</p>
+          </div>
+          <ButtonPirula title="Login" />
         </div>
-        <ButtonPirula title="Login" />
-      </div>
+      </form>
     </div>
   </div>
 </template>
 
-<!-- <script>
-export default {
-  layout: 'main',
+<script setup lang="ts">
+import httpAccess from '@/server/auth'
+
+import { reactive, ref } from 'vue'
+
+defineProps<{
+  label: String
+  placeholder: String
+  type: String
+}>()
+
+const type = ref('text')
+
+const dataLogin = reactive({
+  email: '',
+  password: '',
+})
+
+function valueModel(e: string) {
+  dataLogin.email = e
+  dataLogin.password = e
 }
-</script> -->
+
+async function accessLogin() {
+  await httpAccess.PostLogin(dataLogin).then((res) => {
+    console.log(res)
+  })
+}
+</script>
 
 <style lang="scss" scoped>
 .sider_bar {

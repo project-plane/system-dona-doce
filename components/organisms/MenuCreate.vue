@@ -7,8 +7,18 @@
     <div class="menu_navigation">
       <nav>
         <ul>
-          <li class="active">Clientes</li>
-          <li>Funcionários</li>
+          <li
+            :class="{ active: isActiveClient }"
+            @click="buttonClient(isActiveClient)"
+          >
+            Clientes
+          </li>
+          <li
+            :class="{ active: isActiveUser }"
+            @click="buttonUsers(isActiveUser)"
+          >
+            Funcionários
+          </li>
         </ul>
       </nav>
     </div>
@@ -16,6 +26,23 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
+const isActiveClient = ref(true)
+const isActiveUser = ref(false)
+const emit = defineEmits(['client', 'users'])
+
+function buttonClient(activeClient: boolean) {
+  isActiveClient.value = true
+  isActiveUser.value = false
+  emit('client')
+}
+
+function buttonUsers(activeUser: boolean) {
+  isActiveClient.value = false
+  isActiveUser.value = true
+  emit('users')
+}
 </script>
 
 <style lang="scss" scoped>
@@ -44,6 +71,7 @@
       gap: 1.5rem;
     }
     nav ul li {
+      cursor: pointer;
       font-size: 1.5rem;
       list-style: none;
       border-bottom: 1px solid var(--border);

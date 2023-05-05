@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TemplateCadastro />
+    <TemplateCadastrar />
   </div>
 </template>
 
