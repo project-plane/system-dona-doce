@@ -1,6 +1,6 @@
 <template>
   <div class="negativeSpace">
-    <h2>Clientes Cadastrados</h2>
+    <h2>Funcionários Cadastrados</h2>
     <table>
       <thead>
         <tr>
@@ -41,6 +41,24 @@
 </template>
 
 <script setup lang="ts">
+interface Users {
+  id: string
+  name: string
+  username: string
+  email: string
+}
+
+import httpUsers from '@/server/users'
+
+import { onMounted, ref } from 'vue'
+
+const listUsers = ref<Users[]>()
+
+onMounted(async () => {
+  await httpUsers.ListUsers().then((res) => {
+    listUsers.value = res.data
+  })
+})
 </script>
 
 <style lang="scss" scoped>
