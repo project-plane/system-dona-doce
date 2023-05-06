@@ -1,11 +1,21 @@
 <template>
-  <button class="buttonPirula">{{ title }}</button>
+  <button @click="$emit('functionClick')" class="buttonPirula">
+    {{ title }}
+  </button>
 </template>
 
-<script setup lang="ts">
-defineProps<{
-  title: String
-}>()
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  props: {
+    title: {
+      type: String,
+      default: '',
+      required: true,
+    },
+  },
+})
 </script>
 
 <style scoped>
