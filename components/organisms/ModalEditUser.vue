@@ -1,14 +1,21 @@
 <template>
-  <div class="content_user">
+  <div class="content_user" v-if="closeModal">
     <div class="negativeSpace">
-      <Title>
-        <h1>Novo Funcionário</h1>
+      <Title class="headerModal">
+        <h1>Editar Funcionário</h1>
+        {{ findUser.id }}
+        <img
+          @click="$emit('closeModal', closeModal)"
+          src="~/assets/icons/close.svg"
+          alt="close"
+        />
       </Title>
       <div class="input_create">
         <div class="input_column">
           <div class="input">
             <Label>Nome</Label>
             <Input
+              v-model="dataUser.name"
               type="text"
               placeholder="Digite nome"
               @textInput="valueName"
@@ -17,36 +24,34 @@
           <div class="input">
             <Label>Sobre Nome</Label>
             <Input
+              v-model="dataUser.username"
               type="text"
               placeholder="Digite sobre nome"
               @textInput="valueUserName"
             />
           </div>
+        </div>
+        <div class="input_column">
           <div class="input">
             <Label>E-mail</Label>
             <Input
+              v-model="dataUser.email"
               type="text"
               placeholder="Digite e-mail"
               @textInput="valueEmail"
             />
           </div>
-        </div>
-        <div class="input_column">
           <div class="input">
-            <Label>Senha</Label>
-            <Input
-              type="password"
-              placeholder="Digite senha"
-              @textInput="valuePassword"
-            />
-          </div>
-          <div class="input">
-            <Label>CPF</Label>
-            <Input type="text" placeholder="Digite CPF" @textInput="valueCpf" />
+            <Label>Cargo</Label>
+            <select name="" id="">
+              <option value="">Motorista</option>
+              <option value="">Producao</option>
+              <option value="">Faturamento</option>
+            </select>
           </div>
         </div>
       </div>
-      <Button @click.native="createUser" title="Salvar" />
+      <button class="buttonPirula" @click="updateFindUser">Salvar</button>
     </div>
   </div>
 </template>
@@ -71,11 +76,11 @@ export default Vue.extend({
   data() {
     return {
       dataUser: <dataUser>{
-        name: '',
-        username: '',
-        email: '',
-        password: '',
-        cpf: '',
+        name: this.findUser.name,
+        username: this.findUser.username,
+        email: this.findUser.email,
+        password: '123456789',
+        cpf: this.findUser.cpf,
         fone: 0,
         is_enabled: true,
         is_admin: true,
@@ -85,29 +90,31 @@ export default Vue.extend({
       },
     }
   },
+  props: {
+    closeModal: {
+      type: Boolean,
+      required: true,
+    },
+    findUser: {
+      type: [Array, Object],
+      required: true,
+    },
+  },
   methods: {
-    async createUser() {
-      if (
-        !this.dataUser.name ||
-        !this.dataUser.username ||
-        !this.dataUser.email ||
-        !this.dataUser.password ||
-        !this.dataUser.cpf
-      ) {
-        this.$toast.error('Preenchas todos os campos')
-        return
-      }
+    async updateFindUser() {
+      const idUser = this.findUser.id
+
       await httpUsers
-        .CreateUser(this.dataUser)
+        .UpdateUser(idUser, this.dataUser)
         .then((res) => {
-          if (res.status === 201) {
-            this.$toast.success('Funcionário criado com sucesso')
+          if (res.status === 200) {
+            this.$toast.success('Funcionário editado com sucesso')
           }
         })
         .catch((error) => {
           this.$toast.error('Verifique todos os campos')
-          console.log(error)
         })
+      this.$emit('closeModal', this.closeModal)
     },
 
     valueName(e: String) {
@@ -131,13 +138,33 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .content_user {
-  padding-top: 90px;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: var(--bg_color_modal);
+  display: table;
+  transition: opacity 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
   .negativeSpace {
-    width: 100%;
+    width: 70%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    border-bottom: 1px solid var(--border);
+    background: var(--bg_color);
+    .headerModal {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      img {
+        cursor: pointer;
+      }
+    }
     .input_create {
       width: 100%;
       display: flex;

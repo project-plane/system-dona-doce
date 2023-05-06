@@ -1,7 +1,7 @@
 <template>
   <div class="content_cadastro">
     <MenuCreate @client="client" @users="users" />
-    <div v-if="clientClick">
+    <div v-if="statusActive">
       <ContentCreateUser />
       <TableUsers />
     </div>
@@ -12,17 +12,24 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
+import Vue from 'vue'
 
-const clientClick = ref(false)
-function client() {
-  clientClick.value = false
-}
-
-function users() {
-  clientClick.value = true
-}
+export default Vue.extend({
+  data() {
+    return {
+      statusActive: false,
+    }
+  },
+  methods: {
+    users() {
+      this.statusActive = true
+    },
+    client() {
+      this.statusActive = false
+    },
+  },
+})
 </script>
 
 <style lang="scss" scoped>
