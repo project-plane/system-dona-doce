@@ -57,15 +57,6 @@ export default {
         },
     },
 
-  },
-  ssr: false,
-  server: {
-    post: 3000,
-    host: '0.0.0.0',
-    timing: false
-  },
-
-
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {},
 }
