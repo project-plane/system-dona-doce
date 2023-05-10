@@ -34,4 +34,4 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         script:
-         cd /home/app/app_nuxt_dona_doce && yarn build && pm2 restart
+         cd /home/app/app_nuxt_dona_doce && yarn dev
