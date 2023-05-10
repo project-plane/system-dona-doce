@@ -3,7 +3,6 @@
     <div class="negativeSpace">
       <Title class="headerModal">
         <h1>Editar Funcionário</h1>
-        {{ findUser.id }}
         <img
           @click="$emit('closeModal', closeModal)"
           src="~/assets/icons/close.svg"
@@ -14,32 +13,17 @@
         <div class="input_column">
           <div class="input">
             <Label>Nome</Label>
-            <Input
-              v-model="dataUser.name"
-              type="text"
-              placeholder="Digite nome"
-              @textInput="valueName"
-            />
+            <input type="text" v-model="dataUser.name" />
           </div>
           <div class="input">
             <Label>Sobre Nome</Label>
-            <Input
-              v-model="dataUser.username"
-              type="text"
-              placeholder="Digite sobre nome"
-              @textInput="valueUserName"
-            />
+            <input type="text" v-model="dataUser.username" />
           </div>
         </div>
         <div class="input_column">
           <div class="input">
             <Label>E-mail</Label>
-            <Input
-              v-model="dataUser.email"
-              type="text"
-              placeholder="Digite e-mail"
-              @textInput="valueEmail"
-            />
+            <input type="text" v-model="dataUser.email" />
           </div>
           <div class="input">
             <Label>Cargo</Label>
@@ -59,11 +43,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import httpUsers from '@/server/users'
-interface dataUser {
+interface DataUser {
   name: String
   username: String
   email: String
-  password: String
   cpf: String
   fone: Number
   is_enabled: Boolean
@@ -75,11 +58,10 @@ interface dataUser {
 export default Vue.extend({
   data() {
     return {
-      dataUser: <dataUser>{
+      dataUser: <DataUser>{
         name: this.findUser.name,
         username: this.findUser.username,
         email: this.findUser.email,
-        password: '123456789',
         cpf: this.findUser.cpf,
         fone: 0,
         is_enabled: true,
@@ -116,22 +98,6 @@ export default Vue.extend({
         })
       this.$emit('closeModal', this.closeModal)
     },
-
-    valueName(e: String) {
-      this.dataUser.name = e
-    },
-    valueUserName(e: String) {
-      this.dataUser.username = e
-    },
-    valueEmail(e: String) {
-      this.dataUser.email = e
-    },
-    valuePassword(e: String) {
-      this.dataUser.password = e
-    },
-    valueCpf(e: String) {
-      this.dataUser.cpf = e
-    },
   },
 })
 </script>
@@ -157,6 +123,7 @@ export default Vue.extend({
     flex-direction: column;
     gap: 2rem;
     background: var(--bg_color);
+    border-radius: 7px;
     .headerModal {
       width: 100%;
       display: flex;

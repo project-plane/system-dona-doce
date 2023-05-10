@@ -25,9 +25,6 @@
             <button @click="modal(user)">
               <img src="~/assets/icons/edit.svg" alt="editUser" />
             </button>
-            <button>
-              <img src="~/assets/icons/delete.svg" alt="deleteUser" />
-            </button>
           </td>
         </tr>
       </tbody>
