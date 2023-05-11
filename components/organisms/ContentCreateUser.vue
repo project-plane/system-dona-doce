@@ -147,27 +147,27 @@ export default Vue.extend({
         this.dataUser.is_revenues = true
         return
       }
-      // if (
-      //   !this.dataUser.name ||
-      //   !this.dataUser.username ||
-      //   !this.dataUser.email ||
-      //   !this.dataUser.password ||
-      //   !this.dataUser.cpf
-      // ) {
-      //   this.$toast.error('Preenchas todos os campos')
-      //   return
-      // }
-      // await httpUsers
-      //   .CreateUser(this.dataUser)
-      //   .then((res) => {
-      //     if (res.status === 201) {
-      //       this.$toast.success('Funcionário criado com sucesso')
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.$toast.error('Verifique todos os campos')
-      //     console.log(error)
-      //   })
+      if (
+        !this.dataUser.name ||
+        !this.dataUser.username ||
+        !this.dataUser.email ||
+        !this.dataUser.password ||
+        !this.dataUser.cpf
+      ) {
+        this.$toast.error('Preenchas todos os campos')
+        return
+      }
+      await httpUsers
+        .CreateUser(this.dataUser)
+        .then((res) => {
+          if (res.status === 201) {
+            this.$toast.success('Funcionário criado com sucesso')
+          }
+        })
+        .catch((error) => {
+          this.$toast.error('Verifique todos os campos')
+          console.log(error)
+        })
     },
     removeCargo(cargo) {
       const removerCargo = this.addCargo.indexOf(cargo)
