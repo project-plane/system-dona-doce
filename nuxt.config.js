@@ -12,7 +12,7 @@ export default {
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
-    css: ['normalize.css/normalize.css', '@/assets/styles/main.scss'],
+    css: ['@/assets/styles/main.scss'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [],
@@ -61,12 +61,12 @@ export default {
             filename: 'icon.png'
         },
     },
-  ssr: false,
-  server: {
-    post: 3000,
-    host: '0.0.0.0',
-    timing: false
-  },
+    ssr: false,
+    server: {
+        post: 3000,
+        host: '0.0.0.0',
+        timing: false
+    },
 
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
