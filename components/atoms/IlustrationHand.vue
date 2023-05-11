@@ -68,9 +68,16 @@
 <style lang="scss" scoped>
  svg{
     position: relative;
-    height: 35rem;
+    height: max(37vw, 20rem);
+    max-height: 35rem;
     display: flex;
     overflow: hidden;
+
+    @include screen("mobile"){
+        height: max(37vw, 22rem);
+        bottom: 3rem;
+        right: .5rem;
+    }
 
     #ilustration{
         animation: ilustration .8s ease-in-out forwards;

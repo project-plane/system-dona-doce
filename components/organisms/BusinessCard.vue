@@ -17,7 +17,7 @@
 
 <style scoped lang="scss">
     .card{
-        padding: 0 4rem;
+        padding: 0 4vw;
         border-radius: 2rem;
         background: var(--red);
         width: 100%;
@@ -44,12 +44,17 @@
             button{
                 color:var(--txt_color);
                 background-color: #FEE45E;
-                width: 20vw;
-                height: 4vw;
+                width: max(20vw, 10rem);
+                height: max(4vw, 3rem);
                 border-radius: 20rem;
                 font-size: 1.4rem;
+                @include screen("mobile"){
+                    position: relative;
+                    top: 19rem;
+                    width: 100%;
+                    z-index: 9;
+                }
             }
-
         }
         .frameIlustration{
             display: flex;
@@ -58,10 +63,19 @@
             height: inherit;
             width: 100%;
         }
-
         @include screen("tablet"){
+            overflow: hidden;
             grid-template: 1fr 1rem / 1fr;
-
+            .frameInform{
+                gap: 1rem;
+                h1{
+                    line-height: 2rem;
+                    font-size: 2rem;
+                }
+                p{
+                font-size: .7rem;
+                }
+            }
             .frameIlustration{
                 height: auto;  
             }
