@@ -12,7 +12,7 @@ export default {
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
-    css: ['@/assets/styles/main.scss'],
+    css: ['normalize.css/normalize.css', '@/assets/styles/main.scss'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [],
@@ -32,8 +32,13 @@ export default {
         '@nuxtjs/axios',
         // https://go.nuxtjs.dev/pwa
         '@nuxtjs/pwa',
-        'vue-toastification/nuxt'
+        'vue-toastification/nuxt',
+        '@nuxtjs/style-resources'
     ],
+    styleResources: {
+        // your settings hereJ
+        scss: ['@/components/bosons/*.scss']
+    },
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
@@ -56,8 +61,6 @@ export default {
             filename: 'icon.png'
         },
     },
-
-  },
   ssr: false,
   server: {
     post: 3000,
