@@ -1,6 +1,6 @@
 <template>
   <div class="negativeSpace">
-    <h2>Funcionários Cadastrados</h2>
+    <h2>Clientes Cadastrados</h2>
     <table>
       <thead>
         <tr>
@@ -11,53 +11,38 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Cliente 1</td>
-          <td>cliente1@gmail.com</td>
-          <td>Empresa 1</td>
-          <td>Opções</td>
-        </tr>
-        <tr>
-          <td>Cliente 2</td>
-          <td>cliente2@gmail.com</td>
-          <td>Empresa 2</td>
-          <td>Opções</td>
-        </tr>
-        <tr>
-          <td>Cliente 3</td>
-          <td>cliente3@gmail.com</td>
-          <td>Empresa 3</td>
-          <td>Opções</td>
-        </tr>
-        <tr>
-          <td>Cliente 4</td>
-          <td>cliente4@gmail.com</td>
-          <td>Empresa 4</td>
-          <td>Opções</td>
+        <tr v-for="client in listClient" :key="client">
+          <td>{{ client.name }}</td>
+          <td>{{ client.email }}</td>
+          <td>{{ client.username }}</td>
+          <td class="iconsOptions">
+            <button>
+              <img src="~/assets/icons/edit.svg" alt="editUser" />
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 
-<script setup lang="ts">
-interface Users {
-  id: string
-  name: string
-  username: string
-  email: string
-}
+<script lang="ts">
+import Vue from 'vue'
 
 import httpUsers from '@/server/users'
 
-import { onMounted, ref } from 'vue'
+export default Vue.extend({
+  data() {
+    return {
+      listClient: [],
+    }
+  },
 
-const listUsers = ref<Users[]>()
-
-onMounted(async () => {
-  await httpUsers.ListUsers().then((res) => {
-    listUsers.value = res.data
-  })
+  async mounted() {
+    await httpUsers.ListUsers().then((res) => {
+      this.listClient = res.data
+    })
+  },
 })
 </script>
 
@@ -76,6 +61,16 @@ table {
   tbody tr td {
     text-align: center;
     padding: 1rem 0;
+  }
+  tbody tr .iconsOptions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    button {
+      background: transparent;
+    }
   }
 }
 </style>
