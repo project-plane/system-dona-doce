@@ -39,6 +39,7 @@
                 type="text"
                 placeholder="Digite empresa"
                 v-model="dataCLient.empresa"
+                v-focus="asd"
               />
             </div>
             <button @click="addClient">Adicionar</button>
@@ -64,11 +65,12 @@
 import Vue from 'vue'
 
 interface DataCLient {
-  name: String
-  email: String
-  password: String
-  empresa: String
-  addClients: Array
+  [x: string]: any
+  name: string
+  email: string
+  password: string
+  empresa: string
+  [addClients: number]: string
 }
 
 export default Vue.extend({
@@ -82,11 +84,13 @@ export default Vue.extend({
         addClients: [],
       },
       client: '',
+      asd: '',
     }
   },
   methods: {
     addClient() {
       this.dataCLient.addClients.push(this.dataCLient.empresa)
+      this.dataCLient.empresa = this.asd
     },
     removeClient(client: String) {
       const removeClient = this.dataCLient.addClients.indexOf(client)

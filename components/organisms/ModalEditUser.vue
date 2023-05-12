@@ -91,12 +91,12 @@ export default Vue.extend({
         .then((res) => {
           if (res.status === 200) {
             this.$toast.success('Funcionário editado com sucesso')
+            this.$emit('closeModal', this.closeModal)
           }
         })
         .catch((error) => {
           this.$toast.error('Verifique todos os campos')
         })
-      this.$emit('closeModal', this.closeModal)
     },
   },
 })

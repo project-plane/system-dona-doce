@@ -4,7 +4,9 @@
   </label>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({})
 </script>
 
 <style scoped>
