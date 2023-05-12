@@ -32,8 +32,13 @@ export default {
         '@nuxtjs/axios',
         // https://go.nuxtjs.dev/pwa
         '@nuxtjs/pwa',
-        'vue-toastification/nuxt'
+        'vue-toastification/nuxt',
+        '@nuxtjs/style-resources'
     ],
+    styleResources: {
+        // your settings hereJ
+        scss: ['@/components/bosons/*.scss']
+    },
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
@@ -45,8 +50,8 @@ export default {
     pwa: {
         meta: {
             theme_color: '#232323',
-            name: 'SCE',
-            author: 'tutilabs'
+            name: 'Dona Doce',
+            author: ''
         },
         manifest: {
             lang: 'pt-br',
@@ -56,6 +61,14 @@ export default {
             filename: 'icon.png'
         },
     },
+    ssr: false,
+    server: {
+        post: 3000,
+        host: '0.0.0.0',
+        timing: false
+    },
+
+
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {},

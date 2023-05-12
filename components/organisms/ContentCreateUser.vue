@@ -7,42 +7,73 @@
       <div class="input_create">
         <div class="input_column">
           <div class="input">
-            <Label>Nome</Label>
-            <Input
+            <Label>Nome Completo</Label>
+            <input
               type="text"
-              placeholder="Digite nome"
-              @textInput="valueName"
-            />
-          </div>
-          <div class="input">
-            <Label>Sobre Nome</Label>
-            <Input
-              type="text"
-              placeholder="Digite sobre nome"
-              @textInput="valueUserName"
+              placeholder="Digite o nome"
+              v-model="dataUser.name"
             />
           </div>
           <div class="input">
             <Label>E-mail</Label>
-            <Input
+            <input
               type="text"
-              placeholder="Digite e-mail"
-              @textInput="valueEmail"
+              placeholder="Digite o e-mail"
+              v-model="dataUser.email"
+            />
+          </div>
+          <div class="input">
+            <Label>CPF</Label>
+            <input
+              type="text"
+              placeholder="Digite o CPF"
+              v-model="dataUser.cpf"
+            />
+          </div>
+          <div class="input">
+            <Label>Telefone</Label>
+            <input
+              type="number"
+              placeholder="Digite o telefone"
+              v-model="dataUser.fone"
             />
           </div>
         </div>
         <div class="input_column">
           <div class="input">
-            <Label>Senha</Label>
-            <Input
-              type="password"
-              placeholder="Digite senha"
-              @textInput="valuePassword"
+            <Label>Usuário</Label>
+            <input
+              type="text"
+              placeholder="Digite o usuário"
+              v-model="dataUser.username"
             />
           </div>
           <div class="input">
-            <Label>CPF</Label>
-            <Input type="text" placeholder="Digite CPF" @textInput="valueCpf" />
+            <Label>Senha</Label>
+            <input
+              type="text"
+              placeholder="Digite a senha"
+              v-model="dataUser.password"
+            />
+          </div>
+          <div class="input">
+            <Label>Cargo</Label>
+            <select v-model="selected">
+              <option disabled value="">Selecionar cargo</option>
+              <option :disabled="dataUser.is_admin">Administrador</option>
+              <option :disabled="dataUser.is_enabled">Motorista</option>
+              <option :disabled="dataUser.is_product">Confeiteiro(a)</option>
+              <option :disabled="dataUser.is_stock">Faturamento</option>
+              <option :disabled="dataUser.is_revenues">Empacotador</option>
+            </select>
+            <div
+              class="excluirCargo"
+              v-for="(cargo, index) in addCargo"
+              :key="index"
+            >
+              <p>{{ index + 1 }} - {{ cargo }}</p>
+              <span @click="removeCargo(cargo)">X</span>
+            </div>
           </div>
         </div>
       </div>
@@ -54,13 +85,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import httpUsers from '@/server/users'
-interface dataUser {
+interface DataUser {
   name: String
   username: String
   email: String
   password: String
   cpf: String
-  fone: Number
+  fone: null
   is_enabled: Boolean
   is_admin: Boolean
   is_product: Boolean
@@ -70,23 +101,52 @@ interface dataUser {
 export default Vue.extend({
   data() {
     return {
-      dataUser: <dataUser>{
+      dataUser: <DataUser>{
         name: '',
         username: '',
         email: '',
         password: '',
         cpf: '',
-        fone: 0,
-        is_enabled: true,
-        is_admin: true,
-        is_product: true,
-        is_stock: true,
-        is_revenues: true,
+        fone: null,
+        is_enabled: false,
+        is_admin: false,
+        is_product: false,
+        is_stock: false,
+        is_revenues: false,
       },
+      selected: '',
+      addCargo: [],
+      disabled: false,
     }
+  },
+  watch: {
+    selected(newValue, oldValue) {
+      this.addCargo.push(newValue)
+      this.createUser()
+    },
   },
   methods: {
     async createUser() {
+      if (this.selected === 'Administrador') {
+        this.dataUser.is_admin = true
+        return
+      }
+      if (this.selected === 'Motorista') {
+        this.dataUser.is_enabled = true
+        return
+      }
+      if (this.selected === 'Confeiteiro(a)') {
+        this.dataUser.is_product = true
+        return
+      }
+      if (this.selected === 'Faturamento') {
+        this.dataUser.is_stock = true
+        return
+      }
+      if (this.selected === 'Empacotador') {
+        this.dataUser.is_revenues = true
+        return
+      }
       if (
         !this.dataUser.name ||
         !this.dataUser.username ||
@@ -109,21 +169,29 @@ export default Vue.extend({
           console.log(error)
         })
     },
-
-    valueName(e: String) {
-      this.dataUser.name = e
-    },
-    valueUserName(e: String) {
-      this.dataUser.username = e
-    },
-    valueEmail(e: String) {
-      this.dataUser.email = e
-    },
-    valuePassword(e: String) {
-      this.dataUser.password = e
-    },
-    valueCpf(e: String) {
-      this.dataUser.cpf = e
+    removeCargo(cargo: never) {
+      const removerCargo = this.addCargo.indexOf(cargo)
+      this.addCargo.splice(removerCargo, 1)
+      if (cargo === 'Administrador') {
+        this.dataUser.is_admin = false
+        return
+      }
+      if (cargo === 'Motorista') {
+        this.dataUser.is_enabled = false
+        return
+      }
+      if (cargo === 'Confeiteiro(a)') {
+        this.dataUser.is_product = false
+        return
+      }
+      if (cargo === 'Faturamento') {
+        this.dataUser.is_stock = false
+        return
+      }
+      if (cargo === 'Empacotador') {
+        this.dataUser.is_revenues = false
+        return
+      }
     },
   },
 })
@@ -131,7 +199,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .content_user {
-  padding-top: 90px;
+  padding-top: 4rem;
   .negativeSpace {
     width: 100%;
     display: flex;
@@ -169,6 +237,14 @@ export default Vue.extend({
         display: flex;
         flex-direction: column;
         gap: 0.3rem;
+        .excluirCargo {
+          display: flex;
+          justify-content: space-between;
+          span {
+            color: var(--border);
+            cursor: pointer;
+          }
+        }
       }
     }
   }

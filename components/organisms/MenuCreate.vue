@@ -49,7 +49,7 @@ function buttonUsers(activeUser: boolean) {
 .card_create {
   width: 100%;
   height: 100%;
-  padding-top: 90px;
+  padding-top: 4rem;
   border-right: 1px solid var(--border);
   .title_create {
     height: 90px;

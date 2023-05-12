@@ -16,7 +16,7 @@
 .nav_bar {
   position: fixed;
   width: 100%;
-  height: 90px;
+  height: 4rem;
   background: var(--white);
   display: flex;
   justify-content: space-between;
