@@ -50,8 +50,8 @@ export default {
     pwa: {
         meta: {
             theme_color: '#232323',
-            name: 'SCE',
-            author: 'tutilabs'
+            name: 'Dona Doce',
+            author: ''
         },
         manifest: {
             lang: 'pt-br',

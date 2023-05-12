@@ -199,7 +199,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .content_user {
-  padding-top: 90px;
+  padding-top: 4rem;
   .negativeSpace {
     width: 100%;
     display: flex;
