@@ -8,55 +8,58 @@
       <form action="" @submit.prevent="accessLogin">
         <div class="form_login">
           <Label>E-mail</Label>
-          <Input
-            @textInput="valueModel"
-            :type="type"
+          <input
+            type="text"
             placeholder="Digite seu e-mail"
+            v-model="dataLogin.email"
           />
           <Label>Password</Label>
-          <Input
-            @textInput="valueModel"
-            :type="type"
+          <input
+            type="password"
             placeholder="Digite sua senha"
+            v-model="dataLogin.password"
           />
           <div class="recupera_senha">
             <p>Esqueci a minha senha</p>
           </div>
-          <ButtonPirula title="Login" />
+          <ButtonPirula @click="accessLogin" title="Login" />
         </div>
       </form>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import httpAccess from '@/server/auth'
 
-import { reactive, ref } from 'vue'
+import Vue from 'vue'
+export default Vue.extend({
+  data() {
+    return {
+      dataLogin: {
+        email: '',
+        password: '',
+      },
+    }
+  },
 
-defineProps<{
-  label: String
-  placeholder: String
-  type: String
-}>()
-
-const type = ref('text')
-
-const dataLogin = reactive({
-  email: '',
-  password: '',
+  methods: {
+    async accessLogin() {
+      await httpAccess
+        .PostLogin(this.dataLogin)
+        .then((res) => {
+          if (res.status === 201) {
+            this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
+          }
+          this.$router.push('/cadastrar')
+        })
+        .catch((error) => {
+          this.$toast.warning('Confira todos os campos!!!')
+          console.log(error)
+        })
+    },
+  },
 })
-
-function valueModel(e: string) {
-  dataLogin.email = e
-  dataLogin.password = e
-}
-
-async function accessLogin() {
-  await httpAccess.PostLogin(dataLogin).then((res) => {
-    console.log(res)
-  })
-}
 </script>
 
 <style lang="scss" scoped>

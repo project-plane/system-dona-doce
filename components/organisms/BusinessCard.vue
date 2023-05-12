@@ -1,21 +1,31 @@
 <template>
-    <div class="card">
-        <div class="frameInform">
-            <h1>Dona <br/> Doce </h1>
-            <p>Fornecemos bolos e salgados para sua empresa <br/> com rapidez e qualidade</p>
-            <button>Entrar</button>
-        </div>
-        <div class="frameIlustration">
-            <IlustrationHand/>
-        </div>
+  <div class="card">
+    <div class="frameInform">
+      <h1>
+        Dona <br />
+        Doce
+      </h1>
+      <p>
+        Fornecemos bolos e salgados para sua empresa <br />
+        com rapidez e qualidade
+      </p>
+      <NuxtLink to="/login">
+        <button>Entrar</button>
+      </NuxtLink>
     </div>
+    <div class="frameIlustration">
+      <IlustrationHand />
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({})
 </script>
 
 <style scoped lang="scss">
+
     .card{
         padding: 0 4vw;
         border-radius: 2rem;
@@ -80,5 +90,8 @@
                 height: auto;  
             }
         }
+
     }
+  }
+}
 </style>

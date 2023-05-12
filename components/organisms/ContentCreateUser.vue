@@ -169,7 +169,7 @@ export default Vue.extend({
           console.log(error)
         })
     },
-    removeCargo(cargo) {
+    removeCargo(cargo: never) {
       const removerCargo = this.addCargo.indexOf(cargo)
       this.addCargo.splice(removerCargo, 1)
       if (cargo === 'Administrador') {
