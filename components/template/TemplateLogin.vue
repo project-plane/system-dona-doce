@@ -19,7 +19,7 @@
             placeholder="Digite sua senha"
           />
           <div class="recupera_senha">
-            <p>Esqueci a minha senha</p>
+            <p @click="recoverPassword">Esqueci a minha senha</p>
           </div>
           <ButtonPirula title="Login" @click="accessLogin" />
         </div>
@@ -46,7 +46,11 @@ export default Vue.extend({
       await httpAccess
         .PostLogin(this.dataLogin)
         .then((res) => {
+          sessionStorage.setItem('token', res.data)
+
           if (res.status === 201) {
+            sessionStorage.getItem('token')
+
             this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
           }
           this.$router.push('/cadastrar')
@@ -55,6 +59,9 @@ export default Vue.extend({
           this.$toast.warning('Confira todos os campos!!!')
           console.log(error)
         })
+    },
+    recoverPassword() {
+      this.$router.push('/recoverPassword')
     },
   },
 })
