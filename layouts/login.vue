@@ -18,6 +18,7 @@ export default Vue.extend({})
   background-image: url('~/assets/img/bg_login.png');
   background-size: cover;
   opacity: 1;
+  background-position: bottom center;
   .mascara {
     width: 100%;
     height: 100vh;
