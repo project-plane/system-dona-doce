@@ -23,6 +23,9 @@
             <p @click="recoverPassword">Esqueci a minha senha</p>
           </div>
           <ButtonPirula @click="accessLogin" title="Login" />
+          <div v-if="statusMessage">
+            <h5 style="color: var(--red)">{{ message }}</h5>
+          </div>
         </div>
       </form>
     </div>
@@ -40,6 +43,8 @@ export default Vue.extend({
         email: '',
         password: '',
       },
+      statusMessage: false,
+      message: '',
     }
   },
 
@@ -58,8 +63,8 @@ export default Vue.extend({
           this.$router.push('/cadastrar')
         })
         .catch((error) => {
-          this.$toast.warning('Confira todos os campos!!!')
-          console.log(error)
+          this.message = error.response.data.message
+          this.statusMessage = true
         })
     },
     recoverPassword() {

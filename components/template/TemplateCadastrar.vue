@@ -1,11 +1,11 @@
 <template>
-  <div class="content_cadastro">
+  <div>
     <MenuCreate @client="client" @users="users" />
-    <div v-if="statusActive">
+    <div v-if="statusActive" class="container">
       <ContentCreateUser />
       <TableUsers />
     </div>
-    <div v-else>
+    <div v-else class="container">
       <ContentCreateClient />
       <TableClients />
     </div>
@@ -24,18 +24,21 @@ export default Vue.extend({
   methods: {
     users() {
       this.statusActive = true
+      console.log(this.statusActive)
     },
     client() {
       this.statusActive = false
+      console.log(this.statusActive)
     },
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.content_cadastro {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+.container {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  z-index: -1;
 }
 </style>
