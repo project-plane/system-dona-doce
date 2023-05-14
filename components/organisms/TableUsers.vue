@@ -48,6 +48,7 @@ export default Vue.extend({
   async mounted() {
     await httpUsers.ListUsers().then((res) => {
       this.listUsers = res.data
+      console.log(res)
     })
   },
 

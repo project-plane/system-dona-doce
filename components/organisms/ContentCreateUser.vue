@@ -91,7 +91,9 @@ interface DataUser {
   email: string
   password: string
   cpf: string
+
   fone: string
+
   is_enabled: boolean
   is_admin: boolean
   is_product: boolean
@@ -107,7 +109,9 @@ export default Vue.extend({
         email: '',
         password: '',
         cpf: '',
+
         fone: '',
+
         is_enabled: false,
         is_admin: false,
         is_product: false,

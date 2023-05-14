@@ -95,7 +95,9 @@ export default Vue.extend({
       const removeClient = this.dataCLient.addClients.indexOf(client)
       this.dataCLient.addClients.splice(removeClient, 1)
     },
+
     saveClient() {},
+
   },
 })
 </script>

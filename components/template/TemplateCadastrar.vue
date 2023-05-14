@@ -24,9 +24,11 @@ export default Vue.extend({
   methods: {
     users() {
       this.statusActive = true
+      console.log(this.statusActive)
     },
     client() {
       this.statusActive = false
+      console.log(this.statusActive)
     },
   },
 })
