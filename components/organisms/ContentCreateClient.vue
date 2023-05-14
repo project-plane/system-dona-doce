@@ -39,7 +39,6 @@
                 type="text"
                 placeholder="Digite empresa"
                 v-model="dataCLient.empresa"
-                v-focus="asd"
               />
             </div>
             <button @click="addClient">Adicionar</button>

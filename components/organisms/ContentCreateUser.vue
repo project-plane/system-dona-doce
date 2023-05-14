@@ -86,17 +86,17 @@
 import Vue from 'vue'
 import httpUsers from '@/server/users'
 interface DataUser {
-  name: String
-  username: String
-  email: String
-  password: String
-  cpf: String
-  fone: null
-  is_enabled: Boolean
-  is_admin: Boolean
-  is_product: Boolean
-  is_stock: Boolean
-  is_revenues: Boolean
+  name: string
+  username: string
+  email: string
+  password: string
+  cpf: string
+  fone: number
+  is_enabled: boolean
+  is_admin: boolean
+  is_product: boolean
+  is_stock: boolean
+  is_revenues: boolean
 }
 export default Vue.extend({
   data() {
@@ -107,7 +107,7 @@ export default Vue.extend({
         email: '',
         password: '',
         cpf: '',
-        fone: null,
+        fone: Number(0),
         is_enabled: false,
         is_admin: false,
         is_product: false,
@@ -122,30 +122,41 @@ export default Vue.extend({
   watch: {
     selected(newValue, oldValue) {
       this.addCargo.push(newValue)
-      this.createUser()
+      this.statusCargo()
     },
   },
   methods: {
-    async createUser() {
+    statusCargo() {
       if (this.selected === 'Administrador') {
         this.dataUser.is_admin = true
-        return
       }
       if (this.selected === 'Motorista') {
         this.dataUser.is_enabled = true
-        return
       }
       if (this.selected === 'Confeiteiro(a)') {
         this.dataUser.is_product = true
-        return
       }
       if (this.selected === 'Faturamento') {
         this.dataUser.is_stock = true
-        return
       }
       if (this.selected === 'Empacotador') {
         this.dataUser.is_revenues = true
         return
+      }
+    },
+    async createUser() {
+      const dadosUser = {
+        name: this.dataUser.name,
+        username: this.dataUser.username,
+        email: this.dataUser.email,
+        password: this.dataUser.password,
+        cpf: this.dataUser.cpf,
+        fone: Number(this.dataUser.fone),
+        is_enabled: this.dataUser.is_enabled,
+        is_admin: this.dataUser.is_admin,
+        is_product: this.dataUser.is_product,
+        is_stock: this.dataUser.is_stock,
+        is_revenues: this.dataUser.is_revenues,
       }
       if (
         !this.dataUser.name ||
@@ -157,8 +168,9 @@ export default Vue.extend({
         this.$toast.error('Preenchas todos os campos')
         return
       }
+
       await httpUsers
-        .CreateUser(this.dataUser)
+        .CreateUser(dadosUser)
         .then((res) => {
           if (res.status === 201) {
             this.$toast.success('Funcionário criado com sucesso')

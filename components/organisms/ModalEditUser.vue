@@ -28,13 +28,19 @@
           <div class="input">
             <Label>Cargo</Label>
             <select name="" id="">
-              <option value="">Motorista</option>
-              <option value="">Producao</option>
-              <option value="">Faturamento</option>
+              <option disabled value="">Selecionar cargo</option>
+              <option v-if="dataUser.is_admin">Administrador</option>
+              <option v-if="dataUser.is_enabled">Motorista</option>
+              <option v-if="dataUser.is_product">Confeiteiro(a)</option>
+              <option v-if="dataUser.is_stock">Faturamento</option>
+              <option v-if="dataUser.is_revenues">Empacotador</option>
             </select>
           </div>
         </div>
       </div>
+      <pre>
+        {{ findUser }}
+      </pre>
       <button class="buttonPirula" @click="updateFindUser">Salvar</button>
     </div>
   </div>
@@ -64,11 +70,11 @@ export default Vue.extend({
         email: this.findUser.email,
         cpf: this.findUser.cpf,
         fone: 0,
-        is_enabled: true,
-        is_admin: true,
-        is_product: true,
-        is_stock: true,
-        is_revenues: true,
+        is_enabled: this.findUser.is_enabled,
+        is_admin: this.findUser.is_admin,
+        is_product: this.findUser.is_product,
+        is_stock: this.findUser.is_stock,
+        is_revenues: this.findUser.is_revenues,
       },
     }
   },

@@ -6,10 +6,10 @@
     </div>
     <h3>Preencha com seu e-mail!</h3>
     <div class="inputRecover">
-      <input type="email" placeholder="Digite seu email" />
+      <input type="email" placeholder="Digite seu email" v-model="email" />
       <div class="btnRecover">
         <Button @click.native="backPage" title="Voltar" />
-        <Button title="Recuperar Senha" />
+        <Button @click.native="recoverEmail" title="Recuperar Senha" />
       </div>
     </div>
   </div>
@@ -17,10 +17,23 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
+import httpRecover from '@/server/auth'
 export default Vue.extend({
+  data() {
+    return {
+      email: '',
+    }
+  },
   methods: {
     backPage() {
       this.$router.push('/login')
+    },
+    async recoverEmail() {
+      await httpRecover.PostRecoverEmail(this.email).then((res) => {
+        sessionStorage.setItem('token', res.data)
+        console.log(res)
+      })
     },
   },
 })
