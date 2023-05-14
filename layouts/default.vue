@@ -1,12 +1,19 @@
 <template>
   <div>
     <Navbar />
-    <Nuxt />
+    <div class="content">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>
+.content {
+  padding-top: 9vh;
+}
 </style>

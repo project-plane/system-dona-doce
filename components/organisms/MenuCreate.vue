@@ -21,35 +21,45 @@
           </li>
         </ul>
       </nav>
+      <ButtonPirula @click.native="logout" title="Sair" />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  data() {
+    return {
+      isActiveClient: true,
+      isActiveUser: false,
+    }
+  },
 
-const isActiveClient = ref(true)
-const isActiveUser = ref(false)
-const emit = defineEmits(['client', 'users'])
-
-function buttonClient(activeClient: boolean) {
-  isActiveClient.value = true
-  isActiveUser.value = false
-  emit('client')
-}
-
-function buttonUsers(activeUser: boolean) {
-  isActiveClient.value = false
-  isActiveUser.value = true
-  emit('users')
-}
+  methods: {
+    buttonClient(activeClient: boolean) {
+      this.isActiveClient = true
+      this.isActiveUser = false
+      this.$emit('client')
+    },
+    buttonUsers(activeUser: boolean) {
+      this.isActiveClient = false
+      this.isActiveUser = true
+      this.$emit('users')
+    },
+    logout() {
+      sessionStorage.removeItem('token')
+      this.$router.push('/login')
+    },
+  },
+})
 </script>
 
 <style lang="scss" scoped>
 .card_create {
-  width: 100%;
+  position: fixed;
+  width: 300px;
   height: 100%;
-  padding-top: 90px;
   border-right: 1px solid var(--border);
   .title_create {
     height: 90px;
@@ -64,7 +74,11 @@ function buttonUsers(activeUser: boolean) {
   }
   .menu_navigation {
     width: 100%;
+    height: 80vh;
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     nav ul {
       display: flex;
       flex-direction: column;

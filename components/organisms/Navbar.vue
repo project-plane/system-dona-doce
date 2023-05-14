@@ -9,14 +9,16 @@
   </nav>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>
 .nav_bar {
   position: fixed;
   width: 100%;
-  height: 90px;
+  height: 4rem;
   background: var(--white);
   display: flex;
   justify-content: space-between;

@@ -2,61 +2,76 @@
   <div class="sider_bar negativeSpace">
     <div class="main_login">
       <div class="title_login">
-        <p class="title">Dona</p>
-        <p class="title">Doce</p>
+        <p class="title">Dona <br> Doce</p>
       </div>
       <form action="" @submit.prevent="accessLogin">
         <div class="form_login">
           <Label>E-mail</Label>
-          <Input
-            @textInput="valueModel"
-            :type="type"
+          <input
+            v-model="dataLogin.email"
+            type="text"
             placeholder="Digite seu e-mail"
           />
           <Label>Password</Label>
-          <Input
-            @textInput="valueModel"
-            :type="type"
+          <input
+            v-model="dataLogin.password"
+            type="password"
             placeholder="Digite sua senha"
           />
           <div class="recupera_senha">
-            <p>Esqueci a minha senha</p>
+            <p @click="recoverPassword">Esqueci a minha senha</p>
           </div>
-          <ButtonPirula title="Login" />
+
+          <ButtonPirula @click="accessLogin" title="Login" />
+          <div v-if="statusMessage">
+            <h5 style="color: var(--red)">{{ message }}</h5>
+          </div>
+
         </div>
       </form>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import Vue from 'vue'
 import httpAccess from '@/server/auth'
+export default Vue.extend({
+  data() {
+    return {
+      dataLogin: {
+        email: '',
+        password: '',
+      },
+      statusMessage: false,
+      message: '',
+    }
+  },
 
-import { reactive, ref } from 'vue'
+  methods: {
+    async accessLogin() {
+      await httpAccess
+        .PostLogin(this.dataLogin)
+        .then((res) => {
+          sessionStorage.setItem('token', res.data)
 
-defineProps<{
-  label: String
-  placeholder: String
-  type: String
-}>()
+          if (res.status === 201) {
+            sessionStorage.getItem('token')
 
-const type = ref('text')
-
-const dataLogin = reactive({
-  email: '',
-  password: '',
+            this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
+          }
+          this.$router.push('/cadastrar')
+        })
+        .catch((error) => {
+          this.message = error.response.data.message
+          this.statusMessage = true
+        })
+    },
+    recoverPassword() {
+      this.$router.push('/recoverPassword')
+    },
+  },
 })
-
-function valueModel(e: string) {
-  dataLogin.email = e
-  dataLogin.password = e
-}
-
-async function accessLogin() {
-  await httpAccess.PostLogin(dataLogin).then((res) => {
-    console.log(res)
-  })
-}
 </script>
 
 <style lang="scss" scoped>
@@ -67,6 +82,17 @@ async function accessLogin() {
   width: 50%;
   background: var(--bg_color);
   z-index: 10000;
+  @include screen('mobile'){
+    width: 100%;
+    bottom: 0;
+    height: 70vh;
+    border-radius: 1rem 1rem 0 0;
+
+    .main_login{
+      justify-content: flex-start!important;
+    }
+    
+  }
   .main_login {
     width: 100%;
     height: 100%;
@@ -95,5 +121,6 @@ async function accessLogin() {
   color: var(--red);
   font-size: 3rem;
   font-weight: bold;
+  line-height: 3rem;
 }
 </style>
