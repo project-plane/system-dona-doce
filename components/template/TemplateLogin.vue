@@ -2,27 +2,31 @@
   <div class="sider_bar negativeSpace">
     <div class="main_login">
       <div class="title_login">
-        <p class="title">Dona</p>
-        <p class="title">Doce</p>
+        <p class="title">Dona <br> Doce</p>
       </div>
       <form action="" @submit.prevent="accessLogin">
         <div class="form_login">
           <Label>E-mail</Label>
           <input
+            v-model="dataLogin.email"
             type="text"
             placeholder="Digite seu e-mail"
-            v-model="dataLogin.email"
           />
           <Label>Password</Label>
           <input
+            v-model="dataLogin.password"
             type="password"
             placeholder="Digite sua senha"
-            v-model="dataLogin.password"
           />
           <div class="recupera_senha">
-            <p>Esqueci a minha senha</p>
+            <p @click="recoverPassword">Esqueci a minha senha</p>
           </div>
+
           <ButtonPirula @click="accessLogin" title="Login" />
+          <div v-if="statusMessage">
+            <h5 style="color: var(--red)">{{ message }}</h5>
+          </div>
+
         </div>
       </form>
     </div>
@@ -30,9 +34,8 @@
 </template>
 
 <script lang="ts">
-import httpAccess from '@/server/auth'
-
 import Vue from 'vue'
+import httpAccess from '@/server/auth'
 export default Vue.extend({
   data() {
     return {
@@ -40,6 +43,8 @@ export default Vue.extend({
         email: '',
         password: '',
       },
+      statusMessage: false,
+      message: '',
     }
   },
 
@@ -48,15 +53,22 @@ export default Vue.extend({
       await httpAccess
         .PostLogin(this.dataLogin)
         .then((res) => {
+          sessionStorage.setItem('token', res.data)
+
           if (res.status === 201) {
+            sessionStorage.getItem('token')
+
             this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
           }
           this.$router.push('/cadastrar')
         })
         .catch((error) => {
-          this.$toast.warning('Confira todos os campos!!!')
-          console.log(error)
+          this.message = error.response.data.message
+          this.statusMessage = true
         })
+    },
+    recoverPassword() {
+      this.$router.push('/recoverPassword')
     },
   },
 })
@@ -70,6 +82,17 @@ export default Vue.extend({
   width: 50%;
   background: var(--bg_color);
   z-index: 10000;
+  @include screen('mobile'){
+    width: 100%;
+    bottom: 0;
+    height: 70vh;
+    border-radius: 1rem 1rem 0 0;
+
+    .main_login{
+      justify-content: flex-start!important;
+    }
+    
+  }
   .main_login {
     width: 100%;
     height: 100%;
@@ -98,5 +121,6 @@ export default Vue.extend({
   color: var(--red);
   font-size: 3rem;
   font-weight: bold;
+  line-height: 3rem;
 }
 </style>

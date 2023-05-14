@@ -8,4 +8,20 @@ const http = axios.create({
     }
 })
 
+http.interceptors.request.use(function(config) {
+        let token = sessionStorage.getItem("token");
+
+        if (!token) {
+            token = "";
+        }
+
+        config.headers.Authorization = `Bearer ${token}`;
+        return config;
+    },
+    (error) => {
+        console.log(error)
+        return Promise.reject(error)
+    }
+)
+
 export default http;

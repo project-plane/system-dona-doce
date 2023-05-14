@@ -11,8 +11,8 @@
       <thead>
         <tr>
           <th>Nome</th>
-          <th>Email</th>
-          <th>Empresas</th>
+          <th>Cargo</th>
+          <th>E-mail</th>
           <th>Opções</th>
         </tr>
       </thead>
@@ -48,6 +48,7 @@ export default Vue.extend({
   async mounted() {
     await httpUsers.ListUsers().then((res) => {
       this.listUsers = res.data
+      console.log(res)
     })
   },
 
@@ -62,23 +63,6 @@ export default Vue.extend({
   },
 })
 </script>
-
-<!-- <script setup lang="ts">
-interface Users {
-  id: string
-  name: string
-  username: string
-  email: string
-}
-
-
-import { onMounted, ref } from 'vue'
-
-const listUsers = ref<Users[]>()
-
-onMounted(async () => {
-})
-</script> -->
 
 <style lang="scss" scoped>
 table {
