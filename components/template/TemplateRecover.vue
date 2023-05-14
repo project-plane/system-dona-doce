@@ -37,7 +37,7 @@ export default Vue.extend({
         .PostRecoverEmail(this.email)
         .then((res) => {
           sessionStorage.setItem('token', res.data)
-          console.log(res)
+
         })
         .catch((error) => {
           console.log(error)
