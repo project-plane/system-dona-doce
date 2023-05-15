@@ -21,7 +21,7 @@
           </li>
         </ul>
       </nav>
-      <ButtonPirula @click.native="logout" title="Sair" />
+      <ButtonPirula title="Sair" @click.native="logout" />
     </div>
   </div>
 </template>
@@ -57,8 +57,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .card_create {
-  position: fixed;
-  width: 300px;
+  // position: fixed;
+  // width: 300px;
   height: 100%;
   border-right: 1px solid var(--border);
   .title_create {
@@ -74,7 +74,7 @@ export default Vue.extend({
   }
   .menu_navigation {
     width: 100%;
-    height: 80vh;
+    height: 76vh;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;

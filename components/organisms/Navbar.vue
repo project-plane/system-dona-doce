@@ -16,6 +16,7 @@ export default Vue.extend({})
 
 <style lang="scss" scoped>
 .nav_bar {
+  top: 0;
   position: fixed;
   width: 100%;
   height: 4rem;
