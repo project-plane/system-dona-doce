@@ -55,15 +55,15 @@ export default Vue.extend({
         .then((res) => {
           sessionStorage.setItem('token', res.data)
 
-          if (res.status === 201) {
-            sessionStorage.getItem('token')
-
-            this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
-          }
+          sessionStorage.getItem('token')
+          this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
           this.$router.push('/cadastrar')
         })
         .catch((error) => {
-          this.message = error.response.data.message
+          const teste: String[] = error.response.data.message
+          teste.map((item: any)=>{
+          this.$toast.info(item)
+          })
           this.statusMessage = true
         })
     },
@@ -81,7 +81,7 @@ export default Vue.extend({
   height: 100vh;
   width: 50%;
   background: var(--bg_color);
-  z-index: 10000;
+  // z-index: 2;
   @include screen('mobile'){
     width: 100%;
     bottom: 0;
@@ -91,7 +91,7 @@ export default Vue.extend({
     .main_login{
       justify-content: flex-start!important;
     }
-    
+
   }
   .main_login {
     width: 100%;

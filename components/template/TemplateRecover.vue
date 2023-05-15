@@ -30,17 +30,19 @@ export default Vue.extend({
       this.$router.push('/login')
     },
     async recoverEmail() {
-      if (this.email) {
-        this.$toast.warning('Preencha todos os campos!!!')
-      }
-      await httpRecover
-        .PostRecoverEmail(this.email)
-        .then((res) => {
-          sessionStorage.setItem('token', res.data)
 
+      await httpRecover
+        .PostRecoverEmail({ email: this.email})
+        .then((res) => {
+          this.$toast.success('E-mail de recuperação de senha enviado')
         })
         .catch((error) => {
           console.log(error)
+          const msg: string[] = error.response.data.message
+          msg.map((item)=>{
+            this.$toast.warning(item)
+          })
+
         })
     },
   },

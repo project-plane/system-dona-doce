@@ -29,10 +29,10 @@ export default {
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         // https://go.nuxtjs.dev/axios
+        'vue-toastification/nuxt',
         '@nuxtjs/axios',
         // https://go.nuxtjs.dev/pwa
         '@nuxtjs/pwa',
-        'vue-toastification/nuxt',
         '@nuxtjs/style-resources'
     ],
     styleResources: {
