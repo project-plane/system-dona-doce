@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div class="containerGrid">
     <MenuCreate @client="client" @users="users" />
-    <div v-if="statusActive" class="container">
-      <ContentCreateUser />
-      <TableUsers />
-    </div>
-    <div v-else class="container">
-      <ContentCreateClient />
-      <TableClients />
+    <div class="scroll_container">
+      <div v-if="statusActive" class="container">
+        <ContentCreateUser />
+        <TableUsers />
+      </div>
+      <div v-else class="container">
+        <ContentCreateClient />
+        <TableClients />
+      </div>
     </div>
   </div>
 </template>
@@ -35,10 +37,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.container {
-  position: absolute;
-  width: calc(100% - 300px);
-  left: 300px;
-  z-index: -1;
+.containerGrid{
+  display: grid;
+  grid-template: calc(4rem - 100vh)/ 300px 1fr;
+  .scroll_container{
+    height: 90vh;
+    overflow-y: scroll;
+    border-left: 1px solid var(--border);
+  }
 }
 </style>

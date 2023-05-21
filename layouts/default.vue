@@ -14,6 +14,6 @@ export default Vue.extend({})
 
 <style lang="scss" scoped>
 .content {
-  padding-top: 9vh;
+  margin-top: 4rem;
 }
 </style>

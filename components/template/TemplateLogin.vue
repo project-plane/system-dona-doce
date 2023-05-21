@@ -2,7 +2,10 @@
   <div class="sider_bar negativeSpace">
     <div class="main_login">
       <div class="title_login">
-        <p class="title">Dona <br> Doce</p>
+        <p class="title">
+          Dona <br />
+          Doce
+        </p>
       </div>
       <form action="" @submit.prevent="accessLogin">
         <div class="form_login">
@@ -26,7 +29,6 @@
           <div v-if="statusMessage">
             <h5 style="color: var(--red)">{{ message }}</h5>
           </div>
-
         </div>
       </form>
     </div>
@@ -60,11 +62,27 @@ export default Vue.extend({
           this.$router.push('/cadastrar')
         })
         .catch((error) => {
-          const teste: String[] = error.response.data.message
-          teste.map((item: any)=>{
-          this.$toast.info(item)
-          })
-          this.statusMessage = true
+
+          console.log(error.response.data.statusCode)
+
+          if (error.response.data.statusCode === 400) {
+            this.$toast.error('Preencha todos os campos!!!')
+            return
+          }
+
+          if (error.response.data.statusCode === 401) {
+            this.$toast.error('Dados inválidos!!!')
+            return
+          }
+          // this.message = error.response.data.message
+          // this.statusMessage = true
+
+         // const teste: String[] = error.response.data.message
+         // teste.map((item: any)=>{
+          //this.$toast.info(item)
+         // })
+          //this.statusMessage = true
+
         })
     },
     recoverPassword() {
@@ -81,17 +99,17 @@ export default Vue.extend({
   height: 100vh;
   width: 50%;
   background: var(--bg_color);
-  // z-index: 2;
+
   @include screen('mobile'){
+
     width: 100%;
     bottom: 0;
     height: 70vh;
     border-radius: 1rem 1rem 0 0;
 
-    .main_login{
-      justify-content: flex-start!important;
+    .main_login {
+      justify-content: flex-start !important;
     }
-
   }
   .main_login {
     width: 100%;
