@@ -21,7 +21,10 @@
           </li>
         </ul>
       </nav>
-      <ButtonPirula title="Sair" @click.native="logout" />
+      <div class="footerMenu">
+        <ButtonPirula title="Sair" @click.native="logout" />
+        <p>Version 0.0</p>
+      </div>
     </div>
   </div>
 </template>
@@ -93,6 +96,14 @@ export default Vue.extend({
     nav ul .active {
       color: var(--red);
       font-weight: bold;
+    }
+    .footerMenu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      p {
+        font-size: 0.7rem;
+      }
     }
   }
 }

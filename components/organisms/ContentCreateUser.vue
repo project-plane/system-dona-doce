@@ -51,7 +51,7 @@
           <div class="input">
             <Label>Senha</Label>
             <input
-              type="text"
+              type="password"
               placeholder="Digite a senha"
               v-model="dataUser.password"
             />
@@ -60,20 +60,10 @@
             <Label>Cargo</Label>
             <select v-model="selected">
               <option disabled value="">Selecionar cargo</option>
-              <option :disabled="dataUser.is_admin">Administrador</option>
-              <option :disabled="dataUser.is_enabled">Motorista</option>
-              <option :disabled="dataUser.is_product">Confeiteiro(a)</option>
-              <option :disabled="dataUser.is_stock">Faturamento</option>
-              <option :disabled="dataUser.is_revenues">Empacotador</option>
+              <option>Administrador</option>
+              <option>Motorista</option>
+              <option>Operador(a)</option>
             </select>
-            <div
-              class="excluirCargo"
-              v-for="(cargo, index) in addCargo"
-              :key="index"
-            >
-              <p>{{ index + 1 }} - {{ cargo }}</p>
-              <span @click="removeCargo(cargo)">X</span>
-            </div>
           </div>
         </div>
       </div>
@@ -119,36 +109,20 @@ export default Vue.extend({
         is_revenues: false,
       },
       selected: '',
-      addCargo: [],
-      disabled: false,
     }
   },
-  watch: {
-    selected(newValue, oldValue) {
-      this.addCargo.push(newValue)
-      this.statusCargo()
-    },
-  },
+
   methods: {
-    statusCargo() {
+    async createUser() {
       if (this.selected === 'Administrador') {
         this.dataUser.is_admin = true
       }
       if (this.selected === 'Motorista') {
-        this.dataUser.is_enabled = true
-      }
-      if (this.selected === 'Confeiteiro(a)') {
-        this.dataUser.is_product = true
-      }
-      if (this.selected === 'Faturamento') {
         this.dataUser.is_stock = true
       }
-      if (this.selected === 'Empacotador') {
-        this.dataUser.is_revenues = true
-        return
+      if (this.selected === 'Operador(a)') {
+        this.dataUser.is_product = true
       }
-    },
-    async createUser() {
       const dadosUser = {
         name: this.dataUser.name,
         username: this.dataUser.username,
@@ -156,10 +130,10 @@ export default Vue.extend({
         password: this.dataUser.password,
         cpf: this.dataUser.cpf,
         fone: Number(this.dataUser.fone),
-        is_enabled: this.dataUser.is_enabled,
         is_admin: this.dataUser.is_admin,
         is_product: this.dataUser.is_product,
         is_stock: this.dataUser.is_stock,
+        is_enabled: this.dataUser.is_enabled,
         is_revenues: this.dataUser.is_revenues,
       }
 
@@ -168,7 +142,8 @@ export default Vue.extend({
         !this.dataUser.username ||
         !this.dataUser.email ||
         !this.dataUser.password ||
-        !this.dataUser.cpf
+        !this.dataUser.cpf ||
+        !this.selected
       ) {
         this.$toast.error('Preenchas todos os campos')
         return
@@ -182,33 +157,29 @@ export default Vue.extend({
           }
         })
         .catch((error) => {
-          this.$toast.error('Verifique todos os campos')
-          console.log(error)
+          if (error.response.data.statusCode === 400) {
+            error.response.data.message.map((e: any) => {
+              if (e === 'email must be an email') {
+                this.$toast.error('Digite um e-mail válido')
+                return
+              }
+              if (
+                e ===
+                'Esta variável de senha pode ter no mínimo 4 caracteres ou no máximo 50 caracteres'
+              ) {
+                this.$toast.error('Senha mínimo 4 e máximo 50 caracteres')
+                return
+              }
+              console.log(e)
+            })
+            // const email = error.response.data.message[0]
+            // this.$toast.error(email)
+            // console.log(email)
+          }
+          if (error.response.data.statusCode === 409) {
+            this.$toast.error('E-mail já existente')
+          }
         })
-    },
-    removeCargo(cargo: never) {
-      const removerCargo = this.addCargo.indexOf(cargo)
-      this.addCargo.splice(removerCargo, 1)
-      if (cargo === 'Administrador') {
-        this.dataUser.is_admin = false
-        return
-      }
-      if (cargo === 'Motorista') {
-        this.dataUser.is_enabled = false
-        return
-      }
-      if (cargo === 'Confeiteiro(a)') {
-        this.dataUser.is_product = false
-        return
-      }
-      if (cargo === 'Faturamento') {
-        this.dataUser.is_stock = false
-        return
-      }
-      if (cargo === 'Empacotador') {
-        this.dataUser.is_revenues = false
-        return
-      }
     },
   },
 })
