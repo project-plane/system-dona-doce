@@ -57,14 +57,12 @@ export default Vue.extend({
         .then((res) => {
           sessionStorage.setItem('token', res.data)
 
-          if (res.status === 201) {
-            sessionStorage.getItem('token')
-
-            this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
-          }
+          sessionStorage.getItem('token')
+          this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
           this.$router.push('/cadastrar')
         })
         .catch((error) => {
+
           console.log(error.response.data.statusCode)
 
           if (error.response.data.statusCode === 400) {
@@ -78,6 +76,13 @@ export default Vue.extend({
           }
           // this.message = error.response.data.message
           // this.statusMessage = true
+
+         // const teste: String[] = error.response.data.message
+         // teste.map((item: any)=>{
+          //this.$toast.info(item)
+         // })
+          //this.statusMessage = true
+
         })
     },
     recoverPassword() {
@@ -94,7 +99,9 @@ export default Vue.extend({
   height: 100vh;
   width: 50%;
   background: var(--bg_color);
-  @include screen('mobile') {
+
+  @include screen('mobile'){
+
     width: 100%;
     bottom: 0;
     height: 70vh;
