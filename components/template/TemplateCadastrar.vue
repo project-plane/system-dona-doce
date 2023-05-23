@@ -1,14 +1,41 @@
 <template>
   <div class="containerGrid">
-    <MenuCreate @client="client" @users="users" />
+    <MenuCreate
+      @empresa="empresa"
+      @client="client"
+      @users="users"
+      @ingredientes="ingredientes"
+      @estoque="estoque"
+      @receitas="receitas"
+    />
     <div class="scroll_container">
-      <div v-if="statusActive" class="container">
+      <div v-if="statusEmpresa" class="container">
+        <!-- <ContentCreateUser />
+        <TableUsers /> -->
+        <h2>Empresa em desenvolvimento</h2>
+      </div>
+      <div v-if="statusUsers" class="container">
         <ContentCreateUser />
         <TableUsers />
       </div>
-      <div v-else class="container">
+      <div v-if="statusClientes" class="container">
         <ContentCreateClient />
         <TableClients />
+      </div>
+      <div v-if="statusIngredientes" class="container">
+        <!-- <ContentCreateClient />
+        <TableClients /> -->
+        <h2>Ingredientes em desenvolvimento</h2>
+      </div>
+      <div v-if="statusEstoque" class="container">
+        <!-- <ContentCreateClient />
+        <TableClients /> -->
+        <h2>Estoque em desenvolvimento</h2>
+      </div>
+      <div v-if="statusReceitas" class="container">
+        <!-- <ContentCreateClient />
+        <TableClients /> -->
+        <h2>Receitas em desenvolvimento</h2>
       </div>
     </div>
   </div>
@@ -20,27 +47,72 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      statusActive: false,
+      statusEmpresa: true,
+      statusClientes: false,
+      statusUsers: false,
+      statusIngredientes: false,
+      statusEstoque: false,
+      statusReceitas: false,
     }
   },
   methods: {
+    empresa() {
+      this.statusEmpresa = true
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = false
+    },
     users() {
-      this.statusActive = true
-      console.log(this.statusActive)
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = true
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = false
     },
     client() {
-      this.statusActive = false
-      console.log(this.statusActive)
+      this.statusEmpresa = false
+      this.statusClientes = true
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = false
+    },
+    ingredientes() {
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = true
+      this.statusEstoque = false
+      this.statusReceitas = false
+    },
+    estoque() {
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = true
+      this.statusReceitas = false
+    },
+    receitas() {
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = true
     },
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.containerGrid{
+.containerGrid {
   display: grid;
-  grid-template: calc(4rem - 100vh)/ 300px 1fr;
-  .scroll_container{
+  grid-template: calc(4rem - 100vh) / 300px 1fr;
+  .scroll_container {
     height: 90vh;
     overflow-y: scroll;
     border-left: 1px solid var(--border);

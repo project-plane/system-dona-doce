@@ -8,16 +8,40 @@
       <nav>
         <ul>
           <li
+            :class="{ active: isActiveEmpresa }"
+            @click="buttonEmpresa(isActiveEmpresa)"
+          >
+            Empresa
+          </li>
+          <li
             :class="{ active: isActiveClient }"
             @click="buttonClient(isActiveClient)"
           >
-            Clientes
+            Cliente
           </li>
           <li
             :class="{ active: isActiveUser }"
             @click="buttonUsers(isActiveUser)"
           >
-            Funcionários
+            Funcionário
+          </li>
+          <li
+            :class="{ active: isActiveIngredientes }"
+            @click="buttonIngredientes(isActiveIngredientes)"
+          >
+            Ingrediente
+          </li>
+          <li
+            :class="{ active: isActiveEstoque }"
+            @click="buttonEstoque(isActiveEstoque)"
+          >
+            Estoque
+          </li>
+          <li
+            :class="{ active: isActiveReceitas }"
+            @click="buttonReceitas(isActiveReceitas)"
+          >
+            Receita
           </li>
         </ul>
       </nav>
@@ -34,21 +58,69 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveClient: true,
+      isActiveEmpresa: true,
+      isActiveClient: false,
       isActiveUser: false,
+      isActiveIngredientes: false,
+      isActiveEstoque: false,
+      isActiveReceitas: false,
     }
   },
 
   methods: {
+    buttonEmpresa(activeEmpresa: boolean) {
+      this.isActiveEmpresa = true
+      this.isActiveClient = false
+      this.isActiveUser = false
+      this.isActiveIngredientes = false
+      this.isActiveEstoque = false
+      this.isActiveReceitas = false
+      this.$emit('empresa')
+    },
     buttonClient(activeClient: boolean) {
+      this.isActiveEmpresa = false
       this.isActiveClient = true
       this.isActiveUser = false
+      this.isActiveIngredientes = false
+      this.isActiveEstoque = false
+      this.isActiveReceitas = false
       this.$emit('client')
     },
     buttonUsers(activeUser: boolean) {
+      this.isActiveEmpresa = false
       this.isActiveClient = false
       this.isActiveUser = true
+      this.isActiveIngredientes = false
+      this.isActiveEstoque = false
+      this.isActiveReceitas = false
       this.$emit('users')
+    },
+    buttonIngredientes(activeIngredientes: boolean) {
+      this.isActiveEmpresa = false
+      this.isActiveClient = false
+      this.isActiveUser = false
+      this.isActiveIngredientes = true
+      this.isActiveEstoque = false
+      this.isActiveReceitas = false
+      this.$emit('ingredientes')
+    },
+    buttonEstoque(activeEstoque: boolean) {
+      this.isActiveEmpresa = false
+      this.isActiveClient = false
+      this.isActiveUser = false
+      this.isActiveIngredientes = false
+      this.isActiveEstoque = true
+      this.isActiveReceitas = false
+      this.$emit('estoque')
+    },
+    buttonReceitas(activeReceitas: boolean) {
+      this.isActiveEmpresa = false
+      this.isActiveClient = false
+      this.isActiveUser = false
+      this.isActiveIngredientes = false
+      this.isActiveEstoque = false
+      this.isActiveReceitas = true
+      this.$emit('receitas')
     },
     logout() {
       sessionStorage.removeItem('token')
