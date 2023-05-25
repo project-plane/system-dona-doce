@@ -33,9 +33,8 @@
         <h2>Estoque em desenvolvimento</h2>
       </div>
       <div v-if="statusReceitas" class="container">
-        <!-- <ContentCreateClient />
-        <TableClients /> -->
-        <h2>Receitas em desenvolvimento</h2>
+        <CreateReceitas />
+        <!-- <TableClients /> -->
       </div>
     </div>
   </div>
