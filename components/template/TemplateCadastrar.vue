@@ -23,14 +23,12 @@
         <TableClients />
       </div>
       <div v-if="statusIngredientes">
-        <!-- <ContentCreateClient />
-        <TableClients /> -->
-        <h2>Ingredientes em desenvolvimento</h2>
+        <CreateIngredientes />
+        <TableIngredientes />
       </div>
       <div v-if="statusEstoque">
-        <!-- <ContentCreateClient />
-        <TableClients /> -->
-        <h2>Estoque em desenvolvimento</h2>
+        <CreateEstoque />
+        <TableEstoque />
       </div>
       <div v-if="statusReceitas">
         <CreateReceitas />
