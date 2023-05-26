@@ -30,19 +30,16 @@ export default Vue.extend({
       this.$router.push('/login')
     },
     async recoverEmail() {
-
       await httpRecover
-        .PostRecoverEmail({ email: this.email})
+        .PostRecoverEmail({ email: this.email })
         .then((res) => {
           this.$toast.success('E-mail de recuperação de senha enviado')
         })
         .catch((error) => {
-          console.log(error)
           const msg: string[] = error.response.data.message
-          msg.map((item)=>{
+          msg.map((item) => {
             this.$toast.warning(item)
           })
-
         })
     },
   },

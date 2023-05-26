@@ -1,75 +1,73 @@
 <template>
-  <div class="content_user">
-    <div class="negativeSpace">
-      <Title>
-        <h1>Novo Funcionário</h1>
-      </Title>
-      <div class="input_create">
-        <div class="input_column">
-          <div class="input">
-            <Label>Nome Completo</Label>
-            <input
-              type="text"
-              placeholder="Digite o nome"
-              v-model="dataUser.name"
-            />
-          </div>
-          <div class="input">
-            <Label>E-mail</Label>
-            <input
-              type="text"
-              placeholder="Digite o e-mail"
-              v-model="dataUser.email"
-            />
-          </div>
-          <div class="input">
-            <Label>CPF</Label>
-            <input
-              type="text"
-              placeholder="Digite o CPF"
-              v-model="dataUser.cpf"
-            />
-          </div>
-          <div class="input">
-            <Label>Telefone</Label>
-            <input
-              type="number"
-              placeholder="Digite o telefone"
-              v-model="dataUser.fone"
-            />
-          </div>
+  <Container>
+    <Title>
+      <h1>Novo Funcionário</h1>
+    </Title>
+    <div class="input_create">
+      <div class="input_column">
+        <div class="input">
+          <Label>Nome Completo</Label>
+          <input
+            type="text"
+            placeholder="Digite o nome"
+            v-model="dataUser.name"
+          />
         </div>
-        <div class="input_column">
-          <div class="input">
-            <Label>Usuário</Label>
-            <input
-              type="text"
-              placeholder="Digite o usuário"
-              v-model="dataUser.username"
-            />
-          </div>
-          <div class="input">
-            <Label>Senha</Label>
-            <input
-              type="password"
-              placeholder="Digite a senha"
-              v-model="dataUser.password"
-            />
-          </div>
-          <div class="input">
-            <Label>Cargo</Label>
-            <select v-model="selected">
-              <option disabled value="">Selecionar cargo</option>
-              <option>Administrador</option>
-              <option>Motorista</option>
-              <option>Operador(a)</option>
-            </select>
-          </div>
+        <div class="input">
+          <Label>E-mail</Label>
+          <input
+            type="text"
+            placeholder="Digite o e-mail"
+            v-model="dataUser.email"
+          />
+        </div>
+        <div class="input">
+          <Label>CPF</Label>
+          <input
+            type="text"
+            placeholder="Digite o CPF"
+            v-model="dataUser.cpf"
+          />
+        </div>
+        <div class="input">
+          <Label>Telefone</Label>
+          <input
+            type="number"
+            placeholder="Digite o telefone"
+            v-model="dataUser.fone"
+          />
         </div>
       </div>
-      <Button @click.native="createUser" title="Salvar" />
+      <div class="input_column">
+        <div class="input">
+          <Label>Usuário</Label>
+          <input
+            type="text"
+            placeholder="Digite o usuário"
+            v-model="dataUser.username"
+          />
+        </div>
+        <div class="input">
+          <Label>Senha</Label>
+          <input
+            type="password"
+            placeholder="Digite a senha"
+            v-model="dataUser.password"
+          />
+        </div>
+        <div class="input">
+          <Label>Cargo</Label>
+          <select v-model="selected">
+            <option disabled value="">Selecionar cargo</option>
+            <option>Administrador</option>
+            <option>Motorista</option>
+            <option>Operador(a)</option>
+          </select>
+        </div>
+      </div>
     </div>
-  </div>
+    <Button @click.native="createUser" title="Salvar" />
+  </Container>
 </template>
 
 <script lang="ts">
@@ -170,11 +168,7 @@ export default Vue.extend({
                 this.$toast.error('Senha mínimo 4 e máximo 50 caracteres')
                 return
               }
-              console.log(e)
             })
-            // const email = error.response.data.message[0]
-            // this.$toast.error(email)
-            // console.log(email)
           }
           if (error.response.data.statusCode === 409) {
             this.$toast.error('E-mail já existente')
@@ -186,52 +180,43 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.content_user {
-  .negativeSpace {
+.input_create {
+  width: 100%;
+  display: flex;
+  gap: 1.5rem;
+  .input_column {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    border-bottom: 1px solid var(--border);
-    .input_create {
-      width: 100%;
+    gap: 1rem;
+    .input_add {
       display: flex;
-      gap: 1.5rem;
-      .input_column {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        .input_add {
-          display: flex;
-          align-items: flex-end;
-          button {
-            background: var(--txt_color);
-            color: var(--white);
-            width: 40%;
-            height: 35px;
-            font-weight: bold;
-            font-size: 1.2rem;
-          }
-        }
-        .list_empresa {
-          height: 120px;
-          overflow-y: scroll;
-        }
+      align-items: flex-end;
+      button {
+        background: var(--txt_color);
+        color: var(--white);
+        width: 40%;
+        height: 35px;
+        font-weight: bold;
+        font-size: 1.2rem;
       }
-      .input {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        .excluirCargo {
-          display: flex;
-          justify-content: space-between;
-          span {
-            color: var(--border);
-            cursor: pointer;
-          }
-        }
+    }
+    .list_empresa {
+      height: 120px;
+      overflow-y: scroll;
+    }
+  }
+  .input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    .excluirCargo {
+      display: flex;
+      justify-content: space-between;
+      span {
+        color: var(--border);
+        cursor: pointer;
       }
     }
   }

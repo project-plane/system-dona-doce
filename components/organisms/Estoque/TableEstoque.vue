@@ -4,6 +4,7 @@
       v-if="modalEdit"
       :closeModal="modalEdit"
       @closeModal="closeModal"
+      titleModal="Editar Estoque"
     />
     <h2>Lista do Estoque</h2>
     <table>
@@ -50,8 +51,6 @@ export default Vue.extend({
       this.modalEdit = true
     },
     closeModal() {
-      console.log('oi')
-
       this.modalEdit = false
     },
   },
