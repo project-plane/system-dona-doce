@@ -1,5 +1,5 @@
 <template>
-  <div class="negativeSpace">
+  <ContainerTable>
     <ModalEditUser
       v-if="openModal"
       :closeModal="openModal"
@@ -29,7 +29,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </ContainerTable>
 </template>
 
 <script>
@@ -48,7 +48,6 @@ export default Vue.extend({
   async mounted() {
     await httpUsers.ListUsers().then((res) => {
       this.listUsers = res.data
-      console.log(res)
     })
   },
 

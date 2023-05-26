@@ -19,7 +19,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.buttonLogin {
+.buttonPirula {
   width: 100%;
 }
 </style>

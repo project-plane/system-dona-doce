@@ -72,11 +72,11 @@ export default Vue.extend({
         presumed_profit: 3,
         ingredients: [
           {
-            fk_ingredient: 1,
+            fk_ingredient: '1',
             amount_ingredient: 30,
           },
           {
-            fk_ingredient: 2,
+            fk_ingredient: '2',
             amount_ingredient: 60,
           },
         ],

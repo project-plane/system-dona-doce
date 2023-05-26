@@ -1,7 +1,7 @@
 <template>
   <ContainerModalEdit :closeModal="closeModal">
     <Title class="headerModal">
-      <h1>Editar Estoque</h1>
+      <h1>{{ titleModal }}</h1>
       <img
         @click="$emit('closeModal', closeModal)"
         src="~/assets/icons/close.svg"
@@ -26,9 +26,14 @@
         />
       </div>
     </div>
-    <Button title="Cancelar" />
+    <div class="btnEdit">
+      <Button
+        @click.native="$emit('closeModal', closeModal)"
+        title="Cancelar"
+      />
 
-    <Button title="Salvar" />
+      <Button title="Salvar" />
+    </div>
   </ContainerModalEdit>
 </template>
 
@@ -81,5 +86,10 @@ export default Vue.extend({
     flex-direction: column;
     gap: 0.3rem;
   }
+}
+.btnEdit {
+  width: 100%;
+  display: flex;
+  gap: 4rem;
 }
 </style>

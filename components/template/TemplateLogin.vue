@@ -62,9 +62,6 @@ export default Vue.extend({
           this.$router.push('/cadastrar')
         })
         .catch((error) => {
-
-          console.log(error.response.data.statusCode)
-
           if (error.response.data.statusCode === 400) {
             this.$toast.error('Preencha todos os campos!!!')
             return
@@ -74,15 +71,6 @@ export default Vue.extend({
             this.$toast.error('Dados inválidos!!!')
             return
           }
-          // this.message = error.response.data.message
-          // this.statusMessage = true
-
-         // const teste: String[] = error.response.data.message
-         // teste.map((item: any)=>{
-          //this.$toast.info(item)
-         // })
-          //this.statusMessage = true
-
         })
     },
     recoverPassword() {
@@ -100,8 +88,7 @@ export default Vue.extend({
   width: 50%;
   background: var(--bg_color);
 
-  @include screen('mobile'){
-
+  @include screen('mobile') {
     width: 100%;
     bottom: 0;
     height: 70vh;
