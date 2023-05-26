@@ -21,7 +21,7 @@
           <td>{{ user.name }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
-          <td class="iconsOptions">
+          <td>
             <button @click="modal(user)">
               <img src="~/assets/icons/edit.svg" alt="editUser" />
             </button>
@@ -80,15 +80,8 @@ table {
     text-align: center;
     padding: 1rem 0;
   }
-  tbody tr .iconsOptions {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    button {
-      background: transparent;
-    }
+  tbody tr button {
+    background: transparent;
   }
 }
 </style>

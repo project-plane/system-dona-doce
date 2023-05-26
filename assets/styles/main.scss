@@ -106,11 +106,11 @@ input[type=radio] {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    border: .5px solid #fff;
+    border: .5px solid var(--bg_color_modal);
 }
 
 input[type=radio]:checked {
-    background-color: var(--green);
+    background-color: var(--bg_color_modal);
     accent-color: var(--green);
     border: 4px solid var(--dark_check);
 }

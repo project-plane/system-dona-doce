@@ -1,5 +1,5 @@
 <template>
-  <div class="negativeSpace">
+  <ContainerTable>
     <h2>Clientes Cadastrados</h2>
     <table>
       <thead>
@@ -15,7 +15,7 @@
           <td>{{ client.name }}</td>
           <td>{{ client.email }}</td>
           <td>{{ client.username }}</td>
-          <td class="iconsOptions">
+          <td>
             <button>
               <img src="~/assets/icons/edit.svg" alt="editUser" />
             </button>
@@ -23,7 +23,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </ContainerTable>
 </template>
 
 <script lang="ts">
@@ -62,15 +62,8 @@ table {
     text-align: center;
     padding: 1rem 0;
   }
-  tbody tr .iconsOptions {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    button {
-      background: transparent;
-    }
+  tbody tr button {
+    background: transparent;
   }
 }
 </style>
