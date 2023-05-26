@@ -9,32 +9,32 @@
       @receitas="receitas"
     />
     <div class="scroll_container">
-      <div v-if="statusEmpresa" class="container">
+      <div v-if="statusEmpresa">
         <!-- <ContentCreateUser />
         <TableUsers /> -->
         <h2>Empresa em desenvolvimento</h2>
       </div>
-      <div v-if="statusUsers" class="container">
+      <div v-if="statusUsers">
         <ContentCreateUser />
         <TableUsers />
       </div>
-      <div v-if="statusClientes" class="container">
+      <div v-if="statusClientes">
         <ContentCreateClient />
         <TableClients />
       </div>
-      <div v-if="statusIngredientes" class="container">
+      <div v-if="statusIngredientes">
         <!-- <ContentCreateClient />
         <TableClients /> -->
         <h2>Ingredientes em desenvolvimento</h2>
       </div>
-      <div v-if="statusEstoque" class="container">
+      <div v-if="statusEstoque">
         <!-- <ContentCreateClient />
         <TableClients /> -->
         <h2>Estoque em desenvolvimento</h2>
       </div>
-      <div v-if="statusReceitas" class="container">
+      <div v-if="statusReceitas">
         <CreateReceitas />
-        <!-- <TableClients /> -->
+        <TableReceitas />
       </div>
     </div>
   </div>
