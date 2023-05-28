@@ -4,6 +4,7 @@
       v-if="modalEdit"
       :closeModal="modalEdit"
       @closeModal="closeModal"
+      titleModal="Editar Estoque"
     />
     <h2>Lista do Estoque</h2>
     <table>

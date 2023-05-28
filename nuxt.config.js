@@ -31,8 +31,6 @@ export default {
         // https://go.nuxtjs.dev/axios
         'vue-toastification/nuxt',
         '@nuxtjs/axios',
-        // https://go.nuxtjs.dev/pwa
-        '@nuxtjs/pwa',
         '@nuxtjs/style-resources'
     ],
     styleResources: {
@@ -44,22 +42,6 @@ export default {
     axios: {
         // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
         baseURL: '/',
-    },
-
-    // PWA module configuration: https://go.nuxtjs.dev/pwa
-    pwa: {
-        meta: {
-            theme_color: '#232323',
-            name: 'Dona Doce',
-            author: ''
-        },
-        manifest: {
-            lang: 'pt-br',
-        },
-        icon: {
-            source: 'static/icon.png',
-            filename: 'icon.png'
-        },
     },
     ssr: false,
     server: {
