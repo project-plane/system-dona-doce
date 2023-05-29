@@ -1,5 +1,11 @@
 <template>
   <Container>
+    <ContainerModalReceita
+      v-if="openModalReceita"
+      :dadosReceitas="dataReceita"
+      :closeModal="openModalReceita"
+      @closeModal="closeModal"
+    />
     <Title>
       <h1>Receitas</h1>
     </Title>
@@ -60,30 +66,26 @@ export default Vue.extend({
     return {
       receita: '',
       status_receita: '',
+      openModalReceita: false,
+      dataReceita: [],
     }
   },
   methods: {
     async createReceita() {
-      const data = {
-        description: 'Coxinha de Frango',
-        value: 12,
-        yield_per_quantity: 1,
-        time_in_hours: 14,
-        presumed_profit: 3,
-        ingredients: [
-          {
-            fk_ingredient: '1',
-            amount_ingredient: 30,
-          },
-          {
-            fk_ingredient: '2',
-            amount_ingredient: 60,
-          },
-        ],
+      this.dataReceita = {
+        receita: this.receita,
+        status: this.status_receita,
       }
-      await httpReceitas.CreateReceita(data).then((res) => {
-        console.log(res)
-      })
+      if (!this.receita || !this.status_receita) {
+        this.$toast.error('Preencha todos os campos')
+        return
+      } else {
+        this.openModalReceita = true
+        return
+      }
+    },
+    closeModal() {
+      this.openModalReceita = false
     },
   },
 })

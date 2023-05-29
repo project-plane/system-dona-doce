@@ -1,24 +1,39 @@
 <template>
   <ContainerTable>
+    <ModalEditIngrediente
+      v-if="openModal"
+      :closeModal="openModal"
+      @closeModal="closeModal"
+      :findIngrediente="findIngrediente"
+    />
     <h2>Lista de Ingredientes</h2>
     <table>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Nome</th>
           <th>Preço Unitário</th>
           <th>Opções</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Trigo</td>
-          <td>R$ 59,99</td>
+        <tr
+          v-for="(ingrediente, index) in listIngredientes"
+          :key="ingrediente.id"
+        >
+          <td>{{ index + 1 }}</td>
+          <td>{{ ingrediente.description }}</td>
+          <td>R$ {{ ingrediente.value }}</td>
           <td>
             <div class="iconsOptions">
               <button>
-                <img src="~/assets/icons/edit.svg" alt="" />
+                <img
+                  src="~/assets/icons/edit.svg"
+                  alt=""
+                  @click="modalEditIngrediente(ingrediente)"
+                />
               </button>
-              <button>
+              <button @click="deleteIngrediente(ingrediente.id)">
                 <img src="~/assets/icons/delete.svg" alt="" />
               </button>
             </div>
@@ -32,7 +47,52 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({})
+import httpListIngredientes from '~/server/ingredientes'
+
+export default Vue.extend({
+  data() {
+    return {
+      listIngredientes: [],
+      findIngrediente: [],
+      openModal: false,
+    }
+  },
+
+  async fetch() {
+    await httpListIngredientes
+      .ListIngredientes()
+      .then((res) => {
+        this.listIngredientes = res.data
+      })
+      .catch((error) => {
+        if (error.response.status === 500) {
+          this.$toast.error('Servidor fora do ar')
+        }
+      })
+  },
+
+  methods: {
+    async deleteIngrediente(id) {
+      await httpListIngredientes
+        .DeleteIngredientes(id)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+
+    modalEditIngrediente(dataIngrediente) {
+      this.openModal = true
+      this.findIngrediente = dataIngrediente
+    },
+
+    closeModal() {
+      this.openModal = false
+    },
+  },
+})
 </script>
 
 <style scoped lang="scss">

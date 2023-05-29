@@ -38,10 +38,17 @@ export default Vue.extend({
     }
   },
 
-  async mounted() {
-    await httpUsers.ListUsers().then((res) => {
-      this.listClient = res.data
-    })
+  async fetch() {
+    await httpUsers
+      .ListUsers()
+      .then((res) => {
+        this.listClient = res.data
+      })
+      .catch((error) => {
+        if (error.response.status === 500) {
+          this.$toast.error('Servidor fora do ar')
+        }
+      })
   },
 })
 </script>
