@@ -30,7 +30,7 @@
               name="programation"
               id="programation"
               v-model="status_receita"
-              value="coffee"
+              value="Coffee"
             />
             <div class="input">
               <img src="~/assets/icons/coffee.svg" alt="" />
@@ -43,7 +43,7 @@
               name="programation"
               id="programation"
               v-model="status_receita"
-              value="programation"
+              value="Programado"
             />
             <div class="input">
               <img src="~/assets/icons/programado.svg" alt="" />

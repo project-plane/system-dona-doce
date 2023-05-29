@@ -76,11 +76,14 @@ export default Vue.extend({
       await httpListIngredientes
         .DeleteIngredientes(id)
         .then((res) => {
-          console.log(res)
+          if (res.status === 200) {
+            this.$toast.success('Ingrediente deletada com sucesso!!!')
+          }
         })
         .catch((error) => {
           console.log(error)
         })
+      this.$nuxt.refresh()
     },
 
     modalEditIngrediente(dataIngrediente) {

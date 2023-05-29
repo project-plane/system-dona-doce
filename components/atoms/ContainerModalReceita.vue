@@ -5,8 +5,11 @@
         <div class="header">
           <img src="~/assets/img/coxinha.png" alt="" />
           <div class="textReceita">
-            <h3>Coxinha de Frango</h3>
-            <p>Coffee</p>
+            <h3>{{ dadosReceitas.receita }}</h3>
+            <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
+              {{ dadosReceitas.status }}
+            </p>
+            <p class="programation" v-else>{{ dadosReceitas.status }}</p>
           </div>
           <div @click="$emit('closeModal', closeModal)">
             <img src="~/assets/icons/close.svg" alt="" />
@@ -26,12 +29,13 @@
             <label for="ingrediente">Ingrediente</label>
             <select name="" id="ingrediente" v-model="selected">
               <option disabled value="">Selecione Ingrediente</option>
-              <option>Leite</option>
-              <option>Leite</option>
-              <option>Açucar</option>
-              <option>Trigo</option>
-              <option>Ovo</option>
-              <option>Frango</option>
+              <option
+                v-for="itemIngredient in listIngredients"
+                :key="itemIngredient.id"
+                :value="itemIngredient.value"
+              >
+                {{ itemIngredient.description }}
+              </option>
             </select>
           </div>
           <div class="btnIngrediente">
@@ -69,11 +73,15 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import httpIngredientes from '~/server/ingredientes'
+
 export default Vue.extend({
   data() {
     return {
       selected: '',
       qtdIngrediente: '',
+      listIngredients: [],
+      valueTotal: '',
     }
   },
   props: {
@@ -86,8 +94,28 @@ export default Vue.extend({
       required: true,
     },
   },
+
+  async fetch() {
+    await httpIngredientes
+      .ListIngredientes()
+      .then((res) => {
+        this.listIngredients = res.data
+        this.valueTotal = res.data[0].value
+        console.log(this.valueTotal)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
   methods: {
-    inserirIngrediente() {},
+    inserirIngrediente() {
+      const addIngrediente = {
+        qtd: this.qtdIngrediente,
+        ingrediente: this.selected,
+        valor: this.qtdIngrediente * this.valueTotal,
+      }
+      console.log(addIngrediente)
+    },
   },
 })
 </script>
@@ -120,8 +148,11 @@ export default Vue.extend({
         width: 100%;
         display: grid;
         grid-template: 1fr/10rem repeat(1, minmax(min(2.3vw, 1rem), 1fr));
-        p {
+        .coffee {
           color: var(--red);
+        }
+        .programation {
+          color: var(--blue);
         }
       }
       .body {
@@ -166,7 +197,7 @@ export default Vue.extend({
           }
         }
         /* tbody{
-         border-bottom: ; 
+         border-bottom: ;
         } */
         tbody tr td {
           text-align: center;

@@ -65,19 +65,22 @@ export default Vue.extend({
 
       const dataIngrediente = {
         description: this.findIngrediente.description,
-        value: this.findIngrediente.value,
+        value: Number(this.findIngrediente.value),
       }
 
       console.log(dataIngrediente)
 
-      // await httpIngrediente
-      //   .UpdateIngredientes(idIngrediente, dataIngrediente)
-      //   .then((res) => {
-      //     console.log(res)
-      //   })
-      //   .catch((error) => {
-      //     console.log(error)
-      //   })
+      await httpIngrediente
+        .UpdateIngredientes(idIngrediente, dataIngrediente)
+        .then((res) => {
+          if (res.status === 200) {
+            this.$emit('closeModal', this.closeModal)
+            this.$toast.success('Ingrediente atualizado com sucesso!!!')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
   },
 })

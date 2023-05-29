@@ -47,11 +47,16 @@ export default Vue.extend({
       await httpIngrediente
         .CreateIngredientes(ingrediente)
         .then((res) => {
-          console.log(res)
+          if (res.status === 201) {
+            this.$toast.success('Ingrediente criado com sucesso!!!')
+          }
+          this.nameIngrediente = ''
+          this.priceIngrediente = ''
         })
         .catch((error) => {
           console.log(error)
         })
+      this.$nuxt.refresh()
     },
   },
 })
