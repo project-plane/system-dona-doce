@@ -11,7 +11,7 @@
       <thead>
         <tr>
           <th>Nome</th>
-          <th>Cargo</th>
+          <th>Usuário</th>
           <th>E-mail</th>
           <th>Opções</th>
         </tr>

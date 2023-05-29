@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-    <Button @click.native="createUser" title="Salvar" />
+    <Button @click.native="addUser" title="Salvar" />
   </Container>
 </template>
 
@@ -100,7 +100,7 @@ export default Vue.extend({
 
         fone: '',
 
-        is_enabled: false,
+        is_enabled: true,
         is_admin: false,
         is_product: false,
         is_stock: false,
@@ -111,7 +111,7 @@ export default Vue.extend({
   },
 
   methods: {
-    async createUser() {
+    async addUser() {
       if (this.selected === 'Administrador') {
         this.dataUser.is_admin = true
       }
@@ -127,7 +127,7 @@ export default Vue.extend({
         email: this.dataUser.email,
         password: this.dataUser.password,
         cpf: this.dataUser.cpf,
-        fone: Number(this.dataUser.fone),
+        fone: this.dataUser.fone,
         is_admin: this.dataUser.is_admin,
         is_product: this.dataUser.is_product,
         is_stock: this.dataUser.is_stock,
@@ -170,10 +170,23 @@ export default Vue.extend({
               }
             })
           }
-          if (error.response.data.statusCode === 409) {
+          if (error.response.data.message === 'CPF já existente') {
+            this.$toast.error('CPF já existente')
+          }
+          if (error.response.data.message === 'Email já existente') {
             this.$toast.error('E-mail já existente')
           }
+          if (error.response.data.message === 'Username já existente') {
+            this.$toast.error('Usuário já existente')
+          }
         })
+      this.$nuxt.refresh()
+      ;(this.dataUser.name = ''), (this.dataUser.username = '')
+      this.dataUser.email = ''
+      this.dataUser.password = ''
+      this.dataUser.cpf = ''
+      this.dataUser.fone = ''
+      this.selected = ''
     },
   },
 })

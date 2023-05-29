@@ -36,15 +36,17 @@
           <Label>Senha</Label>
           <input type="text" v-model="findUser.password" />
         </div>
+        <!-- {{ findUser }} -->
         <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
             <option disabled value="">Selecionar cargo</option>
-            <option>Administrador</option>
-            <option>Motorista</option>
-            <option>Operador(a)</option>
+            <option :value="this.findUser.is_admin">Administrador</option>
+            <option :value="this.findUser.is_stock">Motorista</option>
+            <option :value="this.findUser.is_product">Operador(a)</option>
           </select>
         </div>
+        {{ isEnabled }}
         <Label v-if="isEnabled">Ativado</Label>
         <Label v-else> Desativado</Label>
         <div class="inputCargo">
@@ -71,8 +73,8 @@ import httpUsers from '@/server/users'
 export default Vue.extend({
   data() {
     return {
-      selected: '',
-      isEnabled: this.findUser.is_revenues,
+      selected: true,
+      isEnabled: this.findUser.is_enabled,
     }
   },
   props: {
@@ -92,13 +94,16 @@ export default Vue.extend({
         username: this.findUser.username,
         email: this.findUser.email,
         cpf: this.findUser.cpf,
-        fone: Number(this.findUser.fone),
-        is_enabled: this.findUser.is_enabled,
+        fone: this.findUser.fone,
+        is_enabled: false,
         is_admin: false,
         is_product: this.findUser.is_product,
         is_stock: this.findUser.is_stock,
         is_revenues: this.findUser.is_revenues,
       }
+
+      console.log(UpdateUser)
+
       const idUser = this.findUser.id
 
       await httpUsers
