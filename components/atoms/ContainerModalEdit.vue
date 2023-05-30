@@ -35,7 +35,7 @@ export default Vue.extend({
   padding: 2rem 0;
   .negativeSpace {
     width: 70%;
-    height: 80%;
+    min-height: 50%;
     display: flex;
     flex-direction: column;
     gap: 2rem;

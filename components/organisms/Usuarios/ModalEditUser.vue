@@ -8,21 +8,42 @@
         alt="close"
       />
     </Title>
-    <div class="input_create">
+    <div class="input_edit">
       <div class="input_column">
         <div class="input">
-          <Label>Nome</Label>
-          <input type="text" v-model="dataUser.name" />
+          <Label>Nome Completo</Label>
+          <input type="text" v-model="findUser.name" />
         </div>
         <div class="input">
-          <Label>Sobre Nome</Label>
-          <input type="text" v-model="dataUser.username" />
+          <Label>E-mail</Label>
+          <input type="text" v-model="findUser.email" />
+        </div>
+        <div class="input">
+          <Label>CPF</Label>
+          <input type="text" v-model="findUser.cpf" />
+        </div>
+        <div class="input">
+          <Label>Telefone</Label>
+          <input type="text" v-model="findUser.fone" />
         </div>
       </div>
       <div class="input_column">
         <div class="input">
-          <Label>E-mail</Label>
-          <input type="text" v-model="dataUser.email" />
+          <Label>Usuário</Label>
+          <input type="text" v-model="findUser.username" />
+        </div>
+        <div class="input">
+          <Label>Senha</Label>
+          <input type="password" v-model="findUser.password" />
+        </div>
+        <div class="input">
+          <Label>Cargo</Label>
+          <select v-model="selected">
+            <option disabled value="">Selecionar cargo</option>
+            <option>Administrador</option>
+            <option>Motorista</option>
+            <option>Operador(a)</option>
+          </select>
         </div>
         <Label v-if="isEnabled">Ativado</Label>
         <Label v-else> Desativado</Label>
@@ -33,7 +54,10 @@
     </div>
 
     <div class="btnEdit">
-      <Button title="Cancelar" />
+      <Button
+        @click.native="$emit('closeModal', closeModal)"
+        title="Cancelar"
+      />
 
       <Button @click.native="updateFindUser" title="Salvar" />
     </div>
@@ -43,34 +67,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import httpUsers from '@/server/users'
-interface DataUser {
-  name: String
-  username: String
-  email: String
-  cpf: String
-  fone: Number
-  is_enabled: Boolean
-  is_admin: Boolean
-  is_product: Boolean
-  is_stock: Boolean
-  is_revenues: Boolean
-}
+
 export default Vue.extend({
   data() {
     return {
-      dataUser: <DataUser>{
-        name: this.findUser.name,
-        username: this.findUser.username,
-        email: this.findUser.email,
-        cpf: this.findUser.cpf,
-        fone: 0,
-        is_enabled: this.findUser.is_enabled,
-        is_admin: false,
-        is_product: this.findUser.is_product,
-        is_stock: this.findUser.is_stock,
-        is_revenues: this.findUser.is_revenues,
-      },
-      isEnabled: this.findUser.is_revenues,
+      selected: '',
+      isEnabled: this.findUser.is_enabled,
     }
   },
   props: {
@@ -85,12 +87,32 @@ export default Vue.extend({
   },
   methods: {
     async updateFindUser() {
-      console.log(this.dataUser)
+      if (this.selected === 'Administrador') {
+        this.findUser.is_admin = !this.findUser.is_admin
+      }
+      if (this.selected === 'Motorista') {
+        this.findUser.is_stock = true
+      }
+      if (this.selected === 'Operador(a)') {
+        this.findUser.is_product = true
+      }
+      const UpdateUser = {
+        name: this.findUser.name,
+        username: this.findUser.username,
+        email: this.findUser.email,
+        cpf: this.findUser.cpf,
+        fone: this.findUser.fone,
+        is_enabled: this.isEnabled,
+        is_admin: this.findUser.is_admin,
+        is_product: this.findUser.is_product,
+        is_stock: this.findUser.is_stock,
+        is_revenues: this.findUser.is_revenues,
+      }
 
       const idUser = this.findUser.id
 
       await httpUsers
-        .UpdateUser(idUser, this.dataUser)
+        .UpdateUser(idUser, UpdateUser)
         .then((res) => {
           if (res.status === 200) {
             this.$toast.success('Funcionário editado com sucesso')
@@ -100,10 +122,10 @@ export default Vue.extend({
         .catch((error) => {
           this.$toast.error('Verifique todos os campos')
         })
+      this.$nuxt.refresh()
     },
     enabled() {
       this.isEnabled = !this.isEnabled
-      console.log(this.isEnabled)
     },
   },
 })
@@ -118,7 +140,7 @@ export default Vue.extend({
     cursor: pointer;
   }
 }
-.input_create {
+.input_edit {
   width: 100%;
   display: flex;
   gap: 1.5rem;
@@ -127,22 +149,6 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    .input_add {
-      display: flex;
-      align-items: flex-end;
-      button {
-        background: var(--txt_color);
-        color: var(--white);
-        width: 40%;
-        height: 35px;
-        font-weight: bold;
-        font-size: 1.2rem;
-      }
-    }
-    .list_empresa {
-      height: 120px;
-      overflow-y: scroll;
-    }
     .inputCargo {
       display: grid;
       grid-template-columns: 1fr 1fr;

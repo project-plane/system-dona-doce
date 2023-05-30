@@ -9,7 +9,7 @@
         <input
           type="text"
           placeholder="Digite o nome ingrediente"
-          v-model="name_ingrediente"
+          v-model="nameIngrediente"
         />
       </div>
       <div class="input">
@@ -17,23 +17,47 @@
         <input
           type="number"
           placeholder="Digite o preco ingrediente"
-          v-model="price_ingrediente"
+          v-model="priceIngrediente"
         />
       </div>
     </div>
-    <Button title="Salvar" />
+    <Button @click.native="createIngrediente" title="Salvar" />
   </Container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
+import httpIngrediente from '~/server/ingredientes'
+
 export default Vue.extend({
   data() {
     return {
-      name_ingrediente: '',
-      price_ingrediente: '',
+      nameIngrediente: '',
+      priceIngrediente: '',
     }
+  },
+  methods: {
+    async createIngrediente() {
+      const ingrediente = {
+        description: this.nameIngrediente,
+        value: Number(this.priceIngrediente),
+      }
+
+      await httpIngrediente
+        .CreateIngredientes(ingrediente)
+        .then((res) => {
+          if (res.status === 201) {
+            this.$toast.success('Ingrediente criado com sucesso!!!')
+          }
+          this.nameIngrediente = ''
+          this.priceIngrediente = ''
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      this.$nuxt.refresh()
+    },
   },
 })
 </script>

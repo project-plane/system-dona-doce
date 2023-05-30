@@ -10,14 +10,16 @@
     <table>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Nome</th>
-          <th>Cargo</th>
+          <th>Usuário</th>
           <th>E-mail</th>
           <th>Opções</th>
         </tr>
       </thead>
-      <tbody v-for="user in listUsers" :key="user.id">
+      <tbody v-for="(user, index) in listUsers" :key="user.id">
         <tr>
+          <td>{{ index + 1 }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
@@ -45,10 +47,17 @@ export default Vue.extend({
     }
   },
 
-  async mounted() {
-    await httpUsers.ListUsers().then((res) => {
-      this.listUsers = res.data
-    })
+  async fetch() {
+    await httpUsers
+      .ListUsers()
+      .then((res) => {
+        this.listUsers = res.data
+      })
+      .catch((error) => {
+        if (error.response.status === 500) {
+          this.$toast.error('Servidor fora do ar')
+        }
+      })
   },
 
   methods: {
