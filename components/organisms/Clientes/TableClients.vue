@@ -11,15 +11,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="client in listClient" :key="client.id">
-          <td>{{ client.name }}</td>
-          <td>{{ client.email }}</td>
-          <td>{{ client.username }}</td>
-          <td>
-            <button>
-              <img src="~/assets/icons/edit.svg" alt="editUser" />
-            </button>
-          </td>
+        <tr>
+          Em Desenvolvimento
         </tr>
       </tbody>
     </table>
