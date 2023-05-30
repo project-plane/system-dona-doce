@@ -101,7 +101,6 @@ export default Vue.extend({
       .then((res) => {
         this.listIngredients = res.data
         this.valueTotal = res.data[0].value
-        console.log(this.valueTotal)
       })
       .catch((error) => {
         console.log(error)
@@ -114,7 +113,6 @@ export default Vue.extend({
         ingrediente: this.selected,
         valor: this.qtdIngrediente * this.valueTotal,
       }
-      console.log(addIngrediente)
     },
   },
 })

@@ -34,19 +34,17 @@
         </div>
         <div class="input">
           <Label>Senha</Label>
-          <input type="text" v-model="findUser.password" />
+          <input type="password" v-model="findUser.password" />
         </div>
-        <!-- {{ findUser }} -->
         <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
             <option disabled value="">Selecionar cargo</option>
-            <option :value="this.findUser.is_admin">Administrador</option>
-            <option :value="this.findUser.is_stock">Motorista</option>
-            <option :value="this.findUser.is_product">Operador(a)</option>
+            <option>Administrador</option>
+            <option>Motorista</option>
+            <option>Operador(a)</option>
           </select>
         </div>
-        {{ isEnabled }}
         <Label v-if="isEnabled">Ativado</Label>
         <Label v-else> Desativado</Label>
         <div class="inputCargo">
@@ -73,7 +71,7 @@ import httpUsers from '@/server/users'
 export default Vue.extend({
   data() {
     return {
-      selected: true,
+      selected: '',
       isEnabled: this.findUser.is_enabled,
     }
   },
@@ -89,20 +87,27 @@ export default Vue.extend({
   },
   methods: {
     async updateFindUser() {
+      if (this.selected === 'Administrador') {
+        this.findUser.is_admin = !this.findUser.is_admin
+      }
+      if (this.selected === 'Motorista') {
+        this.findUser.is_stock = true
+      }
+      if (this.selected === 'Operador(a)') {
+        this.findUser.is_product = true
+      }
       const UpdateUser = {
         name: this.findUser.name,
         username: this.findUser.username,
         email: this.findUser.email,
         cpf: this.findUser.cpf,
         fone: this.findUser.fone,
-        is_enabled: false,
-        is_admin: false,
+        is_enabled: this.isEnabled,
+        is_admin: this.findUser.is_admin,
         is_product: this.findUser.is_product,
         is_stock: this.findUser.is_stock,
         is_revenues: this.findUser.is_revenues,
       }
-
-      console.log(UpdateUser)
 
       const idUser = this.findUser.id
 
@@ -117,10 +122,10 @@ export default Vue.extend({
         .catch((error) => {
           this.$toast.error('Verifique todos os campos')
         })
+      this.$nuxt.refresh()
     },
     enabled() {
       this.isEnabled = !this.isEnabled
-      console.log(this.isEnabled)
     },
   },
 })

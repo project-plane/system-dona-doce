@@ -81,7 +81,12 @@ export default Vue.extend({
           }
         })
         .catch((error) => {
-          console.log(error)
+          if (error.response.status === 500) {
+            this.$toast.error(
+              'Ingrediente não pode ser deletado, já vinculado a uma receita'
+            )
+            return
+          }
         })
       this.$nuxt.refresh()
     },

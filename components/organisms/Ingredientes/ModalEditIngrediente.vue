@@ -68,8 +68,6 @@ export default Vue.extend({
         value: Number(this.findIngrediente.value),
       }
 
-      console.log(dataIngrediente)
-
       await httpIngrediente
         .UpdateIngredientes(idIngrediente, dataIngrediente)
         .then((res) => {
