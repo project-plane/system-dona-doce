@@ -33,10 +33,6 @@
           <input type="text" v-model="findUser.username" />
         </div>
         <div class="input">
-          <Label>Senha</Label>
-          <input type="password" v-model="findUser.password" />
-        </div>
-        <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
             <option disabled value="">Selecionar cargo</option>
