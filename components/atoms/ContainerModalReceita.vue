@@ -3,13 +3,15 @@
     <div class="bodyModal">
       <div class="container">
         <div class="header">
-          <img src="~/assets/img/coxinha.png" alt="" />
-          <div class="textReceita">
-            <h3>{{ dadosReceitas.receita }}</h3>
-            <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
-              {{ dadosReceitas.status }}
-            </p>
-            <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+          <div class="headerReceita">
+            <img src="~/assets/img/coxinha.png" alt="" />
+            <div class="textReceita">
+              <h3>{{ dadosReceitas.receita }}</h3>
+              <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
+                {{ dadosReceitas.status }}
+              </p>
+              <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+            </div>
           </div>
           <div @click="$emit('closeModal', closeModal)">
             <img src="~/assets/icons/close.svg" alt="" />
@@ -32,7 +34,6 @@
               <option
                 v-for="itemIngredient in listIngredients"
                 :key="itemIngredient.id"
-                :value="itemIngredient.value"
               >
                 {{ itemIngredient.description }}
               </option>
@@ -42,28 +43,28 @@
             <button @click="inserirIngrediente">Inserir</button>
           </div>
         </div>
-        <div class="tab">
-          <table>
-            <thead>
-              <tr>
-                <th>QTD</th>
-                <th>Ingrediente</th>
-                <th>Preço</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>35</td>
-                <td>Trigo</td>
-                <td>R$ 36,00</td>
-              </tr>
-              <tr>
-                <td>35</td>
-                <td>Trigo</td>
-                <td>R$ 36,00</td>
-              </tr>
-            </tbody>
-          </table>
+        <div v-if="amountReceitas.length === 0">
+          <h1 style="text-align: center">Tabela vazia</h1>
+        </div>
+        <div class="footer" v-else>
+          <div class="footerHeader">
+            <h4>QTD</h4>
+            <h4>Ingrediente</h4>
+            <h4>Preço</h4>
+          </div>
+          <div
+            class="footerBody"
+            v-for="amountReceita in amountReceitas"
+            :key="amountReceita.id"
+          >
+            <span>{{ amountReceita.qtd }}</span>
+            <span>{{ amountReceita.ingrediente }}</span>
+            <span>R$ {{ amountReceita.valor }}</span>
+          </div>
+          <div class="footerFooter">
+            <span class="total">Total</span>
+            <span>R$ {{ valorTotal }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -79,9 +80,12 @@ export default Vue.extend({
   data() {
     return {
       selected: '',
-      qtdIngrediente: '',
+      qtdIngrediente: null,
+      valorTotal: '',
+      valueReceita: 0,
       listIngredients: [],
-      valueTotal: '',
+      amountReceitas: [],
+      amountValue: [],
     }
   },
   props: {
@@ -100,7 +104,7 @@ export default Vue.extend({
       .ListIngredientes()
       .then((res) => {
         this.listIngredients = res.data
-        this.valueTotal = res.data[0].value
+        // this.valueTotal = res.data[0].value
       })
       .catch((error) => {
         console.log(error)
@@ -108,11 +112,35 @@ export default Vue.extend({
   },
   methods: {
     inserirIngrediente() {
+      if (!this.qtdIngrediente || !this.selected) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
+      }
+
+      this.listIngredients.map((item) => {
+        if (item.description === this.selected) {
+          this.valueReceita = item.value
+          // array que armazena os valores
+          this.amountValue.push(item.value * this.qtdIngrediente)
+        }
+      })
+
+      // soma os valores dentro do array
+      const valorTotal = this.amountValue.reduce((soma, i) => {
+        return soma + i
+      })
+
+      this.valorTotal = valorTotal.toFixed(2)
+
       const addIngrediente = {
         qtd: this.qtdIngrediente,
         ingrediente: this.selected,
-        valor: this.qtdIngrediente * this.valueTotal,
+        valor: (this.qtdIngrediente * this.valueReceita).toFixed(2),
       }
+
+      this.qtdIngrediente = ''
+      this.selected = ''
+      this.amountReceitas.push(addIngrediente)
     },
   },
 })
@@ -138,19 +166,28 @@ export default Vue.extend({
     min-height: 50%;
     .container {
       width: 100%;
+      height: 90vh;
       padding: 2.5rem 2rem;
       display: flex;
       flex-direction: column;
       gap: 2rem;
+      overflow-y: auto;
       .header {
         width: 100%;
-        display: grid;
-        grid-template: 1fr/10rem repeat(1, minmax(min(2.3vw, 1rem), 1fr));
+        display: flex;
+        justify-content: space-between;
+        .headerReceita {
+          display: flex;
+          gap: 1rem;
+        }
         .coffee {
           color: var(--red);
         }
         .programation {
           color: var(--blue);
+        }
+        img {
+          cursor: pointer;
         }
       }
       .body {
@@ -182,27 +219,32 @@ export default Vue.extend({
           }
         }
       }
-      table {
+      .footer {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-        thead,
-        tbody {
-          width: 100%;
-          border-bottom: 1px solid var(--bg_opacity);
-          tr th {
-            padding: 0.6rem 0;
+        .footerHeader {
+          display: grid;
+          grid-template-columns: 1fr 4fr 1fr;
+          padding: 0.7rem 1rem;
+          border-bottom: 2px solid var(--bg_opacity);
+        }
+        .footerBody {
+          display: grid;
+          grid-template-columns: 1fr 4fr 1fr;
+          padding: 0.7rem 1rem;
+        }
+        .footerBody:nth-child(2n + 1) {
+          background: #e9e9e9;
+        }
+        .footerFooter {
+          display: grid;
+          grid-template-columns: 6fr 2fr;
+          padding: 0.7rem 1rem;
+          margin-top: 20px;
+          border-top: 2px solid var(--bg_opacity);
+          span {
+            font-size: 1.2rem;
+            font-weight: 800;
           }
-        }
-        /* tbody{
-         border-bottom: ;
-        } */
-        tbody tr td {
-          text-align: center;
-          padding: 1rem 0;
-        }
-        tbody tr:nth-child(2n) {
-          background: var(--border);
         }
       }
     }
