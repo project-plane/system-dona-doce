@@ -13,6 +13,9 @@
         <!-- <ContentCreateUser />
         <TableUsers /> -->
         <h2>Empresa em desenvolvimento</h2>
+        <BeadFrame>
+          oi
+        </BeadFrame>
       </div>
       <div v-if="statusUsers">
         <ContentCreateUser />
@@ -108,7 +111,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .containerGrid {
   display: grid;
-  grid-template: calc(4rem - 100vh) / 300px 1fr;
+  grid-template: calc(4rem - 100vh) / 25rem 1fr;
   .scroll_container {
     height: 90vh;
     overflow-y: scroll;

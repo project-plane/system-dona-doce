@@ -2,9 +2,9 @@
   <ContainerTable>
     <EditEstoque
       v-if="modalEdit"
-      :closeModal="modalEdit"
+      :close-modal="modalEdit"
+      title-modal="Editar Estoque"
       @closeModal="closeModal"
-      titleModal="Editar Estoque"
     />
     <h2>Lista do Estoque</h2>
     <table>
@@ -12,7 +12,7 @@
         <tr>
           <th>Quantidade</th>
           <th>Ingrediente</th>
-          <th>Preco</th>
+          <th>Preço</th>
           <th>Opções</th>
         </tr>
       </thead>

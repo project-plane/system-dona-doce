@@ -7,21 +7,21 @@
       <div class="input">
         <Label>Nome</Label>
         <input
+          v-model="nameIngrediente"
           type="text"
           placeholder="Digite o nome ingrediente"
-          v-model="nameIngrediente"
         />
       </div>
       <div class="input">
-        <Label>Preco</Label>
+        <Label>Preço</Label>
         <input
-          type="number"
-          placeholder="Digite o preco ingrediente"
           v-model="priceIngrediente"
+          type="number"
+          placeholder="Digite o preço ingrediente"
         />
       </div>
     </div>
-    <Button @click.native="createIngrediente" title="Salvar" />
+    <Button title="Salvar" @click.native="createIngrediente" />
   </Container>
 </template>
 

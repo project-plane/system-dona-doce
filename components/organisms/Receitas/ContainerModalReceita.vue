@@ -1,15 +1,19 @@
 <template>
   <div class="containerReceita">
+    <BeadFrame>
+
+    
     <div class="bodyModal">
+
       <div class="container">
         <div class="header">
           <img src="~/assets/img/coxinha.png" alt="" />
           <div class="textReceita">
             <h3>{{ dadosReceitas.receita }}</h3>
-            <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
+            <p v-if="dadosReceitas.status === 'Coffee'" class="coffee">
               {{ dadosReceitas.status }}
             </p>
-            <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+            <p v-else class="programation">{{ dadosReceitas.status }}</p>
           </div>
           <div @click="$emit('closeModal', closeModal)">
             <img src="~/assets/icons/close.svg" alt="" />
@@ -19,15 +23,15 @@
           <div class="input">
             <label for="qtd">Quantidade</label>
             <input
-              type="number"
               id="qtd"
-              placeholder="quantidade"
               v-model="qtdIngrediente"
+              type="number"
+              placeholder="quantidade"
             />
           </div>
           <div class="input">
             <label for="ingrediente">Ingrediente</label>
-            <select name="" id="ingrediente" v-model="selected">
+            <select id="ingrediente" v-model="selected" name="">
               <option disabled value="">Selecione Ingrediente</option>
               <option
                 v-for="itemIngredient in listIngredients"
@@ -67,6 +71,7 @@
         </div>
       </div>
     </div>
+  </BeadFrame>
   </div>
 </template>
 
@@ -76,14 +81,6 @@ import Vue from 'vue'
 import httpIngredientes from '~/server/ingredientes'
 
 export default Vue.extend({
-  data() {
-    return {
-      selected: '',
-      qtdIngrediente: '',
-      listIngredients: [],
-      valueTotal: '',
-    }
-  },
   props: {
     dadosReceitas: {
       type: [Array, Object],
@@ -93,6 +90,14 @@ export default Vue.extend({
       type: Boolean,
       required: true,
     },
+  },
+  data() {
+    return {
+      selected: '',
+      qtdIngrediente: '',
+      listIngredients: [],
+      valueTotal: '',
+    }
   },
 
   async fetch() {
@@ -134,7 +139,6 @@ export default Vue.extend({
   padding: 2rem 0;
   .bodyModal {
     background: var(--white);
-    width: 40%;
     min-height: 50%;
     .container {
       width: 100%;

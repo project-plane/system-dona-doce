@@ -40,7 +40,7 @@
               v-model="dataCLient.empresa"
             />
           </div>
-          <button @click="addClient">Adicionar</button>
+          <button class="buttonAdd" @click="addClient">Adicionar</button>
         </div>
         <div class="list_empresa">
           <div
