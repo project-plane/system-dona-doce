@@ -22,14 +22,6 @@
           />
         </div>
         <div class="input">
-          <Label>CPF</Label>
-          <input
-            type="text"
-            placeholder="Digite o CPF"
-            v-model="dataUser.cpf"
-          />
-        </div>
-        <div class="input">
           <Label>Telefone</Label>
           <input
             type="number"
@@ -39,14 +31,6 @@
         </div>
       </div>
       <div class="input_column">
-        <div class="input">
-          <Label>Usuário</Label>
-          <input
-            type="text"
-            placeholder="Digite o usuário"
-            v-model="dataUser.username"
-          />
-        </div>
         <div class="input">
           <Label>Senha</Label>
           <input
