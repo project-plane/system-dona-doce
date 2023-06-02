@@ -1,6 +1,8 @@
 <template>
   <div class="containerGrid">
+
     <MenuCreate
+      v-show="midiaAba"
       @empresa="empresa"
       @client="client"
       @users="users"
@@ -8,7 +10,8 @@
       @estoque="estoque"
       @receitas="receitas"
     />
-    <div class="scroll_container">
+
+    <div v-show="midiaFluxo" class="scroll_container">
       <div v-if="statusEmpresa">
         <!-- <ContentCreateUser />
         <TableUsers /> -->
@@ -53,9 +56,28 @@ export default Vue.extend({
       statusIngredientes: false,
       statusEstoque: false,
       statusReceitas: false,
+      
+      window:{
+        width: 0
+      },
+      midiaAba: true,
+      midiaFluxo: true,
     }
   },
+  mounted(){
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
   methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      if (this.window.width <= 600) {
+        this.midiaFluxo = false;
+      } else {
+        this.midiaAba = true;
+        this.midiaFluxo = true;
+      }
+    },
     empresa() {
       this.statusEmpresa = true
       this.statusClientes = false
