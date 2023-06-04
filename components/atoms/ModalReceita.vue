@@ -13,7 +13,7 @@
               <p class="programation" v-else>{{ dadosReceitas.status }}</p>
             </div>
           </div>
-          <div @click="$emit('closeModal', closeModal)">
+          <div @click="closeModal">
             <img src="~/assets/icons/close.svg" alt="" />
           </div>
         </div>
@@ -96,10 +96,6 @@ export default Vue.extend({
       type: [Array, Object],
       required: true,
     },
-    closeModal: {
-      type: Boolean,
-      required: true,
-    },
   },
 
   async fetch() {
@@ -113,6 +109,9 @@ export default Vue.extend({
       })
   },
   methods: {
+    closeModal(){
+      this.$store.commit('OPEN_MODAL_RECEITA', false)
+    },
     inserirIngrediente() {
       if (!this.qtdIngrediente || !this.selected) {
         this.$toast.error('Preencha todos os campos!!!')
@@ -163,7 +162,7 @@ export default Vue.extend({
         .then((res) => {
           if (res.status === 201) {
             this.$toast.success('Receita criada com sucesso!!!')
-            this.$emit('closeModal', this.closeModal)
+            this.$store.commit('OPEN_MODAL_RECEITA', false)
           }
         })
         .catch((error) => {

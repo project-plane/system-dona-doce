@@ -5,41 +5,33 @@
     </Title>
     <div class="input_create">
       <div class="input_column">
-        <div class="input">
-          <Label>Nome</Label>
-          <input
-            type="text"
-            placeholder="Digite nome"
-            v-model="dataCLient.name"
-          />
-        </div>
-        <div class="input">
-          <Label>Email</Label>
-          <input
-            type="text"
-            placeholder="Digite email"
-            v-model="dataCLient.email"
-          />
-        </div>
-        <div class="input">
-          <Label>Senha</Label>
-          <input
-            type="password"
-            placeholder="Digite senha"
-            v-model="dataCLient.password"
-          />
-        </div>
+        <Input
+          label="Nome"
+          type="text"
+          placeholder="Digite nome"
+          v-model="dataCLient.name"
+        />
+        <Input
+          label="Email"
+          type="text"
+          placeholder="Digite email"
+          v-model="dataCLient.email"
+        />
+        <Input
+          label="Senha"
+          type="password"
+          placeholder="Digite senha"
+          v-model="dataCLient.password"
+        />
       </div>
       <div class="input_column">
         <div class="input_add">
-          <div class="input">
-            <Label>Empresas</Label>
-            <input
-              type="text"
-              placeholder="Digite empresa"
-              v-model="dataCLient.empresa"
-            />
-          </div>
+          <Input
+            label="Empresas"
+            type="text"
+            placeholder="Digite empresa"
+            v-model="dataCLient.empresa"
+          />
           <button @click="addClient">Adicionar</button>
         </div>
         <div class="list_empresa">
@@ -94,7 +86,17 @@ export default Vue.extend({
       this.dataCLient.addClients.splice(removeClient, 1)
     },
 
-    saveClient() {},
+    saveClient() {
+      const dataClient = {
+        name: this.dataCLient.name,
+        email: this.dataCLient.email,
+        password: this.dataCLient.password,
+        empresas: this.dataCLient.addClients,
+      }
+      this.dataCLient.name = ''
+      this.dataCLient.email = ''
+      this.dataCLient.password = ''
+    },
   },
 })
 </script>

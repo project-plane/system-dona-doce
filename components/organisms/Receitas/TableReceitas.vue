@@ -1,5 +1,6 @@
 <template>
   <ContainerTable>
+    <EditReceita />
     <h2>Lista de Receitas</h2>
     <table>
       <thead>
@@ -22,7 +23,7 @@
               <button>
                 <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
               </button>
-              <button>
+              <button @click="editReceita">
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
               <button @click="deleteReceita(receita.id)">
@@ -59,6 +60,9 @@ export default Vue.extend({
   },
 
   methods: {
+    editReceita() {
+      this.$store.commit('OPEN_MODAL', true)
+    },
     async deleteReceita(id) {
       await httpReceitas
         .DeleteReceita(id)

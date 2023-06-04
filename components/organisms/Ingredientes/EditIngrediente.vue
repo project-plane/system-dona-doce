@@ -1,40 +1,24 @@
 <template>
-  <ContainerModalEdit :closeModal="closeModal">
-    <Title class="headerModal">
-      <h1>Novo Ingrediente</h1>
-      <img
-        @click="$emit('closeModal', closeModal)"
-        src="~/assets/icons/close.svg"
-        alt="close"
-      />
-    </Title>
+  <ModalEdit
+    v-if="this.$store.state.openModal"
+    titleModal="Editar Ingrediente"
+    @save="updateIngrediente"
+  >
     <div class="input_edit">
-      <div class="input">
-        <Label>Nome</Label>
-        <input
-          type="text"
-          placeholder="Digite o nome ingrediente"
-          v-model="findIngrediente.description"
-        />
-      </div>
-      <div class="input">
-        <Label>Preco</Label>
-        <input
-          type="number"
-          placeholder="Digite o preco ingrediente"
-          v-model="findIngrediente.value"
-        />
-      </div>
-    </div>
-    <div class="btnEdit">
-      <Button
-        @click.native="$emit('closeModal', closeModal)"
-        title="Cancelar"
+      <Input
+        label="Nome"
+        type="text"
+        placeholder="Digite o nome ingrediente"
+        v-model="findIngrediente.description"
       />
-
-      <Button @click.native="updateIngrediente" title="Salvar" />
+      <Input
+        label="Preço"
+        type="number"
+        placeholder="Digite o preco ingrediente"
+        v-model="findIngrediente.value"
+      />
     </div>
-  </ContainerModalEdit>
+  </ModalEdit>
 </template>
 
 <script lang="ts">
@@ -50,10 +34,6 @@ export default Vue.extend({
     }
   },
   props: {
-    closeModal: {
-      type: Boolean,
-      required: true,
-    },
     findIngrediente: {
       type: [Array, Object],
       required: true,
@@ -72,8 +52,8 @@ export default Vue.extend({
         .UpdateIngredientes(idIngrediente, dataIngrediente)
         .then((res) => {
           if (res.status === 200) {
-            this.$emit('closeModal', this.closeModal)
             this.$toast.success('Ingrediente atualizado com sucesso!!!')
+            this.$store.commit('OPEN_MODAL', false)
           }
         })
         .catch((error) => {
