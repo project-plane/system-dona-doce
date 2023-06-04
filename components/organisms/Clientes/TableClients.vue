@@ -1,6 +1,9 @@
 <template>
   <ContainerTable>
-    <h2>Clientes Cadastrados</h2>
+    <div class="headerTable">
+      <h2>Clientes Cadastrados</h2>
+      <InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -28,6 +31,7 @@ export default Vue.extend({
   data() {
     return {
       listClient: [],
+      textSearch: ''
     }
   },
 
@@ -47,6 +51,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;
