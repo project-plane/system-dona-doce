@@ -1,7 +1,10 @@
 <template>
   <ContainerTable>
     <EditUser :findUser="findUser" />
-    <h2>Funcionários Cadastrados</h2>
+    <div class="headerTable">
+      <h2>Funcionários Cadastrados</h2>
+      <InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -12,7 +15,7 @@
           <th>Opções</th>
         </tr>
       </thead>
-      <tbody v-for="(user, index) in listUsers" :key="user.id">
+      <tbody v-for="(user, index) in filteredItem" :key="user.id">
         <tr>
           <td>{{ index + 1 }}</td>
           <td>{{ user.name }}</td>
@@ -38,6 +41,7 @@ export default Vue.extend({
     return {
       listUsers: [],
       findUser: [],
+      textSearch: '',
     }
   },
 
@@ -54,6 +58,18 @@ export default Vue.extend({
       })
   },
 
+  computed: {
+    filteredItem() {
+      let itemSearch = []
+      itemSearch = this.listUsers.filter((item) => {
+        return (
+          item.name.toLowerCase().indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
+    },
+  },
+
   methods: {
     editModal(user) {
       this.$store.commit('OPEN_MODAL', true)
@@ -64,6 +80,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;

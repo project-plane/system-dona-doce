@@ -1,7 +1,10 @@
 <template>
   <ContainerTable>
     <EditIngrediente :findIngrediente="findIngrediente" />
-    <h2>Lista de Ingredientes</h2>
+    <div class="headerTable">
+      <h2>Lista de Ingredientes</h2>
+      <InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -13,7 +16,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(ingrediente, index) in listIngredientes"
+          v-for="(ingrediente, index) in filterItems"
           :key="ingrediente.id"
         >
           <td>{{ index + 1 }}</td>
@@ -45,6 +48,7 @@ export default Vue.extend({
     return {
       listIngredientes: [],
       findIngrediente: [],
+      textSearch: '',
     }
   },
 
@@ -59,6 +63,18 @@ export default Vue.extend({
           this.$toast.error('Servidor fora do ar')
         }
       })
+  },
+
+  computed: {
+    filterItems() {
+      let itemSearch = []
+      itemSearch = this.listIngredientes.filter((item) => {
+        return(
+          item.description.toLowerCase().indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
+    }
   },
 
   methods: {
@@ -90,6 +106,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;

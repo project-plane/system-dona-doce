@@ -1,7 +1,10 @@
 <template>
   <ContainerTable>
     <EditReceita />
-    <h2>Lista de Receitas</h2>
+    <div class="headerTable">
+      <h2>Lista de Receitas</h2>
+      <InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -13,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(receita, index) in listReceitas" :key="receita.id">
+        <tr v-for="(receita, index) in filterItems" :key="receita.id">
           <td>{{ index + 1 }}</td>
           <td class="img"><img src="~/assets/img/coxinha.png" alt="" /></td>
           <td>{{ receita.description }}</td>
@@ -46,6 +49,7 @@ export default Vue.extend({
   data() {
     return {
       listReceitas: [],
+      textSearch: '',
     }
   },
   async fetch() {
@@ -57,6 +61,20 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+  },
+
+  computed: {
+    filterItems() {
+      let itemSearch = []
+      itemSearch = this.listReceitas.filter((item) => {
+        return (
+          item.description
+            .toLowerCase()
+            .indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
+    },
   },
 
   methods: {
@@ -78,6 +96,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.headerTable {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;

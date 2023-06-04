@@ -57,6 +57,7 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
+  z-index: 1;
   .negativeSpace {
     width: 70%;
     min-height: 50%;

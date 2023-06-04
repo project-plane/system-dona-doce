@@ -1,7 +1,10 @@
 <template>
   <ContainerTable>
     <EditEstoque />
-    <h2>Lista do Estoque</h2>
+    <div class="headerTable">
+      <h2>Lista do Estoque</h2>
+<InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -38,6 +41,7 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
+      textSearch: ''
     }
   },
   methods: {
@@ -50,6 +54,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;
