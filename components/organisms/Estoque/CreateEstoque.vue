@@ -4,24 +4,20 @@
       <h1>Estoque</h1>
     </Title>
     <div class="input_create">
-      <div class="input">
-        <Label>Ingrediente</Label>
-        <input
-          type="text"
-          placeholder="Digite o nome ingrediente"
-          v-model="name_ingrediente"
-        />
-      </div>
-      <div class="input">
-        <Label>Acrescentar</Label>
-        <input
-          type="number"
-          placeholder="Digite a quantidade acrescentar"
-          v-model="qtd_estoque"
-        />
-      </div>
+      <Input
+        label="Ingrediente"
+        type="text"
+        placeholder="Digite o nome ingrediente"
+        v-model="nameIngrediente"
+      />
+      <Input
+        label="Acrescentar"
+        type="number"
+        placeholder="Digite a quantidade acrescentar"
+        v-model="qtdEstoque"
+      />
     </div>
-    <Button title="Salvar" />
+    <Button title="Salvar" @click.native="saveEstoque" />
   </Container>
 </template>
 
@@ -31,9 +27,20 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      name_ingrediente: '',
-      qtd_estoque: '',
+      nameIngrediente: '',
+      qtdEstoque: '',
     }
+  },
+  methods: {
+    saveEstoque() {
+      const dataEstoque = {
+        name: this.nameIngrediente,
+        qtd: this.qtdEstoque,
+      }
+
+      this.nameIngrediente = ''
+      this.qtdEstoque = ''
+    },
   },
 })
 </script>

@@ -5,40 +5,32 @@
     </Title>
     <div class="input_create">
       <div class="input_column">
-        <div class="input">
-          <Label>Nome Completo</Label>
-          <input
-            type="text"
-            placeholder="Digite o nome"
-            v-model="dataUser.name"
-          />
-        </div>
-        <div class="input">
-          <Label>E-mail</Label>
-          <input
-            type="text"
-            placeholder="Digite o e-mail"
-            v-model="dataUser.email"
-          />
-        </div>
-        <div class="input">
-          <Label>Telefone</Label>
-          <input
-            type="number"
-            placeholder="Digite o telefone"
-            v-model="dataUser.fone"
-          />
-        </div>
+        <Input
+          label="Nome Completo"
+          type="text"
+          placeholder="Digite o nome"
+          v-model="dataUser.name"
+        />
+        <Input
+          label="E-mail"
+          type="text"
+          placeholder="Digite o e-mail"
+          v-model="dataUser.email"
+        />
+        <Input
+          label="Telefone"
+          type="number"
+          placeholder="Digite o telefone"
+          v-model="dataUser.fone"
+        />
       </div>
       <div class="input_column">
-        <div class="input">
-          <Label>Senha</Label>
-          <input
-            type="password"
-            placeholder="Digite a senha"
-            v-model="dataUser.password"
-          />
-        </div>
+        <Input
+          label="Senha"
+          type="password"
+          placeholder="Digite a senha"
+          v-model="dataUser.password"
+        />
         <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
@@ -55,8 +47,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import httpUsers from '@/server/users'
+import Vue from 'vue'
 interface DataUser {
   name: string
   username: string

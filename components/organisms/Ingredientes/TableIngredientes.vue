@@ -1,11 +1,6 @@
 <template>
   <ContainerTable>
-    <ModalEditIngrediente
-      v-if="openModal"
-      :closeModal="openModal"
-      @closeModal="closeModal"
-      :findIngrediente="findIngrediente"
-    />
+    <EditIngrediente :findIngrediente="findIngrediente" />
     <h2>Lista de Ingredientes</h2>
     <table>
       <thead>
@@ -26,12 +21,8 @@
           <td>R$ {{ ingrediente.value }}</td>
           <td>
             <div class="iconsOptions">
-              <button>
-                <img
-                  src="~/assets/icons/edit.svg"
-                  alt=""
-                  @click="modalEditIngrediente(ingrediente)"
-                />
+              <button @click="editIngrediente(ingrediente)">
+                <img src="~/assets/icons/edit.svg" alt="" />
               </button>
               <button @click="deleteIngrediente(ingrediente.id)">
                 <img src="~/assets/icons/delete.svg" alt="" />
@@ -54,7 +45,6 @@ export default Vue.extend({
     return {
       listIngredientes: [],
       findIngrediente: [],
-      openModal: false,
     }
   },
 
@@ -91,13 +81,9 @@ export default Vue.extend({
       this.$nuxt.refresh()
     },
 
-    modalEditIngrediente(dataIngrediente) {
-      this.openModal = true
+    editIngrediente(dataIngrediente) {
+      this.$store.commit('OPEN_MODAL', true)
       this.findIngrediente = dataIngrediente
-    },
-
-    closeModal() {
-      this.openModal = false
     },
   },
 })

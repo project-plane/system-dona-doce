@@ -1,18 +1,18 @@
 <template>
-  <ModalEdit v-if="$store.state.openModal" titleModal="Editar Estoque" @save="updateEstoque">
+  <ModalEdit
+    v-if="this.$store.state.openModal"
+    titleModal="Editar Receita"
+    @save="updateReceita"
+  >
     <div class="input_create">
-      <Input
-        label="Ingrediente"
-        type="text"
-        placeholder="Digite o nome ingrediente"
-        v-model="nameIngrediente"
-      />
-      <Input
-        label="Acrescentar"
-        type="number"
-        placeholder="Digite a quantidade acrescentar"
-        v-model="qtdEstoque"
-      />
+      <div class="input">
+        <Label>Ingrediente</Label>
+        <input type="text" placeholder="Digite o nome ingrediente" />
+      </div>
+      <div class="input">
+        <Label>Acrescentar</Label>
+        <input type="number" placeholder="Digite a quantidade acrescentar" />
+      </div>
     </div>
   </ModalEdit>
 </template>
@@ -22,15 +22,12 @@ import Vue from 'vue';
 
 export default Vue.extend({
   data() {
-    return {
-      nameIngrediente: 'Trigo',
-      qtdEstoque: 20,
-    }
+    return {}
   },
   methods: {
-    updateEstoque() {
+    updateReceita() {
       this.$store.commit('OPEN_MODAL', false)
-    }
+    },
   },
 })
 </script>
@@ -61,10 +58,5 @@ export default Vue.extend({
     flex-direction: column;
     gap: 0.3rem;
   }
-}
-.btnEdit {
-  width: 100%;
-  display: flex;
-  gap: 4rem;
 }
 </style>

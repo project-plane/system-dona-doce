@@ -1,11 +1,6 @@
 <template>
   <ContainerTable>
-    <ModalEditUser
-      v-if="openModal"
-      :closeModal="openModal"
-      :findUser="findUser"
-      @closeModal="closeModal"
-    />
+    <EditUser :findUser="findUser" />
     <h2>Funcionários Cadastrados</h2>
     <table>
       <thead>
@@ -24,7 +19,7 @@
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <button @click="modal(user)">
+            <button @click="editModal(user)">
               <img src="~/assets/icons/edit.svg" alt="editUser" />
             </button>
           </td>
@@ -41,7 +36,6 @@ import httpUsers from '@/server/users'
 export default Vue.extend({
   data() {
     return {
-      openModal: false,
       listUsers: [],
       findUser: [],
     }
@@ -61,12 +55,9 @@ export default Vue.extend({
   },
 
   methods: {
-    modal(user) {
-      this.openModal = true
+    editModal(user) {
+      this.$store.commit('OPEN_MODAL', true)
       this.findUser = user
-    },
-    closeModal() {
-      this.openModal = false
     },
   },
 })

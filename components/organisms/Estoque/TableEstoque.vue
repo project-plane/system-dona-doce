@@ -1,11 +1,6 @@
 <template>
   <ContainerTable>
-    <EditEstoque
-      v-if="modalEdit"
-      :closeModal="modalEdit"
-      @closeModal="closeModal"
-      titleModal="Editar Estoque"
-    />
+    <EditEstoque />
     <h2>Lista do Estoque</h2>
     <table>
       <thead>
@@ -38,21 +33,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
     return {
-      modalEdit: false,
     }
   },
   methods: {
     editEstoque() {
-      this.modalEdit = true
+      this.openModal = this.$store.commit('OPEN_MODAL', true)
     },
-    closeModal() {
-      this.modalEdit = false
-    },
+    
   },
 })
 </script>
