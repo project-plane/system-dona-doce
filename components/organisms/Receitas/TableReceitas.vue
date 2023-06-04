@@ -4,6 +4,7 @@
     <table>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Imagem</th>
           <th>Nome</th>
           <th>Preço Unitário</th>
@@ -11,10 +12,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(receita, index) in listReceitas" :key="receita.id">
+          <td>{{ index + 1 }}</td>
           <td class="img"><img src="~/assets/img/coxinha.png" alt="" /></td>
-          <td>Coxinha de frango</td>
-          <td>R$ 59,99</td>
+          <td>{{ receita.description }}</td>
+          <td>R$ {{ receita.value }}</td>
           <td>
             <div class="iconsOptions">
               <button>
@@ -23,7 +25,7 @@
               <button>
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
-              <button>
+              <button @click="deleteReceita(receita.id)">
                 <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
               </button>
             </div>
@@ -37,7 +39,38 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({})
+import httpReceitas from '~/server/receitas'
+
+export default Vue.extend({
+  data() {
+    return {
+      listReceitas: [],
+    }
+  },
+  async fetch() {
+    await httpReceitas
+      .GetReceitas()
+      .then((res) => {
+        this.listReceitas = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+
+  methods: {
+    async deleteReceita(id) {
+      await httpReceitas
+        .DeleteReceita(id)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+  },
+})
 </script>
 
 <style scoped lang="scss">

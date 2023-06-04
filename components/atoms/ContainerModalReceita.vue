@@ -65,6 +65,7 @@
             <span class="total">Total</span>
             <span>R$ {{ valorTotal }}</span>
           </div>
+          <ButtonPirula title="Salvar" @click.native="saveReceita" />
         </div>
       </div>
     </div>
@@ -75,6 +76,7 @@
 import Vue from 'vue'
 
 import httpIngredientes from '~/server/ingredientes'
+import httpReceitas from '~/server/receitas'
 
 export default Vue.extend({
   data() {
@@ -86,6 +88,7 @@ export default Vue.extend({
       listIngredients: [],
       amountReceitas: [],
       amountValue: [],
+      ingredients: [],
     }
   },
   props: {
@@ -104,7 +107,6 @@ export default Vue.extend({
       .ListIngredientes()
       .then((res) => {
         this.listIngredients = res.data
-        // this.valueTotal = res.data[0].value
       })
       .catch((error) => {
         console.log(error)
@@ -119,28 +121,55 @@ export default Vue.extend({
 
       this.listIngredients.map((item) => {
         if (item.description === this.selected) {
-          this.valueReceita = item.value
+          this.amountReceitas.push({
+            qtd: this.qtdIngrediente,
+            ingrediente: this.selected,
+            valor: (item.value * this.qtdIngrediente).toFixed(2),
+          })
           // array que armazena os valores
           this.amountValue.push(item.value * this.qtdIngrediente)
+          this.ingredients.push({
+            fk_ingredient: item.id,
+            amount_ingredient: Number(this.qtdIngrediente),
+          })
         }
       })
+
+      console.log(this.amountReceitas);
 
       // soma os valores dentro do array
       const valorTotal = this.amountValue.reduce((soma, i) => {
         return soma + i
       })
 
+      // valor total de soma dos ingredientes
       this.valorTotal = valorTotal.toFixed(2)
-
-      const addIngrediente = {
-        qtd: this.qtdIngrediente,
-        ingrediente: this.selected,
-        valor: (this.qtdIngrediente * this.valueReceita).toFixed(2),
-      }
 
       this.qtdIngrediente = ''
       this.selected = ''
-      this.amountReceitas.push(addIngrediente)
+    },
+    async saveReceita() {
+      const saveReceita = {
+        description: this.dadosReceitas.receita,
+        value: Number(this.valorTotal),
+        ingredients: this.ingredients,
+        yield_per_quantity: 1,
+        time_in_hours: 2,
+        presumed_profit: 3,
+      }
+      console.log(saveReceita)
+      await httpReceitas
+        .CreateReceita(saveReceita)
+        .then((res) => {
+          if (res.status === 201) {
+            this.$toast.success('Receita criada com sucesso!!!')
+            this.$emit('closeModal', this.closeModal)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      this.$nuxt.refresh()
     },
   },
 })

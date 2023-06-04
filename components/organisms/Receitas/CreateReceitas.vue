@@ -59,8 +59,6 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import httpReceitas from '~/server/receitas'
-
 export default Vue.extend({
   data() {
     return {
@@ -81,6 +79,8 @@ export default Vue.extend({
         return
       } else {
         this.openModalReceita = true
+        this.receita = '',
+        this.status_receita = ''
         return
       }
     },
@@ -99,25 +99,30 @@ export default Vue.extend({
   grid-gap: 1rem;
   gap: 1rem;
   align-items: start;
+
   .img img {
     width: 200px;
     height: 200px;
     background: var(--white);
   }
+
   .create_receita {
     width: 100%;
     display: grid;
     grid-template-columns: 3fr 3fr;
     align-items: flex-end;
+
     .input_receita {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+
       input {
         width: 100%;
       }
     }
+
     button {
       background: var(--txt_color);
       color: var(--white);
@@ -132,21 +137,25 @@ export default Vue.extend({
       display: flex;
       gap: 4rem;
       margin-top: 2rem;
+
       .input_radio {
         display: flex;
         gap: 1rem;
         align-items: center;
         justify-content: center;
+
         .input {
           display: flex;
           justify-content: center;
           align-items: flex-start;
           gap: 0.5rem;
+
           .coffee {
             color: var(--red);
             font-weight: 500;
             font-size: 1.2rem;
           }
+
           .programado {
             color: var(--blue);
             font-weight: 500;
