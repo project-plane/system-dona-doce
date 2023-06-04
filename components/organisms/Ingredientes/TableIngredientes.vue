@@ -1,12 +1,10 @@
 <template>
   <ContainerTable>
-    <ModalEditIngrediente
-      v-if="openModal"
-      :closeModal="openModal"
-      @closeModal="closeModal"
-      :findIngrediente="findIngrediente"
-    />
-    <h2>Lista de Ingredientes</h2>
+    <EditIngrediente :findIngrediente="findIngrediente" />
+    <div class="headerTable">
+      <h2>Lista de Ingredientes</h2>
+      <InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -18,7 +16,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(ingrediente, index) in listIngredientes"
+          v-for="(ingrediente, index) in filterItems"
           :key="ingrediente.id"
         >
           <td>{{ index + 1 }}</td>
@@ -26,12 +24,8 @@
           <td>R$ {{ ingrediente.value }}</td>
           <td>
             <div class="iconsOptions">
-              <button>
-                <img
-                  src="~/assets/icons/edit.svg"
-                  alt=""
-                  @click="modalEditIngrediente(ingrediente)"
-                />
+              <button @click="editIngrediente(ingrediente)">
+                <img src="~/assets/icons/edit.svg" alt="" />
               </button>
               <button @click="deleteIngrediente(ingrediente.id)">
                 <img src="~/assets/icons/delete.svg" alt="" />
@@ -54,7 +48,7 @@ export default Vue.extend({
     return {
       listIngredientes: [],
       findIngrediente: [],
-      openModal: false,
+      textSearch: '',
     }
   },
 
@@ -69,6 +63,18 @@ export default Vue.extend({
           this.$toast.error('Servidor fora do ar')
         }
       })
+  },
+
+  computed: {
+    filterItems() {
+      let itemSearch = []
+      itemSearch = this.listIngredientes.filter((item) => {
+        return(
+          item.description.toLowerCase().indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
+    }
   },
 
   methods: {
@@ -91,19 +97,20 @@ export default Vue.extend({
       this.$nuxt.refresh()
     },
 
-    modalEditIngrediente(dataIngrediente) {
-      this.openModal = true
+    editIngrediente(dataIngrediente) {
+      this.$store.commit('OPEN_MODAL', true)
       this.findIngrediente = dataIngrediente
-    },
-
-    closeModal() {
-      this.openModal = false
     },
   },
 })
 </script>
 
 <style scoped lang="scss">
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;

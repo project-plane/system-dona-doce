@@ -1,37 +1,16 @@
 <template>
-  <ContainerModalEdit :closeModal="closeModal">
-    <Title class="headerModal">
-      <h1>Editar Funcionário</h1>
-      <img
-        @click="$emit('closeModal', closeModal)"
-        src="~/assets/icons/close.svg"
-        alt="close"
-      />
-    </Title>
+  <ModalEdit
+    v-if="$store.state.openModal"
+    titleModal="Editar Funcionário"
+    @save="updateFindUser"
+  >
     <div class="input_edit">
       <div class="input_column">
-        <div class="input">
-          <Label>Nome Completo</Label>
-          <input type="text" v-model="findUser.name" />
-        </div>
-        <div class="input">
-          <Label>E-mail</Label>
-          <input type="text" v-model="findUser.email" />
-        </div>
-        <div class="input">
-          <Label>CPF</Label>
-          <input type="text" v-model="findUser.cpf" />
-        </div>
-        <div class="input">
-          <Label>Telefone</Label>
-          <input type="text" v-model="findUser.fone" />
-        </div>
+        <Input label="Nome Completo" type="text" v-model="findUser.name" />
+        <Input label="E-mail" type="text" v-model="findUser.email" />
+        <Input label="Telefone" type="text" v-model="findUser.fone" />
       </div>
       <div class="input_column">
-        <div class="input">
-          <Label>Usuário</Label>
-          <input type="text" v-model="findUser.username" />
-        </div>
         <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
@@ -48,21 +27,12 @@
         </div>
       </div>
     </div>
-
-    <div class="btnEdit">
-      <Button
-        @click.native="$emit('closeModal', closeModal)"
-        title="Cancelar"
-      />
-
-      <Button @click.native="updateFindUser" title="Salvar" />
-    </div>
-  </ContainerModalEdit>
+  </ModalEdit>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import httpUsers from '@/server/users'
+import Vue from 'vue'
 
 export default Vue.extend({
   data() {
@@ -72,10 +42,6 @@ export default Vue.extend({
     }
   },
   props: {
-    closeModal: {
-      type: Boolean,
-      required: true,
-    },
     findUser: {
       type: [Array, Object],
       required: true,
@@ -112,7 +78,7 @@ export default Vue.extend({
         .then((res) => {
           if (res.status === 200) {
             this.$toast.success('Funcionário editado com sucesso')
-            this.$emit('closeModal', this.closeModal)
+            this.$store.commit('OPEN_MODAL', false)
           }
         })
         .catch((error) => {
