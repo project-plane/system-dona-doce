@@ -10,7 +10,7 @@
         <tr>
           <th>Quantidade</th>
           <th>Ingrediente</th>
-          <th>Preco</th>
+          <th>Preço</th>
           <th>Opções</th>
         </tr>
       </thead>

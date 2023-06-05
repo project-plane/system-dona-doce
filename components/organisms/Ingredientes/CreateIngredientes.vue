@@ -5,19 +5,19 @@
     </Title>
     <div class="input_create">
       <Input
+        v-model="nameIngrediente"
         label="Nome"
         type="text"
         placeholder="Digite o nome ingrediente"
-        v-model="nameIngrediente"
       />
       <Input
+        v-model="priceIngrediente"
         label="Preço"
         type="number"
         placeholder="Digite o preco ingrediente"
-        v-model="priceIngrediente"
       />
     </div>
-    <Button @click.native="createIngrediente" title="Salvar" />
+    <Button title="Salvar" @click.native="createIngrediente" />
   </Container>
 </template>
 
