@@ -1,12 +1,10 @@
 <template>
   <ContainerTable>
-    <EditEstoque
-      v-if="modalEdit"
-      :close-modal="modalEdit"
-      title-modal="Editar Estoque"
-      @closeModal="closeModal"
-    />
-    <h2>Lista do Estoque</h2>
+    <EditEstoque />
+    <div class="headerTable">
+      <h2>Lista do Estoque</h2>
+<InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -38,26 +36,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
     return {
-      modalEdit: false,
+      textSearch: ''
     }
   },
   methods: {
     editEstoque() {
-      this.modalEdit = true
+      this.openModal = this.$store.commit('OPEN_MODAL', true)
     },
-    closeModal() {
-      this.modalEdit = false
-    },
+    
   },
 })
 </script>
 
 <style scoped lang="scss">
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;

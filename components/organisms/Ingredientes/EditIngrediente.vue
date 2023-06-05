@@ -1,41 +1,24 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <ContainerModalEdit :close-modal="closeModal">
-    <Title class="headerModal">
-      <h1>Novo Ingrediente</h1>
-      <img
-        src="~/assets/icons/close.svg"
-        alt="close"
-        @click="$emit('closeModal', closeModal)"
-      />
-    </Title>
+  <ModalEdit
+    v-if="$store.state.openModal"
+    title-modal="Editar Ingrediente"
+    @save="updateIngrediente"
+  >
     <div class="input_edit">
-      <div class="input">
-        <Label>Nome</Label>
-        <input
-          v-model="findIngrediente.description"
-          type="text"
-          placeholder="Digite o nome ingrediente"
-        />
-      </div>
-      <div class="input">
-        <Label>Preço</Label>
-        <input
-          v-model="findIngrediente.value"
-          type="number"
-          placeholder="Digite o preço ingrediente"
-        />
-      </div>
-    </div>
-    <div class="btnEdit">
-      <Button
-        title="Cancelar"
-        @click.native="$emit('closeModal', closeModal)"
+      <Input
+        v-model="findIngrediente.description"
+        label="Nome"
+        type="text"
+        placeholder="Digite o nome ingrediente"
       />
-
-      <Button title="Salvar" @click.native="updateIngrediente" />
+      <Input
+        v-model="findIngrediente.value"
+        label="Preço"
+        type="number"
+        placeholder="Digite o preco ingrediente"
+      />
     </div>
-  </ContainerModalEdit>
+  </ModalEdit>
 </template>
 
 <script lang="ts">
@@ -45,10 +28,6 @@ import httpIngrediente from '~/server/ingredientes'
 
 export default Vue.extend({
   props: {
-    closeModal: {
-      type: Boolean,
-      required: true,
-    },
     findIngrediente: {
       type: [Array, Object],
       required: true,
@@ -73,8 +52,8 @@ export default Vue.extend({
         .UpdateIngredientes(idIngrediente, dataIngrediente)
         .then((res) => {
           if (res.status === 200) {
-            this.$emit('closeModal', this.closeModal)
             this.$toast.success('Ingrediente atualizado com sucesso!!!')
+            this.$store.commit('OPEN_MODAL', false)
           }
         })
         .catch((error) => {

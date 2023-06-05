@@ -21,11 +21,11 @@
         </BeadFrame>
       </div>
       <div v-if="statusUsers">
-        <ContentCreateUser />
+        <CreateUser />
         <TableUsers />
       </div>
       <div v-if="statusClientes">
-        <ContentCreateClient />
+        <CreateClient />
         <TableClients />
       </div>
       <div v-if="statusIngredientes">

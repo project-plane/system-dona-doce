@@ -1,12 +1,10 @@
 <template>
   <ContainerTable>
-    <ModalEditUser
-      v-if="openModal"
-      :closeModal="openModal"
-      :findUser="findUser"
-      @closeModal="closeModal"
-    />
-    <h2>Funcionários Cadastrados</h2>
+    <EditUser :findUser="findUser" />
+    <div class="headerTable">
+      <h2>Funcionários Cadastrados</h2>
+      <InputSearch v-model="textSearch" />
+    </div>
     <table>
       <thead>
         <tr>
@@ -17,14 +15,14 @@
           <th>Opções</th>
         </tr>
       </thead>
-      <tbody v-for="(user, index) in listUsers" :key="user.id">
+      <tbody v-for="(user, index) in filteredItem" :key="user.id">
         <tr>
           <td>{{ index + 1 }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <button @click="modal(user)">
+            <button @click="editModal(user)">
               <img src="~/assets/icons/edit.svg" alt="editUser" />
             </button>
           </td>
@@ -41,9 +39,9 @@ import httpUsers from '@/server/users'
 export default Vue.extend({
   data() {
     return {
-      openModal: false,
       listUsers: [],
       findUser: [],
+      textSearch: '',
     }
   },
 
@@ -60,19 +58,33 @@ export default Vue.extend({
       })
   },
 
-  methods: {
-    modal(user) {
-      this.openModal = true
-      this.findUser = user
+  computed: {
+    filteredItem() {
+      let itemSearch = []
+      itemSearch = this.listUsers.filter((item) => {
+        return (
+          item.name.toLowerCase().indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
     },
-    closeModal() {
-      this.openModal = false
+  },
+
+  methods: {
+    editModal(user) {
+      this.$store.commit('OPEN_MODAL', true)
+      this.findUser = user
     },
   },
 })
 </script>
 
 <style lang="scss" scoped>
+.headerTable{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 table {
   width: 100%;
   border-collapse: collapse;

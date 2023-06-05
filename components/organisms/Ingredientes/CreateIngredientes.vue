@@ -4,22 +4,18 @@
       <h1>Novo Ingrediente</h1>
     </Title>
     <div class="input_create">
-      <div class="input">
-        <Label>Nome</Label>
-        <input
-          v-model="nameIngrediente"
-          type="text"
-          placeholder="Digite o nome ingrediente"
-        />
-      </div>
-      <div class="input">
-        <Label>Preço</Label>
-        <input
-          v-model="priceIngrediente"
-          type="number"
-          placeholder="Digite o preço ingrediente"
-        />
-      </div>
+      <Input
+        v-model="nameIngrediente"
+        label="Nome"
+        type="text"
+        placeholder="Digite o nome ingrediente"
+      />
+      <Input
+        v-model="priceIngrediente"
+        label="Preço"
+        type="number"
+        placeholder="Digite o preco ingrediente"
+      />
     </div>
     <Button title="Salvar" @click.native="createIngrediente" />
   </Container>
