@@ -17,7 +17,6 @@
             v-model="receita"
             label="Nome Receita"
             type="text"
-            type="text"
             placeholder="Digite nova receita"
           />
         </div>
@@ -67,7 +66,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    async createReceita() {
+    createReceita() {
       this.dataReceita = {
         receita: this.receita,
         status: this.status_receita,
@@ -76,8 +75,8 @@ export default Vue.extend({
         this.$toast.error('Preencha todos os campos')
         
       } else {
-        this.$store.commit('OPEN_MODAL_RECEITA', true)
-        ;(this.receita = ''), (this.status_receita = '')
+        this.$store.commit('OPEN_MODAL_RECEITA', true);
+        
         
       }
     },

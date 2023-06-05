@@ -1,74 +1,76 @@
 <template>
   <div class="containerReceita">
-    <div class="bodyModal">
-      <div class="container">
-        <div class="header">
-          <div class="headerReceita">
-            <img src="~/assets/img/coxinha.png" alt="" />
-            <div class="textReceita">
-              <h3>{{ dadosReceitas.receita }}</h3>
-              <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
-                {{ dadosReceitas.status }}
-              </p>
-              <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+    <BeadFrame>
+      <div class="bodyModal">
+        <div class="container">
+          <div class="header">
+            <div class="headerReceita">
+              <img src="~/assets/img/coxinha.png" alt="" />
+              <div class="textReceita">
+                <h3>{{ dadosReceitas.receita }}</h3>
+                <p v-if="dadosReceitas.status === 'Coffee'" class="coffee">
+                  {{ dadosReceitas.status }}
+                </p>
+                <p v-else class="programation">{{ dadosReceitas.status }}</p>
+              </div>
+            </div>
+            <div @click="closeModal">
+              <img src="~/assets/icons/close.svg" alt="" />
             </div>
           </div>
-          <div @click="closeModal">
-            <img src="~/assets/icons/close.svg" alt="" />
+          <div class="body">
+            <div class="input">
+              <label for="qtd">Quantidade</label>
+              <input
+                id="qtd"
+                v-model="qtdIngrediente"
+                type="number"
+                placeholder="quantidade"
+              />
+            </div>
+            <div class="input">
+              <label for="ingrediente">Ingrediente</label>
+              <select id="ingrediente" v-model="selected" name="">
+                <option disabled value="">Selecione Ingrediente</option>
+                <option
+                  v-for="itemIngredient in listIngredients"
+                  :key="itemIngredient.id"
+                >
+                  {{ itemIngredient.description }}
+                </option>
+              </select>
+            </div>
+            <div class="btnIngrediente">
+              <button @click="inserirIngrediente">Inserir</button>
+            </div>
+          </div>
+          <div v-if="amountReceitas.length === 0">
+            <h1 style="text-align: center">Tabela vazia</h1>
+          </div>
+          <div v-else class="footer">
+            <div class="footerHeader">
+              <h4>QTD</h4>
+              <h4>Ingrediente</h4>
+              <h4>Preço</h4>
+            </div>
+            <div
+              v-for="amountReceita in amountReceitas"
+              :key="amountReceita.id"
+              class="footerBody"
+            >
+              <span>{{ amountReceita.qtd }}</span>
+              <span>{{ amountReceita.ingrediente }}</span>
+              <span>R$ {{ amountReceita.valor }}</span>
+            </div>
+            <div class="footerFooter">
+              <span class="total">Total</span>
+              <span>R$ {{ valorTotal }}</span>
+            </div>
+            <ButtonPirula title="Salvar" @click.native="saveReceita" />
           </div>
         </div>
-        <div class="body">
-          <div class="input">
-            <label for="qtd">Quantidade</label>
-            <input
-              type="number"
-              id="qtd"
-              placeholder="quantidade"
-              v-model="qtdIngrediente"
-            />
-          </div>
-          <div class="input">
-            <label for="ingrediente">Ingrediente</label>
-            <select name="" id="ingrediente" v-model="selected">
-              <option disabled value="">Selecione Ingrediente</option>
-              <option
-                v-for="itemIngredient in listIngredients"
-                :key="itemIngredient.id"
-              >
-                {{ itemIngredient.description }}
-              </option>
-            </select>
-          </div>
-          <div class="btnIngrediente">
-            <button @click="inserirIngrediente">Inserir</button>
-          </div>
-        </div>
-        <div v-if="amountReceitas.length === 0">
-          <h1 style="text-align: center">Tabela vazia</h1>
-        </div>
-        <div class="footer" v-else>
-          <div class="footerHeader">
-            <h4>QTD</h4>
-            <h4>Ingrediente</h4>
-            <h4>Preço</h4>
-          </div>
-          <div
-            class="footerBody"
-            v-for="amountReceita in amountReceitas"
-            :key="amountReceita.id"
-          >
-            <span>{{ amountReceita.qtd }}</span>
-            <span>{{ amountReceita.ingrediente }}</span>
-            <span>R$ {{ amountReceita.valor }}</span>
-          </div>
-          <div class="footerFooter">
-            <span class="total">Total</span>
-            <span>R$ {{ valorTotal }}</span>
-          </div>
-          <ButtonPirula title="Salvar" @click.native="saveReceita" />
-        </div>
-      </div>
     </div>
+  </BeadFrame>
   </div>
 </template>
 
@@ -79,6 +81,12 @@ import httpIngredientes from '~/server/ingredientes'
 import httpReceitas from '~/server/receitas'
 
 export default Vue.extend({
+  props: {
+    dadosReceitas: {
+      type: [Array, Object],
+      required: true,
+    },
+  },
   data() {
     return {
       selected: '',
@@ -90,12 +98,6 @@ export default Vue.extend({
       amountValue: [],
       ingredients: [],
     }
-  },
-  props: {
-    dadosReceitas: {
-      type: [Array, Object],
-      required: true,
-    },
   },
 
   async fetch() {
@@ -118,6 +120,7 @@ export default Vue.extend({
         return
       }
 
+      // eslint-disable-next-line array-callback-return
       this.listIngredients.map((item) => {
         if (item.description === this.selected) {
           this.amountReceitas.push({
@@ -186,13 +189,9 @@ export default Vue.extend({
   transition: opacity 0.2s ease;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
+  align-items: flex-end;
   z-index: 1;
   .bodyModal {
-    background: var(--white);
-    width: 40%;
-    min-height: 50%;
     .container {
       width: 100%;
       height: 90vh;
@@ -235,16 +234,17 @@ export default Vue.extend({
           }
         }
         .btnIngrediente {
-          width: 100%;
+          width: fit-content;
           display: flex;
           align-items: flex-end;
           button {
+            height: 2.8rem;
             width: 100%;
-            padding: 0.6rem;
+            padding: 0.6rem 2rem;
             background: var(--red);
             color: var(--white);
             font-weight: 700;
-            border-radius: 4px;
+            border-radius: .2rem;
           }
         }
       }
