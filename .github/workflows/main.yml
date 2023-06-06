@@ -34,4 +34,4 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         script:
-         cd /home/app/app_nuxt_dona_doce && npm install && pm2 restart DonaDoce
+         cd /home/app/app_nuxt_dona_doce && npm install 
