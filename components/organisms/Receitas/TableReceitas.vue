@@ -85,11 +85,12 @@ export default Vue.extend({
       await httpReceitas
         .DeleteReceita(id)
         .then((res) => {
-          console.log(res)
+          this.$toast.success('Receita deletada com sucesso')
         })
         .catch((error) => {
           console.log(error)
         })
+        this.$nuxt.refresh()
     },
   },
 })

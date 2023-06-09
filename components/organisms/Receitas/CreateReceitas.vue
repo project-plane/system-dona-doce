@@ -2,7 +2,7 @@
   <Container>
     <ModalReceita
       v-if="$store.state.openModalReceita"
-      :dadosReceitas="dataReceita"
+      :dados-receitas="dataReceita"
     />
     <Title>
       <h1>Receitas</h1>
@@ -14,20 +14,20 @@
       <div class="create_receita">
         <div class="input_receita">
           <Input
+            v-model="receita"
             label="Nome Receita"
             type="text"
-            v-model="receita"
             placeholder="Digite nova receita"
           />
         </div>
-        <button @click="createReceita">Criar</button>
+        <button class="buttonAdd" @click="createReceita">Criar</button>
         <div class="option_receita">
           <div class="input_radio">
             <input
-              type="radio"
-              name="programation"
               id="programation"
               v-model="status_receita"
+              type="radio"
+              name="programation"
               value="Coffee"
             />
             <div class="input">
@@ -37,10 +37,10 @@
           </div>
           <div class="input_radio">
             <input
-              type="radio"
-              name="programation"
               id="programation"
               v-model="status_receita"
+              type="radio"
+              name="programation"
               value="Programado"
             />
             <div class="input">
@@ -73,11 +73,11 @@ export default Vue.extend({
       }
       if (!this.receita || !this.status_receita) {
         this.$toast.error('Preencha todos os campos')
-        return
+        
       } else {
         this.$store.commit('OPEN_MODAL_RECEITA', true)
         ;(this.receita = ''), (this.status_receita = '')
-        return
+        
       }
     },
   },

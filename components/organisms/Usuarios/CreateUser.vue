@@ -69,10 +69,10 @@ export default Vue.extend({
     return {
       dataUser: <DataUser>{
         name: '',
-        username: '',
+        username: 'rena.yea',
         email: '',
         password: '',
-        cpf: '',
+        cpf: '6845613262165',
 
         fone: '',
 
