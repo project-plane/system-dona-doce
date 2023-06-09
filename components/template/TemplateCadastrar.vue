@@ -16,9 +16,6 @@
         <!-- <ContentCreateUser />
         <TableUsers /> -->
         <h2>Empresa em desenvolvimento</h2>
-        <BeadFrame>
-          oi
-        </BeadFrame>
       </div>
       <div v-if="statusUsers">
         <CreateUser />
@@ -45,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {

@@ -34,6 +34,7 @@ export default Vue.extend({
         .PostRecoverEmail({ email: this.email })
         .then((res) => {
           this.$toast.success('E-mail de recuperação de senha enviado')
+          this.$router.push('/login')
         })
         .catch((error) => {
           const msg: string[] = error.response.data.message

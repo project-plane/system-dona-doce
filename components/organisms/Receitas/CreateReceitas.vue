@@ -17,7 +17,6 @@
             v-model="receita"
             label="Nome Receita"
             type="text"
-            type="text"
             placeholder="Digite nova receita"
           />
         </div>

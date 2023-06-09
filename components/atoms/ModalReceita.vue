@@ -1,74 +1,76 @@
 <template>
   <div class="containerReceita">
-    <div class="bodyModal">
-      <div class="container">
-        <div class="header">
-          <div class="headerReceita">
-            <img src="~/assets/img/coxinha.png" alt="" />
-            <div class="textReceita">
-              <h3>{{ dadosReceitas.receita }}</h3>
-              <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
-                {{ dadosReceitas.status }}
-              </p>
-              <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+    <BeadFrame>
+      <div class="bodyModal">
+        <div class="container">
+          <div class="header">
+            <div class="headerReceita">
+              <img src="~/assets/img/coxinha.png" alt="" />
+              <div class="textReceita">
+                <h3>{{ dadosReceitas.receita }}</h3>
+                <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
+                  {{ dadosReceitas.status }}
+                </p>
+                <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+              </div>
+            </div>
+            <div @click="closeModal">
+              <img src="~/assets/icons/close.svg" alt="" />
             </div>
           </div>
-          <div @click="closeModal">
-            <img src="~/assets/icons/close.svg" alt="" />
+          <div class="body">
+            <div class="input">
+              <label for="qtd">Quantidade</label>
+              <input
+                type="number"
+                id="qtd"
+                placeholder="quantidade"
+                v-model="qtdIngrediente"
+              />
+            </div>
+            <div class="input">
+              <label for="ingrediente">Ingrediente</label>
+              <select name="" id="ingrediente" v-model="selected">
+                <option disabled value="">Selecione Ingrediente</option>
+                <option
+                  v-for="itemIngredient in listIngredients"
+                  :key="itemIngredient.id"
+                >
+                  {{ itemIngredient.description }}
+                </option>
+              </select>
+            </div>
+            <div class="btnIngrediente">
+              <button @click="inserirIngrediente">Inserir</button>
+            </div>
           </div>
-        </div>
-        <div class="body">
-          <div class="input">
-            <label for="qtd">Quantidade</label>
-            <input
-              type="number"
-              id="qtd"
-              placeholder="quantidade"
-              v-model="qtdIngrediente"
-            />
+          <div v-if="amountReceitas.length === 0">
+            <h1 style="text-align: center">Tabela vazia</h1>
           </div>
-          <div class="input">
-            <label for="ingrediente">Ingrediente</label>
-            <select name="" id="ingrediente" v-model="selected">
-              <option disabled value="">Selecione Ingrediente</option>
-              <option
-                v-for="itemIngredient in listIngredients"
-                :key="itemIngredient.id"
-              >
-                {{ itemIngredient.description }}
-              </option>
-            </select>
+          <div class="footer" v-else>
+            <div class="footerHeader">
+              <h4>QTD</h4>
+              <h4>Ingrediente</h4>
+              <h4>Preço</h4>
+            </div>
+            <div
+              class="footerBody"
+              v-for="amountReceita in amountReceitas"
+              :key="amountReceita.id"
+            >
+              <span>{{ amountReceita.qtd }}</span>
+              <span>{{ amountReceita.ingrediente }}</span>
+              <span>R$ {{ amountReceita.valor }}</span>
+            </div>
+            <div class="footerFooter">
+              <span class="total">Total</span>
+              <span>R$ {{ valorTotal }}</span>
+            </div>
+            <ButtonPirula title="Salvar" @click.native="saveReceita" />
           </div>
-          <div class="btnIngrediente">
-            <button @click="inserirIngrediente">Inserir</button>
-          </div>
-        </div>
-        <div v-if="amountReceitas.length === 0">
-          <h1 style="text-align: center">Tabela vazia</h1>
-        </div>
-        <div class="footer" v-else>
-          <div class="footerHeader">
-            <h4>QTD</h4>
-            <h4>Ingrediente</h4>
-            <h4>Preço</h4>
-          </div>
-          <div
-            class="footerBody"
-            v-for="amountReceita in amountReceitas"
-            :key="amountReceita.id"
-          >
-            <span>{{ amountReceita.qtd }}</span>
-            <span>{{ amountReceita.ingrediente }}</span>
-            <span>R$ {{ amountReceita.valor }}</span>
-          </div>
-          <div class="footerFooter">
-            <span class="total">Total</span>
-            <span>R$ {{ valorTotal }}</span>
-          </div>
-          <ButtonPirula title="Salvar" @click.native="saveReceita" />
         </div>
       </div>
-    </div>
+    </BeadFrame>
   </div>
 </template>
 
@@ -109,7 +111,7 @@ export default Vue.extend({
       })
   },
   methods: {
-    closeModal(){
+    closeModal() {
       this.$store.commit('OPEN_MODAL_RECEITA', false)
     },
     inserirIngrediente() {
@@ -134,7 +136,7 @@ export default Vue.extend({
         }
       })
 
-      console.log(this.amountReceitas);
+      console.log(this.amountReceitas)
 
       // soma os valores dentro do array
       const valorTotal = this.amountValue.reduce((soma, i) => {
@@ -191,7 +193,6 @@ export default Vue.extend({
   z-index: 1;
   .bodyModal {
     background: var(--white);
-    width: 40%;
     min-height: 50%;
     .container {
       width: 100%;
@@ -206,8 +207,12 @@ export default Vue.extend({
         display: flex;
         justify-content: space-between;
         .headerReceita {
+          width: 100%;
           display: flex;
           gap: 1rem;
+          img{
+            width: 30%;
+          }
         }
         .coffee {
           color: var(--red);
