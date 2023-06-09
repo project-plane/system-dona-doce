@@ -20,10 +20,10 @@
             <option>Operador(a)</option>
           </select>
         </div>
-        <Label v-if="isEnabled">Ativado</Label>
+        <Label v-if="findUser.is_enabled">Ativado</Label>
         <Label v-else> Desativado</Label>
         <div class="inputCargo">
-          <InactiveCargo @activeEnabled="enabled" :isEnabled="!isEnabled" />
+          <InactiveCargo @activeEnabled="enabled" :isEnabled="findUser.is_enabled" />
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@ export default Vue.extend({
         email: this.findUser.email,
         cpf: this.findUser.cpf,
         fone: this.findUser.fone,
-        is_enabled: this.isEnabled,
+        is_enabled: this.findUser.is_enabled,
         is_admin: this.findUser.is_admin,
         is_product: this.findUser.is_product,
         is_stock: this.findUser.is_stock,
@@ -87,7 +87,7 @@ export default Vue.extend({
       this.$nuxt.refresh()
     },
     enabled() {
-      this.isEnabled = !this.isEnabled
+      this.findUser.is_enabled = !this.findUser.is_enabled
     },
   },
 })

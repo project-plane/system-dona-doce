@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: 'https://rentx.gedroid.com/',
+  baseURL: 'https://api.doce.gedroid.com/',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'
