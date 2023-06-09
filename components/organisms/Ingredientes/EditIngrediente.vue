@@ -1,21 +1,21 @@
 <template>
   <ModalEdit
-    v-if="this.$store.state.openModal"
-    titleModal="Editar Ingrediente"
+    v-if="$store.state.openModal"
+    title-modal="Editar Ingrediente"
     @save="updateIngrediente"
   >
     <div class="input_edit">
       <Input
+        v-model="findIngrediente.description"
         label="Nome"
         type="text"
         placeholder="Digite o nome ingrediente"
-        v-model="findIngrediente.description"
       />
       <Input
+        v-model="findIngrediente.value"
         label="Preço"
         type="number"
         placeholder="Digite o preco ingrediente"
-        v-model="findIngrediente.value"
       />
     </div>
   </ModalEdit>
@@ -27,17 +27,17 @@ import Vue from 'vue'
 import httpIngrediente from '~/server/ingredientes'
 
 export default Vue.extend({
-  data() {
-    return {
-      nameIngrediente: '',
-      priceIngrediente: '',
-    }
-  },
   props: {
     findIngrediente: {
       type: [Array, Object],
       required: true,
     },
+  },
+  data() {
+    return {
+      nameIngrediente: '',
+      priceIngrediente: '',
+    }
   },
   methods: {
     async updateIngrediente() {
