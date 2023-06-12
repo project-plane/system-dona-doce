@@ -5,7 +5,7 @@
         <div class="container">
           <div class="header">
             <div class="headerReceita">
-              <img src="~/assets/img/coxinha.png" alt="" />
+              <img :src="dadosReceitas.imgPreview" alt="" />
               <div class="textReceita">
                 <h3>{{ dadosReceitas.receita }}</h3>
                 <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
@@ -66,7 +66,7 @@
               <span class="total">Total</span>
               <span>R$ {{ valorTotal }}</span>
             </div>
-            <ButtonPirula title="Salvar" @click.native="saveReceita" />
+            <Button title="Salvar" @click.native="saveReceita" />
           </div>
         </div>
       </div>
@@ -136,8 +136,6 @@ export default Vue.extend({
         }
       })
 
-      console.log(this.amountReceitas)
-
       // soma os valores dentro do array
       const valorTotal = this.amountValue.reduce((soma, i) => {
         return soma + i
@@ -150,17 +148,17 @@ export default Vue.extend({
       this.selected = ''
     },
     async saveReceita() {
-      const saveReceita = {
-        description: this.dadosReceitas.receita,
-        value: Number(this.valorTotal),
-        ingredients: this.ingredients,
-        yield_per_quantity: 1,
-        time_in_hours: 2,
-        presumed_profit: 3,
-      }
-      console.log(saveReceita)
+      const formData = new FormData()
+      formData.append('description', this.dadosReceitas.receita)
+      formData.append('value', this.valorTotal)
+      formData.append('ingredients', JSON.stringify(this.ingredients))
+      formData.append('imagem', this.dadosReceitas.imgFile)
+      formData.append('yield_per_quantity', '1')
+      formData.append('time_in_hours', '2')
+      formData.append('presumed_profit', '3')
+
       await httpReceitas
-        .CreateReceita(saveReceita)
+        .CreateReceita(formData)
         .then((res) => {
           if (res.status === 201) {
             this.$toast.success('Receita criada com sucesso!!!')
@@ -204,13 +202,14 @@ export default Vue.extend({
       overflow-y: auto;
       .header {
         width: 100%;
+        height: 40%;
         display: flex;
         justify-content: space-between;
         .headerReceita {
           width: 100%;
           display: flex;
           gap: 1rem;
-          img{
+          img {
             width: 30%;
           }
         }

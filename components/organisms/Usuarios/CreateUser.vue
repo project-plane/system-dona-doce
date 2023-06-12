@@ -42,7 +42,9 @@
         </div>
       </div>
     </div>
-    <Button @click.native="addUser" title="Salvar" />
+    <div class="btnSalve">
+      <Button @click.native="addUser" title="Salvar" />
+    </div>
   </Container>
 </template>
 
@@ -209,5 +211,10 @@ export default Vue.extend({
       }
     }
   }
+}
+.btnSalve {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

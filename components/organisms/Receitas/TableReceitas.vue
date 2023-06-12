@@ -18,7 +18,14 @@
       <tbody>
         <tr v-for="(receita, index) in filterItems" :key="receita.id">
           <td>{{ index + 1 }}</td>
-          <td class="img"><img src="~/assets/img/coxinha.png" alt="" /></td>
+          <td class="img">
+            <img
+              :src="
+                `https://api.doce.gedroid.com/img_revenue/` + receita.imagem
+              "
+              alt="img"
+            />
+          </td>
           <td>{{ receita.description }}</td>
           <td>R$ {{ receita.value }}</td>
           <td>
@@ -90,7 +97,7 @@ export default Vue.extend({
         .catch((error) => {
           console.log(error)
         })
-        this.$nuxt.refresh()
+      this.$nuxt.refresh()
     },
   },
 })
