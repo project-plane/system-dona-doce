@@ -87,6 +87,9 @@ export default Vue.extend({
       qtdIngrediente: null,
       valorTotal: '',
       valueReceita: 0,
+      yield_per_quantity: 0,
+      time_in_hours: 0,
+      presumed_profit: 0,
       listIngredients: [],
       amountReceitas: [],
       amountValue: [],
@@ -153,9 +156,9 @@ export default Vue.extend({
       formData.append('value', this.valorTotal)
       formData.append('ingredients', JSON.stringify(this.ingredients))
       formData.append('imagem', this.dadosReceitas.imgFile)
-      formData.append('yield_per_quantity', '1')
-      formData.append('time_in_hours', '2')
-      formData.append('presumed_profit', '3')
+      formData.append('yield_per_quantity', this.yield_per_quantity)
+      formData.append('time_in_hours', this.time_in_hours)
+      formData.append('presumed_profit', this.presumed_profit)
 
       await httpReceitas
         .CreateReceita(formData)

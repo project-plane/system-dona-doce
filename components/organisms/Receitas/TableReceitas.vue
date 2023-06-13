@@ -1,6 +1,13 @@
 <template>
   <ContainerTable>
-    <EditReceita />
+    <ModalEditReceita
+      v-if="$store.state.openModalEditReceita"
+      :dataReceita="dataReceita"
+    />
+    <ModalPreviewReceita
+      v-if="$store.state.openModalPreviewReceita"
+      :listFindReceita="listFindReceita"
+    />
     <div class="headerTable">
       <h2>Lista de Receitas</h2>
       <InputSearch v-model="textSearch" />
@@ -16,24 +23,25 @@
         </tr>
       </thead>
       <tbody>
+        <!-- <pre>
+          {{ filterItems }}
+        </pre> -->
         <tr v-for="(receita, index) in filterItems" :key="receita.id">
           <td>{{ index + 1 }}</td>
           <td class="img">
             <img
-              :src="
-                `https://api.doce.gedroid.com/img_revenue/` + receita.imagem
-              "
-              alt="img"
+              :src="`https://api.doce.gedroid.com/img_revenue/${receita.imagem}`"
+              alt=""
             />
           </td>
           <td>{{ receita.description }}</td>
           <td>R$ {{ receita.value }}</td>
           <td>
             <div class="iconsOptions">
-              <button>
+              <button @click="previewReceita(receita.id)">
                 <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
               </button>
-              <button @click="editReceita">
+              <button @click="editReceita(receita.id)">
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
               <button @click="deleteReceita(receita.id)">
@@ -57,6 +65,8 @@ export default Vue.extend({
     return {
       listReceitas: [],
       textSearch: '',
+      dataReceita: [],
+      listFindReceita: [],
     }
   },
   async fetch() {
@@ -85,8 +95,20 @@ export default Vue.extend({
   },
 
   methods: {
-    editReceita() {
-      this.$store.commit('OPEN_MODAL', true)
+    async previewReceita(idReceita) {
+      this.$store.commit('OPEN_MODAL_PREVIEW_RECEITA', true)
+      await httpReceitas
+        .GetFindReceita(idReceita)
+        .then((res) => {
+          this.listFindReceita = res.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    editReceita(dataReceita) {
+      this.dataReceita = dataReceita
+      this.$store.commit('OPEN_MODAL_EDIT_RECEITA', true)
     },
     async deleteReceita(id) {
       await httpReceitas
