@@ -1,7 +1,9 @@
 <template>
-  <button @click="$emit('functionClick')" class="buttonPirula">
-    {{ title }}
-  </button>
+  <div class="btnContainer">
+    <button @click="$emit('functionClick')" class="buttonPirula">
+      {{ title }}
+    </button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -18,8 +20,13 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
-.buttonPirula {
+<style scoped lang="scss">
+.btnContainer {
   width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  .buttonPirula {
+    width: 30%;
+  }
 }
 </style>

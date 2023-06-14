@@ -9,7 +9,21 @@
     </Title>
     <div class="receitas">
       <div class="img">
-        <img src="~/assets/img/coxinha.png" alt="" />
+        <label for="inputFile">
+          <img v-if="!urlImgPreview" src="~/assets/icons/imgFile.svg" alt="" />
+          <img
+            v-if="urlImgPreview"
+            class="imgFile"
+            :src="urlImgPreview"
+            alt=""
+          />
+        </label>
+        <input
+          id="inputFile"
+          type="file"
+          name="inputFile"
+          @change="fileMethods"
+        />
       </div>
       <div class="create_receita">
         <div class="input_receita">
@@ -63,6 +77,8 @@ export default Vue.extend({
       receita: '',
       status_receita: '',
       dataReceita: [],
+      urlImgFile: null,
+      urlImgPreview: null,
     }
   },
   methods: {
@@ -70,15 +86,23 @@ export default Vue.extend({
       this.dataReceita = {
         receita: this.receita,
         status: this.status_receita,
+        imgFile: this.urlImgFile,
+        imgPreview: this.urlImgPreview,
       }
+
       if (!this.receita || !this.status_receita) {
         this.$toast.error('Preencha todos os campos')
-        
       } else {
-        this.$store.commit('OPEN_MODAL_RECEITA', true);
-        
-        
+        this.$store.commit('OPEN_MODAL_RECEITA', true)
+        ;(this.receita = ''),
+          (this.status_receita = ''),
+          (this.urlImgPreview = '')
       }
+    },
+    fileMethods(e) {
+      const file = e.target.files[0]
+      this.urlImgPreview = URL.createObjectURL(file)
+      this.urlImgFile = e.target.files[0]
     },
   },
 })
@@ -93,12 +117,37 @@ export default Vue.extend({
   gap: 1rem;
   align-items: start;
 
-  .img img {
+  .img {
     width: 200px;
     height: 200px;
-    background: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5d9d9;
+    label {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      img {
+        width: 80px;
+        height: 80px;
+      }
+      .imgFile {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    input[type='file'] {
+      display: none;
+    }
   }
-
   .create_receita {
     width: 100%;
     display: grid;

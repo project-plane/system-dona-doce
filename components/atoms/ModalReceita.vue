@@ -5,7 +5,7 @@
         <div class="container">
           <div class="header">
             <div class="headerReceita">
-              <img src="~/assets/img/coxinha.png" alt="" />
+              <img :src="dadosReceitas.imgPreview" alt="" />
               <div class="textReceita">
                 <h3>{{ dadosReceitas.receita }}</h3>
                 <p v-if="dadosReceitas.status === 'Coffee'" class="coffee">
@@ -29,9 +29,9 @@
               />
             </div>
             <div class="input">
-              <label for="ingrediente">Ingrediente</label>
+              <Label for="ingrediente">Ingrediente</Label>
               <select id="ingrediente" v-model="selected" name="">
-                <option disabled value="">Selecione Ingrediente</option>
+                <option disabled value="">Selecionar Ingrediente</option>
                 <option
                   v-for="itemIngredient in listIngredients"
                   :key="itemIngredient.id"
@@ -66,11 +66,11 @@
               <span class="total">Total</span>
               <span>R$ {{ valorTotal }}</span>
             </div>
-            <ButtonPirula title="Salvar" @click.native="saveReceita" />
+            <Button title="Salvar" @click.native="saveReceita" />
           </div>
         </div>
-    </div>
-  </BeadFrame>
+      </div>
+    </BeadFrame>
   </div>
 </template>
 
@@ -93,6 +93,9 @@ export default Vue.extend({
       qtdIngrediente: null,
       valorTotal: '',
       valueReceita: 0,
+      yield_per_quantity: 0,
+      time_in_hours: 0,
+      presumed_profit: 0,
       listIngredients: [],
       amountReceitas: [],
       amountValue: [],
@@ -111,7 +114,7 @@ export default Vue.extend({
       })
   },
   methods: {
-    closeModal(){
+    closeModal() {
       this.$store.commit('OPEN_MODAL_RECEITA', false)
     },
     inserirIngrediente() {
@@ -137,8 +140,6 @@ export default Vue.extend({
         }
       })
 
-      console.log(this.amountReceitas);
-
       // soma os valores dentro do array
       const valorTotal = this.amountValue.reduce((soma, i) => {
         return soma + i
@@ -151,17 +152,17 @@ export default Vue.extend({
       this.selected = ''
     },
     async saveReceita() {
-      const saveReceita = {
-        description: this.dadosReceitas.receita,
-        value: Number(this.valorTotal),
-        ingredients: this.ingredients,
-        yield_per_quantity: 1,
-        time_in_hours: 2,
-        presumed_profit: 3,
-      }
-      console.log(saveReceita)
+      const formData = new FormData()
+      formData.append('description', this.dadosReceitas.receita)
+      formData.append('value', this.valorTotal)
+      formData.append('ingredients', JSON.stringify(this.ingredients))
+      formData.append('imagem', this.dadosReceitas.imgFile)
+      formData.append('yield_per_quantity', this.yield_per_quantity)
+      formData.append('time_in_hours', this.time_in_hours)
+      formData.append('presumed_profit', this.presumed_profit)
+
       await httpReceitas
-        .CreateReceita(saveReceita)
+        .CreateReceita(formData)
         .then((res) => {
           if (res.status === 201) {
             this.$toast.success('Receita criada com sucesso!!!')
@@ -192,6 +193,8 @@ export default Vue.extend({
   align-items: flex-end;
   z-index: 1;
   .bodyModal {
+    background: var(--white);
+    min-height: 50%;
     .container {
       width: 100%;
       height: 90vh;
@@ -202,11 +205,16 @@ export default Vue.extend({
       overflow-y: auto;
       .header {
         width: 100%;
+        height: 40%;
         display: flex;
         justify-content: space-between;
         .headerReceita {
+          width: 100%;
           display: flex;
           gap: 1rem;
+          img {
+            width: 30%;
+          }
         }
         .coffee {
           color: var(--red);

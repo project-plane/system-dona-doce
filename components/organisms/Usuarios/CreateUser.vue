@@ -34,7 +34,7 @@
         <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
-            <option disabled value="">Selecionar cargo</option>
+            <option disabled value="">Selecionar Cargo</option>
             <option>Administrador</option>
             <option>Motorista</option>
             <option>Operador(a)</option>
@@ -42,7 +42,9 @@
         </div>
       </div>
     </div>
-    <Button @click.native="addUser" title="Salvar" />
+    <div class="btnSalve">
+      <Button @click.native="addUser" title="Salvar" />
+    </div>
   </Container>
 </template>
 
@@ -69,10 +71,10 @@ export default Vue.extend({
     return {
       dataUser: <DataUser>{
         name: '',
-        username: '',
+        username: 'rena.yea',
         email: '',
         password: '',
-        cpf: '',
+        cpf: '6845613262165',
 
         fone: '',
 
@@ -209,5 +211,10 @@ export default Vue.extend({
       }
     }
   }
+}
+.btnSalve {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
