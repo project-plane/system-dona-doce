@@ -15,7 +15,7 @@
           <th>ID</th>
           <th>Quantidade</th>
           <th>Ingrediente</th>
-          <th>Preço</th>
+          <th>Preço Unitário</th>
           <!-- <th>Histórico</th> -->
         </tr>
       </thead>
