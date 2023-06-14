@@ -5,7 +5,7 @@
         <div class="container">
           <div class="header">
             <div class="headerReceita">
-              <img src="~/assets/img/coxinha.png" alt="" />
+              <img :src="dadosReceitas.imgPreview" alt="" />
               <div class="textReceita">
                 <h3>{{ dadosReceitas.receita }}</h3>
                 <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
@@ -29,9 +29,9 @@
               />
             </div>
             <div class="input">
-              <label for="ingrediente">Ingrediente</label>
+              <Label for="ingrediente">Ingrediente</Label>
               <select name="" id="ingrediente" v-model="selected">
-                <option disabled value="">Selecione Ingrediente</option>
+                <option disabled value="">Selecionar Ingrediente</option>
                 <option
                   v-for="itemIngredient in listIngredients"
                   :key="itemIngredient.id"
@@ -66,7 +66,7 @@
               <span class="total">Total</span>
               <span>R$ {{ valorTotal }}</span>
             </div>
-            <ButtonPirula title="Salvar" @click.native="saveReceita" />
+            <Button title="Salvar" @click.native="saveReceita" />
           </div>
         </div>
       </div>
@@ -76,6 +76,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { $toast } from 'vue/types/umd'
 
 import httpIngredientes from '~/server/ingredientes'
 import httpReceitas from '~/server/receitas'
@@ -87,6 +88,9 @@ export default Vue.extend({
       qtdIngrediente: null,
       valorTotal: '',
       valueReceita: 0,
+      yield_per_quantity: 0,
+      time_in_hours: 0,
+      presumed_profit: 0,
       listIngredients: [],
       amountReceitas: [],
       amountValue: [],
@@ -122,21 +126,28 @@ export default Vue.extend({
 
       this.listIngredients.map((item) => {
         if (item.description === this.selected) {
-          this.amountReceitas.push({
-            qtd: this.qtdIngrediente,
-            ingrediente: this.selected,
-            valor: (item.value * this.qtdIngrediente).toFixed(2),
-          })
-          // array que armazena os valores
-          this.amountValue.push(item.value * this.qtdIngrediente)
-          this.ingredients.push({
-            fk_ingredient: item.id,
-            amount_ingredient: Number(this.qtdIngrediente),
-          })
+          const ingredienteExiste = this.amountReceitas.find(
+            (amountReceita) => {
+              return amountReceita.ingrediente == this.selected
+            }
+          )
+          if (!ingredienteExiste) {
+            this.amountReceitas.push({
+              qtd: this.qtdIngrediente,
+              ingrediente: this.selected,
+              valor: (item.value * this.qtdIngrediente).toFixed(2),
+            })
+            // array que armazena os valores
+            this.amountValue.push(item.value * this.qtdIngrediente)
+            this.ingredients.push({
+              fk_ingredient: item.id,
+              amount_ingredient: Number(this.qtdIngrediente),
+            })
+          } else {
+            this.$toast.error('Ingrediente já inserido!!!')
+          }
         }
       })
-
-      console.log(this.amountReceitas)
 
       // soma os valores dentro do array
       const valorTotal = this.amountValue.reduce((soma, i) => {
@@ -150,17 +161,17 @@ export default Vue.extend({
       this.selected = ''
     },
     async saveReceita() {
-      const saveReceita = {
-        description: this.dadosReceitas.receita,
-        value: Number(this.valorTotal),
-        ingredients: this.ingredients,
-        yield_per_quantity: 1,
-        time_in_hours: 2,
-        presumed_profit: 3,
-      }
-      console.log(saveReceita)
+      const formData = new FormData()
+      formData.append('description', this.dadosReceitas.receita)
+      formData.append('value', this.valorTotal)
+      formData.append('ingredients', JSON.stringify(this.ingredients))
+      formData.append('imagem', this.dadosReceitas.imgFile)
+      formData.append('yield_per_quantity', this.yield_per_quantity)
+      formData.append('time_in_hours', this.time_in_hours)
+      formData.append('presumed_profit', this.presumed_profit)
+
       await httpReceitas
-        .CreateReceita(saveReceita)
+        .CreateReceita(formData)
         .then((res) => {
           if (res.status === 201) {
             this.$toast.success('Receita criada com sucesso!!!')
@@ -204,13 +215,14 @@ export default Vue.extend({
       overflow-y: auto;
       .header {
         width: 100%;
+        height: 40%;
         display: flex;
         justify-content: space-between;
         .headerReceita {
           width: 100%;
           display: flex;
           gap: 1rem;
-          img{
+          img {
             width: 30%;
           }
         }

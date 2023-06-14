@@ -1,6 +1,9 @@
 export const state = () => ({
   openModal: false,
-  openModalReceita: false
+  openModalReceita: false,
+  openModalEditReceita: false,
+  openModalPreviewReceita: false,
+  openModalPreviewEstoque: false
 })
 
 export const mutations = {
@@ -9,5 +12,14 @@ export const mutations = {
   },
   OPEN_MODAL_RECEITA(state, payload) {
     state.openModalReceita = payload
+  },
+  OPEN_MODAL_EDIT_RECEITA(state, payload) {
+    state.openModalEditReceita = payload
+  },
+  OPEN_MODAL_PREVIEW_RECEITA(state, payload) {
+    state.openModalPreviewReceita = payload
+  },
+  OPEN_MODAL_PREVIEW_ESTOQUE(state, payload) {
+    state.openModalPreviewEstoque = payload
   }
 }

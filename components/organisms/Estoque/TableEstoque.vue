@@ -1,34 +1,38 @@
 <template>
   <ContainerTable>
-    <EditEstoque />
+    <!-- <ModalPreviewEstoque
+      titleModal="Histórico de Estoque"
+      v-if="$store.state.openModalPreviewEstoque"
+      :historicoEstoque="historicoEstoque"
+    /> -->
     <div class="headerTable">
       <h2>Lista do Estoque</h2>
-<InputSearch v-model="textSearch" />
+      <InputSearch v-model="textSearch" />
     </div>
     <table>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Quantidade</th>
           <th>Ingrediente</th>
           <th>Preço</th>
-          <th>Opções</th>
+          <!-- <th>Histórico</th> -->
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>20kg</td>
-          <td>Trigo</td>
-          <td>R$ 160,00</td>
-          <td>
-            <div class="iconsOptions">
-              <button @click="editEstoque">
-                <img src="~/assets/icons/edit.svg" alt="" />
-              </button>
-              <button>
-                <img src="~/assets/icons/delete.svg" alt="" />
-              </button>
-            </div>
-          </td>
+        <tr v-for="(estoque, index) in filterItems" :key="estoque.id">
+          <td>{{ index + 1 }}</td>
+          <td>{{ estoque.amount_actual }}</td>
+          <td>{{ estoque.description }}</td>
+          <td>R$ {{ estoque.value.toFixed(2) }}</td>
+          <!-- <td>
+            <button>
+              <img
+                src="~/assets/icons/eye.svg"
+                @click="previewHistorico(estoque)"
+              />
+            </button>
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -36,25 +40,53 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
+
+import httpEstoque from '~/server/estoque'
 
 export default Vue.extend({
   data() {
     return {
-      textSearch: ''
+      textSearch: '',
+      listEstoque: [],
+      historicoEstoque: [],
     }
   },
-  methods: {
-    editEstoque() {
-      this.openModal = this.$store.commit('OPEN_MODAL', true)
+  async fetch() {
+    await httpEstoque
+      .GetAllEstoque(true)
+      .then((res) => {
+        this.listEstoque = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    console.log(this.listEstoque)
+  },
+  computed: {
+    filterItems() {
+      let itemSearch = []
+      itemSearch = this.listEstoque.filter((item) => {
+        return (
+          item.description
+            .toLowerCase()
+            .indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
     },
-    
+  },
+  methods: {
+    previewHistorico(dataEstoque) {
+      this.historicoEstoque = dataEstoque
+      this.$store.commit('OPEN_MODAL_PREVIEW_ESTOQUE', true)
+    },
   },
 })
 </script>
 
 <style scoped lang="scss">
-.headerTable{
+.headerTable {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -74,16 +106,7 @@ table {
     text-align: center;
     padding: 1rem 0;
   }
-  tbody tr .img img {
-    width: 50px;
-    height: 50px;
-  }
-  tbody tr .iconsOptions {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+  tbody tr {
     button {
       background: transparent;
     }
