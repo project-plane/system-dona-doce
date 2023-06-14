@@ -31,16 +31,16 @@
       />
       <div class="inputRadio">
         <div class="radio">
-          <input type="radio" v-model="is_output" name="status" :value="true" />
-          <Label>Entrada</Label>
-        </div>
-        <div class="radio">
           <input
             type="radio"
             v-model="is_output"
             name="status"
             :value="false"
           />
+          <Label>Entrada</Label>
+        </div>
+        <div class="radio">
+          <input type="radio" v-model="is_output" name="status" :value="true" />
           <Label>Saída</Label>
         </div>
       </div>
