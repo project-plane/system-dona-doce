@@ -29,9 +29,9 @@
               />
             </div>
             <div class="input">
-              <label for="ingrediente">Ingrediente</label>
+              <Label for="ingrediente">Ingrediente</Label>
               <select name="" id="ingrediente" v-model="selected">
-                <option disabled value="">Selecione Ingrediente</option>
+                <option disabled value="">Selecionar Ingrediente</option>
                 <option
                   v-for="itemIngredient in listIngredients"
                   :key="itemIngredient.id"

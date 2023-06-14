@@ -34,7 +34,7 @@
         <div class="input">
           <Label>Cargo</Label>
           <select v-model="selected">
-            <option disabled value="">Selecionar cargo</option>
+            <option disabled value="">Selecionar Cargo</option>
             <option>Administrador</option>
             <option>Motorista</option>
             <option>Operador(a)</option>
