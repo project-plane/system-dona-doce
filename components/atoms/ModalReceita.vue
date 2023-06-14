@@ -76,6 +76,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { $toast } from 'vue/types/umd'
 
 import httpIngredientes from '~/server/ingredientes'
 import httpReceitas from '~/server/receitas'
@@ -125,17 +126,26 @@ export default Vue.extend({
 
       this.listIngredients.map((item) => {
         if (item.description === this.selected) {
-          this.amountReceitas.push({
-            qtd: this.qtdIngrediente,
-            ingrediente: this.selected,
-            valor: (item.value * this.qtdIngrediente).toFixed(2),
-          })
-          // array que armazena os valores
-          this.amountValue.push(item.value * this.qtdIngrediente)
-          this.ingredients.push({
-            fk_ingredient: item.id,
-            amount_ingredient: Number(this.qtdIngrediente),
-          })
+          const ingredienteExiste = this.amountReceitas.find(
+            (amountReceita) => {
+              return amountReceita.ingrediente == this.selected
+            }
+          )
+          if (!ingredienteExiste) {
+            this.amountReceitas.push({
+              qtd: this.qtdIngrediente,
+              ingrediente: this.selected,
+              valor: (item.value * this.qtdIngrediente).toFixed(2),
+            })
+            // array que armazena os valores
+            this.amountValue.push(item.value * this.qtdIngrediente)
+            this.ingredients.push({
+              fk_ingredient: item.id,
+              amount_ingredient: Number(this.qtdIngrediente),
+            })
+          } else {
+            this.$toast.error('Ingrediente já inserido!!!')
+          }
         }
       })
 

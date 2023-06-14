@@ -27,6 +27,10 @@
             v-for="receita in listFindReceita.ingredients_Revenues"
             :key="receita.id"
           >
+            <!-- <pre>
+            {{ receita }}
+          </pre
+            > -->
             <div class="input">
               <h3>Quantidade</h3>
               <p>{{ receita.amount_ingredient }}</p>
@@ -34,6 +38,21 @@
             <div class="input">
               <h3>Ingrediente</h3>
               <p>{{ receita.ingredients.description }}</p>
+            </div>
+            <div class="input">
+              <h3>Valor Unitário</h3>
+              <p>R$ {{ receita.ingredients.value.toFixed(2) }}</p>
+            </div>
+            <div class="input">
+              <h3>Total</h3>
+              <p>
+                R$
+                {{
+                  (
+                    receita.amount_ingredient * receita.ingredients.value
+                  ).toFixed(2)
+                }}
+              </p>
             </div>
           </div>
         </div>
@@ -110,7 +129,8 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
-        grid-template: 1fr/10rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
+        grid-template-columns: repeat(4, 1fr);
+        justify-items: center;
         border-bottom: 2px dashed var(--bg_opacity);
         padding-bottom: 1rem;
         gap: 1rem;
