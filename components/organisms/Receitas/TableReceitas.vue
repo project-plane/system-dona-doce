@@ -18,7 +18,7 @@
           <th>ID</th>
           <th>Imagem</th>
           <th>Nome</th>
-          <th>Preço Unitário</th>
+          <th>Valor Total</th>
           <th>Opções</th>
         </tr>
       </thead>
