@@ -82,8 +82,8 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import httpReceitaIngrediente from '~/server/receitaIngrediente'
 import httpReceitas from '~/server/receitas'
-import httpReceitaIngrediente from '~/server/ReceitaIngrediente'
 
 export default Vue.extend({
   data() {
