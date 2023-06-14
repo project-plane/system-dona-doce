@@ -88,32 +88,20 @@ import httpReceitas from '~/server/receitas'
 export default Vue.extend({
   data() {
     return {
-      selected: '',
-      qtdIngrediente: null,
       valorTotal: '',
-      valueReceita: 0,
       yield_per_quantity: 0,
       time_in_hours: 0,
       presumed_profit: 0,
-      listIngredients: [],
-      amountReceitas: [],
       amountValue: [],
       ingredients: [],
       listFindReceita: [],
       imgFile: '',
-      teste: '',
     }
   },
   props: {
     dataReceita: {
       type: String,
       required: true,
-    },
-  },
-
-  watch: {
-    teste(newValue, oldValue) {
-      console.log(newValue)
     },
   },
 

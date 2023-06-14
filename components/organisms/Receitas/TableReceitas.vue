@@ -35,7 +35,7 @@
             />
           </td>
           <td>{{ receita.description }}</td>
-          <td>R$ {{ receita.value }}</td>
+          <td>R$ {{ receita.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">
               <button @click="previewReceita(receita.id)">
