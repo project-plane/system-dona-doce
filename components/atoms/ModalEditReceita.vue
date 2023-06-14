@@ -10,7 +10,7 @@
                 <Title>
                   <h1>Editar Receita</h1>
                 </Title>
-                <h3>{{ listFindReceita.description }}</h3>
+                <h3>{{ title }}</h3>
               </div>
             </div>
             <div @click="closeModal">
@@ -23,7 +23,7 @@
           </div>
           <div
             class="body"
-            v-for="receita in listFindReceita.ingredients_Revenues"
+            v-for="receita in listReceitas"
             :key="receita.id"
           >
             <div class="input">
@@ -46,23 +46,13 @@
             </div>
             <div class="icons">
               <button
-                style="
-                  background: #1b6afc;
-                  color: white;
-                  font-weight: bold;
-                  border-radius: 5px;
-                "
+                class="btnEditIngrediente"
                 @click="editarIngrediente(receita)"
               >
                 Atualizar
               </button>
               <button
-                style="
-                  background: #fc1b1b;
-                  color: white;
-                  font-weight: bold;
-                  border-radius: 5px;
-                "
+                class="btnDeleteIngrediente"
                 @click="deletarIngrediente(receita)"
               >
                 Deletar
@@ -70,7 +60,7 @@
             </div>
           </div>
           <Button
-            @click.native="editReceita(listFindReceita.id)"
+            @click.native="editReceita(idReceita)"
             title="Salvar"
           />
         </div>
@@ -82,7 +72,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import httpReceitaIngrediente from '~/server/receitaIngrediente'
+import httpReceitaIngrediente from '~/server/ingredienteReceita'
 import httpReceitas from '~/server/receitas'
 
 export default Vue.extend({
@@ -95,7 +85,10 @@ export default Vue.extend({
       amountValue: [],
       ingredients: [],
       listFindReceita: [],
+      listReceitas: [],
+      idReceita: '',
       imgFile: '',
+      title: ''
     }
   },
   props: {
@@ -110,6 +103,9 @@ export default Vue.extend({
       .GetFindReceita(this.dataReceita)
       .then((res) => {
         this.listFindReceita = res.data
+        this.idReceita = this.listFindReceita.id
+        this.title = this.listFindReceita.description
+        this.listReceitas = this.listFindReceita.ingredients_Revenues
         this.imgFile = `https://api.doce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
       })
       .catch((error) => {
@@ -269,11 +265,25 @@ export default Vue.extend({
           align-items: center;
           justify-content: flex-end;
           gap: 1rem;
-          button {
+          .btnEditIngrediente {
             margin-top: 25px;
             width: 100%;
             cursor: pointer;
             padding: 0.6rem 1rem;
+            background: #1b6afc;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+          }
+          .btnDeleteIngrediente {
+            margin-top: 25px;
+            width: 100%;
+            cursor: pointer;
+            padding: 0.6rem 1rem;
+            background: #fc1b1b;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
           }
         }
       }
