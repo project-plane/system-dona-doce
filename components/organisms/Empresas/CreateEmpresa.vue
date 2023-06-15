@@ -8,7 +8,7 @@
         label="Empresa"
         type="text"
         placeholder="Digitar nome empresa"
-        v-model="dataEmpresa.empresa"
+        v-model="dataEmpresa.corporate_name"
       />
       <Input
         label="CNPJ"
@@ -53,15 +53,17 @@
         v-model="dataEmpresa.password"
       />
     </div>
-    <Button @click.native="saveClient" title="Salvar" />
+    <Button @functionClick="saveClient" title="Salvar" />
   </Container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
+import httpEmpresa from '~/server/empresa'
+
 interface DataEmpresa {
-  empresa: string
+  corporate_name: string
   cnpj: string
   address: string
   cep: string
@@ -74,7 +76,7 @@ export default Vue.extend({
   data() {
     return {
       dataEmpresa: <DataEmpresa>{
-        empresa: '',
+        corporate_name: '',
         cnpj: '',
         address: '',
         cep: '',
@@ -87,24 +89,49 @@ export default Vue.extend({
     }
   },
   methods: {
-    saveClient() {
+    async saveClient() {
       const dataEmpresa = {
-        empresa: this.dataEmpresa.empresa,
+        corporate_name: this.dataEmpresa.corporate_name,
         cnpj: this.dataEmpresa.cnpj,
         address: this.dataEmpresa.address,
         cep: this.dataEmpresa.cep,
         email: this.dataEmpresa.email,
-        phone: this.dataEmpresa.phone,
+        fone: this.dataEmpresa.phone,
         password: this.dataEmpresa.password,
       }
-      console.log(dataEmpresa);
-      this.dataEmpresa.empresa = ''
-        this.dataEmpresa.cnpj = ''
-        this.dataEmpresa.address = ''
-        this.dataEmpresa.cep = ''
-        this.dataEmpresa.email = ''
-        this.dataEmpresa.phone = ''
-        this.dataEmpresa.password = ''
+
+      if (
+        !this.dataEmpresa.corporate_name ||
+        !this.dataEmpresa.cnpj ||
+        !this.dataEmpresa.address ||
+        !this.dataEmpresa.cep ||
+        !this.dataEmpresa.email ||
+        !this.dataEmpresa.phone ||
+        !this.dataEmpresa.password
+      ) {
+        this.$toast.error('Preencha todos os campos!!!')
+      }
+
+      await httpEmpresa
+        .CreateEmpresa(dataEmpresa)
+        .then((res) => {
+          if (res.status === 201) {
+            this.$toast.success('Empresa criada com sucesso')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      this.dataEmpresa.corporate_name = ''
+      this.dataEmpresa.cnpj = ''
+      this.dataEmpresa.address = ''
+      this.dataEmpresa.cep = ''
+      this.dataEmpresa.email = ''
+      this.dataEmpresa.phone = ''
+      this.dataEmpresa.password = ''
+
+      this.$nuxt.refresh()
     },
   },
 })

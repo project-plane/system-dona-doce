@@ -1,7 +1,6 @@
 <template>
   <ContainerTable>
-    <!-- <ModalPreviewEstoque
-      titleModal="Histórico de Estoque"
+    <!-- <PreviewEstoque
       v-if="$store.state.openModalPreviewEstoque"
       :historicoEstoque="historicoEstoque"
     /> -->
