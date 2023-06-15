@@ -17,7 +17,7 @@
         placeholder="Digite o preco ingrediente"
       />
     </div>
-    <Button title="Salvar" @click.native="createIngrediente" />
+    <Button title="Salvar" @functionClick="createIngrediente" />
   </Container>
 </template>
 
@@ -35,6 +35,9 @@ export default Vue.extend({
   },
   methods: {
     async createIngrediente() {
+      if (!this.nameIngrediente || !this.priceIngrediente) {
+        this.$toast.error('Preencha todos os campos!!!')
+      }
       const ingrediente = {
         description: this.nameIngrediente,
         value: Number(this.priceIngrediente),

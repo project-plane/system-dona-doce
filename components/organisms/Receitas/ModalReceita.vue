@@ -66,7 +66,7 @@
               <span class="total">Total</span>
               <span>R$ {{ valorTotal }}</span>
             </div>
-            <Button title="Salvar" @click.native="saveReceita" />
+            <Button title="Salvar" @functionClick="saveReceita" />
           </div>
         </div>
       </div>
@@ -76,7 +76,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { $toast } from 'vue/types/umd'
 
 import httpIngredientes from '~/server/ingredientes'
 import httpReceitas from '~/server/receitas'

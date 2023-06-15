@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="btnSalve">
-      <Button @click.native="addUser" title="Salvar" />
+      <Button @functionClick="addUser" title="Salvar" />
     </div>
   </Container>
 </template>

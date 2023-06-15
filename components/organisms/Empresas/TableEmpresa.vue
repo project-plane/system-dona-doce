@@ -1,24 +1,20 @@
 <template>
   <ContainerTable>
-    <ModalEditReceita
-      v-if="$store.state.openModalEditReceita"
-      :dataReceita="dataReceita"
-    />
-    <PreviewReceita
-      v-if="$store.state.openModalPreviewReceita"
-      :listFindReceita="listFindReceita"
+    <PreviewEmpresa 
+    v-if="$store.state.openModalPreviewEmpresa"
+    :findEmpresa="findEmpresa"
     />
     <div class="headerTable">
-      <h2>Lista de Receitas</h2>
+      <h2>Lista de Empresas</h2>
       <InputSearch v-model="textSearch" />
     </div>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Imagem</th>
-          <th>Nome</th>
-          <th>Valor Total</th>
+          <th>Empresa</th>
+          <th>Fone</th>
+          <th>E-mail</th>
           <th>Opções</th>
         </tr>
       </thead>
@@ -26,27 +22,22 @@
         <!-- <pre>
           {{ filterItems }}
         </pre> -->
-        <tr v-for="(receita, index) in filterItems" :key="receita.id">
+        <tr v-for="(empresa, index) in filterItems" :key="empresa.id">
           <td>{{ index + 1 }}</td>
-          <td class="img">
-            <img
-              :src="`https://api.doce.gedroid.com/img_revenue/${receita.imagem}`"
-              alt=""
-            />
-          </td>
-          <td>{{ receita.description }}</td>
-          <td>R$ {{ receita.value.toFixed(2) }}</td>
+          <td>{{ empresa.corporate_name }}</td>
+          <td>{{ empresa.fone }}</td>
+          <td>{{ empresa.email }}</td>
           <td>
             <div class="iconsOptions">
-              <button @click="previewReceita(receita.id)">
+              <button @click="previewEmpresa(empresa.id)">
                 <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
               </button>
-              <button @click="editReceita(receita.id)">
+              <button>
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
-              <button @click="deleteReceita(receita.id)">
+              <!-- <button @click="deleteEmpresa(empresa.id)">
                 <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
-              </button>
+              </button> -->
             </div>
           </td>
         </tr>
@@ -58,22 +49,22 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import httpReceitas from '~/server/receitas'
+import httpEmpresa from '~/server/empresa'
 
 export default Vue.extend({
   data() {
     return {
-      listReceitas: [],
       textSearch: '',
-      dataReceita: [],
-      listFindReceita: [],
+      listEmpresa: [],
+      findEmpresa: []
     }
   },
+
   async fetch() {
-    await httpReceitas
-      .GetReceitas()
+    await httpEmpresa
+      .GetAllEmpresa()
       .then((res) => {
-        this.listReceitas = res.data
+        this.listEmpresa = res.data
       })
       .catch((error) => {
         console.log(error)
@@ -83,9 +74,9 @@ export default Vue.extend({
   computed: {
     filterItems() {
       let itemSearch = []
-      itemSearch = this.listReceitas.filter((item) => {
+      itemSearch = this.listEmpresa.filter((item) => {
         return (
-          item.description
+          item.corporate_name
             .toLowerCase()
             .indexOf(this.textSearch.toLowerCase()) > -1
         )
@@ -95,32 +86,29 @@ export default Vue.extend({
   },
 
   methods: {
-    async previewReceita(idReceita) {
-      this.$store.commit('OPEN_MODAL_PREVIEW_RECEITA', true)
-      await httpReceitas
-        .GetFindReceita(idReceita)
+    async previewEmpresa(id) {
+      this.$store.commit('OPEN_MODAL_PREVIEW_EMPRESA', true)
+      await httpEmpresa
+        .GetFindEmpresa(id)
         .then((res) => {
-          this.listFindReceita = res.data
+          this.findEmpresa = res.data
         })
         .catch((error) => {
           console.log(error)
         })
     },
-    editReceita(dataReceita) {
-      this.dataReceita = dataReceita
-      this.$store.commit('OPEN_MODAL_EDIT_RECEITA', true)
-    },
-    async deleteReceita(id) {
-      await httpReceitas
-        .DeleteReceita(id)
-        .then((res) => {
-          this.$toast.success('Receita deletada com sucesso')
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      this.$nuxt.refresh()
-    },
+    // async deleteEmpresa(id) {
+    //   await httpEmpresa
+    //     .DeleteEmpresa(id)
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         this.$toast.success('Empresa deletada com sucesso!!!')
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error)
+    //     })
+    // },
   },
 })
 </script>
