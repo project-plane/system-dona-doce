@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <Button title="Salvar" @click.native="saveEstoque" />
+    <Button title="Salvar" @functionClick="saveEstoque" />
   </Container>
 </template>
 
@@ -79,6 +79,9 @@ export default Vue.extend({
   },
   methods: {
     async saveEstoque() {
+      if (!this.selected || !this.quantidade || !this.valorUnitario) {
+        this.$toast.error('Preencha todos os campos!!!')
+      }
       const dataEstoque = {
         fk_ingredient: this.selected,
         amount: Number(this.quantidade),
