@@ -24,10 +24,11 @@
         v-model="quantidade"
       />
       <Input
-        label="Valor"
+        block="background: #d6d6d6; cursor: no-drop"
+        label="Valor Ingrediente"
         type="number"
-        placeholder="Inserir Valor"
         v-model="valorUnitario"
+        disabled="disabled"
       />
       <div class="inputRadio">
         <div class="radio">
@@ -71,11 +72,19 @@ export default Vue.extend({
       .ListIngredientes()
       .then((res) => {
         this.listIngrediente = res.data
-        console.log(res.data)
       })
       .catch((error) => {
         console.log(error)
       })
+  },
+  watch: {
+    selected(newValue) {
+      this.listIngrediente.map((e) => {
+        if (e.id === newValue) {
+          this.valorUnitario = Number(e.value).toFixed(2)
+        }
+      })
+    },
   },
   methods: {
     async saveEstoque() {

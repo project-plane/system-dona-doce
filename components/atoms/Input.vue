@@ -1,12 +1,19 @@
 <template>
   <div class="input">
     <Label>{{ label }}</Label>
-    <input :type="type" :value="value" @input="updateValue" :placeholder="placeholder" />
+    <input
+      :style="block"
+      :type="type"
+      :value="value"
+      @input="updateValue"
+      :placeholder="placeholder"
+      :disabled="disabled"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   props: {
@@ -25,7 +32,14 @@ export default Vue.extend({
     placeholder: {
       type: String,
       required: true,
-    }
+    },
+    disabled: {
+      type: String,
+      required: true,
+    },
+    block: {
+      type: String,
+    },
   },
   methods: {
     updateValue(e) {
@@ -36,10 +50,10 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
- .input {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
+.input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
 </style>

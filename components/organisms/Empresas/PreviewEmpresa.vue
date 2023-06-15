@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   props: {
@@ -41,7 +41,7 @@ export default Vue.extend({
   },
   methods: {
     closeModal() {
-      this.$store.commit('OPEN_MODAL_PREVIEW_EMPRESA', false)
+      this.$store.commit('OPEN_MODAL', false)
     },
   },
 })
@@ -55,8 +55,7 @@ export default Vue.extend({
   gap: 2rem;
   p {
     height: 45px;
-    background: rgb(235, 235, 235);
-    padding: 0.5rem;
+    padding: 0.5rem 0;
     border-radius: 5px;
     display: flex;
     align-items: center;

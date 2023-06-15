@@ -1,6 +1,6 @@
 <template>
   <ContainerTable>
-    <EditUser :findUser="findUser" />
+    <EditUser :findUser="findUser" v-if="$store.state.openModal" />
     <div class="headerTable">
       <h2>Funcionários Cadastrados</h2>
       <InputSearch v-model="textSearch" />
@@ -80,7 +80,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.headerTable{
+.headerTable {
   width: 100%;
   display: flex;
   justify-content: space-between;

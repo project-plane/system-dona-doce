@@ -1,6 +1,10 @@
 <template>
-  <div class="btnContainer">
-    <button @click="$emit('functionClick')" class="buttonPirula">
+  <div class="btnContainer" :class="classContainerEditBtn">
+    <button
+      @click="$emit('functionClick')"
+      class="buttonPirula"
+      :class="classEditBtn"
+    >
       {{ title }}
     </button>
   </div>
@@ -16,6 +20,12 @@ export default Vue.extend({
       default: '',
       required: true,
     },
+    classEditBtn: {
+      type: String,
+    },
+    classContainerEditBtn: {
+      type: String,
+    },
   },
 })
 </script>
@@ -28,5 +38,13 @@ export default Vue.extend({
   .buttonPirula {
     width: 30%;
   }
+  .editBtn {
+    width: 150px;
+  }
+}
+.classContainerEditBtn {
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

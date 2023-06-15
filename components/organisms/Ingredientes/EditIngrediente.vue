@@ -1,18 +1,14 @@
 <template>
-  <ModalEdit
-    v-if="$store.state.openModal"
-    title-modal="Editar Ingrediente"
-    @save="updateIngrediente"
-  >
+  <ModalEdit title-modal="Editar Ingrediente" @save="updateIngrediente">
     <div class="input_edit">
       <Input
-        v-model="findIngrediente.description"
+        v-model="nameIngrediente"
         label="Nome"
         type="text"
         placeholder="Digite o nome ingrediente"
       />
       <Input
-        v-model="findIngrediente.value"
+        v-model="priceIngrediente"
         label="Preço"
         type="number"
         placeholder="Digite o preco ingrediente"
@@ -29,7 +25,7 @@ import httpIngrediente from '~/server/ingredientes'
 export default Vue.extend({
   props: {
     findIngrediente: {
-      type: [Array, Object],
+      type: String,
       required: true,
     },
   },
@@ -37,15 +33,28 @@ export default Vue.extend({
     return {
       nameIngrediente: '',
       priceIngrediente: '',
+      listFindIngredient: [],
     }
+  },
+  async fetch() {
+    await httpIngrediente
+      .FindIngrediente(this.findIngrediente)
+      .then((res) => {
+        this.listFindIngredient = res.data
+        this.nameIngrediente = this.listFindIngredient.description
+        this.priceIngrediente = Number(this.listFindIngredient.value).toFixed(2)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   methods: {
     async updateIngrediente() {
-      const idIngrediente = this.findIngrediente.id
+      const idIngrediente = this.findIngrediente
 
       const dataIngrediente = {
-        description: this.findIngrediente.description,
-        value: Number(this.findIngrediente.value),
+        description: this.nameIngrediente,
+        value: Number(this.priceIngrediente),
       }
 
       await httpIngrediente
@@ -59,6 +68,7 @@ export default Vue.extend({
         .catch((error) => {
           console.log(error)
         })
+      this.$nuxt.refresh()
     },
   },
 })
