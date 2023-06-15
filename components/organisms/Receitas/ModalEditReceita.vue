@@ -21,22 +21,38 @@
               />
             </div>
           </div>
-          <div
-            class="body"
-            v-for="receita in listReceitas"
-            :key="receita.id"
-          >
+          <div class="btnAddIngrediente">
+            <button @click="addIngrediente">Adicionar Ingrediente</button>
+          </div>
+          <div class="body" v-if="statusAddIngrediente">
+            <div class="input">
+              <Label for="ingrediente">Ingrediente</Label>
+              <select name="" id="ingrediente" v-model="selected">
+                <option disabled value="">Selecionar Ingrediente</option>
+                <option
+                  v-for="itemIngredient in listIngredients"
+                  :key="itemIngredient.id"
+                >
+                  {{ itemIngredient.description }}
+                </option>
+              </select>
+            </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
               <input
                 type="number"
                 id="qtd"
                 placeholder="quantidade"
-                v-model="receita.amount_ingredient"
+                v-model="qtdIngrediente"
               />
             </div>
+            <div class="btnIngrediente">
+              <button @click="inserirIngrediente(idReceita)">Inserir</button>
+            </div>
+          </div>
+          <div class="body" v-for="receita in listReceitas" :key="receita.id">
             <div class="input">
-              <label for="ingrediente">Ingrediente</label>
+              <Label for="ingrediente">Ingrediente</Label>
               <input
                 style="background: #d6d6d6; cursor: no-drop"
                 type="text"
@@ -44,23 +60,32 @@
                 v-model="receita.ingredients.description"
               />
             </div>
-            <div class="icons">
-              <button
-                class="btnEditIngrediente"
-                @click="editarIngrediente(receita)"
-              >
-                Atualizar
-              </button>
-              <button
-                class="btnDeleteIngrediente"
+            <div class="input">
+              <Label for="qtd">Quantidade</Label>
+              <input
+                type="number"
+                id="qtd"
+                placeholder="quantidade"
+                v-model="receita.amount_ingredient"
+              />
+            </div>
+
+            <div class="close">
+              <img
+                src="~/assets/icons/close.svg"
+                alt=""
                 @click="deletarIngrediente(receita)"
-              >
-                Deletar
-              </button>
+              />
             </div>
           </div>
           <Button
-            @click.native="editReceita(idReceita)"
+            @functionClick="editarIngredienteReceita(listReceitas)"
+            title="Atualizar"
+            v-if="updateIngrediente.length === 0"
+          />
+          <Button
+            v-else
+            @functionClick="editReceita(idReceita)"
             title="Salvar"
           />
         </div>
@@ -74,10 +99,13 @@ import Vue from 'vue'
 
 import httpReceitaIngrediente from '~/server/ingredienteReceita'
 import httpReceitas from '~/server/receitas'
+import httpIngredientes from '~/server/ingredientes'
 
 export default Vue.extend({
   data() {
     return {
+      statusAddIngrediente: false,
+      qtdIngrediente: '',
       valorTotal: '',
       yield_per_quantity: 0,
       time_in_hours: 0,
@@ -88,7 +116,11 @@ export default Vue.extend({
       listReceitas: [],
       idReceita: '',
       imgFile: '',
-      title: ''
+      title: '',
+      updateIngrediente: [],
+      selected: '',
+      listIngredients: [],
+      teste: {},
     }
   },
   props: {
@@ -112,31 +144,85 @@ export default Vue.extend({
         console.log(error)
       })
 
-    this.valorTotal = this.listFindReceita.value
-    console.log(this.listFindReceita)
+    await httpIngredientes
+      .ListIngredientes()
+      .then((res) => {
+        this.listIngredients = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+    // this.valorTotal = this.listFindReceita.value
   },
   methods: {
-    async editarIngrediente(data) {
-      const dataUpdate = {
-        fk_ingredient: data.fk_ingredient,
-        fk_revenues: data.fk_revenues,
-        amount_ingredient: Number(data.amount_ingredient),
-      }
-
-      await httpReceitaIngrediente
-        .UpdateReceitaIngrediente(dataUpdate)
-        .then((res) => {
-          if (res.status === 200) {
-            this.$toast.success(
-              'Ingrediente atualizado na receita com sucesso!!!'
-            )
+    addIngrediente() {
+      this.statusAddIngrediente = true
+    },
+    // Inserir um ingrediente dentro da receita
+    async inserirIngrediente(id) {
+      this.listIngredients.map((e) => {
+        if (e.description === this.selected) {
+          const dataUpdate = {
+            fk_ingredient: e.id,
+            fk_revenues: id,
+            amount_ingredient: Number(this.qtdIngrediente),
+            value: e.value,
           }
+          this.teste = dataUpdate
+        }
+      })
+      await httpReceitaIngrediente
+        .CreateReceitaIngrediente(this.teste)
+        .then((res) => {
+          console.log(res)
         })
         .catch((error) => {
           console.log(error)
         })
+      // this.$nuxt.refresh()
 
-      this.amountValue.push(data.amount_ingredient * data.ingredients.value)
+      // this.listReceitas.map((e) => {
+      //   const dataUpdate = {
+      //     fk_ingredient: e.fk_ingredient,
+      //     fk_revenues: e.fk_revenues,
+      //     amount_ingredient: Number(e.amount_ingredient),
+      //     value: e.ingredients.value,
+      //   }
+      //   // this.updateIngrediente.push(dataUpdate)
+      //   // this.amountValue.push(dataUpdate.amount_ingredient * dataUpdate.value)
+      //   console.log(dataUpdate)
+      // })
+      this.statusAddIngrediente = false
+    },
+    // Edita um ingrediente dentro da receita
+    async editarIngredienteReceita(data) {
+      data.map((e) => {
+        const dataUpdate = {
+          fk_ingredient: e.fk_ingredient,
+          fk_revenues: e.fk_revenues,
+          amount_ingredient: Number(e.amount_ingredient),
+          value: e.ingredients.value,
+        }
+
+        this.updateIngrediente.push(dataUpdate)
+        this.amountValue.push(dataUpdate.amount_ingredient * dataUpdate.value)
+      })
+
+      this.updateIngrediente.map(async (e) => {
+        await httpReceitaIngrediente
+          .UpdateReceitaIngrediente(e)
+          .then((res) => {
+            if (res.status === 200) {
+              this.$toast.success(
+                'Ingrediente atualizado na receita com sucesso!!!'
+              )
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
 
       const valorTotal = this.amountValue.reduce((soma, i) => {
         return soma + i
@@ -166,12 +252,14 @@ export default Vue.extend({
       this.$nuxt.refresh()
     },
     closeModal() {
-      this.$store.commit('OPEN_MODAL_EDIT_RECEITA', false)
+      this.$store.commit('OPEN_MODAL', false)
     },
+
+    // edita a receita
     async editReceita(id) {
       if (this.amountValue.length === 0) {
         this.$toast.info('Nada foi alterado na receita!!!')
-        this.$store.commit('OPEN_MODAL_EDIT_RECEITA', false)
+        this.$store.commit('OPEN_MODAL', false)
         return
       }
 
@@ -193,7 +281,7 @@ export default Vue.extend({
           .then((res) => {
             if (res.status === 200) {
               this.$toast.success('Receita atualizada com sucesso!!!')
-              this.$store.commit('OPEN_MODAL_EDIT_RECEITA', false)
+              this.$store.commit('OPEN_MODAL', false)
             }
           })
           .catch((error) => {
@@ -233,6 +321,17 @@ export default Vue.extend({
       flex-direction: column;
       gap: 2rem;
       overflow-y: auto;
+      .btnAddIngrediente {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        button {
+          background: var(--blue);
+          color: var(--white);
+          padding: 0.5rem;
+          border-radius: 5px;
+        }
+      }
       .header {
         width: 100%;
         display: flex;
@@ -246,44 +345,42 @@ export default Vue.extend({
           }
         }
       }
+
       .body {
         width: 100%;
         display: grid;
-        grid-template: 1fr/15rem minmax(min(2.3vw, 1rem), 1fr) 11.5rem;
+        grid-template-columns: 3fr 3fr 1fr;
         padding-bottom: 1rem;
         gap: 1rem;
         .input {
           display: flex;
           flex-direction: column;
-          input {
+          input,
+          select {
             border: 1px solid var(--bg_opacity);
           }
         }
-        .icons {
+        .btnIngrediente {
           width: 100%;
           display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          gap: 1rem;
-          .btnEditIngrediente {
-            margin-top: 25px;
+          align-items: flex-end;
+          button {
             width: 100%;
-            cursor: pointer;
-            padding: 0.6rem 1rem;
-            background: #1b6afc;
-            color: white;
-            font-weight: bold;
-            border-radius: 5px;
+            padding: 0.6rem;
+            background: var(--red);
+            color: var(--white);
+            font-weight: 700;
+            border-radius: 4px;
           }
-          .btnDeleteIngrediente {
-            margin-top: 25px;
-            width: 100%;
+        }
+        .close {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
             cursor: pointer;
-            padding: 0.6rem 1rem;
-            background: #fc1b1b;
-            color: white;
-            font-weight: bold;
-            border-radius: 5px;
+            width: 20px;
+            height: 20px;
           }
         }
       }

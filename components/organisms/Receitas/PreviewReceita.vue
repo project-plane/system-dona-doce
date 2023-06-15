@@ -27,17 +27,13 @@
             v-for="receita in listFindReceita.ingredients_Revenues"
             :key="receita.id"
           >
-            <!-- <pre>
-            {{ receita }}
-          </pre
-            > -->
-            <div class="input">
-              <h3>Quantidade</h3>
-              <p>{{ receita.amount_ingredient }}</p>
-            </div>
             <div class="input">
               <h3>Ingrediente</h3>
               <p>{{ receita.ingredients.description }}</p>
+            </div>
+            <div class="input">
+              <h3>Quantidade</h3>
+              <p>{{ receita.amount_ingredient }}</p>
             </div>
             <div class="input">
               <h3>Valor Unitário</h3>

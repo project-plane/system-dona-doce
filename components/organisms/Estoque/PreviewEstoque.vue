@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   props: {
@@ -67,7 +67,7 @@ export default Vue.extend({
   },
   methods: {
     closeModal() {
-      this.$store.commit('OPEN_MODAL_PREVIEW_ESTOQUE', false)
+      this.$store.commit('OPEN_MODAL', false)
     },
   },
 })
