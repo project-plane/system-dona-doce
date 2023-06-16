@@ -98,8 +98,8 @@
 import Vue from 'vue'
 
 import httpReceitaIngrediente from '~/server/ingredienteReceita'
-import httpReceitas from '~/server/receitas'
 import httpIngredientes from '~/server/ingredientes'
+import httpReceitas from '~/server/receitas'
 
 export default Vue.extend({
   data() {
@@ -120,7 +120,6 @@ export default Vue.extend({
       updateIngrediente: [],
       selected: '',
       listIngredients: [],
-      teste: {},
     }
   },
   props: {
@@ -152,51 +151,50 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
-
-    // this.valorTotal = this.listFindReceita.value
   },
   methods: {
     addIngrediente() {
       this.statusAddIngrediente = true
     },
     // Inserir um ingrediente dentro da receita
-    async inserirIngrediente(id) {
-      this.listIngredients.map((e) => {
+    inserirIngrediente(id) {
+      this.listIngredients.map(async (e) => {
         if (e.description === this.selected) {
-          const dataUpdate = {
-            fk_ingredient: e.id,
-            fk_revenues: id,
-            amount_ingredient: Number(this.qtdIngrediente),
-            value: e.value,
+          const dado = this.listReceitas.find((item) => {
+            return item.ingredients.description === this.selected
+          })
+          if (!dado) {
+            console.log('nao existe ingrediente')
+
+            const adicionarIngrediente = [
+              {
+                fk_ingredient: e.id,
+                fk_revenues: id,
+                amount_ingredient: Number(this.qtdIngrediente),
+              },
+            ]
+            await httpReceitaIngrediente
+              .CreateReceitaIngrediente(adicionarIngrediente)
+              .then((res) => {
+                this.$toast.success('Ingrediente inserido com sucesso!!!')
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+            this.$nuxt.refresh()
+            this.statusAddIngrediente = false
+          } else {
+            this.$toast.error('Ingrediente existente na receita!!!')
           }
-          this.teste = dataUpdate
         }
       })
-      await httpReceitaIngrediente
-        .CreateReceitaIngrediente(this.teste)
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      // this.$nuxt.refresh()
-
-      // this.listReceitas.map((e) => {
-      //   const dataUpdate = {
-      //     fk_ingredient: e.fk_ingredient,
-      //     fk_revenues: e.fk_revenues,
-      //     amount_ingredient: Number(e.amount_ingredient),
-      //     value: e.ingredients.value,
-      //   }
-      //   // this.updateIngrediente.push(dataUpdate)
-      //   // this.amountValue.push(dataUpdate.amount_ingredient * dataUpdate.value)
-      //   console.log(dataUpdate)
-      // })
-      this.statusAddIngrediente = false
+      this.selected = ''
+      this.qtdIngrediente = ''
     },
     // Edita um ingrediente dentro da receita
-    async editarIngredienteReceita(data) {
+    editarIngredienteReceita(data) {
+      console.log(data)
+
       data.map((e) => {
         const dataUpdate = {
           fk_ingredient: e.fk_ingredient,
@@ -213,22 +211,18 @@ export default Vue.extend({
         await httpReceitaIngrediente
           .UpdateReceitaIngrediente(e)
           .then((res) => {
-            if (res.status === 200) {
-              this.$toast.success(
-                'Ingrediente atualizado na receita com sucesso!!!'
-              )
-            }
+            console.log(res.data)
           })
           .catch((error) => {
             console.log(error)
           })
       })
+      this.$toast.success('Valor Atualizado com sucesso!!!')
 
+      // valor total de soma dos ingredientes
       const valorTotal = this.amountValue.reduce((soma, i) => {
         return soma + i
       })
-
-      // valor total de soma dos ingredientes
       this.valorTotal = valorTotal.toFixed(2)
     },
     async deletarIngrediente(data) {
