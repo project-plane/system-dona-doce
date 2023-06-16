@@ -3,7 +3,7 @@
     <Title>
       <h1>Novo Cliente</h1>
     </Title>
-    <ContainerInput class="input_column">
+    <ContainerInput>
       <Input
         label="Empresa"
         type="text"
@@ -32,7 +32,7 @@
         v-model="dataCLient.cep"
       />
     </ContainerInput>
-    <ContainerInput class="input_column">
+    <ContainerInput>
       <Input
         label="E-mail"
         type="text"
@@ -49,7 +49,7 @@
     <ContainerInput>
       <Input
         label="Responsável"
-        type="password"
+        type="text"
         placeholder="Digitar nome responsável"
         v-model="dataCLient.responsavel"
       />
@@ -61,36 +61,51 @@
         v-model="dataCLient.password"
       />
     </ContainerInput>
-    <ContainerInput>
-      <Input
-        label="Responsável"
-        type="password"
-        placeholder="Digitar nome responsável"
-        v-model="dataCLient.responsavel"
-      />
-    </ContainerInput>
-    <div class="input_create">
-      <div class="input_column">
-        <div class="input_add">
-          <Input
-            label="Empresas"
-            type="text"
-            placeholder="Digite empresa"
-            v-model="dataCLient.empresa"
-          />
-          <button @click="addClient">Adicionar</button>
-        </div>
-        <div class="list_empresa">
-          <div
-            class="add_clients"
-            v-for="(addClient, index) in dataCLient.addClients"
-            :key="index"
-          >
-            <p>{{ index + 1 }} - {{ addClient }}</p>
-            <span @click="removeClient(addClient)">X</span>
+    <div class="btnAssociarEmpresa">
+      <button @click="associarEmpresa">Associar Empresa</button>
+    </div>
+    <div v-if="showEmpresa">
+      <div class="associarEmpresa">
+        <ContainerInput>
+          <div class="input">
+            <Label>Empresa</Label>
+            <select v-model="selected">
+              <option disabled value="">Selecionar Empresa</option>
+              <option v-for="empresa in listEmpresa" :key="empresa.id">{{empresa.corporate_name}}</option>
+              <!-- <option>{{empresa.corporate_name}}</option> -->
+            </select>
           </div>
-        </div>
+          <Input
+            label="Responsável"
+            type="text"
+            placeholder="Digitar nome responsável"
+            v-model="responsavelAssociado"
+          />
+        </ContainerInput>
+        <button @click="addClient">Adicionar</button>
       </div>
+      <table v-if="dataCLient.addClients.length !== 0">
+        <thead>
+          <th>ID</th>
+          <th>Empresa</th>
+          <th>Responsável</th>
+          <th>Opção</th>
+        </thead>
+        <tbody>
+          <tr v-for="(addClient, index) in dataCLient.addClients" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ addClient.empresa }}</td>
+            <td>{{ addClient.responsavel }}</td>
+            <td>
+              <img
+                src="~/assets/icons/close.svg"
+                alt=""
+                @click="removeClient(addClient)"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <Button @click.native="saveClient" title="Salvar" />
   </Container>
@@ -98,6 +113,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
+import httpEmpresa from '~/server/empresa'
 
 interface DataCLient {
   [x: string]: any
@@ -126,12 +143,38 @@ export default Vue.extend({
         password: '',
         addClients: [],
       },
+      selected: '',
+      responsavelAssociado: '',
+      showEmpresa: false,
+      listEmpresa: []
     }
   },
+
+  async fetch(){
+    await httpEmpresa.GetAllEmpresa().then((res) => {
+      this.listEmpresa = res.data
+      
+    })
+    .catch((error) => {
+      console.log(error);
+      
+    })
+  },
   methods: {
+    associarEmpresa() {
+      this.showEmpresa = true
+    },
     addClient() {
-      this.dataCLient.addClients.push(this.dataCLient.empresa)
-      this.dataCLient.empresa = this.asd
+      if (!this.selected || !this.responsavelAssociado) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
+      }
+      this.dataCLient.addClients.push({
+        empresa: this.selected,
+        responsavel: this.responsavelAssociado,
+      })
+      this.selected = ''
+      this.responsavelAssociado = ''
     },
     removeClient(client: String) {
       const removeClient = this.dataCLient.addClients.indexOf(client)
@@ -152,3 +195,85 @@ export default Vue.extend({
   },
 })
 </script>
+
+
+<style scoped lang="scss">
+.btnAssociarEmpresa {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    border-radius: 0.3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blue);
+    color: #ffffff;
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 0.7rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background: rgb(44, 11, 192);
+  }
+}
+.associarEmpresa {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  button {
+    border-radius: 0.3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blue);
+    color: #ffffff;
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+}
+.inputCreate {
+  width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  gap: 2rem;
+}
+.input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  thead {
+    width: 100%;
+    background: var(--bg_heade_table);
+    tr th {
+      padding: 0.6rem 0;
+    }
+  }
+  tbody tr td {
+    text-align: center;
+    padding: 1rem 0;
+    img{
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  }
+  tbody tr button {
+    background: transparent;
+  }
+}
+</style>
