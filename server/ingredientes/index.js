@@ -7,6 +7,9 @@ export default {
   ListIngredientes: async () => {
     return await http.get('/ingredients')
   },
+  FindIngrediente: async (id) => {
+    return await http.get(`/ingredients/${id}`)
+  },
   DeleteIngredientes: async (id) => {
     return await http.delete(`/ingredients/${id}`)
   },

@@ -20,15 +20,6 @@
           </div>
           <div class="body">
             <div class="input">
-              <label for="qtd">Quantidade</label>
-              <input
-                type="number"
-                id="qtd"
-                placeholder="quantidade"
-                v-model="qtdIngrediente"
-              />
-            </div>
-            <div class="input">
               <Label for="ingrediente">Ingrediente</Label>
               <select name="" id="ingrediente" v-model="selected">
                 <option disabled value="">Selecionar Ingrediente</option>
@@ -40,6 +31,15 @@
                 </option>
               </select>
             </div>
+            <div class="input">
+              <label for="qtd">Quantidade</label>
+              <input
+                type="number"
+                id="qtd"
+                placeholder="quantidade"
+                v-model="qtdIngrediente"
+              />
+            </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
             </div>
@@ -49,17 +49,19 @@
           </div>
           <div class="footer" v-else>
             <div class="footerHeader">
-              <h4>QTD</h4>
               <h4>Ingrediente</h4>
-              <h4>Preço</h4>
+              <h4>QTD</h4>
+              <h4>Valor Unitário</h4>
+              <h4>Valor Total</h4>
             </div>
             <div
               class="footerBody"
               v-for="amountReceita in amountReceitas"
               :key="amountReceita.id"
             >
-              <span>{{ amountReceita.qtd }}</span>
               <span>{{ amountReceita.ingrediente }}</span>
+              <span>{{ amountReceita.qtd }}</span>
+              <span>R$ {{ amountReceita.valorUnitario }}</span>
               <span>R$ {{ amountReceita.valor }}</span>
             </div>
             <div class="footerFooter">
@@ -134,6 +136,7 @@ export default Vue.extend({
             this.amountReceitas.push({
               qtd: this.qtdIngrediente,
               ingrediente: this.selected,
+              valorUnitario: item.value,
               valor: (item.value * this.qtdIngrediente).toFixed(2),
             })
             // array que armazena os valores
@@ -238,7 +241,7 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
-        grid-template: 1fr/10rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
+        grid-template: 1fr/20rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
         border-bottom: 2px dashed var(--bg_opacity);
         padding-bottom: 1rem;
         gap: 1rem;
@@ -268,13 +271,13 @@ export default Vue.extend({
         width: 100%;
         .footerHeader {
           display: grid;
-          grid-template-columns: 1fr 4fr 1fr;
+          grid-template-columns: 3fr 3fr 3fr 2fr;
           padding: 0.7rem 1rem;
           border-bottom: 2px solid var(--bg_opacity);
         }
         .footerBody {
           display: grid;
-          grid-template-columns: 1fr 4fr 1fr;
+          grid-template-columns: 3fr 3fr 3fr 2fr;
           padding: 0.7rem 1rem;
         }
         .footerBody:nth-child(2n + 1) {

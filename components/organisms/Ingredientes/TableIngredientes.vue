@@ -1,6 +1,9 @@
 <template>
   <ContainerTable>
-    <EditIngrediente :findIngrediente="findIngrediente" />
+    <EditIngrediente
+      :findIngrediente="findIngrediente"
+      v-if="$store.state.openModal"
+    />
     <div class="headerTable">
       <h2>Lista de Ingredientes</h2>
       <InputSearch v-model="textSearch" />
@@ -21,7 +24,7 @@
           <td>R$ {{ ingrediente.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">
-              <button @click="editIngrediente(ingrediente)">
+              <button @click="editIngrediente(ingrediente.id)">
                 <img src="~/assets/icons/edit.svg" alt="" />
               </button>
               <button @click="deleteIngrediente(ingrediente.id)">

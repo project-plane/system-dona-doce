@@ -1,7 +1,7 @@
 <template>
   <ContainerTable>
     <ModalEditReceita
-      v-if="$store.state.openModalEditReceita"
+      v-if="$store.state.openModal"
       :dataReceita="dataReceita"
     />
     <PreviewReceita
@@ -108,7 +108,7 @@ export default Vue.extend({
     },
     editReceita(dataReceita) {
       this.dataReceita = dataReceita
-      this.$store.commit('OPEN_MODAL_EDIT_RECEITA', true)
+      this.$store.commit('OPEN_MODAL', true)
     },
     async deleteReceita(id) {
       await httpReceitas

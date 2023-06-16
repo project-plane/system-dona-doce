@@ -1,9 +1,6 @@
 <template>
   <ContainerTable>
-    <PreviewEmpresa 
-    v-if="$store.state.openModalPreviewEmpresa"
-    :findEmpresa="findEmpresa"
-    />
+    <PreviewEmpresa v-if="$store.state.openModal" :findEmpresa="findEmpresa" />
     <div class="headerTable">
       <h2>Lista de Empresas</h2>
       <InputSearch v-model="textSearch" />
@@ -56,7 +53,7 @@ export default Vue.extend({
     return {
       textSearch: '',
       listEmpresa: [],
-      findEmpresa: []
+      findEmpresa: [],
     }
   },
 
@@ -87,7 +84,7 @@ export default Vue.extend({
 
   methods: {
     async previewEmpresa(id) {
-      this.$store.commit('OPEN_MODAL_PREVIEW_EMPRESA', true)
+      this.$store.commit('OPEN_MODAL', true)
       await httpEmpresa
         .GetFindEmpresa(id)
         .then((res) => {

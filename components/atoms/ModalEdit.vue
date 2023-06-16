@@ -3,22 +3,22 @@
     <div class="negativeSpace">
       <Title class="headerModal">
         <h1>{{ titleModal }}</h1>
-        <img
-          @click="closeModal"
-          src="~/assets/icons/close.svg"
-          alt="close"
-        />
+        <img @click="closeModal" src="~/assets/icons/close.svg" alt="close" />
       </Title>
       <slot />
       <div class="btnEdit">
         <Button
-          @click.native="closeModal"
+          @functionClick="closeModal"
           title="Cancelar"
+          classEditBtn="editBtn"
+          classContainerEditBtn="classContainerEditBtn"
         />
 
         <Button
-          @click.native="$emit('save')"
+          @functionClick="$emit('save')"
           title="Salvar"
+          classEditBtn="editBtn"
+          classContainerEditBtn="classContainerEditBtn"
         />
       </div>
     </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   props: {
@@ -38,7 +38,7 @@ export default Vue.extend({
   methods: {
     closeModal() {
       this.$store.commit('OPEN_MODAL', false)
-    }
+    },
   },
 })
 </script>
@@ -77,7 +77,8 @@ export default Vue.extend({
     .btnEdit {
       width: 100%;
       display: flex;
-      gap: 4rem;
+      justify-content: flex-end;
+      gap: 2rem;
     }
   }
 }

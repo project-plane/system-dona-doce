@@ -1,7 +1,7 @@
 <template>
   <ContainerTable>
     <!-- <PreviewEstoque
-      v-if="$store.state.openModalPreviewEstoque"
+      v-if="$store.state.openModal"
       :historicoEstoque="historicoEstoque"
     /> -->
     <div class="headerTable">
@@ -12,8 +12,8 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Quantidade</th>
           <th>Ingrediente</th>
+          <th>Quantidade</th>
           <th>Preço Unitário</th>
           <!-- <th>Histórico</th> -->
         </tr>
@@ -21,8 +21,8 @@
       <tbody>
         <tr v-for="(estoque, index) in filterItems" :key="estoque.id">
           <td>{{ index + 1 }}</td>
-          <td>{{ estoque.amount_actual }}</td>
           <td>{{ estoque.description }}</td>
+          <td>{{ estoque.amount_actual }}</td>
           <td>R$ {{ estoque.value.toFixed(2) }}</td>
           <!-- <td>
             <button>
@@ -78,7 +78,7 @@ export default Vue.extend({
   methods: {
     previewHistorico(dataEstoque) {
       this.historicoEstoque = dataEstoque
-      this.$store.commit('OPEN_MODAL_PREVIEW_ESTOQUE', true)
+      this.$store.commit('OPEN_MODAL', true)
     },
   },
 })
