@@ -3,7 +3,7 @@
     <Title>
       <h1>Nova Empresa</h1>
     </Title>
-    <div class="input_column">
+    <ContainerInput>
       <Input
         label="Empresa"
         type="text"
@@ -16,8 +16,8 @@
         placeholder="Digitar CNPJ"
         v-model="dataEmpresa.cnpj"
       />
-    </div>
-    <div class="input_column">
+    </ContainerInput>
+    <ContainerInput>
       <Input
         label="Endereço"
         type="text"
@@ -30,8 +30,8 @@
         placeholder="Digitar CEP"
         v-model="dataEmpresa.cep"
       />
-    </div>
-    <div class="input_column">
+    </ContainerInput>
+    <ContainerInput>
       <Input
         label="E-mail"
         type="text"
@@ -44,15 +44,15 @@
         placeholder="Digitar fone"
         v-model="dataEmpresa.phone"
       />
-    </div>
-    <div class="input_column">
+    </ContainerInput>
+    <ContainerInput>
       <Input
         label="Senha"
         type="password"
         placeholder="Digitar senha"
         v-model="dataEmpresa.password"
       />
-    </div>
+    </ContainerInput>
     <Button @functionClick="saveClient" title="Salvar" />
   </Container>
 </template>
@@ -84,8 +84,6 @@ export default Vue.extend({
         phone: '',
         password: '',
       },
-      client: '',
-      asd: '',
     }
   },
   methods: {
@@ -138,11 +136,4 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.input_column {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  flex-direction: column;
-  gap: 1rem;
-}
 </style>

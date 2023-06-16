@@ -263,7 +263,7 @@ export default Vue.extend({
           'ingredients',
           JSON.stringify(this.listFindReceita.ingredients_Revenues)
         )
-        formData.append('old_imagem', this.imgFile)
+        formData.append('old_imagem', this.listFindReceita.imagem)
         formData.append('yield_per_quantity', this.yield_per_quantity)
         formData.append('time_in_hours', this.time_in_hours)
         formData.append('presumed_profit', this.presumed_profit)
