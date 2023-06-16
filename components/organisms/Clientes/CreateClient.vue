@@ -3,27 +3,73 @@
     <Title>
       <h1>Novo Cliente</h1>
     </Title>
+    <ContainerInput class="input_column">
+      <Input
+        label="Empresa"
+        type="text"
+        placeholder="Digitar nome empresa"
+        v-model="dataCLient.empresa"
+      />
+      <Input
+        label="CNPJ"
+        type="text"
+        placeholder="Digitar CNPJ"
+        v-model="dataCLient.cnpj"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Endereço"
+        type="text"
+        placeholder="Digitar endereço"
+        v-model="dataCLient.address"
+      />
+
+      <Input
+        label="CEP"
+        type="text"
+        placeholder="Digitar CEP"
+        v-model="dataCLient.cep"
+      />
+    </ContainerInput>
+    <ContainerInput class="input_column">
+      <Input
+        label="E-mail"
+        type="text"
+        placeholder="Digitar e-mail"
+        v-model="dataCLient.email"
+      />
+      <Input
+        label="Fone"
+        type="text"
+        placeholder="Digitar fone"
+        v-model="dataCLient.fone"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Responsável"
+        type="password"
+        placeholder="Digitar nome responsável"
+        v-model="dataCLient.responsavel"
+      />
+
+      <Input
+        label="Senha"
+        type="password"
+        placeholder="Digitar senha"
+        v-model="dataCLient.password"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Responsável"
+        type="password"
+        placeholder="Digitar nome responsável"
+        v-model="dataCLient.responsavel"
+      />
+    </ContainerInput>
     <div class="input_create">
-      <div class="input_column">
-        <Input
-          label="Nome"
-          type="text"
-          placeholder="Digite nome"
-          v-model="dataCLient.name"
-        />
-        <Input
-          label="Email"
-          type="text"
-          placeholder="Digite email"
-          v-model="dataCLient.email"
-        />
-        <Input
-          label="Senha"
-          type="password"
-          placeholder="Digite senha"
-          v-model="dataCLient.password"
-        />
-      </div>
       <div class="input_column">
         <div class="input_add">
           <Input
@@ -55,10 +101,14 @@ import Vue from 'vue'
 
 interface DataCLient {
   [x: string]: any
-  name: string
-  email: string
-  password: string
   empresa: string
+  cnpj: string
+  address: string
+  cep: string
+  email: string
+  fone: string
+  responsavel: string
+  password: string
   [addClients: number]: string
 }
 
@@ -66,14 +116,16 @@ export default Vue.extend({
   data() {
     return {
       dataCLient: <DataCLient>{
-        name: '',
-        email: '',
-        password: '',
         empresa: '',
+        cnpj: '',
+        address: '',
+        cep: '',
+        email: '',
+        fone: '',
+        responsavel: '',
+        password: '',
         addClients: [],
       },
-      client: '',
-      asd: '',
     }
   },
   methods: {

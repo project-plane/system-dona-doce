@@ -3,7 +3,7 @@
     <Title>
       <h1>Estoque</h1>
     </Title>
-    <div class="input_create">
+    <ContainerInput>
       <div class="inputSelect">
         <Label>Ingrediente</Label>
         <select v-model="selected">
@@ -23,6 +23,8 @@
         placeholder="Inserir Quantidade"
         v-model="quantidade"
       />
+    </ContainerInput>
+    <ContainerInput>
       <Input
         block="background: #d6d6d6; cursor: no-drop"
         label="Valor Ingrediente"
@@ -45,7 +47,8 @@
           <Label>Saída</Label>
         </div>
       </div>
-    </div>
+    </ContainerInput>
+    <div class="input_create"></div>
     <Button title="Salvar" @functionClick="saveEstoque" />
   </Container>
 </template>
@@ -120,35 +123,23 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.input_create {
+.inputSelect {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  .input_column {
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.inputRadio {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  .radio {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .inputSelect {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .inputRadio {
-    width: 100%;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 1rem;
-    .radio {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.2rem;
-    }
+    justify-content: center;
+    gap: 0.2rem;
   }
 }
 </style>
