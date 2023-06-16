@@ -80,7 +80,7 @@
           </div>
           <Button
             @functionClick="editarIngredienteReceita(listReceitas)"
-            title="Atualizar"
+            title="Atualizar Dados"
             v-if="updateIngrediente.length === 0"
           />
           <Button
@@ -164,8 +164,6 @@ export default Vue.extend({
             return item.ingredients.description === this.selected
           })
           if (!dado) {
-            console.log('nao existe ingrediente')
-
             const adicionarIngrediente = [
               {
                 fk_ingredient: e.id,
