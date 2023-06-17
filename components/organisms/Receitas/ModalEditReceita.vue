@@ -78,6 +78,14 @@
               />
             </div>
           </div>
+          <div class="valorTotal" v-if="updateIngrediente.length !== 0">
+            <h3>Valor Total</h3>
+            <h3>R$ {{ valorTotal }}</h3>
+          </div>
+          <div class="valorTotal" v-else>
+            <h3>Valor Total</h3>
+            <h3>R$ {{ valorAtual }}</h3>
+          </div>
           <Button
             @functionClick="editarIngredienteReceita(listReceitas)"
             title="Atualizar Dados"
@@ -107,6 +115,7 @@ export default Vue.extend({
       statusAddIngrediente: false,
       qtdIngrediente: '',
       valorTotal: '',
+      valorAtual: '',
       yield_per_quantity: 0,
       time_in_hours: 0,
       presumed_profit: 0,
@@ -138,6 +147,7 @@ export default Vue.extend({
         this.title = this.listFindReceita.description
         this.listReceitas = this.listFindReceita.ingredients_Revenues
         this.imgFile = `https://api.doce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
+        this.valorAtual = this.listFindReceita.value.toFixed(2)
       })
       .catch((error) => {
         console.log(error)
@@ -377,6 +387,14 @@ export default Vue.extend({
         }
       }
     }
+  }
+  .valorTotal {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    right: 50px;
   }
 }
 </style>

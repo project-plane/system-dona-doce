@@ -12,7 +12,7 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nome</th>
+          <th>Ingrediente</th>
           <th>Preço Unitário</th>
           <th>Opções</th>
         </tr>

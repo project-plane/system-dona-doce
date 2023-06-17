@@ -10,7 +10,6 @@
         <tr>
           <th>ID</th>
           <th>Nome</th>
-          <th>Usuário</th>
           <th>E-mail</th>
           <th>Opções</th>
         </tr>
@@ -19,7 +18,6 @@
         <tr>
           <td>{{ index + 1 }}</td>
           <td>{{ user.name }}</td>
-          <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
             <button @click="editModal(user)">

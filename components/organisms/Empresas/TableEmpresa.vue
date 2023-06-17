@@ -1,6 +1,7 @@
 <template>
   <ContainerTable>
-    <PreviewEmpresa v-if="$store.state.openModal" :findEmpresa="findEmpresa" />
+    <EditEmpresa v-if="$store.state.openModal" :findEmpresa="findEmpresa" />
+    <PreviewEmpresa v-if="$store.state.openModalPreviewEmpresa" :findPreviewEmpresa="findPreviewEmpresa" />
     <div class="headerTable">
       <h2>Lista de Empresas</h2>
       <InputSearch v-model="textSearch" />
@@ -29,7 +30,7 @@
               <button @click="previewEmpresa(empresa.id)">
                 <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
               </button>
-              <button>
+              <button @click="editEmpresa(empresa)">
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
               <!-- <button @click="deleteEmpresa(empresa.id)">
@@ -53,6 +54,7 @@ export default Vue.extend({
     return {
       textSearch: '',
       listEmpresa: [],
+      findPreviewEmpresa: [],
       findEmpresa: [],
     }
   },
@@ -84,16 +86,20 @@ export default Vue.extend({
 
   methods: {
     async previewEmpresa(id) {
-      this.$store.commit('OPEN_MODAL', true)
+      this.$store.commit('OPEN_MODAL_PREVIEW_EMPRESA', true)
       await httpEmpresa
         .GetFindEmpresa(id)
         .then((res) => {
-          this.findEmpresa = res.data
+          this.findPreviewEmpresa = res.data
         })
         .catch((error) => {
           console.log(error)
         })
     },
+    editEmpresa(dataEmpresa) {
+      this.findEmpresa = dataEmpresa
+      this.$store.commit('OPEN_MODAL', true)
+    }
     // async deleteEmpresa(id) {
     //   await httpEmpresa
     //     .DeleteEmpresa(id)
