@@ -60,7 +60,6 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
-    console.log(this.listEstoque)
   },
   computed: {
     filterItems() {

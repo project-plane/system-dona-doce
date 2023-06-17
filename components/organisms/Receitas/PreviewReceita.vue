@@ -51,6 +51,10 @@
               </p>
             </div>
           </div>
+          <div class="valorTotal">
+            <h3>Valor Total</h3>
+            <h3>R$ {{ listFindReceita.value }}</h3>
+          </div>
         </div>
       </div>
     </BeadFrame>
@@ -58,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
@@ -132,6 +136,14 @@ export default Vue.extend({
         gap: 1rem;
       }
     }
+  }
+  .valorTotal {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    right: 50px;
   }
 }
 </style>
