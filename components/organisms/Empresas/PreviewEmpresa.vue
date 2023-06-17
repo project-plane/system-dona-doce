@@ -3,45 +3,45 @@
     <div class="dataEmpresa">
       <div>
         <h4>Nome Empresa</h4>
-        <p>{{ findEmpresa.corporate_name }}</p>
+        <p>{{ findPreviewEmpresa.corporate_name }}</p>
       </div>
       <div>
         <h4>CNPJ</h4>
-        <p>{{ findEmpresa.cnpj }}</p>
+        <p>{{ findPreviewEmpresa.cnpj }}</p>
       </div>
       <div>
         <h4>Endereço</h4>
-        <p>{{ findEmpresa.address }}</p>
+        <p>{{ findPreviewEmpresa.address }}</p>
       </div>
       <div>
         <h4>CEP</h4>
-        <p>{{ findEmpresa.cep }}</p>
+        <p>{{ findPreviewEmpresa.cep }}</p>
       </div>
       <div>
         <h4>E-mail</h4>
-        <p>{{ findEmpresa.email }}</p>
+        <p>{{ findPreviewEmpresa.email }}</p>
       </div>
       <div>
         <h4>Fone</h4>
-        <p>{{ findEmpresa.fone }}</p>
+        <p>{{ findPreviewEmpresa.fone }}</p>
       </div>
     </div>
   </ModalPreview>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   props: {
-    findEmpresa: {
+    findPreviewEmpresa: {
       type: [Array, Object],
       required: true,
     },
   },
   methods: {
     closeModal() {
-      this.$store.commit('OPEN_MODAL', false)
+      this.$store.commit('OPEN_MODAL_PREVIEW_EMPRESA', false)
     },
   },
 })

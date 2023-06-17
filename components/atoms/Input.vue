@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   props: {
@@ -34,8 +34,8 @@ export default Vue.extend({
       required: true,
     },
     disabled: {
-      type: String,
-      required: true,
+      type: Boolean,
+      required: false,
     },
     block: {
       type: String,

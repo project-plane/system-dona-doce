@@ -12,7 +12,7 @@ export default Vue.extend({
   props: {
     valueText: {
       type: String,
-      required: true
+      required: false
     },
   },
   methods: {

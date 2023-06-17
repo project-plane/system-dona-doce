@@ -17,7 +17,7 @@
         <tr>
           <th>ID</th>
           <th>Imagem</th>
-          <th>Nome</th>
+          <th>Ingrediente</th>
           <th>Valor Total</th>
           <th>Opções</th>
         </tr>

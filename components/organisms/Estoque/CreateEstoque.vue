@@ -29,6 +29,7 @@
         block="background: #d6d6d6; cursor: no-drop"
         label="Valor Ingrediente"
         type="number"
+        placeholder=""
         v-model="valorUnitario"
         disabled="disabled"
       />

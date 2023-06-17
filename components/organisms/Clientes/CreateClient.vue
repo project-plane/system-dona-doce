@@ -11,10 +11,10 @@
         v-model="dataCLient.empresa"
       />
       <Input
-        label="CNPJ"
+        label="E-mail"
         type="text"
-        placeholder="Digitar CNPJ"
-        v-model="dataCLient.cnpj"
+        placeholder="Digitar e-mail"
+        v-model="dataCLient.email"
       />
     </ContainerInput>
     <ContainerInput>
@@ -34,73 +34,78 @@
     </ContainerInput>
     <ContainerInput>
       <Input
-        label="E-mail"
-        type="text"
-        placeholder="Digitar e-mail"
-        v-model="dataCLient.email"
-      />
-      <Input
         label="Fone"
         type="text"
         placeholder="Digitar fone"
         v-model="dataCLient.fone"
       />
-    </ContainerInput>
-    <ContainerInput>
       <Input
         label="Responsável"
         type="text"
         placeholder="Digitar nome responsável"
         v-model="dataCLient.responsavel"
       />
-
+    </ContainerInput>
+    <ContainerInput>
       <Input
         label="Senha"
         type="password"
         placeholder="Digitar senha"
         v-model="dataCLient.password"
       />
+
+      <div class="btnAssociarEmpresa">
+        <button @click="associarEmpresa">Associar Empresa</button>
+      </div>
     </ContainerInput>
-    <div class="btnAssociarEmpresa">
-      <button @click="associarEmpresa">Associar Empresa</button>
-    </div>
     <div v-if="showEmpresa">
       <div class="associarEmpresa">
-        <ContainerInput>
-          <div class="input">
-            <Label>Empresa</Label>
-            <select v-model="selected">
-              <option disabled value="">Selecionar Empresa</option>
-              <option v-for="empresa in listEmpresa" :key="empresa.id">{{empresa.corporate_name}}</option>
-              <!-- <option>{{empresa.corporate_name}}</option> -->
-            </select>
-          </div>
-          <Input
-            label="Responsável"
-            type="text"
-            placeholder="Digitar nome responsável"
-            v-model="responsavelAssociado"
-          />
-        </ContainerInput>
+        <div class="input">
+          <Label>Empresa</Label>
+          <select v-model="selected">
+            <option disabled value="">Selecionar Empresa</option>
+            <option v-for="empresa in listEmpresa" :key="empresa.id">
+              {{ empresa.corporate_name }}
+            </option>
+            <!-- <option>{{empresa.corporate_name}}</option> -->
+          </select>
+        </div>
+        <Input
+          label="Responsável"
+          type="text"
+          placeholder="Digitar nome responsável"
+          v-model="responsavelAssociado"
+        />
+        <Input
+          label="Fone"
+          type="text"
+          placeholder="Digitar fone responsável"
+          v-model="foneAssociado"
+        />
         <button @click="addClient">Adicionar</button>
       </div>
-      <table v-if="dataCLient.addClients.length !== 0">
+      <table v-if="dataCLient.empresasAssociadas.length !== 0">
         <thead>
           <th>ID</th>
           <th>Empresa</th>
           <th>Responsável</th>
+          <th>Fone</th>
           <th>Opção</th>
         </thead>
         <tbody>
-          <tr v-for="(addClient, index) in dataCLient.addClients" :key="index">
+          <tr
+            v-for="(empresaAssociada, index) in dataCLient.empresasAssociadas"
+            :key="index"
+          >
             <td>{{ index + 1 }}</td>
-            <td>{{ addClient.empresa }}</td>
-            <td>{{ addClient.responsavel }}</td>
+            <td>{{ empresaAssociada.empresa }}</td>
+            <td>{{ empresaAssociada.responsavel }}</td>
+            <td>{{ empresaAssociada.fone }}</td>
             <td>
               <img
                 src="~/assets/icons/close.svg"
                 alt=""
-                @click="removeClient(addClient)"
+                @click="removeEmpresaAssociada(empresaAssociada)"
               />
             </td>
           </tr>
@@ -119,14 +124,13 @@ import httpEmpresa from '~/server/empresa'
 interface DataCLient {
   [x: string]: any
   empresa: string
-  cnpj: string
   address: string
   cep: string
   email: string
   fone: string
   responsavel: string
   password: string
-  [addClients: number]: string
+  [empresasAssociadas: number]: string
 }
 
 export default Vue.extend({
@@ -134,31 +138,31 @@ export default Vue.extend({
     return {
       dataCLient: <DataCLient>{
         empresa: '',
-        cnpj: '',
         address: '',
         cep: '',
         email: '',
         fone: '',
         responsavel: '',
         password: '',
-        addClients: [],
+        empresasAssociadas: [],
       },
       selected: '',
       responsavelAssociado: '',
+      foneAssociado: '',
       showEmpresa: false,
-      listEmpresa: []
+      listEmpresa: [],
     }
   },
 
-  async fetch(){
-    await httpEmpresa.GetAllEmpresa().then((res) => {
-      this.listEmpresa = res.data
-      
-    })
-    .catch((error) => {
-      console.log(error);
-      
-    })
+  async fetch() {
+    await httpEmpresa
+      .GetAllEmpresa()
+      .then((res) => {
+        this.listEmpresa = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   methods: {
     associarEmpresa() {
@@ -169,27 +173,64 @@ export default Vue.extend({
         this.$toast.error('Preencha todos os campos!!!')
         return
       }
-      this.dataCLient.addClients.push({
-        empresa: this.selected,
-        responsavel: this.responsavelAssociado,
+
+      const existeEmpresa = this.dataCLient.empresasAssociadas.find((item) => {
+        return item.empresa === this.selected
       })
+
+      if (existeEmpresa) {
+        this.$toast.error('Empresa já associada')
+      } else {
+        this.dataCLient.empresasAssociadas.push({
+          empresa: this.selected,
+          responsavel: this.responsavelAssociado,
+          fone: this.foneAssociado,
+        })
+      }
+
       this.selected = ''
       this.responsavelAssociado = ''
+      this.foneAssociado = ''
     },
-    removeClient(client: String) {
-      const removeClient = this.dataCLient.addClients.indexOf(client)
-      this.dataCLient.addClients.splice(removeClient, 1)
+    removeEmpresaAssociada(empresaAssociada: String) {
+      const removeEmpresaAssociada =
+        this.dataCLient.empresasAssociadas.indexOf(empresaAssociada)
+      this.dataCLient.empresasAssociadas.splice(removeEmpresaAssociada, 1)
     },
 
     saveClient() {
-      const dataClient = {
-        name: this.dataCLient.name,
-        email: this.dataCLient.email,
-        password: this.dataCLient.password,
-        empresas: this.dataCLient.addClients,
+      if (
+        !this.dataCLient.empresa ||
+        !this.dataCLient.address ||
+        !this.dataCLient.cep ||
+        !this.dataCLient.email ||
+        !this.dataCLient.fone ||
+        !this.dataCLient.responsavel ||
+        !this.dataCLient.password ||
+        this.dataCLient.empresasAssociadas.length === 0
+      ) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
       }
-      this.dataCLient.name = ''
+
+      const dataClient = {
+        empresa: this.dataCLient.empresa,
+        address: this.dataCLient.address,
+        cep: this.dataCLient.cep,
+        email: this.dataCLient.email,
+        fone: this.dataCLient.fone,
+        responsavel: this.dataCLient.responsavel,
+        password: this.dataCLient.password,
+        empresasAssociadas: this.dataCLient.empresasAssociadas,
+      }
+      console.log(dataClient)
+
+      this.dataCLient.empresa = ''
+      this.dataCLient.address = ''
+      this.dataCLient.cep = ''
       this.dataCLient.email = ''
+      this.dataCLient.fone = ''
+      this.dataCLient.responsavel = ''
       this.dataCLient.password = ''
     },
   },
@@ -200,16 +241,13 @@ export default Vue.extend({
 <style scoped lang="scss">
 .btnAssociarEmpresa {
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
+  position: relative;
+  top: 25px;
+  left: 0px;
   button {
     border-radius: 0.3rem;
     font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: var(--blue);
-    color: #ffffff;
     color: var(--white);
     font-size: 1.2rem;
     padding: 0.7rem;
@@ -266,7 +304,7 @@ table {
   tbody tr td {
     text-align: center;
     padding: 1rem 0;
-    img{
+    img {
       width: 15px;
       height: 15px;
       cursor: pointer;
