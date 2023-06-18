@@ -51,10 +51,10 @@
               </p>
             </div>
           </div>
-          <div class="valorTotal">
+          <!-- <div class="valorTotal">
             <h3>Valor Total</h3>
             <h3>R$ {{ listFindReceita.value }}</h3>
-          </div>
+          </div> -->
         </div>
       </div>
     </BeadFrame>
