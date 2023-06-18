@@ -1,4 +1,18 @@
 <template>
+  <div>
+    <h1>Editar Receita</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({})
+</script>
+
+<style scoped>
+</style>
+<!-- <template>
   <div class="containerReceita">
     <BeadFrame>
       <div class="bodyModal">
@@ -201,8 +215,6 @@ export default Vue.extend({
     },
     // Edita um ingrediente dentro da receita
     editarIngredienteReceita(data) {
-      console.log(data)
-
       data.map((e) => {
         const dataUpdate = {
           fk_ingredient: e.fk_ingredient,
@@ -284,12 +296,13 @@ export default Vue.extend({
             if (res.status === 200) {
               this.$toast.success('Receita atualizada com sucesso!!!')
               this.$store.commit('OPEN_MODAL', false)
+              this.$nuxt.refresh()
+              return
             }
           })
           .catch((error) => {
             console.log(error)
           })
-        this.$nuxt.refresh()
         return
       }
     },
@@ -397,4 +410,4 @@ export default Vue.extend({
     right: 50px;
   }
 }
-</style>
+</style> -->
