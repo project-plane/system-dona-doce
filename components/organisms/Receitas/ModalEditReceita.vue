@@ -166,6 +166,7 @@ export default Vue.extend({
     addIngrediente() {
       this.statusAddIngrediente = true
     },
+
     // Inserir um ingrediente dentro da receita
     inserirIngrediente(id) {
       this.listIngredients.map(async (e) => {
@@ -199,6 +200,7 @@ export default Vue.extend({
       this.selected = ''
       this.qtdIngrediente = ''
     },
+
     // Edita um ingrediente dentro da receita
     editarIngredienteReceita(data) {
       data.map((e) => {
@@ -231,6 +233,8 @@ export default Vue.extend({
       })
       this.valorTotal = valorTotal.toFixed(2)
     },
+
+    // Deleta um ingrediente da receita
     async deletarIngrediente(data) {
       const dataDelete = {
         fk_ingredient: data.fk_ingredient,
@@ -255,7 +259,7 @@ export default Vue.extend({
       this.$store.commit('OPEN_MODAL', false)
     },
 
-    // edita a receita
+    // Edita a receita
     async editReceita(id) {
       if (this.amountValue.length === 0) {
         this.$toast.info('Nada foi alterado na receita!!!')
