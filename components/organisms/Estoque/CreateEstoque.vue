@@ -106,11 +106,13 @@ export default Vue.extend({
         .CreateEstoque(dataEstoque)
         .then((res) => {
           if (res.status === 201) {
-            this.$toast.success('Estoque criado com sucesso!!!')
+            this.$toast.success(
+              'Ingrediente inserido no estoque com sucesso!!!'
+            )
           }
         })
         .catch((error) => {
-          console.log(error)
+          this.$toast.error(error.response.data.message)
         })
       this.valorUnitario = ''
       this.quantidade = ''
