@@ -223,7 +223,6 @@ export default Vue.extend({
         password: this.dataCLient.password,
         empresasAssociadas: this.dataCLient.empresasAssociadas,
       }
-      console.log(dataClient)
 
       this.dataCLient.empresa = ''
       this.dataCLient.address = ''
