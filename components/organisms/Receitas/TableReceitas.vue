@@ -107,6 +107,7 @@ export default Vue.extend({
         })
     },
     editReceita(dataReceita) {
+      // alert('oi')
       this.dataReceita = dataReceita
       this.$store.commit('OPEN_MODAL', true)
     },
