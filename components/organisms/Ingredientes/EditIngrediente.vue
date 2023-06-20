@@ -1,5 +1,6 @@
 <template>
   <ModalEdit title-modal="Editar Ingrediente" @save="updateIngrediente">
+    <Loading v-if="loading" />
     <div class="input_edit">
       <Input
         v-model="nameIngrediente"
@@ -34,6 +35,7 @@ export default Vue.extend({
       nameIngrediente: '',
       priceIngrediente: '',
       listFindIngredient: [],
+      loading: false,
     }
   },
   async fetch() {
@@ -50,6 +52,7 @@ export default Vue.extend({
   },
   methods: {
     async updateIngrediente() {
+      this.loading = true
       const idIngrediente = this.findIngrediente
 
       const dataIngrediente = {
@@ -64,6 +67,7 @@ export default Vue.extend({
             this.$toast.success('Ingrediente atualizado com sucesso!!!')
             this.$store.commit('OPEN_MODAL', false)
           }
+          this.loading = false
         })
         .catch((error) => {
           console.log(error)

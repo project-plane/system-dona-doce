@@ -1,5 +1,6 @@
 <template>
   <ContainerTable>
+    <Loading v-if="loading" />
     <EditIngrediente
       :findIngrediente="findIngrediente"
       v-if="$store.state.openModal"
@@ -49,6 +50,7 @@ export default Vue.extend({
       listIngredientes: [],
       findIngrediente: [],
       textSearch: '',
+      loading: false,
     }
   },
 
@@ -81,12 +83,14 @@ export default Vue.extend({
 
   methods: {
     async deleteIngrediente(id) {
+      this.loading = true
       await httpListIngredientes
         .DeleteIngredientes(id)
         .then((res) => {
           if (res.status === 200) {
-            this.$toast.success('Ingrediente deletada com sucesso!!!')
+            this.$toast.success('Ingrediente deletado com sucesso!!!')
           }
+          this.loading = false
         })
         .catch((error) => {
           if (error.response.status === 500) {
