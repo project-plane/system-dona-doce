@@ -1,18 +1,4 @@
 <template>
-  <div>
-    <h1>Editar Receita</h1>
-  </div>
-</template>
-
-<script lang="ts">
-import Vue from 'vue';
-
-export default Vue.extend({})
-</script>
-
-<style scoped>
-</style>
-<!-- <template>
   <div class="containerReceita">
     <BeadFrame>
       <div class="bodyModal">
@@ -410,4 +396,4 @@ export default Vue.extend({
     right: 50px;
   }
 }
-</style> -->
+</style>
