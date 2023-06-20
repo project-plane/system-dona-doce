@@ -110,9 +110,9 @@ input[type=radio] {
 }
 
 input[type=radio]:checked {
-    background-color: var(--bg_color_modal);
-    accent-color: var(--green);
-    border: 4px solid var(--dark_check);
+    background-color: var(--blue);
+    border: .5px solid var(--blue);
+
 }
 
 a {

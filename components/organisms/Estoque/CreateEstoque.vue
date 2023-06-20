@@ -3,7 +3,7 @@
     <Title>
       <h1>Estoque</h1>
     </Title>
-    <div class="input_create">
+    <ContainerInput>
       <div class="inputSelect">
         <Label>Ingrediente</Label>
         <select v-model="selected">
@@ -23,17 +23,17 @@
         placeholder="Inserir Quantidade"
         v-model="quantidade"
       />
+    </ContainerInput>
+    <ContainerInput>
       <Input
-        label="Valor"
+        block="background: #d6d6d6; cursor: no-drop"
+        label="Valor Ingrediente"
         type="number"
-        placeholder="Inserir Valor"
+        placeholder=""
         v-model="valorUnitario"
+        disabled="disabled"
       />
       <div class="inputRadio">
-        <div class="radio">
-          <input type="radio" v-model="is_output" name="status" :value="true" />
-          <Label>Entrada</Label>
-        </div>
         <div class="radio">
           <input
             type="radio"
@@ -41,11 +41,16 @@
             name="status"
             :value="false"
           />
+          <Label>Entrada</Label>
+        </div>
+        <div class="radio">
+          <input type="radio" v-model="is_output" name="status" :value="true" />
           <Label>Saída</Label>
         </div>
       </div>
-    </div>
-    <Button title="Salvar" @click.native="saveEstoque" />
+    </ContainerInput>
+    <div class="input_create"></div>
+    <Button title="Salvar" @functionClick="saveEstoque" />
   </Container>
 </template>
 
@@ -71,14 +76,26 @@ export default Vue.extend({
       .ListIngredientes()
       .then((res) => {
         this.listIngrediente = res.data
-        console.log(res.data)
       })
       .catch((error) => {
         console.log(error)
       })
   },
+  watch: {
+    selected(newValue) {
+      this.listIngrediente.map((e) => {
+        if (e.id === newValue) {
+          this.valorUnitario = Number(e.value).toFixed(2)
+        }
+      })
+    },
+  },
   methods: {
     async saveEstoque() {
+      if (!this.selected || !this.quantidade || !this.valorUnitario) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
+      }
       const dataEstoque = {
         fk_ingredient: this.selected,
         amount: Number(this.quantidade),
@@ -90,17 +107,28 @@ export default Vue.extend({
         .CreateEstoque(dataEstoque)
         .then((res) => {
           if (res.status === 201) {
-            this.$toast.success('Estoque criado com sucesso!!!')
+            const status = JSON.parse(res.config.data)
+            if (!status.is_output) {
+              this.$toast.success(
+                'Ingrediente inserido no estoque com sucesso!!!'
+              )
+              return
+            } else {
+              this.$toast.success(
+                'Saída de ingrediente do estoque com sucesso!!!'
+              )
+              return
+            }
           }
         })
         .catch((error) => {
-          console.log(error)
+          this.$toast.error(error.response.data.message)
+          return
         })
       this.valorUnitario = ''
       this.quantidade = ''
       this.selected = ''
       this.is_output = ''
-
       this.$nuxt.refresh()
     },
   },
@@ -108,35 +136,23 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.input_create {
+.inputSelect {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  .input_column {
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.inputRadio {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  .radio {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .inputSelect {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .inputRadio {
-    width: 100%;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 1rem;
-    .radio {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.2rem;
-    }
+    justify-content: center;
+    gap: 0.2rem;
   }
 }
 </style>

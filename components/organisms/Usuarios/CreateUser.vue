@@ -3,47 +3,48 @@
     <Title>
       <h1>Novo Funcionário</h1>
     </Title>
-    <div class="input_create">
-      <div class="input_column">
-        <Input
-          label="Nome Completo"
-          type="text"
-          placeholder="Digite o nome"
-          v-model="dataUser.name"
-        />
-        <Input
-          label="E-mail"
-          type="text"
-          placeholder="Digite o e-mail"
-          v-model="dataUser.email"
-        />
-        <Input
-          label="Telefone"
-          type="number"
-          placeholder="Digite o telefone"
-          v-model="dataUser.fone"
-        />
+    <ContainerInput>
+      <Input
+        label="Nome Completo"
+        type="text"
+        placeholder="Digite o nome"
+        v-model="dataUser.name"
+      />
+      <Input
+        label="E-mail"
+        type="text"
+        placeholder="Digite o e-mail"
+        v-model="dataUser.email"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Telefone"
+        type="number"
+        placeholder="Digite o telefone"
+        v-model="dataUser.fone"
+      />
+
+      <Input
+        label="Senha"
+        type="password"
+        placeholder="Digite a senha"
+        v-model="dataUser.password"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <div class="input">
+        <Label>Cargo</Label>
+        <select v-model="selected">
+          <option disabled value="">Selecionar Cargo</option>
+          <option>Administrador</option>
+          <option>Motorista</option>
+          <option>Operador(a)</option>
+        </select>
       </div>
-      <div class="input_column">
-        <Input
-          label="Senha"
-          type="password"
-          placeholder="Digite a senha"
-          v-model="dataUser.password"
-        />
-        <div class="input">
-          <Label>Cargo</Label>
-          <select v-model="selected">
-            <option disabled value="">Selecionar Cargo</option>
-            <option>Administrador</option>
-            <option>Motorista</option>
-            <option>Operador(a)</option>
-          </select>
-        </div>
-      </div>
-    </div>
+    </ContainerInput>
     <div class="btnSalve">
-      <Button @click.native="addUser" title="Salvar" />
+      <Button @functionClick="addUser" title="Salvar" />
     </div>
   </Container>
 </template>
@@ -171,46 +172,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.input_create {
+.input {
   width: 100%;
   display: flex;
-  gap: 1.5rem;
-  .input_column {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    .input_add {
-      display: flex;
-      align-items: flex-end;
-      button {
-        background: var(--txt_color);
-        color: var(--white);
-        width: 40%;
-        height: 35px;
-        font-weight: bold;
-        font-size: 1.2rem;
-      }
-    }
-    .list_empresa {
-      height: 120px;
-      overflow-y: scroll;
-    }
-  }
-  .input {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    .excluirCargo {
-      display: flex;
-      justify-content: space-between;
-      span {
-        color: var(--border);
-        cursor: pointer;
-      }
-    }
-  }
+  flex-direction: column;
+  gap: 0.3rem;
 }
 .btnSalve {
   width: 100%;

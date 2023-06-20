@@ -14,9 +14,8 @@
 
     <div v-show="midiaFluxo" class="scroll_container">
       <div v-if="statusEmpresa">
-        <!-- <ContentCreateUser />
-        <TableUsers /> -->
-        <h2>Empresa em desenvolvimento</h2>
+        <CreateEmpresa />
+        <TableEmpresa />
       </div>
       <div v-if="statusUsers">
         <CreateUser />

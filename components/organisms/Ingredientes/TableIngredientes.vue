@@ -1,6 +1,9 @@
 <template>
   <ContainerTable>
-    <EditIngrediente :findIngrediente="findIngrediente" />
+    <EditIngrediente
+      :findIngrediente="findIngrediente"
+      v-if="$store.state.openModal"
+    />
     <div class="headerTable">
       <h2>Lista de Ingredientes</h2>
       <InputSearch v-model="textSearch" />
@@ -9,22 +12,19 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nome</th>
+          <th>Ingrediente</th>
           <th>Preço Unitário</th>
           <th>Opções</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(ingrediente, index) in filterItems"
-          :key="ingrediente.id"
-        >
+        <tr v-for="(ingrediente, index) in filterItems" :key="ingrediente.id">
           <td>{{ index + 1 }}</td>
           <td>{{ ingrediente.description }}</td>
-          <td>R$ {{ ingrediente.value }}</td>
+          <td>R$ {{ ingrediente.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">
-              <button @click="editIngrediente(ingrediente)">
+              <button @click="editIngrediente(ingrediente.id)">
                 <img src="~/assets/icons/edit.svg" alt="" />
               </button>
               <button @click="deleteIngrediente(ingrediente.id)">
@@ -69,12 +69,14 @@ export default Vue.extend({
     filterItems() {
       let itemSearch = []
       itemSearch = this.listIngredientes.filter((item) => {
-        return(
-          item.description.toLowerCase().indexOf(this.textSearch.toLowerCase()) > -1
+        return (
+          item.description
+            .toLowerCase()
+            .indexOf(this.textSearch.toLowerCase()) > -1
         )
       })
       return itemSearch
-    }
+    },
   },
 
   methods: {
@@ -106,7 +108,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.headerTable{
+.headerTable {
   width: 100%;
   display: flex;
   justify-content: space-between;

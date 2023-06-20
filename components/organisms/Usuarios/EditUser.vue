@@ -1,9 +1,5 @@
 <template>
-  <ModalEdit
-    v-if="$store.state.openModal"
-    titleModal="Editar Funcionário"
-    @save="updateFindUser"
-  >
+  <ModalEdit titleModal="Editar Funcionário" @save="updateFindUser">
     <div class="input_edit">
       <div class="input_column">
         <Input label="Nome Completo" type="text" v-model="findUser.name" />
@@ -23,7 +19,10 @@
         <Label v-if="findUser.is_enabled">Ativado</Label>
         <Label v-else> Desativado</Label>
         <div class="inputCargo">
-          <InactiveCargo @activeEnabled="enabled" :isEnabled="findUser.is_enabled" />
+          <InactiveCargo
+            @activeEnabled="enabled"
+            :isEnabled="findUser.is_enabled"
+          />
         </div>
       </div>
     </div>

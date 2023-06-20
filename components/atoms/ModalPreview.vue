@@ -5,28 +5,15 @@
         <h1>{{ titleModal }}</h1>
         <img @click="closeModal" src="~/assets/icons/close.svg" alt="close" />
       </Title>
-      <slot />
-      <div class="btnEdit">
-        <Button
-          @functionClick="closeModal"
-          title="Cancelar"
-          classEditBtn="editBtn"
-          classContainerEditBtn="classContainerEditBtn"
-        />
-
-        <Button
-          @functionClick="$emit('save')"
-          title="Salvar"
-          classEditBtn="editBtn"
-          classContainerEditBtn="classContainerEditBtn"
-        />
+      <div class="body">
+        <slot />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   props: {
@@ -37,7 +24,7 @@ export default Vue.extend({
   },
   methods: {
     closeModal() {
-      this.$store.commit('OPEN_MODAL', false)
+      this.$emit('closeModal')
     },
   },
 })
@@ -74,11 +61,11 @@ export default Vue.extend({
         cursor: pointer;
       }
     }
-    .btnEdit {
+    .body {
       width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      gap: 2rem;
+      background: var(--white);
+      padding: 1rem;
+      border-radius: 5px;
     }
   }
 }

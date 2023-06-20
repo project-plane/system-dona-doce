@@ -20,15 +20,6 @@
           </div>
           <div class="body">
             <div class="input">
-              <label for="qtd">Quantidade</label>
-              <input
-                id="qtd"
-                v-model="qtdIngrediente"
-                type="number"
-                placeholder="quantidade"
-              />
-            </div>
-            <div class="input">
               <Label for="ingrediente">Ingrediente</Label>
               <select id="ingrediente" v-model="selected" name="">
                 <option disabled value="">Selecionar Ingrediente</option>
@@ -40,6 +31,15 @@
                 </option>
               </select>
             </div>
+            <div class="input">
+              <label for="qtd">Quantidade</label>
+              <input
+                id="qtd"
+                v-model="qtdIngrediente"
+                type="number"
+                placeholder="quantidade"
+              />
+            </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
             </div>
@@ -49,24 +49,26 @@
           </div>
           <div v-else class="footer">
             <div class="footerHeader">
-              <h4>QTD</h4>
               <h4>Ingrediente</h4>
-              <h4>Preço</h4>
+              <h4>QTD</h4>
+              <h4>Valor Unitário</h4>
+              <h4>Valor Total</h4>
             </div>
             <div
               v-for="amountReceita in amountReceitas"
               :key="amountReceita.id"
               class="footerBody"
             >
-              <span>{{ amountReceita.qtd }}</span>
               <span>{{ amountReceita.ingrediente }}</span>
+              <span>{{ amountReceita.qtd }}</span>
+              <span>R$ {{ amountReceita.valorUnitario }}</span>
               <span>R$ {{ amountReceita.valor }}</span>
             </div>
             <div class="footerFooter">
               <span class="total">Total</span>
               <span>R$ {{ valorTotal }}</span>
             </div>
-            <Button title="Salvar" @click.native="saveReceita" />
+            <Button title="Salvar" @functionClick="saveReceita" />
           </div>
         </div>
       </div>
@@ -123,20 +125,29 @@ export default Vue.extend({
         return
       }
 
-      // eslint-disable-next-line array-callback-return
       this.listIngredients.map((item) => {
         if (item.description === this.selected) {
-          this.amountReceitas.push({
-            qtd: this.qtdIngrediente,
-            ingrediente: this.selected,
-            valor: (item.value * this.qtdIngrediente).toFixed(2),
-          })
-          // array que armazena os valores
-          this.amountValue.push(item.value * this.qtdIngrediente)
-          this.ingredients.push({
-            fk_ingredient: item.id,
-            amount_ingredient: Number(this.qtdIngrediente),
-          })
+          const ingredienteExiste = this.amountReceitas.find(
+            (amountReceita) => {
+              return amountReceita.ingrediente == this.selected
+            }
+          )
+          if (!ingredienteExiste) {
+            this.amountReceitas.push({
+              qtd: this.qtdIngrediente,
+              ingrediente: this.selected,
+              valorUnitario: item.value,
+              valor: (item.value * this.qtdIngrediente).toFixed(2),
+            })
+            // array que armazena os valores
+            this.amountValue.push(item.value * this.qtdIngrediente)
+            this.ingredients.push({
+              fk_ingredient: item.id,
+              amount_ingredient: Number(this.qtdIngrediente),
+            })
+          } else {
+            this.$toast.error('Ingrediente já inserido!!!')
+          }
         }
       })
 
@@ -190,7 +201,8 @@ export default Vue.extend({
   transition: opacity 0.2s ease;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  padding: 2rem 0;
   z-index: 1;
   .bodyModal {
     background: var(--white);
@@ -229,7 +241,7 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
-        grid-template: 1fr/10rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
+        grid-template: 1fr/20rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
         border-bottom: 2px dashed var(--bg_opacity);
         padding-bottom: 1rem;
         gap: 1rem;
@@ -242,17 +254,16 @@ export default Vue.extend({
           }
         }
         .btnIngrediente {
-          width: fit-content;
+          width: 100%;
           display: flex;
           align-items: flex-end;
           button {
-            height: 2.8rem;
             width: 100%;
-            padding: 0.6rem 2rem;
+            padding: 0.6rem;
             background: var(--red);
             color: var(--white);
             font-weight: 700;
-            border-radius: .2rem;
+            border-radius: 4px;
           }
         }
       }
@@ -260,13 +271,13 @@ export default Vue.extend({
         width: 100%;
         .footerHeader {
           display: grid;
-          grid-template-columns: 1fr 4fr 1fr;
+          grid-template-columns: 3fr 3fr 3fr 2fr;
           padding: 0.7rem 1rem;
           border-bottom: 2px solid var(--bg_opacity);
         }
         .footerBody {
           display: grid;
-          grid-template-columns: 1fr 4fr 1fr;
+          grid-template-columns: 3fr 3fr 3fr 2fr;
           padding: 0.7rem 1rem;
         }
         .footerBody:nth-child(2n + 1) {

@@ -28,14 +28,33 @@
             :key="receita.id"
           >
             <div class="input">
+              <h3>Ingrediente</h3>
+              <p>{{ receita.ingredients.description }}</p>
+            </div>
+            <div class="input">
               <h3>Quantidade</h3>
               <p>{{ receita.amount_ingredient }}</p>
             </div>
             <div class="input">
-              <h3>Ingrediente</h3>
-              <p>{{ receita.ingredients.description }}</p>
+              <h3>Valor Unitário</h3>
+              <p>R$ {{ receita.ingredients.value.toFixed(2) }}</p>
+            </div>
+            <div class="input">
+              <h3>Total</h3>
+              <p>
+                R$
+                {{
+                  (
+                    receita.amount_ingredient * receita.ingredients.value
+                  ).toFixed(2)
+                }}
+              </p>
             </div>
           </div>
+          <!-- <div class="valorTotal">
+            <h3>Valor Total</h3>
+            <h3>R$ {{ listFindReceita.value }}</h3>
+          </div> -->
         </div>
       </div>
     </BeadFrame>
@@ -43,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
@@ -110,12 +129,21 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
-        grid-template: 1fr/10rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
+        grid-template-columns: repeat(4, 1fr);
+        justify-items: center;
         border-bottom: 2px dashed var(--bg_opacity);
         padding-bottom: 1rem;
         gap: 1rem;
       }
     }
+  }
+  .valorTotal {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    right: 50px;
   }
 }
 </style>
