@@ -12,16 +12,16 @@
         <label for="inputFile">
           <img v-if="!urlImgPreview" src="~/assets/icons/imgFile.svg" alt="" />
           <img
-            class="imgFile"
             v-if="urlImgPreview"
+            class="imgFile"
             :src="urlImgPreview"
             alt=""
           />
         </label>
         <input
+          id="inputFile"
           type="file"
           name="inputFile"
-          id="inputFile"
           @change="fileMethods"
         />
       </div>
@@ -82,7 +82,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    async createReceita() {
+    createReceita() {
       this.dataReceita = {
         receita: this.receita,
         status: this.status_receita,
