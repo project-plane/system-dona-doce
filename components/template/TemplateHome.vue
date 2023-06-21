@@ -1,5 +1,6 @@
 <template>
     <div class="content">
+        <LoadingPage/>
         <BusinessCard/>
     </div>
 </template>
