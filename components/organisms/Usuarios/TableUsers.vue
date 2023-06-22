@@ -18,7 +18,7 @@
         <tr>
           <td>{{ index + 1 }}</td>
           <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
+          <td>{{ user.user.email }}</td>
           <td>
             <button @click="editModal(user)">
               <img src="~/assets/icons/edit.svg" alt="editUser" />
