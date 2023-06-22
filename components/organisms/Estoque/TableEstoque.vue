@@ -1,5 +1,6 @@
 <template>
-  <ContainerTable>
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
     <!-- <PreviewEstoque
       v-if="$store.state.openModal"
       :historicoEstoque="historicoEstoque"
@@ -49,6 +50,7 @@ export default Vue.extend({
       textSearch: '',
       listEstoque: [],
       historicoEstoque: [],
+      loading: true
     }
   },
   async fetch() {
@@ -60,6 +62,7 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+      this.loading = false
   },
   computed: {
     filterItems() {
@@ -68,7 +71,7 @@ export default Vue.extend({
         return (
           item.description
             .toLowerCase()
-            .indexOf(this.textSearch.toLowerCase()) > -1
+            .includes(this.textSearch.toLowerCase())
         )
       })
       return itemSearch

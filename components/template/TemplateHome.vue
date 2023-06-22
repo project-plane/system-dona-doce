@@ -1,10 +1,19 @@
 <template>
     <div class="content">
-        <LoadingPage/>
         <BusinessCard/>
     </div>
 </template>
+<script lang="ts">
+import Vue from 'vue';
 
+export default Vue.extend({
+  data() {
+        return {
+            
+        }
+    }
+})
+</script>
 <style scoped lang="scss">
     .content{
         padding: 6rem var(--space) 0 var(--space);

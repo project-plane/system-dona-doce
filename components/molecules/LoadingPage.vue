@@ -28,9 +28,9 @@ export default Vue.extend({
 <style lang="scss" scoped>
 $size: 1.5rem;
 .contentLoading{
-  position: fixed;
+  
   width: 100%;
-  height: 100vh;
+  height: 50vh;
   background: var(--bg_color);
   z-index: 9;
   top: 0;
