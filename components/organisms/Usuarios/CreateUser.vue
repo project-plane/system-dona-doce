@@ -7,29 +7,39 @@
       <Input
         label="Nome Completo"
         type="text"
-        placeholder="Digite o nome"
-        v-model="dataUser.name"
+        placeholder="Digitar nome"
+        v-model="name"
       />
       <Input
         label="E-mail"
         type="text"
-        placeholder="Digite o e-mail"
-        v-model="dataUser.email"
+        placeholder="Digitar e-mail"
+        v-model="createUser.email"
       />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Endereço"
+        type="text"
+        placeholder="Digitar endereço"
+        v-model="address"
+      />
+
+      <Input label="CEP" type="text" placeholder="Digitar cep" v-model="cep" />
     </ContainerInput>
     <ContainerInput>
       <Input
         label="Telefone"
         type="number"
-        placeholder="Digite o telefone"
-        v-model="dataUser.fone"
+        placeholder="Digitar telefone"
+        v-model="fone"
       />
 
       <Input
         label="Senha"
         type="password"
-        placeholder="Digite a senha"
-        v-model="dataUser.password"
+        placeholder="Digitar senha"
+        v-model="createUser.password"
       />
     </ContainerInput>
     <ContainerInput>
@@ -52,38 +62,19 @@
 <script lang="ts">
 import httpUsers from '@/server/users'
 import Vue from 'vue'
-interface DataUser {
-  name: string
-  username: string
-  email: string
-  password: string
-  cpf: string
-
-  fone: string
-
-  is_enabled: boolean
-  is_admin: boolean
-  is_product: boolean
-  is_stock: boolean
-  is_revenues: boolean
-}
 export default Vue.extend({
   data() {
     return {
-      dataUser: <DataUser>{
-        name: '',
-        username: 'rena.yea',
+      name: '',
+      fone: '',
+      address: '',
+      cep: '',
+      createUser: {
         email: '',
         password: '',
-        cpf: '6845613262165',
-
-        fone: '',
-
         is_enabled: true,
-        is_admin: false,
-        is_product: false,
-        is_stock: false,
-        is_revenues: false,
+        is_admin: true,
+        is_client: false,
       },
       selected: '',
     }
@@ -91,40 +82,42 @@ export default Vue.extend({
 
   methods: {
     async addUser() {
-      if (this.selected === 'Administrador') {
-        this.dataUser.is_admin = true
-      }
-      if (this.selected === 'Motorista') {
-        this.dataUser.is_stock = true
-      }
-      if (this.selected === 'Operador(a)') {
-        this.dataUser.is_product = true
-      }
+      // if (this.selected === 'Administrador') {
+      //   this.dataUser.is_admin = true
+      // }
+      // if (this.selected === 'Motorista') {
+      //   this.dataUser.is_stock = true
+      // }
+      // if (this.selected === 'Operador(a)') {
+      //   this.dataUser.is_product = true
+      // }
       const dadosUser = {
-        name: this.dataUser.name,
-        username: this.dataUser.username,
-        email: this.dataUser.email,
-        password: this.dataUser.password,
-        cpf: this.dataUser.cpf,
-        fone: this.dataUser.fone,
-        is_admin: this.dataUser.is_admin,
-        is_product: this.dataUser.is_product,
-        is_stock: this.dataUser.is_stock,
-        is_enabled: this.dataUser.is_enabled,
-        is_revenues: this.dataUser.is_revenues,
+        name: this.name,
+        fone: this.fone,
+        address: this.address,
+        cep: this.cep,
+        createUser: {
+          email: this.createUser.email,
+          password: this.createUser.password,
+          is_enabled: true,
+          is_admin: true,
+          is_client: false,
+        },
       }
 
-      if (
-        !this.dataUser.name ||
-        !this.dataUser.username ||
-        !this.dataUser.email ||
-        !this.dataUser.password ||
-        !this.dataUser.cpf ||
-        !this.selected
-      ) {
-        this.$toast.error('Preenchas todos os campos')
-        return
-      }
+      console.log(dadosUser)
+
+      // if (
+      //   !this.dataUser.name ||
+      //   !this.dataUser.username ||
+      //   !this.dataUser.email ||
+      //   !this.dataUser.password ||
+      //   !this.dataUser.cpf ||
+      //   !this.selected
+      // ) {
+      //   this.$toast.error('Preenchas todos os campos')
+      //   return
+      // }
 
       await httpUsers
         .CreateUser(dadosUser)
@@ -160,12 +153,12 @@ export default Vue.extend({
           }
         })
       this.$nuxt.refresh()
-      ;(this.dataUser.name = ''), (this.dataUser.username = '')
-      this.dataUser.email = ''
-      this.dataUser.password = ''
-      this.dataUser.cpf = ''
-      this.dataUser.fone = ''
-      this.selected = ''
+      // ;(this.dataUser.name = ''), (this.dataUser.username = '')
+      // this.dataUser.email = ''
+      // this.dataUser.password = ''
+      // this.dataUser.cpf = ''
+      // this.dataUser.fone = ''
+      // this.selected = ''
     },
   },
 })

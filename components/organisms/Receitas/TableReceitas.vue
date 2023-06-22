@@ -1,5 +1,6 @@
 <template>
-  <ContainerTable>
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
     <ModalEditReceita
       v-if="$store.state.openModal"
       :dataReceita="dataReceita"
@@ -23,9 +24,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <pre>
-          {{ filterItems }}
-        </pre> -->
         <tr v-for="(receita, index) in filterItems" :key="receita.id">
           <td>{{ index + 1 }}</td>
           <td class="img">
@@ -67,6 +65,7 @@ export default Vue.extend({
       textSearch: '',
       dataReceita: [],
       listFindReceita: [],
+      loading: true,
     }
   },
   async fetch() {
@@ -78,6 +77,7 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+    this.loading = false
   },
 
   computed: {
