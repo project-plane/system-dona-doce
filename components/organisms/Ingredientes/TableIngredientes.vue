@@ -1,9 +1,6 @@
 <template>
-
-  <ContainerTable>
-  
-  <LoadingPage v-if="loading"/>
-
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
     <EditIngrediente
       v-if="$store.state.openModal"
       :find-ingrediente="findIngrediente"
@@ -53,8 +50,7 @@ export default Vue.extend({
       listIngredientes: [],
       findIngrediente: [],
       textSearch: '',
-      loading: true
-
+      loading: true,
     }
   },
 
@@ -63,25 +59,22 @@ export default Vue.extend({
       .ListIngredientes()
       .then((res) => {
         this.listIngredientes = res.data
-        
       })
       .catch((error) => {
         if (error.response.status === 500) {
           this.$toast.error('Servidor fora do ar')
         }
       })
-      this.loading = false
+    this.loading = false
   },
 
   computed: {
     filterItems() {
       let itemSearch = []
       itemSearch = this.listIngredientes.filter((item) => {
-        return (
-          item.description
-            .toLowerCase()
-            .includes(this.textSearch.toLowerCase())
-        )
+        return item.description
+          .toLowerCase()
+          .includes(this.textSearch.toLowerCase())
       })
       return itemSearch
     },
@@ -103,7 +96,6 @@ export default Vue.extend({
             this.$toast.error(
               'Ingrediente não pode ser deletado, já vinculado a uma receita'
             )
-            
           }
         })
       this.$nuxt.refresh()

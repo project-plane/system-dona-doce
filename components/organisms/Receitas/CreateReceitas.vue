@@ -94,9 +94,9 @@ export default Vue.extend({
         this.$toast.error('Preencha todos os campos')
       } else {
         this.$store.commit('OPEN_MODAL_RECEITA', true)
-          (this.receita = '')
-          (this.status_receita = '')
-          (this.urlImgPreview = '')
+        this.receita = ''
+        this.status_receita = ''
+        this.urlImgPreview = ''
       }
     },
     fileMethods(e) {
