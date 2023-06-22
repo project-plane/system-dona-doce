@@ -8,10 +8,10 @@
               <img :src="dadosReceitas.imgPreview" alt="" />
               <div class="textReceita">
                 <h3>{{ dadosReceitas.receita }}</h3>
-                <p class="coffee" v-if="dadosReceitas.status === 'Coffee'">
+                <p v-if="dadosReceitas.status === 'Coffee'" class="coffee">
                   {{ dadosReceitas.status }}
                 </p>
-                <p class="programation" v-else>{{ dadosReceitas.status }}</p>
+                <p v-else class="programation">{{ dadosReceitas.status }}</p>
               </div>
             </div>
             <div @click="closeModal">
@@ -21,7 +21,7 @@
           <div class="body">
             <div class="input">
               <Label for="ingrediente">Ingrediente</Label>
-              <select name="" id="ingrediente" v-model="selected">
+              <select id="ingrediente" v-model="selected" name="">
                 <option disabled value="">Selecionar Ingrediente</option>
                 <option
                   v-for="itemIngredient in listIngredients"
@@ -34,10 +34,10 @@
             <div class="input">
               <label for="qtd">Quantidade</label>
               <input
-                type="number"
                 id="qtd"
-                placeholder="quantidade"
                 v-model="qtdIngrediente"
+                type="number"
+                placeholder="quantidade"
               />
             </div>
             <div class="btnIngrediente">
@@ -47,7 +47,7 @@
           <div v-if="amountReceitas.length === 0">
             <h1 style="text-align: center">Tabela vazia</h1>
           </div>
-          <div class="footer" v-else>
+          <div v-else class="footer">
             <div class="footerHeader">
               <h4>Ingrediente</h4>
               <h4>QTD</h4>
@@ -55,9 +55,9 @@
               <h4>Valor Total</h4>
             </div>
             <div
-              class="footerBody"
               v-for="amountReceita in amountReceitas"
               :key="amountReceita.id"
+              class="footerBody"
             >
               <span>{{ amountReceita.ingrediente }}</span>
               <span>{{ amountReceita.qtd }}</span>
@@ -83,6 +83,12 @@ import httpIngredientes from '~/server/ingredientes'
 import httpReceitas from '~/server/receitas'
 
 export default Vue.extend({
+  props: {
+    dadosReceitas: {
+      type: [Array, Object],
+      required: true,
+    },
+  },
   data() {
     return {
       selected: '',
@@ -97,12 +103,6 @@ export default Vue.extend({
       amountValue: [],
       ingredients: [],
     }
-  },
-  props: {
-    dadosReceitas: {
-      type: [Array, Object],
-      required: true,
-    },
   },
 
   async fetch() {

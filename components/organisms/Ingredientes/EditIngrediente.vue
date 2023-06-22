@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <ModalEdit title-modal="Editar Ingrediente" @save="updateIngrediente">
     <Loading v-if="loading" />

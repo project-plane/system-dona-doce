@@ -43,6 +43,12 @@
           >
             Receita
           </li>
+          <li
+            :class="{ active: isActiveMenu }"
+            @click="buttonMenu(isActiveMenu)"
+          >
+          Cardápio
+          </li>
         </ul>
       </nav>
       <div class="footerMenu">
@@ -64,6 +70,7 @@ export default Vue.extend({
       isActiveIngredientes: false,
       isActiveEstoque: false,
       isActiveReceitas: false,
+      isActiveMenu: false
     }
   },
 
@@ -75,6 +82,7 @@ export default Vue.extend({
       this.isActiveIngredientes = false
       this.isActiveEstoque = false
       this.isActiveReceitas = false
+      this.isActiveMenu = false
       this.$emit('empresa')
     },
     buttonClient(activeClient: boolean) {
@@ -84,6 +92,7 @@ export default Vue.extend({
       this.isActiveIngredientes = false
       this.isActiveEstoque = false
       this.isActiveReceitas = false
+      this.isActiveMenu = false
       this.$emit('client')
     },
     buttonUsers(activeUser: boolean) {
@@ -93,6 +102,7 @@ export default Vue.extend({
       this.isActiveIngredientes = false
       this.isActiveEstoque = false
       this.isActiveReceitas = false
+      this.isActiveMenu = false
       this.$emit('users')
     },
     buttonIngredientes(activeIngredientes: boolean) {
@@ -102,6 +112,7 @@ export default Vue.extend({
       this.isActiveIngredientes = true
       this.isActiveEstoque = false
       this.isActiveReceitas = false
+      this.isActiveMenu = false
       this.$emit('ingredientes')
     },
     buttonEstoque(activeEstoque: boolean) {
@@ -111,6 +122,7 @@ export default Vue.extend({
       this.isActiveIngredientes = false
       this.isActiveEstoque = true
       this.isActiveReceitas = false
+      this.isActiveMenu = false
       this.$emit('estoque')
     },
     buttonReceitas(activeReceitas: boolean) {
@@ -120,7 +132,18 @@ export default Vue.extend({
       this.isActiveIngredientes = false
       this.isActiveEstoque = false
       this.isActiveReceitas = true
+      this.isActiveMenu = false
       this.$emit('receitas')
+    },
+    buttonMenu(isActiveMenu: boolean){
+      this.isActiveEmpresa = false
+      this.isActiveClient = false
+      this.isActiveUser = false
+      this.isActiveIngredientes = false
+      this.isActiveEstoque = false
+      this.isActiveReceitas = false
+      this.isActiveMenu = true
+      this.$emit('menu')
     },
     logout() {
       sessionStorage.removeItem('token')
