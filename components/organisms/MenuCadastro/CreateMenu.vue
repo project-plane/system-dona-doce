@@ -14,6 +14,13 @@
               </div>
           </div>
           <button>Criar</button>
+          {{ daysIsMonth(selected, year) }}
+        </div>
+        <p>{{ startDay }} - {{ endDay }}</p>
+        <div class="days">
+          <div v-for="(day, index) in daysIsMonth(selected, year)" :key="index">
+            <button :class="styleButton(startDay, endDay, index+1)" @click="selectDay(day)">{{ day }}</button>
+          </div>
         </div>
     </Container>
 </template>
@@ -39,7 +46,10 @@ export default Vue.extend({
             {name: "Dezembro", value: 12}
         ],
         year: 0,
-        monthAtual: 0
+        monthAtual: 0,
+        slcDay: 1,
+        startDay: 1,
+        endDay:1
     }
   },
   watch:{
@@ -53,6 +63,11 @@ export default Vue.extend({
         if(newValue > this.monthAtual || newValue === this.monthAtual ){
             this.year = year
         }
+    },
+    slcDay(oldValue, newValue){
+      this.startDay = newValue
+      this.endDay = oldValue
+      console.log( newValue, oldValue)
     }
   },
   mounted(){
@@ -70,6 +85,20 @@ export default Vue.extend({
       const year = new Date().getFullYear()
       this.year = year
       return year
+    },
+    daysIsMonth(month:number, year:number){
+      const date = new Date(year, month, 0)
+      const lastDay = date.getDate()
+      return lastDay
+    },
+    selectDay(day:number){
+      this.slcDay = day
+    },
+    styleButton(startDay:number, endDay:number, list: number){
+      if(list >= startDay && list <= endDay){
+
+        return 'checkBtn'
+      }
     }
   }
 })
@@ -77,6 +106,23 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+$boxSize: 2rem;
+.days{
+  display: grid;
+  grid-auto-rows: $boxSize;
+  grid-template-columns: repeat(auto-fill,minmax($boxSize,1fr));
+  width: 16rem;
+  background: var(--white);
+  padding: 1rem;
+  button{
+    width: 100%;
+    height: 100%;
+    background: none;
+  }
+  .checkBtn{
+    color: blue
+  }
+}
 .containerSelect{
 display: flex;
   .contenteDate{
