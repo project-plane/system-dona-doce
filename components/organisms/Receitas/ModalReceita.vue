@@ -8,10 +8,8 @@
               <img :src="dadosReceitas.imgPreview" alt="" />
               <div class="textReceita">
                 <h3>{{ dadosReceitas.receita }}</h3>
-                <p v-if="dadosReceitas.status === 'Coffee'" class="coffee">
-                  {{ dadosReceitas.status }}
-                </p>
-                <p v-else class="programation">{{ dadosReceitas.status }}</p>
+                <p v-if="dadosReceitas.status === 0" class="coffee">Coffee</p>
+                <p v-else class="programation">Programado</p>
               </div>
             </div>
             <div @click="closeModal">
@@ -163,6 +161,7 @@ export default Vue.extend({
       this.selected = ''
     },
     async saveReceita() {
+      const status = this.dadosReceitas.status
       const formData = new FormData()
       formData.append('description', this.dadosReceitas.receita)
       formData.append('value', this.valorTotal)
@@ -171,6 +170,7 @@ export default Vue.extend({
       formData.append('yield_per_quantity', this.yield_per_quantity)
       formData.append('time_in_hours', this.time_in_hours)
       formData.append('presumed_profit', this.presumed_profit)
+      formData.append('status', status)
 
       await httpReceitas
         .CreateReceita(formData)
