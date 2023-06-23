@@ -18,7 +18,8 @@
         <tr>
           <th>ID</th>
           <th>Imagem</th>
-          <th>Ingrediente</th>
+          <th>Receita</th>
+          <th>Tipo Pedido</th>
           <th>Valor Total</th>
           <th>Opções</th>
         </tr>
@@ -33,6 +34,8 @@
             />
           </td>
           <td>{{ receita.description }}</td>
+          <td v-if="receita.status === 0">Coffee</td>
+          <td v-else>Programado</td>
           <td>R$ {{ receita.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">
