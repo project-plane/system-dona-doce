@@ -8,13 +8,28 @@
         label="Empresa"
         type="text"
         placeholder="Digitar nome empresa"
-        v-model="dataCLient.empresa"
+        v-model="corporate_name"
       />
       <Input
-        label="E-mail"
+        label="Nome Fantasia"
         type="text"
-        placeholder="Digitar e-mail"
-        v-model="dataCLient.email"
+        placeholder="Digitar nome fantasia"
+        v-model="name_fantasy"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="CNPJ"
+        type="text"
+        placeholder="Digitar CNPJ"
+        v-model="cnpj"
+      />
+
+      <Input
+        label="Inscrição Estadual"
+        type="text"
+        placeholder="Digitar inscrição estadual"
+        v-model="ie"
       />
     </ContainerInput>
     <ContainerInput>
@@ -22,28 +37,50 @@
         label="Endereço"
         type="text"
         placeholder="Digitar endereço"
-        v-model="dataCLient.address"
+        v-model="address"
       />
-
-      <Input
-        label="CEP"
-        type="text"
-        placeholder="Digitar CEP"
-        v-model="dataCLient.cep"
-      />
+      <Input label="CEP" type="text" placeholder="Digitar CEP" v-model="cep" />
     </ContainerInput>
     <ContainerInput>
       <Input
         label="Fone"
         type="text"
         placeholder="Digitar fone"
-        v-model="dataCLient.fone"
+        v-model="fone"
       />
+      <Input
+        label="Bairro"
+        type="text"
+        placeholder="Digitar bairro"
+        v-model="district"
+      />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Estado"
+        type="text"
+        placeholder="Digitar estado"
+        v-model="uf"
+      />
+      <Input
+        label="Cidade"
+        type="text"
+        placeholder="Digitar cidade"
+        v-model="county"
+      />
+    </ContainerInput>
+    <ContainerInput>
       <Input
         label="Responsável"
         type="text"
-        placeholder="Digitar nome responsável"
-        v-model="dataCLient.responsavel"
+        placeholder="Digitar responsável"
+        v-model="accountable"
+      />
+      <Input
+        label="E-mail"
+        type="text"
+        placeholder="Digitar e-mail"
+        v-model="createUser.email"
       />
     </ContainerInput>
     <ContainerInput>
@@ -51,7 +88,7 @@
         label="Senha"
         type="password"
         placeholder="Digitar senha"
-        v-model="dataCLient.password"
+        v-model="createUser.password"
       />
 
       <div class="btnAssociarEmpresa">
@@ -67,24 +104,23 @@
             <option v-for="empresa in listEmpresa" :key="empresa.id">
               {{ empresa.corporate_name }}
             </option>
-            <!-- <option>{{empresa.corporate_name}}</option> -->
           </select>
         </div>
         <Input
           label="Responsável"
           type="text"
           placeholder="Digitar nome responsável"
-          v-model="responsavelAssociado"
+          v-model="accountableCompany"
         />
         <Input
           label="Fone"
           type="text"
           placeholder="Digitar fone responsável"
-          v-model="foneAssociado"
+          v-model="foneCompany"
         />
         <button @click="addClient">Adicionar</button>
       </div>
-      <table v-if="dataCLient.empresasAssociadas.length !== 0">
+      <table v-if="createCompany.length !== 0">
         <thead>
           <th>ID</th>
           <th>Empresa</th>
@@ -93,19 +129,16 @@
           <th>Opção</th>
         </thead>
         <tbody>
-          <tr
-            v-for="(empresaAssociada, index) in dataCLient.empresasAssociadas"
-            :key="index"
-          >
+          <tr v-for="(company, index) in createCompany" :key="index">
             <td>{{ index + 1 }}</td>
-            <td>{{ empresaAssociada.empresa }}</td>
-            <td>{{ empresaAssociada.responsavel }}</td>
-            <td>{{ empresaAssociada.fone }}</td>
+            <td>{{ company.company }}</td>
+            <td>{{ company.accountable }}</td>
+            <td>{{ company.fone }}</td>
             <td>
               <img
                 src="~/assets/icons/close.svg"
                 alt=""
-                @click="removeEmpresaAssociada(empresaAssociada)"
+                @click="removeEmpresaAssociada(company)"
               />
             </td>
           </tr>
@@ -119,36 +152,34 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import httpClient from '~/server/cliente'
 import httpEmpresa from '~/server/empresa'
-
-interface DataCLient {
-  [x: string]: any
-  empresa: string
-  address: string
-  cep: string
-  email: string
-  fone: string
-  responsavel: string
-  password: string
-  [empresasAssociadas: number]: string
-}
 
 export default Vue.extend({
   data() {
     return {
-      dataCLient: <DataCLient>{
-        empresa: '',
-        address: '',
-        cep: '',
-        email: '',
-        fone: '',
-        responsavel: '',
-        password: '',
-        empresasAssociadas: [],
-      },
       selected: '',
-      responsavelAssociado: '',
-      foneAssociado: '',
+      corporate_name: '',
+      cnpj: '',
+      fone: '',
+      name_fantasy: '',
+      county: '',
+      district: '',
+      ie: '',
+      uf: '',
+      address: '',
+      cep: '',
+      accountable: '',
+      createUser: {
+        email: '',
+        password: '',
+        is_enabled: true,
+        is_admin: true,
+        is_client: true,
+      },
+      createCompany: [],
+      accountableCompany: '',
+      foneCompany: '',
       showEmpresa: false,
       listEmpresa: [],
     }
@@ -169,69 +200,100 @@ export default Vue.extend({
       this.showEmpresa = true
     },
     addClient() {
-      if (!this.selected || !this.responsavelAssociado) {
+      let idEmpresa
+      this.listEmpresa.map((e) => {
+        if (this.selected === e.corporate_name) {
+          idEmpresa = e.id
+        }
+      })
+      if (!this.selected || !this.accountableCompany || !this.foneCompany) {
         this.$toast.error('Preencha todos os campos!!!')
         return
       }
-
-      const existeEmpresa = this.dataCLient.empresasAssociadas.find((item) => {
-        return item.empresa === this.selected
+      const existeEmpresa = this.createCompany.find((item) => {
+        return item.fk_company === this.selected
       })
-
       if (existeEmpresa) {
         this.$toast.error('Empresa já associada')
       } else {
-        this.dataCLient.empresasAssociadas.push({
-          empresa: this.selected,
-          responsavel: this.responsavelAssociado,
-          fone: this.foneAssociado,
+        this.createCompany.push({
+          fk_company: idEmpresa,
+          company: this.selected,
+          accountable: this.accountableCompany,
+          fone: this.foneCompany,
         })
       }
-
       this.selected = ''
-      this.responsavelAssociado = ''
-      this.foneAssociado = ''
+      this.accountableCompany = ''
+      this.foneCompany = ''
     },
     removeEmpresaAssociada(empresaAssociada: String) {
       const removeEmpresaAssociada =
-        this.dataCLient.empresasAssociadas.indexOf(empresaAssociada)
-      this.dataCLient.empresasAssociadas.splice(removeEmpresaAssociada, 1)
+        this.createCompany.indexOf(empresaAssociada)
+      this.createCompany.splice(removeEmpresaAssociada, 1)
     },
 
-    saveClient() {
+    async saveClient() {
       if (
-        !this.dataCLient.empresa ||
-        !this.dataCLient.address ||
-        !this.dataCLient.cep ||
-        !this.dataCLient.email ||
-        !this.dataCLient.fone ||
-        !this.dataCLient.responsavel ||
-        !this.dataCLient.password ||
-        this.dataCLient.empresasAssociadas.length === 0
+        !this.corporate_name ||
+        !this.cnpj ||
+        !this.fone ||
+        !this.name_fantasy ||
+        !this.county ||
+        !this.district ||
+        !this.ie ||
+        !this.uf ||
+        !this.address ||
+        !this.cep ||
+        !this.accountable ||
+        !this.createUser ||
+        this.createCompany.length === 0
       ) {
         this.$toast.error('Preencha todos os campos!!!')
         return
       }
 
       const dataClient = {
-        empresa: this.dataCLient.empresa,
-        address: this.dataCLient.address,
-        cep: this.dataCLient.cep,
-        email: this.dataCLient.email,
-        fone: this.dataCLient.fone,
-        responsavel: this.dataCLient.responsavel,
-        password: this.dataCLient.password,
-        empresasAssociadas: this.dataCLient.empresasAssociadas,
+        corporate_name: this.corporate_name,
+        cnpj: this.cnpj,
+        fone: this.fone,
+        name_fantasy: this.name_fantasy,
+        county: this.county,
+        district: this.district,
+        ie: this.ie,
+        uf: this.uf,
+        address: this.address,
+        cep: this.cep,
+        accountable: this.accountable,
+        createUser: this.createUser,
+        createCompany: this.createCompany,
       }
       console.log(dataClient)
 
-      this.dataCLient.empresa = ''
-      this.dataCLient.address = ''
-      this.dataCLient.cep = ''
-      this.dataCLient.email = ''
-      this.dataCLient.fone = ''
-      this.dataCLient.responsavel = ''
-      this.dataCLient.password = ''
+      await httpClient
+        .CreateClient(dataClient)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      this.corporate_name = ''
+      this.cnpj = ''
+      this.fone = ''
+      this.name_fantasy = ''
+      this.county = ''
+      this.district = ''
+      this.ie = ''
+      this.uf = ''
+      this.address = ''
+      this.cep = ''
+      this.accountable = ''
+      this.createUser = ''
+      this.createCompany = []
+
+      this.$nuxt.refresh()
     },
   },
 })

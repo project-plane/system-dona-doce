@@ -8,13 +8,13 @@
         label="Empresa"
         type="text"
         placeholder="Digitar nome empresa"
-        v-model="dataEmpresa.corporate_name"
+        v-model="corporate_name"
       />
       <Input
         label="CNPJ"
         type="text"
         placeholder="Digitar CNPJ"
-        v-model="dataEmpresa.cnpj"
+        v-model="cnpj"
       />
     </ContainerInput>
     <ContainerInput>
@@ -22,35 +22,34 @@
         label="Endereço"
         type="text"
         placeholder="Digitar endereço"
-        v-model="dataEmpresa.address"
+        v-model="address"
+      />
+      <Input label="CEP" type="text" placeholder="Digitar CEP" v-model="cep" />
+    </ContainerInput>
+    <ContainerInput>
+      <Input
+        label="Cidade"
+        type="text"
+        placeholder="Digitar cidade"
+        v-model="county"
       />
       <Input
-        label="CEP"
+        label="Bairro"
         type="text"
-        placeholder="Digitar CEP"
-        v-model="dataEmpresa.cep"
+        placeholder="Digitar bairro"
+        v-model="district"
       />
+    </ContainerInput>
+    <ContainerInput>
+      <Input label="UF" type="text" placeholder="Digitar uf" v-model="uf" />
+      <Input label="Fone" type="text" placeholder="Digitar fone" v-model="ie" />
     </ContainerInput>
     <ContainerInput>
       <Input
         label="E-mail"
         type="text"
         placeholder="Digitar e-mail"
-        v-model="dataEmpresa.email"
-      />
-      <Input
-        label="Fone"
-        type="text"
-        placeholder="Digitar fone"
-        v-model="dataEmpresa.phone"
-      />
-    </ContainerInput>
-    <ContainerInput>
-      <Input
-        label="Senha"
-        type="password"
-        placeholder="Digitar senha"
-        v-model="dataEmpresa.password"
+        v-model="email"
       />
     </ContainerInput>
     <Button @functionClick="saveClient" title="Salvar" />
@@ -62,50 +61,46 @@ import Vue from 'vue'
 
 import httpEmpresa from '~/server/empresa'
 
-interface DataEmpresa {
-  corporate_name: string
-  cnpj: string
-  address: string
-  cep: string
-  email: string
-  phone: string
-  password: string
-}
-
 export default Vue.extend({
   data() {
     return {
-      dataEmpresa: <DataEmpresa>{
-        corporate_name: '',
-        cnpj: '',
-        address: '',
-        cep: '',
-        email: '',
-        phone: '',
-        password: '',
-      },
+      corporate_name: '',
+      cnpj: '',
+      address: '',
+      cep: '',
+      county: '',
+      district: '',
+      uf: '',
+      ie: '',
+      email: '',
+      accountable: '',
     }
   },
   methods: {
     async saveClient() {
       const dataEmpresa = {
-        corporate_name: this.dataEmpresa.corporate_name,
-        cnpj: this.dataEmpresa.cnpj,
-        address: this.dataEmpresa.address,
-        cep: this.dataEmpresa.cep,
-        email: this.dataEmpresa.email,
-        fone: this.dataEmpresa.phone,
-        password: this.dataEmpresa.password,
+        corporate_name: this.corporate_name,
+        cnpj: this.cnpj,
+        address: this.address,
+        cep: this.cep,
+        county: this.county,
+        district: this.district,
+        uf: this.uf,
+        ie: this.ie,
+        email: this.email,
+        accountable: 'Renato',
       }
 
       if (
-        !this.dataEmpresa.corporate_name ||
-        !this.dataEmpresa.cnpj ||
-        !this.dataEmpresa.address ||
-        !this.dataEmpresa.cep ||
-        !this.dataEmpresa.email ||
-        !this.dataEmpresa.phone ||
-        !this.dataEmpresa.password
+        !this.corporate_name ||
+        !this.cnpj ||
+        !this.address ||
+        !this.cep ||
+        !this.county ||
+        !this.district ||
+        !this.uf ||
+        !this.ie ||
+        !this.email 
       ) {
         this.$toast.error('Preencha todos os campos!!!')
       }
@@ -121,13 +116,15 @@ export default Vue.extend({
           console.log(error)
         })
 
-      this.dataEmpresa.corporate_name = ''
-      this.dataEmpresa.cnpj = ''
-      this.dataEmpresa.address = ''
-      this.dataEmpresa.cep = ''
-      this.dataEmpresa.email = ''
-      this.dataEmpresa.phone = ''
-      this.dataEmpresa.password = ''
+      this.corporate_name = ''
+      this.cnpj = ''
+      this.address = ''
+      this.cep = ''
+      this.county = ''
+      this.district = ''
+      this.uf = ''
+      this.ie = ''
+      this.email = ''
 
       this.$nuxt.refresh()
     },
