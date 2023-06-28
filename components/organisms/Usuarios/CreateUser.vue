@@ -12,7 +12,7 @@
       />
       <Input
         label="E-mail"
-        type="text"
+        type="email"
         placeholder="Digitar e-mail"
         v-model="createUser.email"
       />
@@ -73,8 +73,10 @@ export default Vue.extend({
         email: '',
         password: '',
         is_enabled: true,
-        is_admin: true,
+        is_admin: false,
         is_client: false,
+        is_driver: false,
+        is_production: false,
       },
       selected: '',
     }
@@ -82,15 +84,15 @@ export default Vue.extend({
 
   methods: {
     async addUser() {
-      // if (this.selected === 'Administrador') {
-      //   this.dataUser.is_admin = true
-      // }
-      // if (this.selected === 'Motorista') {
-      //   this.dataUser.is_stock = true
-      // }
-      // if (this.selected === 'Operador(a)') {
-      //   this.dataUser.is_product = true
-      // }
+      if (this.selected === 'Administrador') {
+        this.createUser.is_admin = true
+      }
+      if (this.selected === 'Motorista') {
+        this.createUser.is_driver = true
+      }
+      if (this.selected === 'Operador(a)') {
+        this.createUser.is_production = true
+      }
       const dadosUser = {
         name: this.name,
         fone: this.fone,
@@ -99,25 +101,28 @@ export default Vue.extend({
         createUser: {
           email: this.createUser.email,
           password: this.createUser.password,
-          is_enabled: true,
-          is_admin: true,
-          is_client: false,
+          is_enabled: this.createUser.is_enabled,
+          is_admin: this.createUser.is_admin,
+          is_client: this.createUser.is_client,
+          is_driver: this.createUser.is_driver,
+          is_production: this.createUser.is_production,
         },
       }
 
       console.log(dadosUser)
 
-      // if (
-      //   !this.dataUser.name ||
-      //   !this.dataUser.username ||
-      //   !this.dataUser.email ||
-      //   !this.dataUser.password ||
-      //   !this.dataUser.cpf ||
-      //   !this.selected
-      // ) {
-      //   this.$toast.error('Preenchas todos os campos')
-      //   return
-      // }
+      if (
+        !this.name ||
+        !this.fone ||
+        !this.address ||
+        !this.cep ||
+        !this.createUser.email ||
+        !this.createUser.password ||
+        !this.selected
+      ) {
+        this.$toast.error('Preenchas todos os campos')
+        return
+      }
 
       await httpUsers
         .CreateUser(dadosUser)
@@ -127,38 +132,34 @@ export default Vue.extend({
           }
         })
         .catch((error) => {
-          if (error.response.data.statusCode === 400) {
-            error.response.data.message.map((e: any) => {
-              if (e === 'email must be an email') {
-                this.$toast.error('Digite um e-mail válido')
-                return
-              }
-              if (
-                e ===
-                'Esta variável de senha pode ter no mínimo 4 caracteres ou no máximo 50 caracteres'
-              ) {
-                this.$toast.error('Senha mínimo 4 e máximo 50 caracteres')
-                return
-              }
-            })
-          }
-          if (error.response.data.message === 'CPF já existente') {
-            this.$toast.error('CPF já existente')
-          }
+          // if (error.response.data.statusCode === 400) {
+          //   error.response.data.message.map((e: any) => {
+          //     if (e === 'email must be an email') {
+          //       this.$toast.error('Digite um e-mail válido')
+          //       return
+          //     }
+          //     if (
+          //       e ===
+          //       'Esta variável de senha pode ter no mínimo 4 caracteres ou no máximo 50 caracteres'
+          //     ) {
+          //       this.$toast.error('Senha mínimo 4 e máximo 50 caracteres')
+          //       return
+          //     }
+          //   })
+          // }
           if (error.response.data.message === 'Email já existente') {
             this.$toast.error('E-mail já existente')
           }
-          if (error.response.data.message === 'Username já existente') {
-            this.$toast.error('Usuário já existente')
-          }
         })
       this.$nuxt.refresh()
-      // ;(this.dataUser.name = ''), (this.dataUser.username = '')
-      // this.dataUser.email = ''
-      // this.dataUser.password = ''
-      // this.dataUser.cpf = ''
-      // this.dataUser.fone = ''
-      // this.selected = ''
+
+      this.name = ''
+      this.fone = ''
+      this.address = ''
+      this.cep = ''
+      this.createUser.email = ''
+      this.createUser.password = ''
+      this.selected = ''
     },
   },
 })

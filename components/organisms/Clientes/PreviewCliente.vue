@@ -27,14 +27,23 @@
             <th>Empresa</th>
             <th>Responsável</th>
             <th>Fone</th>
+            <!-- <th>Opção</th> -->
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(clientCompany, index) in listFindClientCompany" :key="clientCompany.id">
+          <tr
+            v-for="(clientCompany, index) in listFindClientCompany"
+            :key="clientCompany.id"
+          >
             <td>{{ index + 1 }}</td>
             <td>{{ clientCompany.company.corporate_name }}</td>
-            <td>{{clientCompany.accountable}}</td>
-            <td>{{clientCompany.fone}}</td>
+            <td>{{ clientCompany.accountable }}</td>
+            <td>{{ clientCompany.fone }}</td>
+            <!-- <td>
+              <button @click="deleteEmpresa(clientCompany)">
+                <img src="~/assets/icons/delete.svg" alt="" />
+              </button>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -43,9 +52,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
-import httpClientCompany from '~/server/ClientCompany';
+import httpClientCompany from '~/server/ClientCompany'
 
 export default Vue.extend({
   props: {
@@ -56,24 +65,39 @@ export default Vue.extend({
   },
   data() {
     return {
-      listFindClientCompany: []
+      listFindClientCompany: [],
     }
   },
   async fetch() {
-    await httpClientCompany.GetFindClientCompany(this.findPreviewClient.id)
-    .then((res) => {
-      this.listFindClientCompany = res.data
-      
-    })
-    .catch((error) => {
-      console.log(error);
-      
-    })
+    await httpClientCompany
+      .GetFindClientCompany(this.findPreviewClient.id)
+      .then((res) => {
+        this.listFindClientCompany = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   methods: {
     closeModal() {
       this.$store.commit('OPEN_MODAL', false)
     },
+    // async deleteEmpresa(empresa) {
+    //   console.log(empresa)
+    //   const deleteClientCompany = {
+    //     fk_client: empresa.fk_client,
+    //     fk_company: empresa.fk_company,
+    //   }
+
+    //   await httpClientCompany
+    //     .DeleteClientCompany(deleteClientCompany)
+    //     .then((res) => {
+    //       console.log(res.data)
+    //     })
+    //     .catch((error) => {
+    //       console.log(error)
+    //     })
+    // },
   },
 })
 </script>
