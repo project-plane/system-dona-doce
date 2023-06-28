@@ -268,7 +268,6 @@ export default Vue.extend({
         createUser: this.createUser,
         createCompany: this.createCompany,
       }
-      console.log(dataClient)
 
       await httpClient
         .CreateClient(dataClient)

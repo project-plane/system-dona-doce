@@ -1,6 +1,6 @@
 <template>
     <div class="containerFrame">
-        <img src="@/static/icon/cutEffect.svg" alt="">
+        <img class="svg" src="@/static/icon/cutEffect.svg" alt="">
         <div class="contentSlot">
             <slot/>
         </div>
@@ -11,7 +11,7 @@
     .containerFrame{
         max-width: 50rem;
         display: grid;
-        img{
+        .svg{
             width: 100%;
             position: relative;
             top: .5vw;

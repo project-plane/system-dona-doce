@@ -9,6 +9,7 @@
       @ingredientes="ingredientes"
       @estoque="estoque"
       @receitas="receitas"
+      @menu="menu"
     />
 
     <div v-show="midiaFluxo" class="scroll_container">
@@ -36,6 +37,10 @@
         <CreateReceitas />
         <TableReceitas />
       </div>
+      <div v-if="statusMenu">
+        <CreateMenu/>
+        <p>Cardápio</p>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +57,7 @@ export default Vue.extend({
       statusIngredientes: false,
       statusEstoque: false,
       statusReceitas: false,
+      statusMenu: false,
       
       window:{
         width: 0
@@ -81,6 +87,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusMenu = false
     },
     users() {
       this.statusEmpresa = false
@@ -89,6 +96,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusMenu = false
     },
     client() {
       this.statusEmpresa = false
@@ -97,6 +105,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusMenu = false
     },
     ingredientes() {
       this.statusEmpresa = false
@@ -105,6 +114,7 @@ export default Vue.extend({
       this.statusIngredientes = true
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusMenu = false
     },
     estoque() {
       this.statusEmpresa = false
@@ -113,6 +123,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = true
       this.statusReceitas = false
+      this.statusMenu = false
     },
     receitas() {
       this.statusEmpresa = false
@@ -121,7 +132,18 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = true
+      this.statusMenu = false
     },
+    menu() {
+      console.log('oi')
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = false
+      this.statusMenu = true
+    }
   },
 })
 </script>

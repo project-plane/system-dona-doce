@@ -94,6 +94,7 @@ export default Vue.extend({
     async saveEstoque() {
       if (!this.selected || !this.quantidade || !this.valorUnitario) {
         this.$toast.error('Preencha todos os campos!!!')
+        return
       }
       const dataEstoque = {
         fk_ingredient: this.selected,
@@ -106,17 +107,28 @@ export default Vue.extend({
         .CreateEstoque(dataEstoque)
         .then((res) => {
           if (res.status === 201) {
-            this.$toast.success('Estoque criado com sucesso!!!')
+            const status = JSON.parse(res.config.data)
+            if (!status.is_output) {
+              this.$toast.success(
+                'Ingrediente inserido no estoque com sucesso!!!'
+              )
+              return
+            } else {
+              this.$toast.success(
+                'Saída de ingrediente do estoque com sucesso!!!'
+              )
+              return
+            }
           }
         })
         .catch((error) => {
-          console.log(error)
+          this.$toast.error(error.response.data.message)
+          return
         })
       this.valorUnitario = ''
       this.quantidade = ''
       this.selected = ''
       this.is_output = ''
-
       this.$nuxt.refresh()
     },
   },

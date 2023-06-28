@@ -1,5 +1,6 @@
 <template>
   <Container>
+    <Loading v-if="loading" />
     <Title>
       <h1>Nova Empresa</h1>
     </Title>
@@ -78,6 +79,7 @@ export default Vue.extend({
   },
   methods: {
     async saveClient() {
+      this.loading = true
       const dataEmpresa = {
         corporate_name: this.corporate_name,
         cnpj: this.cnpj,
@@ -111,6 +113,7 @@ export default Vue.extend({
           if (res.status === 201) {
             this.$toast.success('Empresa criada com sucesso')
           }
+          this.loading = false
         })
         .catch((error) => {
           console.log(error)

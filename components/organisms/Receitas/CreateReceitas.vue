@@ -12,16 +12,16 @@
         <label for="inputFile">
           <img v-if="!urlImgPreview" src="~/assets/icons/imgFile.svg" alt="" />
           <img
-            class="imgFile"
             v-if="urlImgPreview"
+            class="imgFile"
             :src="urlImgPreview"
             alt=""
           />
         </label>
         <input
+          id="inputFile"
           type="file"
           name="inputFile"
-          id="inputFile"
           @change="fileMethods"
         />
       </div>
@@ -42,7 +42,7 @@
               v-model="status_receita"
               type="radio"
               name="programation"
-              value="Coffee"
+              :value="0"
             />
             <div class="input">
               <img src="~/assets/icons/coffee.svg" alt="" />
@@ -55,7 +55,7 @@
               v-model="status_receita"
               type="radio"
               name="programation"
-              value="Programado"
+              :value="1"
             />
             <div class="input">
               <img src="~/assets/icons/programado.svg" alt="" />
@@ -82,7 +82,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    async createReceita() {
+    createReceita() {
       this.dataReceita = {
         receita: this.receita,
         status: this.status_receita,
@@ -90,13 +90,13 @@ export default Vue.extend({
         imgPreview: this.urlImgPreview,
       }
 
-      if (!this.receita || !this.status_receita) {
+      if (!this.receita || (!this.status_receita && this.status_receita)) {
         this.$toast.error('Preencha todos os campos')
       } else {
         this.$store.commit('OPEN_MODAL_RECEITA', true)
-        ;(this.receita = ''),
-          (this.status_receita = ''),
-          (this.urlImgPreview = '')
+        this.receita = ''
+        this.status_receita = ''
+        this.urlImgPreview = ''
       }
     },
     fileMethods(e) {

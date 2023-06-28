@@ -1,5 +1,6 @@
 <template>
-  <ContainerTable>
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
     <ModalEditReceita
       v-if="$store.state.openModal"
       :dataReceita="dataReceita"
@@ -17,15 +18,13 @@
         <tr>
           <th>ID</th>
           <th>Imagem</th>
-          <th>Ingrediente</th>
+          <th>Receita</th>
+          <th>Tipo Pedido</th>
           <th>Valor Total</th>
           <th>Opções</th>
         </tr>
       </thead>
       <tbody>
-        <!-- <pre>
-          {{ filterItems }}
-        </pre> -->
         <tr v-for="(receita, index) in filterItems" :key="receita.id">
           <td>{{ index + 1 }}</td>
           <td class="img">
@@ -35,6 +34,8 @@
             />
           </td>
           <td>{{ receita.description }}</td>
+          <td v-if="receita.status === 0">Coffee</td>
+          <td v-else>Programado</td>
           <td>R$ {{ receita.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">
@@ -67,6 +68,7 @@ export default Vue.extend({
       textSearch: '',
       dataReceita: [],
       listFindReceita: [],
+      loading: true,
     }
   },
   async fetch() {
@@ -78,6 +80,7 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+    this.loading = false
   },
 
   computed: {
@@ -107,6 +110,7 @@ export default Vue.extend({
         })
     },
     editReceita(dataReceita) {
+      // alert('oi')
       this.dataReceita = dataReceita
       this.$store.commit('OPEN_MODAL', true)
     },

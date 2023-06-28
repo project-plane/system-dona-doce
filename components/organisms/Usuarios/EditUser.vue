@@ -3,7 +3,7 @@
     <div class="input_edit">
       <div class="input_column">
         <Input label="Nome Completo" type="text" v-model="findUser.name" />
-        <Input label="E-mail" type="text" v-model="findUser.email" />
+        <Input label="E-mail" type="text" v-model="findUser.user.email" />
         <Input label="Telefone" type="text" v-model="findUser.fone" />
       </div>
       <div class="input_column">
