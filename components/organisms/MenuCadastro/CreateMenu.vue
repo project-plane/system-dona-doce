@@ -3,25 +3,34 @@
         <Title>
             <h1>Novo Cardápio</h1>
         </Title>
-        <div class="containerSelect">
-          <div class="contenteDate">
-              <select id="" v-model="selected" name="">
-                  <option disabled>Selecione um mês</option>
-                  <option v-for="(month, index) in months" :key="index" :value="index+1">{{ month.name }}</option>
-              </select>
-              <div class="year">
-                {{ year }}
+        <div>
+          <div class="containerSelect">
+            <div class="contenteDate">
+              <div class="selectDay" @click="showModal = true">
+                <div v-if="startDay == 0">
+                  dias
+                </div>
+                <div v-else>
+                  <p v-if="startDay != endDay">{{ startDay }} a {{ endDay }}</p>
+                  <p v-else>{{ startDay }}</p>
+                </div>
               </div>
+                <select id="" v-model="selected" name="" @click="showModal = false">
+                    <option disabled>Selecione um mês</option>
+                    <option v-for="(month, index) in months" :key="index" :value="index+1">{{ month.name }}</option>
+                </select>
+                <div class="year">
+                  {{ year }}
+                </div>
+            </div>
+            <button>Criar</button>
           </div>
-          <button>Criar</button>
-          {{ daysIsMonth(selected, year) }}
-        </div>
-        <p>{{ startDay }} - {{ endDay }}</p>
-        <div class="days">
-          <div v-for="(day, index) in daysIsMonth(selected, year)" :key="index">
-            <button :class="styleButton(startDay, endDay, index+1)" @click="selectDay(day)">{{ day }}</button>
+          <div class="days" v-if="showModal">
+            <div v-for="(day, index) in daysIsMonth(selected, year)" :key="index">
+              <button :class="styleButton(startDay, endDay, index+1)" @click="selectDay(day)" @dblclick="restartDay(day)">{{ day }}</button>
+            </div>
           </div>
-        </div>
+      </div>
     </Container>
 </template>
 
@@ -47,9 +56,10 @@ export default Vue.extend({
         ],
         year: 0,
         monthAtual: 0,
-        slcDay: 1,
-        startDay: 1,
-        endDay:1
+        slcDay: 0,
+        startDay: 0,
+        endDay:0,
+        showModal: false
     }
   },
   watch:{
@@ -64,10 +74,14 @@ export default Vue.extend({
             this.year = year
         }
     },
-    slcDay(oldValue, newValue){
-      this.startDay = newValue
-      this.endDay = oldValue
-      console.log( newValue, oldValue)
+    slcDay(newValue, oldValue){
+      if(oldValue === 0 || oldValue > newValue){
+        this.startDay = newValue
+        this.endDay = newValue
+        return
+      }
+      this.startDay = oldValue
+      this.endDay = newValue
     }
   },
   mounted(){
@@ -99,6 +113,10 @@ export default Vue.extend({
 
         return 'checkBtn'
       }
+    },
+    restartDay(day){
+      this.startDay = day
+      this.endDay = day
     }
   }
 })
@@ -114,17 +132,26 @@ $boxSize: 2rem;
   width: 16rem;
   background: var(--white);
   padding: 1rem;
+  margin-top: 0.5rem;
   button{
     width: 100%;
     height: 100%;
     background: none;
   }
   .checkBtn{
-    color: blue
+    color: var(--red);
+    font-weight: bold;
   }
 }
 .containerSelect{
 display: flex;
+  .selectDay{
+    background: var(--white);
+    width: fit-content;
+    padding: 0 1rem;
+    border-right: 2px solid var(--border);
+    cursor: pointer;
+  }
   .contenteDate{
     background-color: var(--white);
     width: fit-content;
@@ -134,6 +161,7 @@ display: flex;
     .year{
       padding: 0 1rem;
       border-left: 2px solid var(--border);
+      cursor: not-allowed;
     }
   }
   button{
