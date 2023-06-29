@@ -16,12 +16,12 @@
             <option>Operador(a)</option>
           </select>
         </div>
-        <Label v-if="findUser.is_enabled">Ativado</Label>
+        <Label v-if="findUser.user.is_enabled">Ativado</Label>
         <Label v-else> Desativado</Label>
         <div class="inputCargo">
           <InactiveCargo
             @activeEnabled="enabled"
-            :isEnabled="findUser.is_enabled"
+            :isEnabled="findUser.user.is_enabled"
           />
         </div>
       </div>
@@ -30,14 +30,15 @@
 </template>
 
 <script lang="ts">
-import httpUsers from '@/server/users'
 import Vue from 'vue'
+
+import httpUsers from '~/server/users'
 
 export default Vue.extend({
   data() {
     return {
       selected: '',
-      isEnabled: this.findUser.is_enabled,
+      isEnabled: this.findUser.user.is_enabled,
     }
   },
   props: {
@@ -49,26 +50,25 @@ export default Vue.extend({
   methods: {
     async updateFindUser() {
       if (this.selected === 'Administrador') {
-        this.findUser.is_admin = !this.findUser.is_admin
+        this.findUser.user.is_admin = true
       }
       if (this.selected === 'Motorista') {
-        this.findUser.is_stock = true
+        this.findUser.user.is_driver = true
       }
       if (this.selected === 'Operador(a)') {
-        this.findUser.is_product = true
+        this.findUser.user.is_production = true
       }
       const UpdateUser = {
         name: this.findUser.name,
-        username: this.findUser.username,
-        email: this.findUser.email,
-        cpf: this.findUser.cpf,
+        email: this.findUser.user.email,
         fone: this.findUser.fone,
-        is_enabled: this.findUser.is_enabled,
-        is_admin: this.findUser.is_admin,
-        is_product: this.findUser.is_product,
-        is_stock: this.findUser.is_stock,
-        is_revenues: this.findUser.is_revenues,
+        is_enabled: this.findUser.user.is_enabled,
+        is_admin: this.findUser.user.is_admin,
+        is_driver: this.findUser.user.is_driver,
+        is_production: this.findUser.user.is_production,
       }
+
+      console.log(UpdateUser)
 
       const idUser = this.findUser.id
 
@@ -86,7 +86,7 @@ export default Vue.extend({
       this.$nuxt.refresh()
     },
     enabled() {
-      this.findUser.is_enabled = !this.findUser.is_enabled
+      this.findUser.user.is_enabled = !this.findUser.user.is_enabled
     },
   },
 })
