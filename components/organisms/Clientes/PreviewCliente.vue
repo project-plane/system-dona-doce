@@ -27,7 +27,7 @@
             <th>Empresa</th>
             <th>Responsável</th>
             <th>Fone</th>
-            <!-- <th>Opção</th> -->
+            <th>Opção</th>
           </tr>
         </thead>
         <tbody>
@@ -39,11 +39,11 @@
             <td>{{ clientCompany.company.corporate_name }}</td>
             <td>{{ clientCompany.accountable }}</td>
             <td>{{ clientCompany.fone }}</td>
-            <!-- <td>
+            <td>
               <button @click="deleteEmpresa(clientCompany)">
                 <img src="~/assets/icons/delete.svg" alt="" />
               </button>
-            </td> -->
+            </td>
           </tr>
         </tbody>
       </table>
@@ -82,22 +82,26 @@ export default Vue.extend({
     closeModal() {
       this.$store.commit('OPEN_MODAL', false)
     },
-    // async deleteEmpresa(empresa) {
-    //   console.log(empresa)
-    //   const deleteClientCompany = {
-    //     fk_client: empresa.fk_client,
-    //     fk_company: empresa.fk_company,
-    //   }
+    async deleteEmpresa(empresa) {
+      console.log(empresa)
+      const deleteClientCompany = {
+        fk_client: empresa.fk_client,
+        fk_company: empresa.fk_company,
+      }
 
-    //   await httpClientCompany
-    //     .DeleteClientCompany(deleteClientCompany)
-    //     .then((res) => {
-    //       console.log(res.data)
-    //     })
-    //     .catch((error) => {
-    //       console.log(error)
-    //     })
-    // },
+      await httpClientCompany
+        .DeleteClientCompany(deleteClientCompany)
+        .then((res) => {
+          if (res.status === 200) {
+            this.$toast.success('Empresa deletada do cliente com sucesso!!!')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      this.$nuxt.refresh()
+    },
   },
 })
 </script>

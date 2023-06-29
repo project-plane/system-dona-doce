@@ -30,8 +30,9 @@
 </template>
 
 <script lang="ts">
-import httpUsers from '@/server/users'
 import Vue from 'vue'
+
+import httpUsers from '~/server/users'
 
 export default Vue.extend({
   data() {
@@ -69,20 +70,20 @@ export default Vue.extend({
 
       console.log(UpdateUser)
 
-      // const idUser = this.findUser.id
+      const idUser = this.findUser.id
 
-      // await httpUsers
-      //   .UpdateUser(idUser, UpdateUser)
-      //   .then((res) => {
-      //     if (res.status === 200) {
-      //       this.$toast.success('Funcionário editado com sucesso')
-      //       this.$store.commit('OPEN_MODAL', false)
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.$toast.error('Verifique todos os campos')
-      //   })
-      // this.$nuxt.refresh()
+      await httpUsers
+        .UpdateUser(idUser, UpdateUser)
+        .then((res) => {
+          if (res.status === 200) {
+            this.$toast.success('Funcionário editado com sucesso')
+            this.$store.commit('OPEN_MODAL', false)
+          }
+        })
+        .catch((error) => {
+          this.$toast.error('Verifique todos os campos')
+        })
+      this.$nuxt.refresh()
     },
     enabled() {
       this.findUser.user.is_enabled = !this.findUser.user.is_enabled
