@@ -1,6 +1,5 @@
 <template>
   <Container>
-    <Loading v-if="loading" />
     <Title>
       <h1>Nova Empresa</h1>
     </Title>
@@ -25,7 +24,12 @@
         placeholder="Digitar endereço"
         v-model="address"
       />
-      <Input label="CEP" type="text" placeholder="Digitar CEP" v-model="cep" />
+      <Input
+        label="CEP"
+        type="text"
+        placeholder="ex: XXXXX-XXX"
+        v-model="cep"
+      />
     </ContainerInput>
     <ContainerInput>
       <Input
@@ -42,8 +46,13 @@
       />
     </ContainerInput>
     <ContainerInput>
-      <Input label="UF" type="text" placeholder="Digitar uf" v-model="uf" />
-      <Input label="Fone" type="text" placeholder="Digitar fone" v-model="ie" />
+      <Input label="UF" type="text" placeholder="ex: AM" v-model="uf" />
+      <Input
+        label="Fone"
+        type="text"
+        placeholder="Digitar fone"
+        v-model="fone"
+      />
     </ContainerInput>
     <ContainerInput>
       <Input
@@ -72,9 +81,8 @@ export default Vue.extend({
       county: '',
       district: '',
       uf: '',
-      ie: '',
+      fone: '',
       email: '',
-      accountable: '',
     }
   },
   methods: {
@@ -88,9 +96,8 @@ export default Vue.extend({
         county: this.county,
         district: this.district,
         uf: this.uf,
-        ie: this.ie,
+        fone: this.fone,
         email: this.email,
-        accountable: 'Renato',
       }
 
       if (
@@ -101,10 +108,11 @@ export default Vue.extend({
         !this.county ||
         !this.district ||
         !this.uf ||
-        !this.ie ||
-        !this.email 
+        !this.fone ||
+        !this.email
       ) {
         this.$toast.error('Preencha todos os campos!!!')
+        return
       }
 
       await httpEmpresa
@@ -126,7 +134,7 @@ export default Vue.extend({
       this.county = ''
       this.district = ''
       this.uf = ''
-      this.ie = ''
+      this.fone = ''
       this.email = ''
 
       this.$nuxt.refresh()

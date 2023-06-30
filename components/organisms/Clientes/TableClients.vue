@@ -1,6 +1,10 @@
 <template>
-  <ContainerTable>
-    <PreviewCliente v-if="$store.state.openModal" :findPreviewClient="findPreviewClient" />
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
+    <PreviewCliente
+      v-if="$store.state.openModal"
+      :findPreviewClient="findPreviewClient"
+    />
     <div class="headerTable">
       <h2>Clientes Cadastrados</h2>
       <InputSearch v-model="textSearch" />
@@ -45,6 +49,7 @@ export default Vue.extend({
       listClient: [],
       findPreviewClient: [],
       textSearch: '',
+      loading: true,
     }
   },
 
@@ -57,6 +62,7 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+    this.loading = false
   },
   computed: {
     filterItems() {
