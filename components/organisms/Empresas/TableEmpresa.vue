@@ -1,7 +1,11 @@
 <template>
-  <ContainerTable>
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
     <EditEmpresa v-if="$store.state.openModal" :findEmpresa="findEmpresa" />
-    <PreviewEmpresa v-if="$store.state.openModalPreviewEmpresa" :findPreviewEmpresa="findPreviewEmpresa" />
+    <PreviewEmpresa
+      v-if="$store.state.openModalPreviewEmpresa"
+      :findPreviewEmpresa="findPreviewEmpresa"
+    />
     <div class="headerTable">
       <h2>Lista de Empresas</h2>
       <InputSearch v-model="textSearch" />
@@ -56,6 +60,7 @@ export default Vue.extend({
       listEmpresa: [],
       findPreviewEmpresa: [],
       findEmpresa: [],
+      loading: true,
     }
   },
 
@@ -68,6 +73,7 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+    this.loading = false
   },
 
   computed: {
@@ -99,7 +105,7 @@ export default Vue.extend({
     editEmpresa(dataEmpresa) {
       this.findEmpresa = dataEmpresa
       this.$store.commit('OPEN_MODAL', true)
-    }
+    },
     // async deleteEmpresa(id) {
     //   await httpEmpresa
     //     .DeleteEmpresa(id)

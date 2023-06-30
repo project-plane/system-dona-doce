@@ -1,6 +1,5 @@
 <template>
   <Container>
-    <Loading v-if="loading" />
     <Title>
       <h1>Novo Ingrediente</h1>
     </Title>
@@ -32,7 +31,6 @@ export default Vue.extend({
     return {
       nameIngrediente: '',
       priceIngrediente: '',
-      loading: false,
     }
   },
   methods: {
@@ -54,11 +52,9 @@ export default Vue.extend({
           }
           this.nameIngrediente = ''
           this.priceIngrediente = ''
-          this.loading = false
         })
         .catch((error) => {
           this.$toast.error('Ingrediente já existente!!!')
-          this.loading = false
         })
       this.nameIngrediente = ''
       this.priceIngrediente = ''

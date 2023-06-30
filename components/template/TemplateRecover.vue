@@ -8,8 +8,8 @@
     <div class="inputRecover">
       <input type="email" placeholder="Digite seu email" v-model="email" />
       <div class="btnRecover">
-        <Button @click.native="backPage" title="Voltar" />
-        <Button @click.native="recoverEmail" title="Recuperar Senha" />
+        <button @click="backPage">Voltar</button>
+        <button @click="recoverEmail">Recuperar Senha</button>
       </div>
     </div>
   </div>
@@ -75,6 +75,15 @@ export default Vue.extend({
       width: 50%;
       display: flex;
       gap: 2rem;
+      button {
+        background: var(--red);
+        color: var(--white);
+        border-radius: 4px;
+        padding: 0.6rem;
+        width: 100%;
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
     }
   }
 }

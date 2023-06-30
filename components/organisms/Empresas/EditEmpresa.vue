@@ -1,47 +1,59 @@
 <template>
-  <ModalEdit titleModal="Editar Empresa">
-    <ContainerInput>
-      <Input
-        label="Empresa"
-        type="text"
-        placeholder="Digitar nome empresa"
-        v-model="findEmpresa.corporate_name"
-      />
-      <Input
-        label="CNPJ"
-        type="text"
-        placeholder="Digitar CNPJ"
-        v-model="findEmpresa.cnpj"
-      />
-    </ContainerInput>
-    <ContainerInput>
-      <Input
-        label="Endereço"
-        type="text"
-        placeholder="Digitar endereço"
-        v-model="findEmpresa.address"
-      />
-      <Input
-        label="CEP"
-        type="text"
-        placeholder="Digitar CEP"
-        v-model="findEmpresa.cep"
-      />
-    </ContainerInput>
-    <ContainerInput>
-      <Input
-        label="E-mail"
-        type="text"
-        placeholder="Digitar e-mail"
-        v-model="findEmpresa.email"
-      />
-      <Input
-        label="Fone"
-        type="text"
-        placeholder="Digitar fone"
-        v-model="findEmpresa.fone"
-      />
-    </ContainerInput>
+  <ModalEdit titleModal="Editar Empresa" @save="updateEmpresa">
+    <Input
+      label="Empresa"
+      type="text"
+      placeholder="Digitar nome empresa"
+      v-model="findEmpresa.corporate_name"
+    />
+    <Input
+      label="CNPJ"
+      type="text"
+      placeholder="Digitar CNPJ"
+      v-model="findEmpresa.cnpj"
+    />
+    <Input
+      label="Endereço"
+      type="text"
+      placeholder="Digitar endereço"
+      v-model="findEmpresa.address"
+    />
+    <Input
+      label="CEP"
+      type="text"
+      placeholder="ex: XXXXX-XXX"
+      v-model="findEmpresa.cep"
+    />
+    <Input
+      label="Cidade"
+      type="text"
+      placeholder="Digitar cidade"
+      v-model="findEmpresa.county"
+    />
+    <Input
+      label="Bairro"
+      type="text"
+      placeholder="Digitar bairro"
+      v-model="findEmpresa.district"
+    />
+    <Input
+      label="UF"
+      type="text"
+      placeholder="ex: AM"
+      v-model="findEmpresa.uf"
+    />
+    <Input
+      label="Fone"
+      type="text"
+      placeholder="Digitar fone"
+      v-model="findEmpresa.fone"
+    />
+    <Input
+      label="E-mail"
+      type="text"
+      placeholder="Digitar e-mail"
+      v-model="findEmpresa.email"
+    />
   </ModalEdit>
 </template>
 
@@ -50,31 +62,7 @@ import Vue from 'vue'
 
 import httpEmpresa from '~/server/empresa'
 
-interface DataEmpresa {
-  corporate_name: string
-  cnpj: string
-  address: string
-  cep: string
-  email: string
-  phone: string
-  password: string
-}
-
 export default Vue.extend({
-  data() {
-    return {
-      dataEmpresa: <DataEmpresa>{
-        corporate_name: '',
-        cnpj: '',
-        address: '',
-        cep: '',
-        email: '',
-        phone: '',
-        password: '',
-      },
-    }
-  },
-
   props: {
     findEmpresa: {
       type: [Array, Object],
@@ -82,47 +70,42 @@ export default Vue.extend({
     },
   },
   methods: {
-    async saveClient() {
+    async updateEmpresa() {
       const dataEmpresa = {
-        corporate_name: this.dataEmpresa.corporate_name,
-        cnpj: this.dataEmpresa.cnpj,
-        address: this.dataEmpresa.address,
-        cep: this.dataEmpresa.cep,
-        email: this.dataEmpresa.email,
-        fone: this.dataEmpresa.phone,
+        corporate_name: this.findEmpresa.corporate_name,
+        cnpj: this.findEmpresa.cnpj,
+        email: this.findEmpresa.email,
+        fone: this.findEmpresa.fone,
+        address: this.findEmpresa.address,
+        cep: this.findEmpresa.cep,
+        county: this.findEmpresa.county,
+        district: this.findEmpresa.district,
+        uf: this.findEmpresa.uf,
       }
 
       if (
-        !this.dataEmpresa.corporate_name ||
-        !this.dataEmpresa.cnpj ||
-        !this.dataEmpresa.address ||
-        !this.dataEmpresa.cep ||
-        !this.dataEmpresa.email ||
-        !this.dataEmpresa.phone ||
-        !this.dataEmpresa.password
+        !this.findEmpresa.corporate_name ||
+        !this.findEmpresa.cnpj ||
+        !this.findEmpresa.email ||
+        !this.findEmpresa.fone ||
+        !this.findEmpresa.address ||
+        !this.findEmpresa.cep ||
+        !this.findEmpresa.county ||
+        !this.findEmpresa.district ||
+        !this.findEmpresa.uf
       ) {
         this.$toast.error('Preencha todos os campos!!!')
       }
 
       await httpEmpresa
-        .CreateEmpresa(dataEmpresa)
+        .UpdateEmpresa(this.findEmpresa.id, dataEmpresa)
         .then((res) => {
-          if (res.status === 201) {
-            this.$toast.success('Empresa criada com sucesso')
-          }
+          this.$toast.success('Empresa atualizada com sucesso')
+          this.$store.commit('OPEN_MODAL', false)
         })
         .catch((error) => {
           console.log(error)
         })
-
-      this.dataEmpresa.corporate_name = ''
-      this.dataEmpresa.cnpj = ''
-      this.dataEmpresa.address = ''
-      this.dataEmpresa.cep = ''
-      this.dataEmpresa.email = ''
-      this.dataEmpresa.phone = ''
-      this.dataEmpresa.password = ''
-
       this.$nuxt.refresh()
     },
   },

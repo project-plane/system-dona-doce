@@ -25,7 +25,12 @@
         v-model="address"
       />
 
-      <Input label="CEP" type="text" placeholder="Digitar cep" v-model="cep" />
+      <Input
+        label="CEP"
+        type="text"
+        placeholder="ex: XXXXX-XXX"
+        v-model="cep"
+      />
     </ContainerInput>
     <ContainerInput>
       <Input

@@ -5,7 +5,9 @@
         <h1>{{ titleModal }}</h1>
         <img @click="closeModal" src="~/assets/icons/close.svg" alt="close" />
       </Title>
-      <slot />
+      <div class="container">
+        <slot />
+      </div>
       <div class="btnEdit">
         <Button
           @functionClick="closeModal"
@@ -66,6 +68,11 @@ export default Vue.extend({
     gap: 2rem;
     background: var(--bg_color);
     border-radius: 7px;
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
     .headerModal {
       width: 100%;
       display: flex;

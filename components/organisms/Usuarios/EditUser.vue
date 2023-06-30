@@ -1,29 +1,53 @@
 <template>
   <ModalEdit titleModal="Editar Funcionário" @save="updateFindUser">
-    <div class="input_edit">
-      <div class="input_column">
-        <Input label="Nome Completo" type="text" v-model="findUser.name" />
-        <Input label="E-mail" type="text" v-model="findUser.user.email" />
-        <Input label="Telefone" type="text" v-model="findUser.fone" />
+    <Input
+      label="Nome Completo"
+      type="text"
+      placeholder="Digitar nome"
+      v-model="findUser.name"
+    />
+    <Input
+      label="E-mail"
+      type="email"
+      placeholder="Digitar e-mail"
+      v-model="findUser.user.email"
+    />
+    <Input
+      label="Endereço"
+      type="text"
+      placeholder="Digitar endereço"
+      v-model="findUser.address"
+    />
+
+    <Input
+      label="CEP"
+      type="text"
+      placeholder="ex: XXXXX-XXX"
+      v-model="findUser.cep"
+    />
+    <Input
+      label="Telefone"
+      type="number"
+      placeholder="Digitar telefone"
+      v-model="findUser.fone"
+    />
+    <div class="input_cargo">
+      <div class="input">
+        <Label>Cargo</Label>
+        <select v-model="selected">
+          <option disabled value="">Selecionar cargo</option>
+          <option>Administrador</option>
+          <option>Motorista</option>
+          <option>Operador(a)</option>
+        </select>
       </div>
-      <div class="input_column">
-        <div class="input">
-          <Label>Cargo</Label>
-          <select v-model="selected">
-            <option disabled value="">Selecionar cargo</option>
-            <option>Administrador</option>
-            <option>Motorista</option>
-            <option>Operador(a)</option>
-          </select>
-        </div>
-        <Label v-if="findUser.user.is_enabled">Ativado</Label>
-        <Label v-else> Desativado</Label>
-        <div class="inputCargo">
-          <InactiveCargo
-            @activeEnabled="enabled"
-            :isEnabled="findUser.user.is_enabled"
-          />
-        </div>
+      <Label v-if="findUser.user.is_enabled">Ativado</Label>
+      <Label v-else> Desativado</Label>
+      <div class="inputCargo">
+        <InactiveCargo
+          @activeEnabled="enabled"
+          :isEnabled="findUser.user.is_enabled"
+        />
       </div>
     </div>
   </ModalEdit>
@@ -60,12 +84,16 @@ export default Vue.extend({
       }
       const UpdateUser = {
         name: this.findUser.name,
-        email: this.findUser.user.email,
         fone: this.findUser.fone,
-        is_enabled: this.findUser.user.is_enabled,
-        is_admin: this.findUser.user.is_admin,
-        is_driver: this.findUser.user.is_driver,
-        is_production: this.findUser.user.is_production,
+        address: this.findUser.address,
+        cep: this.findUser.cep,
+        updateUserDto: {
+          email: this.findUser.user.email,
+          is_enabled: this.findUser.user.is_enabled,
+          is_admin: this.findUser.user.is_admin,
+          is_driver: this.findUser.user.is_driver,
+          is_production: this.findUser.user.is_production,
+        },
       }
 
       console.log(UpdateUser)
@@ -101,31 +129,22 @@ export default Vue.extend({
     cursor: pointer;
   }
 }
-.input_edit {
+
+.input_cargo {
   width: 100%;
   display: flex;
-  gap: 1.5rem;
-  .input_column {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    .inputCargo {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-    }
-  }
-  .input {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+  flex-direction: column;
+  gap: 1rem;
+  .inputCargo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
   }
 }
-.btnEdit {
+.input {
   width: 100%;
   display: flex;
-  gap: 4rem;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 </style>
