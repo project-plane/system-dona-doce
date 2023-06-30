@@ -13,4 +13,7 @@ export default {
   GetFindEmpresa: async (id) => {
     return await http.get(`/company/${id}`)
   },
+  UpdateEmpresa: async (id, data) => {
+    return await http.patch(`/company/${id}`, data)
+  }
 }

@@ -1,21 +1,18 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <ModalEdit title-modal="Editar Ingrediente" @save="updateIngrediente">
-    <Loading v-if="loading" />
-    <div class="input_edit">
-      <Input
-        v-model="nameIngrediente"
-        label="Nome"
-        type="text"
-        placeholder="Digite o nome ingrediente"
-      />
-      <Input
-        v-model="priceIngrediente"
-        label="Preço"
-        type="number"
-        placeholder="Digite o preco ingrediente"
-      />
-    </div>
+    <Input
+      v-model="nameIngrediente"
+      label="Nome"
+      type="text"
+      placeholder="Digite o nome ingrediente"
+    />
+    <Input
+      v-model="priceIngrediente"
+      label="Preço"
+      type="number"
+      placeholder="Digite o preco ingrediente"
+    />
   </ModalEdit>
 </template>
 
@@ -36,7 +33,6 @@ export default Vue.extend({
       nameIngrediente: '',
       priceIngrediente: '',
       listFindIngredient: [],
-      loading: false,
     }
   },
   async fetch() {
@@ -53,7 +49,6 @@ export default Vue.extend({
   },
   methods: {
     async updateIngrediente() {
-      this.loading = true
       const idIngrediente = this.findIngrediente
 
       const dataIngrediente = {
@@ -68,7 +63,6 @@ export default Vue.extend({
             this.$toast.success('Ingrediente atualizado com sucesso!!!')
             this.$store.commit('OPEN_MODAL', false)
           }
-          this.loading = false
         })
         .catch((error) => {
           console.log(error)
@@ -80,28 +74,4 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.headerModal {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  img {
-    cursor: pointer;
-  }
-}
-.input_edit {
-  width: 100%;
-  display: flex;
-  gap: 1.5rem;
-  .input {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-}
-.btnEdit {
-  width: 100%;
-  display: flex;
-  gap: 4rem;
-}
 </style>

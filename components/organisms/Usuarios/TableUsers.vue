@@ -1,5 +1,6 @@
 <template>
-  <ContainerTable>
+  <LoadingPage v-if="loading" />
+  <ContainerTable v-else>
     <EditUser :findUser="findUser" v-if="$store.state.openModal" />
     <div class="headerTable">
       <h2>Funcionários Cadastrados</h2>
@@ -40,6 +41,7 @@ export default Vue.extend({
       listUsers: [],
       findUser: [],
       textSearch: '',
+      loading: true,
     }
   },
 
@@ -54,6 +56,7 @@ export default Vue.extend({
           this.$toast.error('Servidor fora do ar')
         }
       })
+    this.loading = false
   },
 
   computed: {
