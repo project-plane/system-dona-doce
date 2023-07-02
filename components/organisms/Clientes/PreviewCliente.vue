@@ -18,6 +18,31 @@
         <p>{{ findPreviewClient.cep }}</p>
       </div>
     </div>
+    <h3>Associar Empresa - Cliente</h3>
+    <div class="associarEmpresa">
+      <div class="input">
+        <Label>Empresa</Label>
+        <select v-model="selected">
+          <option disabled value="">Selecionar Empresa</option>
+          <option v-for="empresa in listAllEmpresa" :key="empresa.id">
+            {{ empresa.corporate_name }}
+          </option>
+        </select>
+      </div>
+      <Input
+        label="Responsável"
+        type="text"
+        placeholder="Digitar nome responsável"
+        v-model="accountableCompany"
+      />
+      <Input
+        label="Fone"
+        type="text"
+        placeholder="Digitar fone responsável"
+        v-model="foneCompany"
+      />
+      <button @click="addClient">Adicionar</button>
+    </div>
     <div class="empresaAssociada">
       <h3>Empresas Associadas</h3>
       <table>
@@ -55,6 +80,7 @@
 import Vue from 'vue'
 
 import httpClientCompany from '~/server/ClientCompany'
+import httpEmpresa from '~/server/empresa'
 
 export default Vue.extend({
   props: {
@@ -66,6 +92,10 @@ export default Vue.extend({
   data() {
     return {
       listFindClientCompany: [],
+      listAllEmpresa: [],
+      selected: '',
+      accountableCompany: '',
+      foneCompany: '',
     }
   },
   async fetch() {
@@ -73,6 +103,14 @@ export default Vue.extend({
       .GetFindClientCompany(this.findPreviewClient.id)
       .then((res) => {
         this.listFindClientCompany = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    await httpEmpresa
+      .GetAllEmpresa()
+      .then((res) => {
+        this.listAllEmpresa = res.data
       })
       .catch((error) => {
         console.log(error)
@@ -102,6 +140,66 @@ export default Vue.extend({
 
       this.$nuxt.refresh()
     },
+    async addClient() {
+      let idEmpresa
+
+      if (!this.selected || !this.accountableCompany || !this.foneCompany) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
+      }
+
+      const existeEmpresa = this.listFindClientCompany.find((item) => {
+        return item.company.corporate_name === this.selected
+      })
+
+      const existeAccountable = this.listFindClientCompany.find((item) => {
+        return item.accountable === this.accountableCompany
+      })
+
+      if (existeEmpresa) {
+        this.$toast.error('Empresa já associada a esse cliente')
+        // this.selected = ''
+        // this.accountableCompany = ''
+        // this.foneCompany = ''
+        return
+      }
+
+      if (existeAccountable) {
+        this.$toast.error('Responsável já associado a uma empresa')
+        // this.selected = ''
+        // this.accountableCompany = ''
+        // this.foneCompany = ''
+        return
+      }
+
+      this.listAllEmpresa.map((item) => {
+        if (item.corporate_name === this.selected) {
+          idEmpresa = item.id
+        }
+      })
+
+      const dataClientCompany = [
+        {
+          fk_client: this.findPreviewClient.id,
+          fk_company: idEmpresa,
+          accountable: this.accountableCompany,
+          fone: this.foneCompany,
+        },
+      ]
+
+      await httpClientCompany
+        .CreateClientCompany(dataClientCompany)
+        .then((res) => {
+          this.$toast.success('Empresa associada ao cliente com sucesso!!!')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      this.selected = ''
+      this.accountableCompany = ''
+      this.foneCompany = ''
+      this.$nuxt.refresh()
+    },
   },
 })
 </script>
@@ -112,12 +210,36 @@ export default Vue.extend({
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  margin-bottom: 2rem;
   p {
     height: 45px;
     padding: 0.5rem 0;
     border-radius: 5px;
     display: flex;
     align-items: center;
+  }
+}
+.associarEmpresa {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  button {
+    border-radius: 0.3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--red);
+    color: var(--red);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+  select {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
   }
 }
 .empresaAssociada {
