@@ -1,6 +1,5 @@
 <template>
   <div class="containerGrid">
-
     <MenuCreate
       v-show="midiaAba"
       @empresa="empresa"
