@@ -51,7 +51,7 @@
         </ul>
       <div class="footerMenu">
         <ButtonPirula title="Sair" @click.native="logout" />
-        <span>Version 0.0</span>
+        <span>Version 0.0.1 - Em Desenvolvimento</span>
       </div>
     </nav>
   </div>
@@ -202,9 +202,11 @@ export default Vue.extend({
     .footerMenu {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1rem;
+      justify-content: center;
 
       span {
+        text-align: center;
         font-size: 0.7rem;
       }
     }
