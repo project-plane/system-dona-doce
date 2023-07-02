@@ -31,6 +31,8 @@ export default Vue.extend({
   align-items: center;
   input {
     width: 100%;
+    border: 0.03rem solid var(--border);
+    border-radius: 0.25rem;
   }
   img {
     position: absolute;

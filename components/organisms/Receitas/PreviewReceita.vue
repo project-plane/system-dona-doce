@@ -13,9 +13,7 @@
                 alt=""
               />
               <div class="textReceita">
-                <Title>
-                  <h3>{{ listFindReceita.description }}</h3>
-                </Title>
+                <Title :title="listFindReceita.description" />
               </div>
             </div>
             <div @click="closeModal">

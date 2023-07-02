@@ -1,10 +1,10 @@
 <template>
   <div class="container_edit_modal">
     <div class="negativeSpace">
-      <Title class="headerModal">
-        <h1>{{ titleModal }}</h1>
+      <div class="headerModal">
+        <Title class="" :title="titleModal" />
         <img @click="closeModal" src="~/assets/icons/close.svg" alt="close" />
-      </Title>
+      </div>
       <div class="body">
         <slot />
       </div>

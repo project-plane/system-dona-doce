@@ -1,12 +1,8 @@
 <template>
-  <nav class="nav_bar">
-    <div class="logo">
-      <p>Dona Doce</p>
-    </div>
-    <div class="menu_hamburge">
-      <img src="~/assets/icons/menu_hamburge.svg" alt="menu_hamburge" />
-    </div>
-  </nav>
+  <div class="navbar-container">
+    <span>Dona Doce</span>
+    <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon"/>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,27 +11,25 @@ export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>
-.nav_bar {
+.navbar-container {
   top: 0;
   position: fixed;
   width: 100%;
   height: 4rem;
-  background: var(--white);
+  background-color: var(--white);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
-  .logo {
+
+  span {
     color: var(--red);
     font-size: 1.4rem;
-    font-weight: bold;
+    font-weight: 600;
   }
-  .menu_hamburge {
-    cursor: pointer;
-    img {
-      width: 30px;
-      height: 30px;
-    }
+
+  img {
+    width: 2.1rem;
   }
 }
 </style>

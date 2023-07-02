@@ -21,9 +21,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <pre>
-          {{ filterItems }}
-        </pre> -->
         <tr v-for="(empresa, index) in filterItems" :key="empresa.id">
           <td>{{ index + 1 }}</td>
           <td>{{ empresa.corporate_name }}</td>

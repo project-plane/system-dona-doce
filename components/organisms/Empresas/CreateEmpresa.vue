@@ -1,8 +1,6 @@
 <template>
   <Container>
-    <Title>
-      <h1>Nova Empresa</h1>
-    </Title>
+    <Title title="Nova Empresa" />
     <ContainerInput>
       <Input
         label="Empresa"
@@ -56,19 +54,18 @@
     </ContainerInput>
     <ContainerInput>
       <Input
+        v-model="email"
         label="E-mail"
         type="text"
         placeholder="Digitar e-mail"
-        v-model="email"
       />
     </ContainerInput>
-    <Button @functionClick="saveClient" title="Salvar" />
+    <Button title="Salvar" @functionClick="saveClient"  />
   </Container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-
 import httpEmpresa from '~/server/empresa'
 
 export default Vue.extend({

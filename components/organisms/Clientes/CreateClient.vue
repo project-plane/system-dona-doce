@@ -1,8 +1,6 @@
 <template>
   <Container>
-    <Title>
-      <h1>Novo Cliente</h1>
-    </Title>
+    <Title title="Novo Cliente" />
     <ContainerInput>
       <Input
         label="Empresa"
@@ -91,6 +89,7 @@
         v-model="createUser.password"
       />
     </ContainerInput>
+
     <h2>Associar Empresa - Cliente</h2>
     <div class="associarEmpresa">
       <div class="input">
@@ -101,6 +100,7 @@
             {{ empresa.corporate_name }}
           </option>
         </select>
+
       </div>
       <Input
         label="Responsável"
@@ -305,23 +305,23 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .btnAssociarEmpresa {
+  border-top: 1px solid var(--border);
+  padding: 1rem 0 1rem 0;
   width: 100%;
-  position: relative;
-  top: 25px;
-  left: 0px;
   button {
-    border-radius: 0.3rem;
+    border-radius: 0.25rem;
     font-weight: bold;
-    background-color: var(--blue);
-    color: var(--white);
+    border: 1px solid var(--red);
+    color: var(--red);
     font-size: 1.2rem;
     padding: 0.7rem;
     cursor: pointer;
+    transition: 0.2s;
   }
-  button:hover {
-    background: rgb(44, 11, 192);
-  }
+
+
 }
+
 .associarEmpresa {
   width: 100%;
   display: flex;
@@ -333,9 +333,8 @@ export default Vue.extend({
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--blue);
-    color: #ffffff;
-    color: var(--white);
+    border: 1px solid var(--red);
+    color: var(--red);
     font-size: 1.2rem;
     padding: 0.5rem;
     cursor: pointer;
@@ -353,6 +352,16 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  
+
+  span {
+    font-size: 1rem;
+  }
+
+  select {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
 }
 
 table {

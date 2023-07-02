@@ -7,6 +7,9 @@
   <script>
 export default {
   layout: 'login',
+  head: {
+      title: "Login - Dona Doce"
+  },
 }
 </script>
   

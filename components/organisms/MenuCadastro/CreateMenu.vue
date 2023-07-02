@@ -1,16 +1,25 @@
 <template>
-  <Container>
-    <Title>
-      <h1>Novo Cardápio</h1>
-    </Title>
-    <div>
-      <div class="containerSelect">
-        <div class="contenteDate">
-          <div class="selectDay" @click="showModal = true">
-            <div v-if="startDay == 0">dias</div>
-            <div v-else>
-              <p v-if="startDay != endDay">{{ startDay }} a {{ endDay }}</p>
-              <p v-else>{{ startDay }}</p>
+    <Container>
+        <Title title="Novo Cardápio" />
+        <div>
+          <div class="containerSelect">
+            <div class="contenteDate">
+              <div class="selectDay" @click="showModal = true">
+                <div v-if="startDay == 0">
+                  dias
+                </div>
+                <div v-else>
+                  <p v-if="startDay != endDay">{{ startDay }} a {{ endDay }}</p>
+                  <p v-else>{{ startDay }}</p>
+                </div>
+              </div>
+                <select id="" v-model="selected" name="" @click="showModal = false">
+                    <option disabled>Selecione um mês</option>
+                    <option v-for="(month, index) in months" :key="index" :value="index+1">{{ month.name }}</option>
+                </select>
+                <div class="year">
+                  {{ year }}
+                </div>
             </div>
           </div>
           <select id="" v-model="selected" name="" @click="showModal = false">
