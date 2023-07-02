@@ -90,61 +90,56 @@
         placeholder="Digitar senha"
         v-model="createUser.password"
       />
-
-      <div class="btnAssociarEmpresa">
-        <button @click="associarEmpresa">Associar Empresa</button>
-      </div>
     </ContainerInput>
-    <div v-if="showEmpresa">
-      <div class="associarEmpresa">
-        <div class="input">
-          <Label>Empresa</Label>
-          <select v-model="selected">
-            <option disabled value="">Selecionar Empresa</option>
-            <option v-for="empresa in listEmpresa" :key="empresa.id">
-              {{ empresa.corporate_name }}
-            </option>
-          </select>
-        </div>
-        <Input
-          label="Responsável"
-          type="text"
-          placeholder="Digitar nome responsável"
-          v-model="accountableCompany"
-        />
-        <Input
-          label="Fone"
-          type="text"
-          placeholder="Digitar fone responsável"
-          v-model="foneCompany"
-        />
-        <button @click="addClient">Adicionar</button>
+    <h2>Associar Empresa - Cliente</h2>
+    <div class="associarEmpresa">
+      <div class="input">
+        <Label>Empresa</Label>
+        <select v-model="selected">
+          <option disabled value="">Selecionar Empresa</option>
+          <option v-for="empresa in listEmpresa" :key="empresa.id">
+            {{ empresa.corporate_name }}
+          </option>
+        </select>
       </div>
-      <table v-if="createCompany.length !== 0">
-        <thead>
-          <th>ID</th>
-          <th>Empresa</th>
-          <th>Responsável</th>
-          <th>Fone</th>
-          <th>Opção</th>
-        </thead>
-        <tbody>
-          <tr v-for="(company, index) in createCompany" :key="index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ company.company }}</td>
-            <td>{{ company.accountable }}</td>
-            <td>{{ company.fone }}</td>
-            <td>
-              <img
-                src="~/assets/icons/close.svg"
-                alt=""
-                @click="removeEmpresaAssociada(company)"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <Input
+        label="Responsável"
+        type="text"
+        placeholder="Digitar nome responsável"
+        v-model="accountableCompany"
+      />
+      <Input
+        label="Fone"
+        type="text"
+        placeholder="Digitar fone responsável"
+        v-model="foneCompany"
+      />
+      <button @click="addClient">Adicionar</button>
     </div>
+    <table v-if="createCompany.length !== 0">
+      <thead>
+        <th>ID</th>
+        <th>Empresa</th>
+        <th>Responsável</th>
+        <th>Fone</th>
+        <th>Opção</th>
+      </thead>
+      <tbody>
+        <tr v-for="(company, index) in createCompany" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ company.company }}</td>
+          <td>{{ company.accountable }}</td>
+          <td>{{ company.fone }}</td>
+          <td>
+            <img
+              src="~/assets/icons/close.svg"
+              alt=""
+              @click="removeEmpresaAssociada(company)"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <Button @click.native="saveClient" title="Salvar" />
   </Container>
 </template>
@@ -180,7 +175,6 @@ export default Vue.extend({
       createCompany: [],
       accountableCompany: '',
       foneCompany: '',
-      showEmpresa: false,
       listEmpresa: [],
     }
   },
@@ -196,9 +190,6 @@ export default Vue.extend({
       })
   },
   methods: {
-    associarEmpresa() {
-      this.showEmpresa = true
-    },
     addClient() {
       let idEmpresa
       this.listEmpresa.map((e) => {
@@ -211,18 +202,31 @@ export default Vue.extend({
         return
       }
       const existeEmpresa = this.createCompany.find((item) => {
-        return item.fk_company === this.selected
+        return item.fk_company === idEmpresa
+      })
+      const existeAccountable = this.createCompany.find((item) => {
+        return item.accountable === this.accountableCompany
       })
       if (existeEmpresa) {
         this.$toast.error('Empresa já associada')
-      } else {
-        this.createCompany.push({
-          fk_company: idEmpresa,
-          company: this.selected,
-          accountable: this.accountableCompany,
-          fone: this.foneCompany,
-        })
+        this.selected = ''
+        this.accountableCompany = ''
+        this.foneCompany = ''
+        return
       }
+      if (existeAccountable) {
+        this.$toast.error('Responsável já associado há uma empresa')
+        this.selected = ''
+        this.accountableCompany = ''
+        this.foneCompany = ''
+        return
+      }
+      this.createCompany.push({
+        fk_company: idEmpresa,
+        company: this.selected,
+        accountable: this.accountableCompany,
+        fone: this.foneCompany,
+      })
       this.selected = ''
       this.accountableCompany = ''
       this.foneCompany = ''
