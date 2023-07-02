@@ -2,35 +2,32 @@
   <div class="sider_bar negativeSpace">
     <div class="main_login">
       <div class="title_login">
-        <p class="title">
-          Dona <br />
-          Doce
-        </p>
+        <span class="title">
+          Dona Doce
+        </span>
       </div>
-      <form action="" @submit.prevent="accessLogin">
-        <div class="form_login">
-          <Label>E-mail</Label>
-          <input
+        <form class="form_login" @submit.prevent="accessLogin">
+          <Input
+            label="Email"
             v-model="dataLogin.email"
             type="text"
             placeholder="Digite seu e-mail"
           />
-          <Label>Password</Label>
-          <input
+          <Input
+            label="Password"
             v-model="dataLogin.password"
             type="password"
             placeholder="Digite sua senha"
           />
           <div class="recupera_senha">
-            <p @click="recoverPassword">Esqueci a minha senha</p>
+            <span @click="recoverPassword">Esqueci a minha senha</span>
           </div>
 
           <ButtonPirula @click="accessLogin" title="Login" />
           <div v-if="statusMessage">
             <h5 style="color: var(--red)">{{ message }}</h5>
           </div>
-        </div>
-      </form>
+        </form>
     </div>
   </div>
 </template>
@@ -104,15 +101,18 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
     .form_login {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       gap: 1rem;
+      
       .recupera_senha {
         color: var(--blue);
         cursor: pointer;
-        margin-top: -1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 0.6rem;
+        text-align: center;
       }
     }
   }
@@ -126,6 +126,6 @@ export default Vue.extend({
   color: var(--red);
   font-size: 3rem;
   font-weight: bold;
-  line-height: 3rem;
+  text-align: center;
 }
 </style>

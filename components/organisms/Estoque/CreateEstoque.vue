@@ -1,8 +1,6 @@
 <template>
   <Container>
-    <Title>
-      <h1>Estoque</h1>
-    </Title>
+    <Title title="Estoque" />
     <ContainerInput>
       <div class="inputSelect">
         <Label>Ingrediente</Label>

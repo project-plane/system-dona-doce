@@ -1,8 +1,6 @@
 <template>
   <Container>
-    <Title>
-      <h1>Novo Funcionário</h1>
-    </Title>
+    <Title title="Novo Funcionário" />
     <ContainerInput>
       <Input
         label="Nome Completo"

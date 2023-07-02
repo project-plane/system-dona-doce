@@ -1,8 +1,6 @@
 <template>
     <Container>
-        <Title>
-            <h1>Novo Cardápio</h1>
-        </Title>
+        <Title title="Novo Cardápio" />
         <div>
           <div class="containerSelect">
             <div class="contenteDate">

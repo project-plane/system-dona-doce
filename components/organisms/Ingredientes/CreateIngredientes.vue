@@ -1,8 +1,6 @@
 <template>
   <Container>
-    <Title>
-      <h1>Novo Ingrediente</h1>
-    </Title>
+    <Title title="Novo Ingrediente" />
     <ContainerInput>
       <Input
         v-model="nameIngrediente"

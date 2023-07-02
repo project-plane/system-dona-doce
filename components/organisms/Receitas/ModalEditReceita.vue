@@ -7,10 +7,8 @@
             <div class="headerReceita">
               <img :src="imgFile" alt="" />
               <div class="textReceita">
-                <Title>
-                  <h1>Editar Receita</h1>
-                </Title>
-                <h3>{{ title }}</h3>
+                <h1>Editar Receita</h1>
+                <Title :title="title" />
               </div>
             </div>
             <div @click="closeModal">

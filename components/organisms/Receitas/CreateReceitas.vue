@@ -4,9 +4,7 @@
       v-if="$store.state.openModalReceita"
       :dados-receitas="dataReceita"
     />
-    <Title>
-      <h1>Receitas</h1>
-    </Title>
+    <Title title="Receitas" />
     <div class="receitas">
       <div class="img">
         <label for="inputFile">

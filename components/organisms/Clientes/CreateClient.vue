@@ -1,8 +1,6 @@
 <template>
   <Container>
-    <Title>
-      <h1>Novo Cliente</h1>
-    </Title>
+    <Title title="Novo Cliente" />
     <ContainerInput>
       <Input
         label="Empresa"
