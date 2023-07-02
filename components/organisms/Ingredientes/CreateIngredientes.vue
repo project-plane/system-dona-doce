@@ -15,7 +15,10 @@
         placeholder="Digite o preco ingrediente"
       />
     </ContainerInput>
-    <Button title="Salvar" @functionClick="createIngrediente" />
+    <div class="row-button">
+      <Button title="Salvar" @functionClick="createIngrediente" />
+    </div>
+    
   </Container>
 </template>
 
@@ -63,4 +66,9 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.row-button {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

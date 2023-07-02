@@ -48,7 +48,10 @@
       </div>
     </ContainerInput>
     <div class="input_create"></div>
-    <Button title="Salvar" @functionClick="saveEstoque" />
+    <div class="row-button">
+      <Button title="Salvar" @functionClick="saveEstoque" />
+    </div>
+    
   </Container>
 </template>
 
@@ -162,5 +165,10 @@ export default Vue.extend({
     justify-content: center;
     gap: 0.2rem;
   }
+}
+
+.row-button {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

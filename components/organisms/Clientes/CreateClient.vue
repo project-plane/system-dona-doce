@@ -140,7 +140,9 @@
         </tr>
       </tbody>
     </table>
-    <Button @click.native="saveClient" title="Salvar" />
+    <div class="row-button">
+      <Button @click.native="saveClient" title="Salvar" />
+    </div>
   </Container>
 </template>
 
@@ -320,6 +322,11 @@ export default Vue.extend({
   }
 
 
+}
+
+.row-button {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .associarEmpresa {

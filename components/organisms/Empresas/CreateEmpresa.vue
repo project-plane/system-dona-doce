@@ -60,7 +60,10 @@
         placeholder="Digitar e-mail"
       />
     </ContainerInput>
-    <Button title="Salvar" @functionClick="saveClient"  />
+    <div class="row-button">
+      <Button title="Salvar" @functionClick="saveClient"  />
+    </div>
+    
   </Container>
 </template>
 
@@ -141,4 +144,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
+.row-button {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

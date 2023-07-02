@@ -1,13 +1,5 @@
 <template>
-  <div class="btnContainer" :class="classContainerEditBtn">
-    <button
-      @click="$emit('functionClick')"
-      class="buttonPirula"
-      :class="classEditBtn"
-    >
-      {{ title }}
-    </button>
-  </div>
+    <button class="btn" @click="$emit('functionClick')">{{ title }}</button>
 </template>
 
 <script lang="ts">
@@ -46,5 +38,14 @@ export default Vue.extend({
   width: 20%;
   display: flex;
   justify-content: flex-end;
+}
+
+.btn {
+  width: 9rem;
+  height: 2.6rem;
+  background-color: var(--red);
+  color: var(--white);
+  border-radius: 0.25rem;
+  font-size: 1rem;
 }
 </style>
