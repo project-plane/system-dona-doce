@@ -2,8 +2,8 @@
   <Container>
     <Title title="Estoque" />
     <ContainerInput>
-      <div class="inputSelect">
-        <Label>Ingrediente</Label>
+      <div class="input">
+        <span>Ingrediente</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Ingrediente</option>
           <option
@@ -134,11 +134,21 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.inputSelect {
+.input {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  
+
+  span {
+    font-size: 1rem;
+  }
+
+  select {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
 }
 .inputRadio {
   width: 100%;

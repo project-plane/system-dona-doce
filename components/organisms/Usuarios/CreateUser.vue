@@ -47,7 +47,7 @@
     </ContainerInput>
     <ContainerInput>
       <div class="input">
-        <Label>Cargo</Label>
+        <span>Cargo</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Cargo</option>
           <option>Administrador</option>
@@ -174,6 +174,16 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  
+
+  span {
+    font-size: 1rem;
+  }
+
+  select {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
 }
 .btnSalve {
   width: 100%;

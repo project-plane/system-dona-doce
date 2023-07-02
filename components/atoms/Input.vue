@@ -62,5 +62,10 @@ export default Vue.extend({
   span {
     font-size: 1rem;
   }
+
+  input {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
 }
 </style>
