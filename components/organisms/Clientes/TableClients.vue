@@ -4,6 +4,7 @@
     <PreviewCliente
       v-if="$store.state.openModal"
       :findPreviewClient="findPreviewClient"
+      :listClient="listClient"
     />
     <div class="headerTable">
       <h2>Clientes Cadastrados</h2>
