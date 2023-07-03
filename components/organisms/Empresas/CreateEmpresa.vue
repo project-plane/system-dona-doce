@@ -1,11 +1,5 @@
 <template>
   <Container>
-    <v-date-picker
-      :value="null"
-      color="blue"
-      is-light
-      is-range
-    />
     <Title title="Nova Empresa" />
     <ContainerInput>
       <Input

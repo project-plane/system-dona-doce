@@ -37,8 +37,8 @@
         <TableReceitas />
       </div>
       <div v-if="statusMenu">
-        <CreateMenu/>
-        <p>Cardápio</p>
+        <CreateCardapio />
+        <TableCardapios />
       </div>
     </div>
   </div>
