@@ -100,7 +100,6 @@
             {{ empresa.corporate_name }}
           </option>
         </select>
-
       </div>
       <Input
         label="Responsável"
@@ -210,14 +209,14 @@ export default Vue.extend({
         return item.accountable === this.accountableCompany
       })
       if (existeEmpresa) {
-        this.$toast.error('Empresa já associada')
+        this.$toast.error('Empresa já associada a esse cliente')
         this.selected = ''
         this.accountableCompany = ''
         this.foneCompany = ''
         return
       }
       if (existeAccountable) {
-        this.$toast.error('Responsável já associado há uma empresa')
+        this.$toast.error('Responsável já associado a uma empresa')
         this.selected = ''
         this.accountableCompany = ''
         this.foneCompany = ''
@@ -320,8 +319,6 @@ export default Vue.extend({
     cursor: pointer;
     transition: 0.2s;
   }
-
-
 }
 
 .row-button {
@@ -359,7 +356,6 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  
 
   span {
     font-size: 1rem;

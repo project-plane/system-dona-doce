@@ -6,5 +6,8 @@ export default {
   },
   DeleteClientCompany: async (data) => {
     return await http.delete('/clients_company', { data })
+  },
+  CreateClientCompany: async (data) => {
+    return await http.post('/clients_company', data)
   }
 }
