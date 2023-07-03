@@ -5,15 +5,16 @@
           <div class="calendar">
             <span>Selecione as datas</span>
             <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red"/>
-            <pre>{{ date }}</pre>
-            <span>Quantidade de dias: {{ days.length }}</span>
+            <pre>objeto local {{ cardapio  }}</pre>
+            
+            <pre>listagem do back {{ days }}</pre>
           </div>
           
           <div class="calendar-input">
             <span>Dia: {{ formatDate(date) }}</span>
             <div class="input-select">
               <span>Desejujum</span>
-              <select v-model="selected">
+              <select v-model="cardapio.desjejum">
                 <option disabled value="">Selecionar Receita</option>
                 <option v-for="(receita, index) in optionsReceitas" :key="index">
                   {{ receita.description }}
@@ -23,24 +24,39 @@
 
             <div class="input-select">
               <span>Lanche 01</span>
-              <input type="text">
+              <select v-model="cardapio.lanche01">
+                <option disabled value="">Selecionar Receita</option>
+                <option v-for="(receita, index) in optionsReceitas" :key="index">
+                  {{ receita.description }}
+                </option>
+              </select>
             </div>
 
             <div class="input-select">
               <span>Lanche 02</span>
-              <input type="text">
+              <select v-model="cardapio.lanche02">
+                <option disabled value="">Selecionar Receita</option>
+                <option v-for="(receita, index) in optionsReceitas" :key="index">
+                  {{ receita.description }}
+                </option>
+              </select>
             </div>
 
             <div class="input-select">
               <span>Lanche 03</span>
-              <input type="text">
+              <select v-model="cardapio.lanche03">
+                <option disabled value="">Selecionar Receita</option>
+                <option v-for="(receita, index) in optionsReceitas" :key="index">
+                  {{ receita.description }}
+                </option>
+              </select>
             </div>
 
           </div>
           
         </div>
         <div class="row-button">
-          <Button title="Salvar Cardápio" @click.native="saveCardapio" />
+          <Button title="Salvar Cardápio" @click.native="saveDayCardapio" />
         </div>
   </Container>
 </template>
@@ -52,9 +68,26 @@ import httpReceitas from '~/server/receitas'
 export default Vue.extend({
   data() {
     return {
-      days: [{ id: "2023-07-07", date: "2023-07-07T04:00:00.000Z" }, { id: "2023-07-08", date: "2023-07-08T04:00:00.000Z" }, { id: "2023-07-09", date: "2023-07-09T04:00:00.000Z" }],
+      days: [
+        { 
+          id: "1",
+          date: "2023-07-07T04:00:00.000Z",
+          desjejum: 'coxinha',
+          lanche01: 'kibe',
+          lanche02: 'enroladinho de salsicha',
+          lanche03: 'coxinha',
+        }
+      
+      ],
       optionsReceitas: [],
-      date: ''
+      date: '',
+      cardapio: {
+        date: '',
+        desjejum: '',
+        lanche01: '',
+        lanche02: '',
+        lanche03: ''
+      }
     };
   },
 
@@ -72,6 +105,15 @@ export default Vue.extend({
 
   watch: {
     date (newValue) {
+      this.days.map ( (item) => {
+        if(dayjs(item.date).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
+          console.log('existe na listagem')
+        } else {
+          console.log('não existe')
+          this.cardapio.date = newValue
+        }
+      })
+
       this.date = new Date(newValue).toISOString()
     }
   },
@@ -85,6 +127,11 @@ export default Vue.extend({
   methods: {
     formatDate(date) {
       return `${dayjs(date).format('DD/MM/YYYY')}`
+    },
+
+    saveDayCardapio() {
+      // aqui vai ficar o endpoint
+      this.days.push(this.cardapio)
     }
   },
 
