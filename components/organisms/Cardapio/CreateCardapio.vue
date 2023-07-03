@@ -3,17 +3,17 @@
         <Title title="Novo Cardápio" />
         <div class="calendar-content">
           <div class="calendar">
-            <span>Selecione as datas</span>
+            <span>Selecione uma data</span>
             <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red"/>
-            <pre>objeto local {{ cardapio  }}</pre>
+            <!-- <pre>objeto local {{ cardapio  }}</pre>
             
-            <pre>listagem do back {{ days }}</pre>
+            <pre>listagem do back {{ days }}</pre> -->
           </div>
           
-          <div class="calendar-input">
+          <div class="calendar-input" v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969'">
             <span>Dia: {{ formatDate(date) }}</span>
             <div class="input-select">
-              <span>Desejujum</span>
+              <span>Desjejum</span>
               <select v-model="cardapio.desjejum">
                 <option disabled value="">Selecionar Receita</option>
                 <option v-for="(receita, index) in optionsReceitas" :key="index">
@@ -55,8 +55,8 @@
           </div>
           
         </div>
-        <div class="row-button">
-          <Button title="Salvar Cardápio" @click.native="saveDayCardapio" />
+        <div class="row-button" v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969'">
+          <Button title="Salvar" @click.native="saveDayCardapio" />
         </div>
   </Container>
 </template>
@@ -69,11 +69,19 @@ export default Vue.extend({
   data() {
     return {
       days: [
-        { 
+      { 
           id: "1",
-          date: "2023-07-07T04:00:00.000Z",
+          date: "2023-07-04T04:00:00.000Z",
           desjejum: 'coxinha',
           lanche01: 'kibe',
+          lanche02: 'enroladinho de salsicha',
+          lanche03: 'coxinha',
+        },
+        { 
+          id: "2",
+          date: "2023-07-09T04:00:00.000Z",
+          desjejum: 'Kibe',
+          lanche01: 'coxinha',
           lanche02: 'enroladinho de salsicha',
           lanche03: 'coxinha',
         }
@@ -126,7 +134,7 @@ export default Vue.extend({
 
   methods: {
     formatDate(date) {
-      return `${dayjs(date).format('DD/MM/YYYY')}`
+      return dayjs(date).format('DD/MM/YYYY')
     },
 
     saveDayCardapio() {
@@ -159,6 +167,7 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
 
 
     .input-select {

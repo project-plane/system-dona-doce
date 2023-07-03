@@ -9,25 +9,21 @@
         <thead>
           <tr>
             <th>Data</th>
-            <th>Mês</th>
-            <th>Ano</th>
+            <th>Desjejum</th>
+            <th>Lanche 01</th>
+            <th>Lanche 02</th>
+            <th>Lanche 03</th>
             <th>Opções</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(client, index) in filterItems" :key="client.id">
-            <td>{{ index + 1 }}</td>
-            <td>{{ client.corporate_name }}</td>
-            <td>{{ client.cnpj }}</td>
+          <tr v-for="(item, index) in itemLocal" :key="index">
+            <td>{{ formatDate(item.date) }}</td>
+            <td>{{ item.desjejum }}</td>
+            <td>{{ item.lanche01 }}</td>
+            <td>{{ item.lanche02 }}</td>
+            <td>{{ item.lanche03 }}</td>
             <td>
-                
-              <button @click="previewClient(client)">
-                <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
-              </button>
-
-              <button @click="editReceita(receita.id)">
-                <img src="~/assets/icons/edit.svg" alt="editReceitas" />
-              </button>
 
               <button @click="deleteReceita(receita.id)">
                 <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
@@ -41,7 +37,7 @@
   
   <script lang="ts">
   import Vue from 'vue'
-  
+  import dayjs from 'dayjs'
   import httpClients from '~/server/cliente'
   
   export default Vue.extend({
@@ -51,6 +47,24 @@
         findPreviewClient: [],
         textSearch: '',
         loading: true,
+        itemLocal: [
+        { 
+          id: "1",
+          date: "2023-07-04T04:00:00.000Z",
+          desjejum: 'coxinha',
+          lanche01: 'kibe',
+          lanche02: 'enroladinho de salsicha',
+          lanche03: 'coxinha',
+        },
+        { 
+          id: "2",
+          date: "2023-07-09T04:00:00.000Z",
+          desjejum: 'Kibe',
+          lanche01: 'coxinha',
+          lanche02: 'enroladinho de salsicha',
+          lanche03: 'coxinha',
+        }
+        ]
       }
     },
   
@@ -83,6 +97,10 @@
         this.$store.commit('OPEN_MODAL', true)
         this.findPreviewClient = idClient
       },
+
+      formatDate(date) {
+      return dayjs(date).format('DD/MM/YYYY')
+    },
     },
   })
   </script>
