@@ -1,17 +1,21 @@
 <template>
-  <div class="title">
-    <slot />
-  </div>
+  <span class="title">{{ title }}</span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-export default Vue.extend({})
+export default Vue.extend({
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    title: String,
+  }
+})
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .title {
+  font-size: 1.35rem;
   color: var(--red);
-  font-weight: bold;
+  font-weight: 600;
 }
 </style>

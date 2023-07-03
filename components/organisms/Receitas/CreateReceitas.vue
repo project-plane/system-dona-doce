@@ -4,9 +4,7 @@
       v-if="$store.state.openModalReceita"
       :dados-receitas="dataReceita"
     />
-    <Title>
-      <h1>Receitas</h1>
-    </Title>
+    <Title title="Receitas" />
     <div class="receitas">
       <div class="img">
         <label for="inputFile">
@@ -21,6 +19,7 @@
         <input
           id="inputFile"
           type="file"
+          accept="image/*"
           name="inputFile"
           @change="fileMethods"
         />
@@ -123,7 +122,9 @@ export default Vue.extend({
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f5d9d9;
+    background: #ffffff;
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
     label {
       width: 100%;
       height: 100%;
@@ -136,8 +137,8 @@ export default Vue.extend({
       letter-spacing: 3px;
       cursor: pointer;
       img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100x;
       }
       .imgFile {
         width: 100%;

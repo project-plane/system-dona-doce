@@ -4,8 +4,7 @@
       <img src="~/assets/icons/user.svg" alt="user_create" />
       <h4>Cadastro</h4>
     </div>
-    <div class="menu_navigation">
-      <nav>
+    <nav class="menu_navigation">
         <ul>
           <li
             :class="{ active: isActiveEmpresa }"
@@ -50,12 +49,11 @@
           Cardápio
           </li>
         </ul>
-      </nav>
       <div class="footerMenu">
         <ButtonPirula title="Sair" @click.native="logout" />
-        <p>Version 0.0</p>
+        <span>Version 0.0.1 - Em Desenvolvimento</span>
       </div>
-    </div>
+    </nav>
   </div>
 </template>
 
@@ -155,10 +153,9 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .card_create {
-  // position: fixed;
-  // width: 300px;
   height: 100%;
   border-right: 1px solid var(--border);
+
   .title_create {
     height: 90px;
     background: var(--bg_heade_table);
@@ -166,8 +163,14 @@ export default Vue.extend({
     align-items: center;
     gap: 1rem;
     padding: 0 1.5rem;
+
     h4 {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    img {
+      width: 2rem;
     }
   }
   .menu_navigation {
@@ -177,26 +180,33 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    nav ul {
+    
+    ul {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+
+      li {
+        cursor: pointer;
+        font-size: 1.2rem;
+        list-style: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .active {
+        color: var(--red);
+        font-weight: bold;
+      }
     }
-    nav ul li {
-      cursor: pointer;
-      font-size: 1.5rem;
-      list-style: none;
-      border-bottom: 1px solid var(--border);
-    }
-    nav ul .active {
-      color: var(--red);
-      font-weight: bold;
-    }
+
     .footerMenu {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      p {
+      gap: 1rem;
+      justify-content: center;
+
+      span {
+        text-align: center;
         font-size: 0.7rem;
       }
     }

@@ -1,11 +1,9 @@
 <template>
   <Container>
-    <Title>
-      <h1>Estoque</h1>
-    </Title>
+    <Title title="Estoque" />
     <ContainerInput>
-      <div class="inputSelect">
-        <Label>Ingrediente</Label>
+      <div class="input">
+        <span>Ingrediente</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Ingrediente</option>
           <option
@@ -50,7 +48,10 @@
       </div>
     </ContainerInput>
     <div class="input_create"></div>
-    <Button title="Salvar" @functionClick="saveEstoque" />
+    <div class="row-button">
+      <Button title="Salvar" @functionClick="saveEstoque" />
+    </div>
+    
   </Container>
 </template>
 
@@ -136,11 +137,21 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.inputSelect {
+.input {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  
+
+  span {
+    font-size: 1rem;
+  }
+
+  select {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
 }
 .inputRadio {
   width: 100%;
@@ -154,5 +165,10 @@ export default Vue.extend({
     justify-content: center;
     gap: 0.2rem;
   }
+}
+
+.row-button {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

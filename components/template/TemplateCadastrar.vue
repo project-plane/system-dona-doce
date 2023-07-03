@@ -1,6 +1,5 @@
 <template>
   <div class="containerGrid">
-
     <MenuCreate
       v-show="midiaAba"
       @empresa="empresa"
@@ -38,8 +37,8 @@
         <TableReceitas />
       </div>
       <div v-if="statusMenu">
-        <CreateMenu/>
-        <p>Cardápio</p>
+        <CreateCardapio />
+        <TableCardapios />
       </div>
     </div>
   </div>

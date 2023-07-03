@@ -1,6 +1,6 @@
 <template>
-  <div class="input">
-    <Label>{{ label }}</Label>
+  <div class="input_container">
+    <span>{{ label }}</span>
     <input
       :style="block"
       :type="type"
@@ -37,8 +37,10 @@ export default Vue.extend({
       type: Boolean,
       required: false,
     },
+    // eslint-disable-next-line vue/require-default-prop
     block: {
       type: String,
+      required: false,
     },
   },
   methods: {
@@ -50,10 +52,20 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.input {
+.input_container {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  
+
+  span {
+    font-size: 1rem;
+  }
+
+  input {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
 }
 </style>

@@ -12,15 +12,11 @@
         <Button
           @functionClick="closeModal"
           title="Cancelar"
-          classEditBtn="editBtn"
-          classContainerEditBtn="classContainerEditBtn"
         />
 
         <Button
           @functionClick="$emit('save')"
           title="Salvar"
-          classEditBtn="editBtn"
-          classContainerEditBtn="classContainerEditBtn"
         />
       </div>
     </div>
@@ -85,7 +81,7 @@ export default Vue.extend({
       width: 100%;
       display: flex;
       justify-content: flex-end;
-      gap: 2rem;
+      gap: 1rem;
     }
   }
 }
