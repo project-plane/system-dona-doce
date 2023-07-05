@@ -5,59 +5,59 @@
       <Input
         label="Empresa"
         type="text"
-        placeholder="Digitar nome empresa"
-        v-model="corporate_name"
+        placeholder="ex: Henda Carros da Amazonia..."
+        v-model="dataEmpresa.corporate_name"
       />
       <Input
         label="CNPJ"
         type="text"
-        placeholder="Digitar CNPJ"
-        v-model="cnpj"
+        placeholder="ex: XX.XXX.XXX/XXXX-XX"
+        v-model="dataEmpresa.cnpj"
       />
     </ContainerInput>
     <ContainerInput>
       <Input
         label="Endereço"
         type="text"
-        placeholder="Digitar endereço"
-        v-model="address"
+        placeholder="ex: Rua Jabuti dos Santos..."
+        v-model="dataEmpresa.address"
       />
       <Input
         label="CEP"
         type="text"
         placeholder="ex: XXXXX-XXX"
-        v-model="cep"
+        v-model="dataEmpresa.cep"
       />
     </ContainerInput>
     <ContainerInput>
       <Input
         label="Cidade"
         type="text"
-        placeholder="Digitar cidade"
-        v-model="county"
+        placeholder="ex: Manaus"
+        v-model="dataEmpresa.county"
       />
       <Input
         label="Bairro"
         type="text"
-        placeholder="Digitar bairro"
-        v-model="district"
+        placeholder="ex: Bairro Santos Augusto"
+        v-model="dataEmpresa.district"
       />
     </ContainerInput>
     <ContainerInput>
-      <Input label="UF" type="text" placeholder="ex: AM" v-model="uf" />
+      <Input label="UF" type="text" placeholder="ex: AM" v-model="dataEmpresa.uf" />
       <Input
         label="Fone"
-        type="text"
-        placeholder="Digitar fone"
-        v-model="fone"
+        type="number"
+        placeholder="ex: xxxxxxxx"
+        v-model="dataEmpresa.fone"
       />
     </ContainerInput>
     <ContainerInput>
       <Input
-        v-model="email"
+        v-model="dataEmpresa.email"
         label="E-mail"
-        type="text"
-        placeholder="Digitar e-mail"
+        type="email"
+        placeholder="ex: email@email.com.br"
       />
     </ContainerInput>
     <div class="row-button">
@@ -74,70 +74,77 @@ import httpEmpresa from '~/server/empresa'
 export default Vue.extend({
   data() {
     return {
-      corporate_name: '',
-      cnpj: '',
-      address: '',
-      cep: '',
-      county: '',
-      district: '',
-      uf: '',
-      fone: '',
-      email: '',
+
+      dataEmpresa: {
+        corporate_name: '',
+        cnpj: '',
+        address: '',
+        cep: '',
+        county: '',
+        district: '',
+        uf: '',
+        fone: '',
+        email: '',
+      }
+      
     }
   },
   methods: {
+
     async saveClient() {
-      this.loading = true
-      const dataEmpresa = {
-        corporate_name: this.corporate_name,
-        cnpj: this.cnpj,
-        address: this.address,
-        cep: this.cep,
-        county: this.county,
-        district: this.district,
-        uf: this.uf,
-        fone: this.fone,
-        email: this.email,
-      }
 
       if (
-        !this.corporate_name ||
-        !this.cnpj ||
-        !this.address ||
-        !this.cep ||
-        !this.county ||
-        !this.district ||
-        !this.uf ||
-        !this.fone ||
-        !this.email
+        !this.dataEmpresa.corporate_name ||
+        !this.dataEmpresa.cnpj ||
+        !this.dataEmpresa.address ||
+        !this.dataEmpresa.cep ||
+        !this.dataEmpresa.county ||
+        !this.dataEmpresa.district ||
+        !this.dataEmpresa.uf ||
+        !this.dataEmpresa.fone ||
+        !this.dataEmpresa.email
       ) {
         this.$toast.error('Preencha todos os campos!!!')
-        return
-      }
-
-      await httpEmpresa
-        .CreateEmpresa(dataEmpresa)
-        .then((res) => {
+      } else {
+        
+        
+        await httpEmpresa.CreateEmpresa(this.dataEmpresa).then((res) => {
           if (res.status === 201) {
             this.$toast.success('Empresa criada com sucesso')
           }
-          this.loading = false
+
+          this.dataEmpresa.corporate_name = ''
+          this.dataEmpresa.cnpj = ''
+          this.dataEmpresa.address = ''
+          this.dataEmpresa.cep = ''
+          this.dataEmpresa.county = ''
+          this.dataEmpresa.district = ''
+          this.dataEmpresa.uf = ''
+          this.dataEmpresa.fone = ''
+          this.dataEmpresa.email = ''
+
+          this.$nuxt.refresh()
+
         })
         .catch((error) => {
-          console.log(error)
+          const erros = JSON.parse(error.request.response)
+          
+          if(Array.isArray(erros.message)) {
+            erros.message.map( (item) => {
+            this.$toast.error(item)
+          })
+          } else {
+            this.$toast.error(erros.message)
+          }
+          
+
+
         })
+      }
 
-      this.corporate_name = ''
-      this.cnpj = ''
-      this.address = ''
-      this.cep = ''
-      this.county = ''
-      this.district = ''
-      this.uf = ''
-      this.fone = ''
-      this.email = ''
+      
 
-      this.$nuxt.refresh()
+      
     },
   },
 })
