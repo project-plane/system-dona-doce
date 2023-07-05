@@ -34,9 +34,9 @@
               <button @click="editEmpresa(empresa)">
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
-              <!-- <button @click="deleteEmpresa(empresa.id)">
+              <button @click="deleteEmpresa(empresa.id)">
                 <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
-              </button> -->
+              </button>
             </div>
           </td>
         </tr>
@@ -103,18 +103,21 @@ export default Vue.extend({
       this.findEmpresa = dataEmpresa
       this.$store.commit('OPEN_MODAL', true)
     },
-    // async deleteEmpresa(id) {
-    //   await httpEmpresa
-    //     .DeleteEmpresa(id)
-    //     .then((res) => {
-    //       if (res.status === 200) {
-    //         this.$toast.success('Empresa deletada com sucesso!!!')
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error)
-    //     })
-    // },
+
+    async deleteEmpresa(id) {
+      await httpEmpresa
+        .DeleteEmpresa(id)
+        .then((res) => {
+          if (res.status === 200) {
+            this.$toast.success('Empresa deletada com sucesso!!!')
+          }
+
+          this.$nuxt.refresh()
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
   },
 })
 </script>
