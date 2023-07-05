@@ -1,7 +1,7 @@
 <template>
   <div class="input_container">
     <span>{{ label }}</span>
-    <input
+    <input 
       :style="block"
       :type="type"
       :value="value"
