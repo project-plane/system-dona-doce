@@ -166,19 +166,27 @@ export default Vue.extend({
     width: 45%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
 
-
+    span {
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--red);
+      font-weight: 600;
+    }
 
     .input-select {
+      margin-bottom: 1.2rem;
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
   
-
       span {
+        text-align: left;
         font-size: 1rem;
+        font-weight: 600;
+        color: var(--red);
       }
 
       select {
