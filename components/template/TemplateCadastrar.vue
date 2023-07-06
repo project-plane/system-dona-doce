@@ -148,9 +148,10 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .containerGrid {
-  display: grid;
-  grid-template: calc(4rem - 100vh) / 25rem 1fr;
+  display: flex;
+  
   .scroll_container {
+    width: 80%;
     height: 90vh;
     overflow-y: scroll;
     border-left: 1px solid var(--border);
