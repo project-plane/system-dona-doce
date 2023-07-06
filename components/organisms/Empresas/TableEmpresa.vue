@@ -7,14 +7,14 @@
       :findPreviewEmpresa="findPreviewEmpresa"
     />
     <div class="headerTable">
-      <h2>Lista de Empresas</h2>
+      <h2>Unidades Cadastradas</h2>
       <InputSearch v-model="textSearch" />
     </div>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Empresa</th>
+          <th>Unidade</th>
           <th>Fone</th>
           <th>E-mail</th>
           <th>Opções</th>

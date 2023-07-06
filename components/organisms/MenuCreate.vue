@@ -10,7 +10,7 @@
             :class="{ active: isActiveEmpresa }"
             @click="buttonEmpresa(isActiveEmpresa)"
           >
-            Empresa
+            Unidade
           </li>
           <li
             :class="{ active: isActiveClient }"

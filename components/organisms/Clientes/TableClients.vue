@@ -7,7 +7,7 @@
       :listClient="listClient"
     />
     <div class="headerTable">
-      <h2>Clientes Cadastrados</h2>
+      <h3>Clientes Cadastrados</h3>
       <InputSearch v-model="textSearch" />
     </div>
     <table>

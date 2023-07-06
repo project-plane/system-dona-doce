@@ -1,9 +1,9 @@
 <template>
   <Container>
-    <Title title="Nova Empresa" />
+    <Title title="Cadastrar Unidade" />
     <ContainerInput>
       <Input
-        label="Empresa"
+        label="Unidade"
         type="text"
         placeholder="ex: Henda Carros da Amazonia..."
         v-model="dataEmpresa.corporate_name"
