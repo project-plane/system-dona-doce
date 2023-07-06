@@ -153,11 +153,12 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .card_create {
+  width: 20%;
   height: 100%;
   border-right: 1px solid var(--border);
 
   .title_create {
-    height: 90px;
+    height: 4.5rem;
     background: var(--bg_heade_table);
     display: flex;
     align-items: center;
@@ -165,7 +166,7 @@ export default Vue.extend({
     padding: 0 1.5rem;
 
     h4 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 600;
     }
 
@@ -188,7 +189,7 @@ export default Vue.extend({
 
       li {
         cursor: pointer;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         list-style: none;
         border-bottom: 1px solid var(--border);
       }

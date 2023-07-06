@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <Title title="Novo Cliente" />
+    <Title title="Cadastrar Cliente" />
     <ContainerInput>
       <Input
         label="Empresa"
@@ -90,12 +90,12 @@
       />
     </ContainerInput>
 
-    <h2>Associar Empresa - Cliente</h2>
+    <h3>Associar unidade - cliente</h3>
     <div class="associarEmpresa">
       <div class="input">
-        <Label>Empresa</Label>
+        <span>Unidade</span>
         <select v-model="selected">
-          <option disabled value="">Selecionar Empresa</option>
+          <option disabled value="">Selecionar Unidade</option>
           <option v-for="empresa in listEmpresa" :key="empresa.id">
             {{ empresa.corporate_name }}
           </option>
