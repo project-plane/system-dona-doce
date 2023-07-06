@@ -163,10 +163,12 @@ export default Vue.extend({
   }
 
   .calendar-input {
-    width: 45%;
+    width: 50%;
+    padding-left: 5%;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    border-left: 1px solid var(--border);
 
     span {
       text-align: center;
