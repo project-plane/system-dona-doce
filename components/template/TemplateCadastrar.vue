@@ -134,7 +134,6 @@ export default Vue.extend({
       this.statusMenu = false
     },
     menu() {
-      console.log('oi')
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = false

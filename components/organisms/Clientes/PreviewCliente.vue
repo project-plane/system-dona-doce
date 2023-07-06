@@ -18,12 +18,12 @@
         <p>{{ findPreviewClient.cep }}</p>
       </div>
     </div>
-    <h3>Associar Empresa - Cliente</h3>
+    <h3>Associar Unidade - Cliente</h3>
     <div class="associarEmpresa">
       <div class="input">
-        <Label>Empresa</Label>
+        <span>Unidade</span>
         <select v-model="selected">
-          <option disabled value="">Selecionar Empresa</option>
+          <option disabled value="">Selecionar Unidade</option>
           <option v-for="empresa in listAllEmpresa" :key="empresa.id">
             {{ empresa.corporate_name }}
           </option>
