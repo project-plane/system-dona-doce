@@ -154,7 +154,6 @@ export default Vue.extend({
     width: 80%;
     height: 90vh;
     overflow-y: scroll;
-    border-left: 1px solid var(--border);
   }
 }
 </style>
