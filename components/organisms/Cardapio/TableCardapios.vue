@@ -3,7 +3,7 @@
     <ContainerTable v-else>
         <ModalEditCardapio  v-if="$store.state.openModal"/>
       <div class="headerTable">
-        <h2>Dias Cadastrados</h2>
+        <span>Dias Cadastrados</span>
       </div>
       <table>
         <thead>
@@ -110,11 +110,18 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    span {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
   }
   table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    font-size: 0.9rem;
     thead {
       width: 100%;
       background: var(--bg_heade_table);
@@ -128,6 +135,10 @@
     }
     tbody tr button {
       background: transparent;
+
+      img {
+        width: 1.2rem;
+      }
     }
   }
   </style>

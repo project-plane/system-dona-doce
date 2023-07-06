@@ -10,7 +10,7 @@
       :listFindReceita="listFindReceita"
     />
     <div class="headerTable">
-      <h2>Lista de Receitas</h2>
+      <span>Lista de Receitas</span>
       <InputSearch v-model="textSearch" />
     </div>
     <table>
@@ -134,11 +134,18 @@ export default Vue.extend({
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+    span {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
 }
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  font-size: 0.9rem;
   thead {
     width: 100%;
     background: var(--bg_heade_table);
@@ -162,6 +169,10 @@ table {
     gap: 1rem;
     button {
       background: transparent;
+
+      img {
+        width: 1.2rem;
+      }
     }
   }
 }
