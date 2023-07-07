@@ -1,0 +1,17 @@
+<template>
+  <TemplatePedidos />
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  layout: 'pedidos',
+  head: {
+    title: 'Cadastro - Dona Doce',
+  },
+})
+</script>
+
+<style scoped lang="scss">
+</style>
