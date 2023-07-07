@@ -1,5 +1,5 @@
 <template>
-    <LoadingPage v-if="loading" />
+  <div v-if="loading" ></div>
     <ContainerTable v-else>
         <ModalEditCardapio  v-if="$store.state.openModal"/>
       <div class="headerTable">
@@ -17,16 +17,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in itemLocal" :key="index">
-            <td>{{ formatDate(item.date) }}</td>
-            <td>{{ item.desjejum }}</td>
-            <td>{{ item.lanche01 }}</td>
-            <td>{{ item.lanche02 }}</td>
-            <td>{{ item.lanche03 }}</td>
+          <tr v-for="(item, index) in listCardapio" :key="index">
+            <td>{{ formatDate(item.dateMenu) }}</td>
+            <td>{{ item.itemMenu[0].revenues.description }}</td>
+            <td>{{ item.itemMenu[1].revenues.description }}</td>
+            <td>{{ item.itemMenu[2].revenues.description }}</td>
+            <td>{{ item.itemMenu[3].revenues.description }}</td>
             <td>
 
-              <button @click="deleteReceita(receita.id)">
-                <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
+              <button @click="deleteMenu(item.id)">
+                <img src="~/assets/icons/delete.svg" alt="deleteMenu" />
               </button>
             </td>
           </tr>
@@ -38,51 +38,28 @@
   <script lang="ts">
   import Vue from 'vue'
   import dayjs from 'dayjs'
-  import httpClients from '~/server/cliente'
+  import httpCardapio from '~/server/cardapio'
   
   export default Vue.extend({
     data() {
       return {
-        listClient: [],
+        listCardapio: [],
         findPreviewClient: [],
         textSearch: '',
         loading: true,
-        itemLocal: [
-        { 
-          id: "1",
-          date: "2023-07-04T04:00:00.000Z",
-          desjejum: 'coxinha',
-          lanche01: 'kibe',
-          lanche02: 'enroladinho de salsicha',
-          lanche03: 'coxinha',
-        },
-        { 
-          id: "2",
-          date: "2023-07-09T04:00:00.000Z",
-          desjejum: 'Kibe',
-          lanche01: 'coxinha',
-          lanche02: 'enroladinho de salsicha',
-          lanche03: 'coxinha',
-        }
-        ]
       }
     },
   
     async fetch() {
-      await httpClients
-        .GetAllClients()
-        .then((res) => {
-          this.listClient = res.data
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      await httpCardapio.GetMenu().then( (res) => {
+        this.listCardapio = res.data
+      })
       this.loading = false
     },
     computed: {
       filterItems() {
         let itemSearch = []
-        itemSearch = this.listClient.filter((item) => {
+        itemSearch = this.listCardapio.filter((item) => {
           return (
             item.corporate_name
               .toLowerCase()
@@ -96,6 +73,15 @@
       previewClient(idClient) {
         this.$store.commit('OPEN_MODAL', true)
         this.findPreviewClient = idClient
+      },
+
+      async deleteMenu (id) {
+        await httpCardapio.DeleteMenu(id).then( (res) => {
+          this.$toast.success('Menu ')
+          this.$nuxt.refresh()
+        }).catch ( (error) => {
+          console.log(error)
+        })
       },
 
       formatDate(date) {
