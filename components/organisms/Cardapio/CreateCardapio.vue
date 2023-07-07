@@ -159,16 +159,16 @@ export default Vue.extend({
     async saveDayCardapio() {
       await httpCardapio.SetNewMenu(this.cardapio).then(async (res) => {
         console.log(res)
-        this.$toast.success('Menu Cadastrado com Sucesso!')
+        this.$toast.success('Cardapio Cadastrado com Sucesso!')
         this.$nuxt.refresh()
 
-        
+
         await httpCardapio.GetMenu().then( (res) => {
         this.days = res.data
     })
       }).catch( (error) => {
         console.log(error)
-        this.$toast.error('Não foi possivel cadastrar o menu')
+        this.$toast.error('Não foi possivel cadastrar o cardapio')
       })
     }
   },

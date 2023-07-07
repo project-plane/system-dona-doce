@@ -77,7 +77,7 @@
 
       async deleteMenu (id) {
         await httpCardapio.DeleteMenu(id).then( (res) => {
-          this.$toast.success('Menu ')
+          this.$toast.success('Cardapio deletado')
           this.$nuxt.refresh()
         }).catch ( (error) => {
           console.log(error)
