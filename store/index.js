@@ -3,6 +3,8 @@ export const state = () => ({
   openModalPreviewReceita: false,
   openModalPreviewEmpresa: false,
   openModalReceita: false,
+  dadosPedidos: [],
+  barraRoute: false
 })
 
 export const mutations = {
@@ -18,4 +20,10 @@ export const mutations = {
   OPEN_MODAL_RECEITA(state, payload) {
     state.openModalReceita = payload
   },
+  SAVE_DADOS_PEDIDOS_PROGRAMADOS(state, payload) {
+    state.dadosPedidos.push(payload)
+  },
+  BARRA_PEDIDOS_NAV(state, payload) {
+    state.barraRoute = payload
+  }
 }
