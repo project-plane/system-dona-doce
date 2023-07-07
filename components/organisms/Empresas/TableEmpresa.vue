@@ -7,14 +7,14 @@
       :findPreviewEmpresa="findPreviewEmpresa"
     />
     <div class="headerTable">
-      <h2>Lista de Empresas</h2>
+      <span>Unidades Cadastradas</span>
       <InputSearch v-model="textSearch" />
     </div>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Empresa</th>
+          <th>Unidade</th>
           <th>Fone</th>
           <th>E-mail</th>
           <th>Opções</th>
@@ -34,9 +34,9 @@
               <button @click="editEmpresa(empresa)">
                 <img src="~/assets/icons/edit.svg" alt="editReceitas" />
               </button>
-              <!-- <button @click="deleteEmpresa(empresa.id)">
+              <button @click="deleteEmpresa(empresa.id)">
                 <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
-              </button> -->
+              </button>
             </div>
           </td>
         </tr>
@@ -103,18 +103,21 @@ export default Vue.extend({
       this.findEmpresa = dataEmpresa
       this.$store.commit('OPEN_MODAL', true)
     },
-    // async deleteEmpresa(id) {
-    //   await httpEmpresa
-    //     .DeleteEmpresa(id)
-    //     .then((res) => {
-    //       if (res.status === 200) {
-    //         this.$toast.success('Empresa deletada com sucesso!!!')
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error)
-    //     })
-    // },
+
+    async deleteEmpresa(id) {
+      await httpEmpresa
+        .DeleteEmpresa(id)
+        .then((res) => {
+          if (res.status === 200) {
+            this.$toast.success('Empresa deletada com sucesso!!!')
+          }
+
+          this.$nuxt.refresh()
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
   },
 })
 </script>
@@ -124,11 +127,18 @@ export default Vue.extend({
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
 }
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  font-size: 0.9rem;
   thead {
     width: 100%;
     background: var(--bg_heade_table);
@@ -152,6 +162,10 @@ table {
     gap: 1rem;
     button {
       background: transparent;
+
+      img {
+        width: 1.2rem;
+      }
     }
   }
 }

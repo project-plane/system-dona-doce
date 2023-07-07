@@ -163,22 +163,32 @@ export default Vue.extend({
   }
 
   .calendar-input {
-    width: 45%;
+    width: 50%;
+    padding-left: 5%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+    border-left: 1px solid var(--border);
 
-
+    span {
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--red);
+      font-weight: 600;
+    }
 
     .input-select {
+      margin-bottom: 1.2rem;
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
   
-
       span {
+        text-align: left;
         font-size: 1rem;
+        font-weight: 600;
+        color: var(--red);
       }
 
       select {

@@ -7,11 +7,11 @@
 //responsive font
 html {
     @media(max-width: 1080px) {
-        font-size: 93.75%;
+        font-size: 87.5%;
         //16*0,9373= 15px
     }
     @media(max-width: 768px) {
-        font-size: 87.5%;
+        font-size: 85.5%;
         //16*0,875 = 14px
     }
 }
@@ -28,7 +28,7 @@ html {
     --orange: #FF9921;
     --red: #FA5C4F;
     --white: #FFFFFF;
-    --space: 5vw;
+    --space: 7vw;
     --border: #b9b9b9;
 }
 
@@ -73,6 +73,8 @@ select {
     padding: .2rem .5rem;
     color: var(--txt_color);
 }
+
+
 
 input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;

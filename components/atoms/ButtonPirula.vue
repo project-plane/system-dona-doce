@@ -21,5 +21,7 @@ export default Vue.extend({
 <style scoped>
 .buttonLogin {
   width: 100%;
+  font-size: 1rem;
+  font-weight: 400;
 }
 </style>
