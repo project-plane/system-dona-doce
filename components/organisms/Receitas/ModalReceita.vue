@@ -38,16 +38,6 @@
                 placeholder="quantidade"
               />
             </div>
-            <!-- <div class="input">
-              <label for="qtd">Porcentagem %</label>
-              <input
-                id="qtd"
-                v-model="porcentagem"
-                type="number"
-                placeholder="porcentagem"
-                ref="input"
-              />
-            </div> -->
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
             </div>
@@ -79,7 +69,6 @@
               <input type="number" v-model="porcentagem" />
               <span class="total">Valor Total Receita</span>
               <span>R$ {{ valorTotalReceita }}</span>
-              {{ teste }}
             </div>
             <Button title="Salvar" @functionClick="saveReceita" />
           </div>
