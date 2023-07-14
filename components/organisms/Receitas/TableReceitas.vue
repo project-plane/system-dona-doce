@@ -29,7 +29,7 @@
           <td>{{ index + 1 }}</td>
           <td class="img">
             <img
-              :src="`https://api.doce.gedroid.com/img_revenue/${receita.imagem}`"
+              :src="`https://api.donadoce.gedroid.com/img_revenue/${receita.imagem}`"
               alt=""
             />
           </td>
@@ -136,7 +136,7 @@ export default Vue.extend({
   justify-content: space-between;
   align-items: center;
 
-    span {
+  span {
     font-size: 1.35rem;
     font-weight: 600;
   }

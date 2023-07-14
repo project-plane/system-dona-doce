@@ -1,5 +1,5 @@
 <template>
-  <TemplatePedidos />
+  <TemplateFinalizationPedido />
 </template>
 
 <script lang="ts">
