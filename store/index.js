@@ -4,7 +4,8 @@ export const state = () => ({
   openModalPreviewEmpresa: false,
   openModalReceita: false,
   dadosPedidos: [],
-  barraRoute: false
+  barraRoute: false,
+  qtdPedidos: 0
 })
 
 export const mutations = {
@@ -25,5 +26,8 @@ export const mutations = {
   },
   BARRA_PEDIDOS_NAV(state, payload) {
     state.barraRoute = payload
+  },
+  QTD_PDIDOS(state, payload) {
+    console.log(payload);
   }
 }

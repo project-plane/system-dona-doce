@@ -1,16 +1,7 @@
 <template>
-  <div class="pedidos">
-    <div class="navbar">
-      <h1>Dona Doce</h1>
-      <ul>
-        <li class="active" @click="routePedido">
-          Pedidos
-          <div :class="{ barraActive: this.$store.state.barraRoute }"></div>
-        </li>
-        <li>Histórico de Pedidos</li>
-      </ul>
-    </div>
-    <div class="container">
+  <div>
+    <NavBarPedidos />
+    <div class="content">
       <Nuxt />
     </div>
   </div>
@@ -30,48 +21,13 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.pedidos {
+.content {
   width: 100%;
-  height: 100vh;
+  height: 90vh;
+  margin-top: 10vh;
   background: var(--red);
-  position: relative;
-  .navbar {
-    width: 100%;
-    height: 10vh;
-    background: var(--white);
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    ul {
-      display: flex;
-      gap: 3rem;
-      li {
-        list-style: none;
-        cursor: pointer;
-      }
-      .active {
-        .barraActive {
-          background: var(--red);
-          height: 7px;
-          position: relative;
-          bottom: -21px;
-          border-radius: 5px;
-        }
-      }
-    }
-  }
-  img {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 30%;
-  }
-  .container {
-    width: 100%;
-    height: 90vh;
-    padding: 2rem;
-    z-index: 1000;
-  }
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 }
 </style>

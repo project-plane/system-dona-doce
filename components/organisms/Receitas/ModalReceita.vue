@@ -62,9 +62,13 @@
               <span>R$ {{ amountReceita.valorUnitario }}</span>
               <span>R$ {{ amountReceita.valor }}</span>
             </div>
-            <div class="footerFooter">
-              <span class="total">Total</span>
+            <div class="footerTable">
+              <span class="total">Valor Custo Matéria Prima</span>
               <span>R$ {{ valorTotal }}</span>
+              <span class="total">% sobre Matéria Prima</span>
+              <input type="number" v-model="porcentagem" />
+              <span class="total">Valor Total Receita</span>
+              <span>R$ {{ valorTotalReceita }}</span>
             </div>
             <Button title="Salvar" @functionClick="saveReceita" />
           </div>
@@ -92,6 +96,8 @@ export default Vue.extend({
       selected: '',
       qtdIngrediente: null,
       valorTotal: '',
+      porcentagem: '',
+      valorTotalReceita: '',
       valueReceita: 0,
       yield_per_quantity: 0,
       time_in_hours: 0,
@@ -101,6 +107,12 @@ export default Vue.extend({
       amountValue: [],
       ingredients: [],
     }
+  },
+
+  watch: {
+    porcentagem(newValue, oldValue) {
+      this.valorTotalReceita = (newValue * this.valorTotal).toFixed(2)
+    },
   },
 
   async fetch() {
@@ -157,7 +169,10 @@ export default Vue.extend({
       // valor total de soma dos ingredientes
       this.valorTotal = valorTotal.toFixed(2)
 
+      this.valorTotalReceita = (this.valorTotal * this.porcentagem).toFixed(2)
+
       this.qtdIngrediente = ''
+      this.porcentagem = ''
       this.selected = ''
     },
     async saveReceita() {
@@ -283,15 +298,20 @@ export default Vue.extend({
         .footerBody:nth-child(2n + 1) {
           background: #e9e9e9;
         }
-        .footerFooter {
+        .footerTable {
           display: grid;
           grid-template-columns: 6fr 2fr;
+          gap: 1rem;
           padding: 0.7rem 1rem;
           margin-top: 20px;
           border-top: 2px solid var(--bg_opacity);
           span {
             font-size: 1.2rem;
             font-weight: 800;
+          }
+          input {
+            border: 1px solid var(--bg_opacity);
+            height: 30px;
           }
         }
       }
