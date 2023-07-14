@@ -4,18 +4,18 @@
       <Input
         v-model="newPassword"
         label="Digitar nova senha"
-        type="text"
-        placeholder="Digitar nova sennha"
+        type="password"
+        placeholder="Digitar nova senha"
       />
       <Input
         v-model="confirmPassword"
-        label="Confirmar Senha"
-        type="text"
-        placeholder="Confirmar senha"
+        label="Confirmar nova Senha"
+        type="password"
+        placeholder="Confirmar nova senha"
       />
     </div>
     <div class="btnNewPassword">
-      <button>Salvar</button>
+      <button @click="redefinePassword">Salvar</button>
     </div>
   </Container>
 </template>
@@ -23,12 +23,62 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import httpRedefinePassword from '~/server/auth'
+
 export default Vue.extend({
   data() {
     return {
       newPassword: '',
       confirmPassword: '',
+      incorrectSenha: false,
     }
+  },
+  methods: {
+    async redefinePassword() {
+      if (!this.newPassword || !this.confirmPassword) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
+      }
+      if (this.confirmPassword !== this.newPassword) {
+        this.$toast.error('Senha não confere!!!')
+        this.newPassword = ''
+        this.confirmPassword = ''
+        return
+      }
+      const dataPassword = {
+        token: this.$route.params.token,
+        password: this.newPassword,
+        confirmpassword: this.confirmPassword,
+      }
+      await httpRedefinePassword
+        .RedefinePassword(dataPassword)
+        .then((res) => {
+          this.$toast.success('Senha redefinida com sucesso')
+          this.$router.push('/login')
+        })
+        .catch((error) => {
+          if (
+            error.response.data.message === 'Este token foi usado anteriormente'
+          ) {
+            this.$toast.error('Solicite uma nova redefinição de senha!!!')
+            this.$router.push('/login')
+            return
+          }
+          if (
+            error.response.data.message ===
+            'Esta nova senha é igual a última senha, tente outra'
+          ) {
+            this.$toast.error(
+              'Esta nova senha é igual a última senha, tente outra!!!'
+            )
+            this.newPassword = ''
+            this.confirmPassword = ''
+          }
+          console.log(error.response.data.message)
+        })
+
+      console.log(dataPassword)
+    },
   },
 })
 </script>
