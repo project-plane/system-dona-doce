@@ -2,7 +2,11 @@
   <div class="containerPedidos">
     <div class="headerPedidos">
       <h2>Pedidos Programados</h2>
-      <h3>04/07/2023/</h3>
+      <h3>
+        {{ new Date(dataPedido).getDate() }}/{{
+          new Date(dataPedido).getMonth() + 1
+        }}/{{ new Date(dataPedido).getFullYear() }}
+      </h3>
     </div>
     <div class="menu">
       <div class="titleLanches">
@@ -34,6 +38,12 @@ import Vue from 'vue'
 
 export default Vue.extend({
   layout: 'pedidos',
+  props: {
+    dataPedido: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       active: true,
@@ -73,7 +83,6 @@ export default Vue.extend({
       this.$emit('lanche3')
     },
     finalizarPedidosProgramados() {
-      console.log(this.$store.state.dadosPedidos)
       this.$store.commit('BARRA_PEDIDOS_NAV', false)
       this.$toast.success('Pedido criado com sucesso!!!')
       this.$router.push('/pedidos')
