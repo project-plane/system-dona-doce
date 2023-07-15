@@ -1,7 +1,7 @@
 <template>
   <div v-if="loading" ></div>
-    <ContainerTable v-else>
-        <ModalEditCardapio  v-if="$store.state.openModal"/>
+    <ContainerTable v-else >
+        <ModalEditCardapio v-if="$store.state.openModal" :cardapioModal="cardapioModal"/>
       <div class="headerTable">
         <span>Dias Cadastrados</span>
       </div>
@@ -25,6 +25,7 @@
             <td>{{ item.itemMenu[3].revenues.description }}</td>
             <td>
 
+              <button @click="editCardapio(item)"><img src="~/assets/icons/edit.svg" alt="editMenu" /></button>
               <button @click="deleteMenu(item.id)">
                 <img src="~/assets/icons/delete.svg" alt="deleteMenu" />
               </button>
@@ -47,6 +48,7 @@
         findPreviewClient: [],
         textSearch: '',
         loading: true,
+        cardapioModal: {}
       }
     },
   
@@ -74,6 +76,10 @@
         this.$store.commit('OPEN_MODAL', true)
         this.findPreviewClient = idClient
       },
+      editCardapio(cardapio) {
+        this.cardapioModal = cardapio
+        this.$store.commit('OPEN_MODAL', true)
+    },
 
       async deleteMenu (id) {
         await httpCardapio.DeleteMenu(id).then( (res) => {

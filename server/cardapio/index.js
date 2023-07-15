@@ -13,7 +13,13 @@ export default {
     return await http.post(`/menu`, data)
   },
 
+  UpdateMenu: async (id, data) => {
+    return await http.put(`/menu/${id}`, data)
+  },
+
   DeleteMenu: async (id) => {
     return await http.delete(`/menu/${id}`)
-  }
+  },
+
+
 }

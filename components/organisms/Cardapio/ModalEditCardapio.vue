@@ -1,402 +1,183 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
-    <div class="containerReceita">
-      <BeadFrame>
-        <div class="bodyModal">
-          <div class="container">
-            <div class="header">
-              <div class="headerReceita">
-                <img :src="imgFile" alt="" />
-                <div class="textReceita">
-                  <h1>Editar Receita</h1>
-                  <Title :title="title" />
-                </div>
-              </div>
-              <div @click="closeModal">
-                <img
-                  style="cursor: pointer"
-                  src="~/assets/icons/close.svg"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="btnAddIngrediente">
-              <button @click="addIngrediente">Adicionar Ingrediente</button>
-            </div>
-            <div class="body" v-if="statusAddIngrediente">
-              <div class="input">
-                <Label for="ingrediente">Ingrediente</Label>
-                <select name="" id="ingrediente" v-model="selected">
-                  <option disabled value="">Selecionar Ingrediente</option>
-                  <option
-                    v-for="itemIngredient in listIngredients"
-                    :key="itemIngredient.id"
-                  >
-                    {{ itemIngredient.description }}
-                  </option>
-                </select>
-              </div>
-              <div class="input">
-                <label for="qtd">Quantidade</label>
-                <input
-                  type="number"
-                  id="qtd"
-                  placeholder="quantidade"
-                  v-model="qtdIngrediente"
-                />
-              </div>
-              <div class="btnIngrediente">
-                <button @click="inserirIngrediente(idReceita)">Inserir</button>
-              </div>
-            </div>
-            <div class="body" v-for="receita in listReceitas" :key="receita.id">
-              <div class="input">
-                <Label for="ingrediente">Ingrediente</Label>
-                <input
-                  style="background: #d6d6d6; cursor: no-drop"
-                  type="text"
-                  disabled
-                  v-model="receita.ingredients.description"
-                />
-              </div>
-              <div class="input">
-                <Label for="qtd">Quantidade</Label>
-                <input
-                  type="number"
-                  id="qtd"
-                  placeholder="quantidade"
-                  v-model="receita.amount_ingredient"
-                />
-              </div>
-  
-              <div class="close">
-                <img
-                  src="~/assets/icons/close.svg"
-                  alt=""
-                  @click="deletarIngrediente(receita)"
-                />
-              </div>
-            </div>
-            <div class="valorTotal" v-if="updateIngrediente.length !== 0">
-              <h3>Valor Total</h3>
-              <h3>R$ {{ valorTotal }}</h3>
-            </div>
-            <div class="valorTotal" v-else>
-              <h3>Valor Total</h3>
-              <h3>R$ {{ valorAtual }}</h3>
-            </div>
-            <Button
-              @functionClick="editarIngredienteReceita(listReceitas)"
-              title="Atualizar Dados"
-              v-if="updateIngrediente.length === 0"
-            />
-            <Button
-              v-else
-              @functionClick="editReceita(idReceita)"
-              title="Salvar"
-            />
-          </div>
-        </div>
-      </BeadFrame>
+  <ModalEdit :titleModal="'Atualizar dia: ' + formatDate(cardapioModal.dateMenu) " @save="updateCardapio">
+    <div class="current">
+      <span>Cardápio Atual</span>
+      <span><strong>Desjejum:</strong> <br/>{{ cardapioModal.itemMenu[0].revenues.description }}</span>
+      <span><strong>Lanche 01:</strong><br/> {{ cardapioModal.itemMenu[1].revenues.description }}</span>
+      <span><strong>Lanche 02:</strong> <br/>{{ cardapioModal.itemMenu[2].revenues.description }}</span>
+      <span><strong>Lanche 03:</strong> <br/>{{ cardapioModal.itemMenu[3].revenues.description }}</span>
     </div>
-  </template>
-  
-  <script lang="ts">
-  import Vue from 'vue'
-  
-  import httpReceitaIngrediente from '~/server/ingredienteReceita'
-  import httpIngredientes from '~/server/ingredientes'
-  import httpReceitas from '~/server/receitas'
-  
-  export default Vue.extend({
-    data() {
-      return {
-        statusAddIngrediente: false,
-        qtdIngrediente: '',
-        valorTotal: '',
-        valorAtual: '',
-        yield_per_quantity: 0,
-        time_in_hours: 0,
-        presumed_profit: 0,
-        amountValue: [],
-        ingredients: [],
-        listFindReceita: [],
-        listReceitas: [],
-        idReceita: '',
-        imgFile: '',
-        title: '',
-        updateIngrediente: [],
-        selected: '',
-        listIngredients: [],
-      }
-    },
-    props: {
-      dataReceita: {
-        type: String,
-        required: true,
-      },
-    },
-  
-    async fetch() {
-      await httpReceitas
-        .GetFindReceita(this.dataReceita)
-        .then((res) => {
-          this.listFindReceita = res.data
-          this.idReceita = this.listFindReceita.id
-          this.title = this.listFindReceita.description
-          this.listReceitas = this.listFindReceita.ingredients_Revenues
-          this.imgFile = `https://api.doce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
-          this.valorAtual = this.listFindReceita.value.toFixed(2)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-  
-      await httpIngredientes
-        .ListIngredientes()
-        .then((res) => {
-          this.listIngredients = res.data
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    methods: {
-      addIngrediente() {
-        this.statusAddIngrediente = true
-      },
-  
-      // Inserir um ingrediente dentro da receita
-      inserirIngrediente(id) {
-        this.listIngredients.map(async (e) => {
-          if (e.description === this.selected) {
-            const dado = this.listReceitas.find((item) => {
-              return item.ingredients.description === this.selected
-            })
-            if (!dado) {
-              const adicionarIngrediente = [
-                {
-                  fk_ingredient: e.id,
-                  fk_revenues: id,
-                  amount_ingredient: Number(this.qtdIngrediente),
-                },
-              ]
-              await httpReceitaIngrediente
-                .CreateReceitaIngrediente(adicionarIngrediente)
-                .then((res) => {
-                  this.$toast.success('Ingrediente inserido com sucesso!!!')
-                })
-                .catch((error) => {
-                  console.log(error)
-                })
-              this.$nuxt.refresh()
-              this.statusAddIngrediente = false
-            } else {
-              this.$toast.error('Ingrediente existente na receita!!!')
-            }
+    <div class="new">
+      <span>Novo Cardápio</span>
+      <div class="input-select">
+      <span>Desjejum</span>
+      <select v-model="cardapio.recreateItensMenu[0].fk_revenues">
+      <option disabled value="">Selecionar Receita</option>
+      <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
+          {{ receita.description }} 
+      </option>
+      </select>
+    </div>
+    <div class="input-select">
+      <span>Lanche 1</span>
+      <select v-model="cardapio.recreateItensMenu[1].fk_revenues">
+      <option disabled value="">Selecionar Receita</option>
+      <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
+          {{ receita.description }} 
+      </option>
+      </select>
+    </div>
+    <div class="input-select">
+      <span>Lanche 2</span>
+      <select v-model="cardapio.recreateItensMenu[2].fk_revenues">
+      <option disabled value="">Selecionar Receita</option>
+      <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
+          {{ receita.description }} 
+      </option>
+      </select>
+    </div>
+    <div class="input-select">
+      <span>Lanche 3</span>
+      <select v-model="cardapio.recreateItensMenu[3].fk_revenues">
+      <option disabled value="">Selecionar Receita</option>
+      <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
+          {{ receita.description }} 
+      </option>
+      </select>
+    </div>
+    </div>
+    
+  </ModalEdit>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+import dayjs from 'dayjs'
+import httpCardapio from '~/server/cardapio'
+import httpReceitas from '~/server/receitas'
+
+export default Vue.extend({
+  props: {
+    cardapioModal: Object
+  },
+  data () {
+    return {
+      optionsReceitas: [],
+      cardapio: {
+        recreateItensMenu: [
+          {
+            fk_revenues: '',
+            fk_category: '491aebc2-1c69-11ee-be56-0242ac120002'
+          },
+          {
+            fk_revenues: '',
+            fk_category: '518a6828-1c69-11ee-be56-0242ac120002'
+          },
+          {
+            fk_revenues: '',
+            fk_category: '57c25f34-1c69-11ee-be56-0242ac120002'
+          },
+          {
+            fk_revenues: '',
+            fk_category: '619dec9e-1c69-11ee-be56-0242ac120002'
           }
-        })
-        this.selected = ''
-        this.qtdIngrediente = ''
-      },
-  
-      // Edita um ingrediente dentro da receita
-      editarIngredienteReceita(data) {
-        data.map((e) => {
-          const dataUpdate = {
-            fk_ingredient: e.fk_ingredient,
-            fk_revenues: e.fk_revenues,
-            amount_ingredient: Number(e.amount_ingredient),
-            value: e.ingredients.value,
-          }
-  
-          this.updateIngrediente.push(dataUpdate)
-          this.amountValue.push(dataUpdate.amount_ingredient * dataUpdate.value)
-        })
-  
-        this.updateIngrediente.map(async (e) => {
-          await httpReceitaIngrediente
-            .UpdateReceitaIngrediente(e)
-            .then((res) => {
-              console.log(res.data)
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-        })
-        this.$toast.success('Valor Atualizado com sucesso!!!')
-  
-        // valor total de soma dos ingredientes
-        const valorTotal = this.amountValue.reduce((soma, i) => {
-          return soma + i
-        })
-        this.valorTotal = valorTotal.toFixed(2)
-      },
-  
-      // Deleta um ingrediente da receita
-      async deletarIngrediente(data) {
-        const dataDelete = {
-          fk_ingredient: data.fk_ingredient,
-          fk_revenues: data.fk_revenues,
-        }
-  
-        await httpReceitaIngrediente
-          .DeleteReceitaIngrediente(dataDelete)
-          .then((res) => {
-            if (res.status === 200) {
-              this.$toast.success(
-                'Ingrediente deletado da receita com sucesso!!!'
-              )
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        this.$nuxt.refresh()
-      },
-      closeModal() {
-        this.$store.commit('OPEN_MODAL', false)
-      },
-  
-      // Edita a receita
-      async editReceita(id) {
-        if (this.amountValue.length === 0) {
-          this.$toast.info('Nada foi alterado na receita!!!')
-          this.$store.commit('OPEN_MODAL', false)
-          return
-        }
-  
-        if (this.amountValue.length > 0) {
-          const formData = new FormData()
-          formData.append('description', this.listFindReceita.description)
-          formData.append('value', this.valorTotal)
-          formData.append(
-            'ingredients',
-            JSON.stringify(this.listFindReceita.ingredients_Revenues)
-          )
-          formData.append('old_imagem', this.listFindReceita.imagem)
-          formData.append('yield_per_quantity', this.yield_per_quantity)
-          formData.append('time_in_hours', this.time_in_hours)
-          formData.append('presumed_profit', this.presumed_profit)
-  
-          await httpReceitas
-            .UpdateReceita(id, formData)
-            .then((res) => {
-              if (res.status === 200) {
-                this.$toast.success('Receita atualizada com sucesso!!!')
-                this.$store.commit('OPEN_MODAL', false)
-                this.$nuxt.refresh()
-                return
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          return
-        }
-      },
-    },
-  })
-  </script>
-  
-  <style scoped lang="scss">
-  .containerReceita {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    right: 0;
-    background-color: var(--bg_color_modal);
-    display: table;
-    transition: opacity 0.2s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    z-index: 1;
-    .bodyModal {
-      background: var(--white);
-      min-height: 50%;
-      .container {
-        width: 100%;
-        height: 90vh;
-        padding: 2.5rem 2rem;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        overflow-y: auto;
-        .btnAddIngrediente {
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          button {
-            background: var(--blue);
-            color: var(--white);
-            padding: 0.5rem;
-            border-radius: 5px;
-          }
-        }
-        .header {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          .headerReceita {
-            width: 100%;
-            display: flex;
-            gap: 1rem;
-            img {
-              width: 30%;
-            }
-          }
-        }
-  
-        .body {
-          width: 100%;
-          display: grid;
-          grid-template-columns: 3fr 3fr 1fr;
-          padding-bottom: 1rem;
-          gap: 1rem;
-          .input {
-            display: flex;
-            flex-direction: column;
-            input,
-            select {
-              border: 1px solid var(--bg_opacity);
-            }
-          }
-          .btnIngrediente {
-            width: 100%;
-            display: flex;
-            align-items: flex-end;
-            button {
-              width: 100%;
-              padding: 0.6rem;
-              background: var(--red);
-              color: var(--white);
-              font-weight: 700;
-              border-radius: 4px;
-            }
-          }
-          .close {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            img {
-              cursor: pointer;
-              width: 20px;
-              height: 20px;
-            }
-          }
-        }
+        ]
       }
     }
-    .valorTotal {
-      position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      gap: 2rem;
-      right: 50px;
+  },
+
+  async mounted() {
+
+    await httpReceitas.GetReceitas().then( (res) => {
+      this.optionsReceitas = res.data
+      })
+  },
+
+  methods: {
+    formatDate(date) {
+      return dayjs(date).format('DD/MM/YYYY')
+    },
+    hasDuplicates(arr) {
+      return new Set(arr).size !== arr.length;
+    },
+
+    async updateCardapio() {
+
+      const fkCategoryList = this.cardapio.recreateItensMenu.map(item => item.fk_revenues);
+
+    
+      const hasDuplicatesFkCategory = this.hasDuplicates(fkCategoryList);
+
+      if (hasDuplicatesFkCategory) {
+        
+        this.$toast.error('Não podem haver receitas duplicadas para o mesmo dia')
+      } else {
+        await httpCardapio.UpdateMenu(this.cardapioModal.id, this.cardapio).then((res) => {
+        this.$store.commit('OPEN_MODAL', false)
+        this.$toast.success('Cardápio atualizado com sucesso!')
+        this.$nuxt.refresh()
+
+
+      })
+        console.log('Não há fk_category iguais no objeto "cardapio".');
+      }
+
+      
     }
   }
-  </style>
+})
+</script>
+
+<style lang="scss" scoped>
+.current {
+  display: flex;
+  flex-direction: column;
+
+  span {
+
+    strong {
+      color: var(--red);
+    }
+  }
+
+  span:not(:first-child) {
+    margin-bottom: 1.4rem;
+}
+
+span:first-child {
+  font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+}
+.new {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  span:first-child {
+  font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+  .input-select {
+      margin-bottom: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
   
+      span {
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--red);
+      }
+
+      select {
+        border: 0.06rem solid var(--border);
+        border-radius: 0.25rem;
+      }
+    }
+}
+</style>

@@ -6,7 +6,6 @@
           <div class="calendar">
             <span>Selecione uma data</span>
             <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red"/>
-            <span v-if="existOnList" style="text-align: center; color: #FA5C4F">Dia {{ formatDate(date) }} já possui um cardapio cadastrado</span>
           </div>
           
           <div class="calendar-input" v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList">
@@ -71,6 +70,7 @@ export default Vue.extend({
       days: [],
       optionsReceitas: [],
       date: '',
+      toEdit: [],
       datesToVerify: [],
       loading: true,
       existOnList: false,
@@ -129,19 +129,23 @@ export default Vue.extend({
 
 
       this.date = new Date(newValue).toISOString()
-    }
+    },
   },
+
+
 
   async mounted() {
     await httpReceitas.GetReceitas().then( (res) => {
       this.optionsReceitas = res.data
       })
   },
+  
 
   async created() {
     await httpCardapio.GetMenu().then( (res) => {
         this.days = res.data
         this.days.map( (item) => {
+          this.toEdit.push(item)
           this.datesToVerify.push(this.formatDate(item.dateMenu))
         })
     })
@@ -155,21 +159,38 @@ export default Vue.extend({
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')
     },
+    hasDuplicates(arr) {
+      return new Set(arr).size !== arr.length;
+    },
 
     async saveDayCardapio() {
-      await httpCardapio.SetNewMenu(this.cardapio).then(async (res) => {
-        console.log(res)
+
+      const fkCategoryList = this.cardapio.createItensMenu.map(item => item.fk_revenues);
+
+    
+      const hasDuplicatesFkCategory = this.hasDuplicates(fkCategoryList);
+
+      if (hasDuplicatesFkCategory) {
+        
+        this.$toast.error('Não podem haver receitas duplicadas para o mesmo dia')
+      } else {
+        await httpCardapio.SetNewMenu(this.cardapio).then(async (res) => {
         this.$toast.success('Cardapio Cadastrado com Sucesso!')
         this.$nuxt.refresh()
 
 
         await httpCardapio.GetMenu().then( (res) => {
         this.days = res.data
+        this.$nuxt.refresh()
     })
       }).catch( (error) => {
         console.log(error)
-        this.$toast.error('Não foi possivel cadastrar o cardapio')
+        this.$toast.error('Não foi possivel cadastrar o cardapio ')
       })
+      }
+
+      
+     
     }
   },
 
