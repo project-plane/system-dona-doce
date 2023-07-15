@@ -1,7 +1,7 @@
 <template>
   <div class="container_edit_modal">
     <div class="negativeSpace">
-      <Title class="headerModal">
+      <Title class="headerModal" :title="titleModal">
         <h1>{{ titleModal }}</h1>
         <img @click="closeModal" src="~/assets/icons/close.svg" alt="close" />
       </Title>
