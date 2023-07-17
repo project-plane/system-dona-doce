@@ -144,7 +144,7 @@ export default Vue.extend({
         this.idReceita = this.listFindReceita.id
         this.title = this.listFindReceita.description
         this.listReceitas = this.listFindReceita.ingredients_Revenues
-        this.imgFile = `https://api.doce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
+        this.imgFile = `https://api.donadoce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
         this.valorAtual = this.listFindReceita.value.toFixed(2)
       })
       .catch((error) => {
