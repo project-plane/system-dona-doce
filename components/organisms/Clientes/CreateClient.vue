@@ -277,7 +277,7 @@ export default Vue.extend({
       await httpClient
         .CreateClient(dataClient)
         .then((res) => {
-          console.log(res)
+          this.$toast.success('Cliente criado com sucesso!!!')
         })
         .catch((error) => {
           console.log(error)

@@ -65,10 +65,8 @@
             <div class="footerTable">
               <span class="total">Valor Custo Matéria Prima</span>
               <span>R$ {{ valorTotal }}</span>
-              <span class="total">% sobre Matéria Prima</span>
-              <input type="number" v-model="porcentagem" />
-              <span class="total">Valor Total Receita</span>
-              <span>R$ {{ valorTotalReceita }}</span>
+              <span class="total">Valor Receita</span>
+              <input type="number" v-model="valorReceita" />
             </div>
             <Button title="Salvar" @functionClick="saveReceita" />
           </div>
@@ -96,9 +94,8 @@ export default Vue.extend({
       selected: '',
       qtdIngrediente: null,
       valorTotal: '',
-      porcentagem: '',
+      valorReceita: '',
       valorTotalReceita: '',
-      valueReceita: 0,
       yield_per_quantity: 0,
       time_in_hours: 0,
       presumed_profit: 0,
@@ -169,17 +166,15 @@ export default Vue.extend({
       // valor total de soma dos ingredientes
       this.valorTotal = valorTotal.toFixed(2)
 
-      this.valorTotalReceita = (this.valorTotal * this.porcentagem).toFixed(2)
-
       this.qtdIngrediente = ''
-      this.porcentagem = ''
+      this.valorReceita = ''
       this.selected = ''
     },
     async saveReceita() {
       const status = this.dadosReceitas.status
       const formData = new FormData()
       formData.append('description', this.dadosReceitas.receita)
-      formData.append('value', this.valorTotal)
+      formData.append('value', this.valorReceita)
       formData.append('ingredients', JSON.stringify(this.ingredients))
       formData.append('imagem', this.dadosReceitas.imgFile)
       formData.append('yield_per_quantity', this.yield_per_quantity)

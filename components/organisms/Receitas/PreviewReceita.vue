@@ -7,7 +7,7 @@
             <div class="headerReceita">
               <img
                 :src="
-                  `https://api.doce.gedroid.com/img_revenue/` +
+                  `https://api.donadoce.gedroid.com/img_revenue/` +
                   listFindReceita.imagem
                 "
                 alt=""
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   data() {
