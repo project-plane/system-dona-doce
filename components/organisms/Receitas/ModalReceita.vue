@@ -63,9 +63,9 @@
               <span>R$ {{ amountReceita.valor }}</span>
             </div>
             <div class="footerTable">
-              <span class="total">Valor Custo Matéria Prima</span>
+              <span class="total">Valor de Custo</span>
               <span>R$ {{ valorTotal }}</span>
-              <span class="total">Valor Receita</span>
+              <span class="total">Valor de Venda Padrão</span>
               <input type="number" v-model="valorReceita" />
             </div>
             <Button title="Salvar" @functionClick="saveReceita" />
