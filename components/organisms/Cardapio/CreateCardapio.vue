@@ -207,6 +207,8 @@ export default Vue.extend({
   display: flex;
   justify-content: space-between;
 
+  
+
   .calendar {
     display: flex;
     flex-direction: column;
@@ -246,6 +248,17 @@ export default Vue.extend({
         border: 0.06rem solid var(--border);
         border-radius: 0.25rem;
       }
+    }
+  }
+
+  @media(max-width: 785px) {
+    flex-direction: column;
+    gap: 1rem;
+
+    .calendar, .calendar-input {
+      width: 100%;
+      border-left: none;
+      padding-left: 0;
     }
   }
 }
