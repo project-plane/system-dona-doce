@@ -49,14 +49,15 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
+    padding-bottom: 2rem;
   }
   .pedidos {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1rem;
+    gap: 3rem;
+    padding-top: 2rem;
     .qtdPedidos {
       display: flex;
       flex-direction: column;
