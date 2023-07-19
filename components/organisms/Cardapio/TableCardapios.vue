@@ -9,10 +9,10 @@
         <thead>
           <tr>
             <th>Data</th>
-            <th>Desjejum</th>
-            <th>Lanche 01</th>
-            <th>Lanche 02</th>
-            <th>Lanche 03</th>
+            <th>Opção 01</th>
+            <th>Opção 02</th>
+            <th>Opção 03</th>
+            <th>Opção 04</th>
             <th>Opções</th>
           </tr>
         </thead>
