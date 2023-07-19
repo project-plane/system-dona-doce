@@ -171,6 +171,9 @@ export default Vue.extend({
       this.selected = ''
     },
     async saveReceita() {
+      if (!this.valorReceita) {
+        this.$toast.error('Preencha o campo de venda')
+      }
       const status = this.dadosReceitas.status
       const formData = new FormData()
       formData.append('description', this.dadosReceitas.receita)

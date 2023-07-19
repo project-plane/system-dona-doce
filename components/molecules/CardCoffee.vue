@@ -1,17 +1,17 @@
 <template>
   <div class="containerCard">
     <img
-      :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`"
+      :src="`https://api.donadoce.gedroid.com/img_revenue/${pedidoCoffee.imagem}`"
       alt=""
     />
     <div class="cardPedido">
       <div class="descriptionPedido">
-        <h3>{{ tipoLanches.revenues.description }}</h3>
-        <p>R$ {{ tipoLanches.revenues.value }}</p>
+        <h3>{{ pedidoCoffee.description }}</h3>
+        <p>R$ {{ pedidoCoffee.value }}</p>
       </div>
       <div class="selectPedido">
         <p>Qtd Selecionada</p>
-        <input type="text" v-model="tipoLanches.revenues.yield_per_quantity" />
+        <input type="text" v-model="pedidoCoffee.yield_per_quantity" />
       </div>
     </div>
     <button @click="addPedidos">Adicionar Pedido</button>
@@ -23,7 +23,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    tipoLanches: {
+    pedidoCoffee: {
       type: Object,
       required: true,
     },
@@ -52,7 +52,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .containerCard {
-  width: 27%;
+  width: 100%;
   background: var(--white);
   border-radius: 4px;
   display: flex;
@@ -78,7 +78,7 @@ export default Vue.extend({
     }
   }
   img {
-    width: 100%;
+    width: 438px;
     height: 250px;
   }
   .descriptionPedido {
