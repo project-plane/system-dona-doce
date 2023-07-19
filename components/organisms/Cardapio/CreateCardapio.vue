@@ -34,7 +34,7 @@
           </div>
           
         </div>
-        <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList" class="row-button">
+        <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList && qtdeCardapio !== 0" class="row-button">
           <Button title="Salvar" @click.native="saveDayCardapio" />
         </div>
   </Container>
