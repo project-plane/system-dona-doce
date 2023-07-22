@@ -2,14 +2,14 @@
   <div class="navbar-container">
     <span>Dona Doce</span>
     <div class="menuNavigation">
-      <ul>
-        <li class="active" @click="routePedido">Realizar Pedidos</li>
-        <li>Histórico de Pedidos</li>
-        <li>Meus Dados</li>
-      </ul>
+
+      <nuxt-link to="/pedidos">Realizar Pedidos</nuxt-link>
+      <nuxt-link to="/historico-pedidos">Histórico de Pedidos</nuxt-link>
+      <nuxt-link to="/pedidos/meus-dados">Meus Dados</nuxt-link>
+
       <button class="logout" @click="logout">
         <img src="~/assets/icons/logout.svg" alt="" />
-        <p>Sair</p>
+        <span>Sair</span>
       </button>
     </div>
   </div>
@@ -38,7 +38,7 @@ export default Vue.extend({
   top: 0;
   position: fixed;
   width: 100%;
-  height: 10vh;
+  height: 4rem;
   background-color: var(--white);
   display: flex;
   justify-content: space-between;
@@ -47,40 +47,41 @@ export default Vue.extend({
   .menuNavigation {
     display: flex;
     gap: 3rem;
-    ul {
-      display: flex;
-      gap: 3rem;
-      padding: 0 3rem;
-      border-right: 2px solid red;
-      li {
-        list-style: none;
-        cursor: pointer;
-      }
+    align-items: center;
 
-      .active {
-        .barraActive {
-          background: var(--red);
-          height: 7px;
-          position: relative;
-          bottom: -21px;
-          border-radius: 5px;
+    a {
+            color: black;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
         }
-      }
-    }
+     
+        a.nuxt-link-exact-active {
+          color: var(--red);
+          border-bottom: 5px solid var(--red);
+        }
+
     .logout {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
       background: transparent;
-      p {
-        font-size: 1.2rem;
+
+      img {
+        width: 1.2rem;
+      }
+      span {
+        color: black;
+        font-weight: 500;
+        font-size: 0.9rem;
       }
     }
   }
 
   span {
     color: var(--red);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 600;
   }
 }
