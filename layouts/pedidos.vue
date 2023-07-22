@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class="templatePedidos">
     <NavBarPedidos />
-    <div class="content">
-      <Nuxt />
-    </div>
+    <Nuxt />
   </div>
 </template>
 
@@ -21,13 +19,9 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.content {
+.templatePedidos {
   width: 100%;
-  height: 90vh;
-  margin-top: 10vh;
+  height: 100vh;
   background: var(--red);
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
 }
 </style>

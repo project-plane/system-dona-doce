@@ -1,17 +1,16 @@
 <template>
-    <TemplatePedidos />
+    <TemplateMeusDados />
 </template>
-
+  
 <script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
   layout: 'pedidos',
   head: {
-    title: 'Fazer Pedido - Dona Doce'
-  }
+    title: 'Meus Dados - Dona Doce',
+  },
 })
 </script>
 
-<style scoped>
-</style>
+  

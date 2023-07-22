@@ -8,17 +8,29 @@
       :dataPedido="dataPedido"
     />
 
-    <div v-if="listPedidos[0] && statusDesjejum" class="cardsPedidos">
-      <CardFinalizationPedido :tipoLanches="listPedidos[0]" />
+    <div v-if="statusDesjejum" class="cardsPedidos">
+      <div
+        v-for="pedidosProgramation in listPedidos"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation :tipoLanches="pedidosProgramation" />
+      </div>
     </div>
-    <div v-if="listPedidos[1] && statusLanche1" class="cardsPedidos">
-      <CardFinalizationPedido :tipoLanches="listPedidos[1]" />
+    <div v-if="statusLanche1" class="cardsPedidos">
+      <div
+        v-for="pedidosProgramation in listPedidos"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation :tipoLanches="pedidosProgramation" />
+      </div>
     </div>
-    <div v-if="listPedidos[2] && statusLanche2" class="cardsPedidos">
-      <CardFinalizationPedido :tipoLanches="listPedidos[2]" />
-    </div>
-    <div v-if="listPedidos[3] && statusLanche3" class="cardsPedidos">
-      <CardFinalizationPedido :tipoLanches="listPedidos[3]" />
+    <div v-if="statusLanche2" class="cardsPedidos">
+      <div
+        v-for="pedidosProgramation in listPedidos"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation :tipoLanches="pedidosProgramation" />
+      </div>
     </div>
   </div>
 </template>
@@ -34,7 +46,6 @@ export default Vue.extend({
       statusDesjejum: true,
       statusLanche1: false,
       statusLanche2: false,
-      statusLanche3: false,
       listPedidos: [],
       dataPedido: '',
     }
@@ -60,32 +71,36 @@ export default Vue.extend({
       this.statusDesjejum = true
       this.statusLanche1 = false
       this.statusLanche2 = false
-      this.statusLanche3 = false
     },
     lanche1() {
       this.statusDesjejum = false
       this.statusLanche1 = true
       this.statusLanche2 = false
-      this.statusLanche3 = false
     },
     lanche2() {
       this.statusDesjejum = false
       this.statusLanche1 = false
       this.statusLanche2 = true
-      this.statusLanche3 = false
     },
     lanche3() {
       this.statusDesjejum = false
       this.statusLanche1 = false
-      this.statusLanche2 = false
-      this.statusLanche3 = true
+      this.statusLanche2 = true
     },
   },
 })
 </script>
 
 <style scoped lang="scss">
+.contentCardPedido {
+  width: 100%;
+  margin-top: 10vh;
+  padding: 2rem 4rem;
+}
 .cardsPedidos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
   padding: 20px 0;
 }
 </style>

@@ -7,6 +7,9 @@ export default {
   GetReceitas: async () => {
     return await http.get('/revenue')
   },
+  GetAllReceitas: async () => {
+    return await http.get('/revenue/v2')
+  },
   GetFindReceita: async (id) => {
     return await http.get(`/revenue/ingredients/${id}`)
   },

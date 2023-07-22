@@ -10,45 +10,26 @@
           
           <div class="calendar-input" v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList">
             <span>Dia: {{ formatDate(date) }}</span>
-            <div class="input-select">
-              <span>Desjejum</span>
-              <select v-model="cardapio.createItensMenu[0].fk_revenues">
+            
+
+            <div v-for="index in qtdeCardapio" :key="index" class="input-select">
+              <div class="input-internal">
+                <span>Opção {{ index }}</span>
+                <select v-model="cardapio.createItensMenu[index - 1].fk_revenues">
                 <option disabled value="">Selecionar Receita</option>
                 <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
                   {{ receita.description }} 
                 </option>
-              </select>
-            </div>
+                </select>
+                
+                </div>
 
-            <div class="input-select">
-              <span>Lanche 01</span>
-              <select v-model="cardapio.createItensMenu[1].fk_revenues">
-                <option disabled value="">Selecionar Receita</option>
-                <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
-                  {{ receita.description }}
-                </option>
-              </select>
-            </div>
+                <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio">
+  
+              </div>
 
-            <div class="input-select">
-              <span>Lanche 02</span>
-              <select v-model="cardapio.createItensMenu[2].fk_revenues">
-                <option disabled value="">Selecionar Receita</option>
-                <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
-                  {{ receita.description }}
-                </option>
-              </select>
-            </div>
+            <button class="add-option" @click="addOnCardapio" v-if="qtdeCardapio < 4">+ Adicionar Opção</button>
 
-            <div class="input-select">
-              <span>Lanche 03</span>
-              <select v-model="cardapio.createItensMenu[3].fk_revenues">
-                <option disabled value="">Selecionar Receita</option>
-                <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
-                  {{ receita.description }}
-                </option>
-              </select>
-            </div>
 
           </div>
           
@@ -74,6 +55,7 @@ export default Vue.extend({
       datesToVerify: [],
       loading: true,
       existOnList: false,
+      qtdeCardapio: 0,
       cardapio: {
         dateMenu: '',
         createItensMenu: [
@@ -94,7 +76,8 @@ export default Vue.extend({
             fk_category: '619dec9e-1c69-11ee-be56-0242ac120002'
           }
         ]
-      }
+      },
+
     };
   },
 
@@ -156,6 +139,15 @@ export default Vue.extend({
   },
 
   methods: {
+
+    addOnCardapio () {
+      this.qtdeCardapio ++
+    },
+
+    removeOnCardapio () {
+      this.qtdeCardapio --
+    },
+
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')
     },
@@ -207,6 +199,8 @@ export default Vue.extend({
   display: flex;
   justify-content: space-between;
 
+  
+
   .calendar {
     display: flex;
     flex-direction: column;
@@ -218,6 +212,8 @@ export default Vue.extend({
     padding-left: 5%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 0.5rem;
     border-left: 1px solid var(--border);
 
@@ -229,23 +225,57 @@ export default Vue.extend({
     }
 
     .input-select {
-      margin-bottom: 1.2rem;
-      width: 100%;
       display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-  
-      span {
-        text-align: left;
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--red);
+      align-items: flex-end;
+      gap: 0.6rem;
+      width: 100%;
+      margin-bottom: 0.5rem;
+
+      .input-internal {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        span {
+          text-align: left;
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--red);
+        }
+
+        select {
+          border: 0.06rem solid var(--border);
+          border-radius: 0.25rem;
+        }
       }
 
-      select {
-        border: 0.06rem solid var(--border);
-        border-radius: 0.25rem;
+      .button-delete {
+        cursor: pointer;
+        margin-bottom: 0.5rem;
       }
+  
+     
+    }
+
+    .add-option {
+      border: 2px solid var(--red);
+      width: 9rem;
+      height: 2.5rem;
+      font-weight: 600;
+      color: var(--red);
+      border-radius: 0.25rem;
+    }
+  }
+
+  @media(max-width: 785px) {
+    flex-direction: column;
+    gap: 1rem;
+
+    .calendar, .calendar-input {
+      width: 100%;
+      border-left: none;
+      padding-left: 0;
     }
   }
 }

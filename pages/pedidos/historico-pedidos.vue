@@ -1,17 +1,16 @@
 <template>
-    <TemplatePedidos />
+    <TemplateHistoricoPedidos />
 </template>
-
+  
 <script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
   layout: 'pedidos',
   head: {
-    title: 'Fazer Pedido - Dona Doce'
-  }
+    title: 'Histórico de Pedidos - Dona Doce',
+  },
 })
 </script>
 
-<style scoped>
-</style>
+  

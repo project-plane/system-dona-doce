@@ -19,9 +19,6 @@
         <button @click="lanche2" :class="{ active: lanche02 }">
           Lanche 02
         </button>
-        <button @click="lanche3" :class="{ active: lanche03 }">
-          Lanche 03
-        </button>
       </div>
       <div class="btnFinalizar" v-if="$store.state.dadosPedidos.length === 4">
         <button @click="finalizarPedidosProgramados">
@@ -50,7 +47,6 @@ export default Vue.extend({
       lancheDesjejum: true,
       lanche01: false,
       lanche02: false,
-      lanche03: false,
     }
   },
   methods: {
@@ -58,28 +54,24 @@ export default Vue.extend({
       this.lancheDesjejum = true
       this.lanche01 = false
       this.lanche02 = false
-      this.lanche03 = false
       this.$emit('lancheDesjejum')
     },
     lanche1() {
       this.lancheDesjejum = false
       this.lanche01 = true
       this.lanche02 = false
-      this.lanche03 = false
       this.$emit('lanche1')
     },
     lanche2() {
       this.lancheDesjejum = false
       this.lanche01 = false
       this.lanche02 = true
-      this.lanche03 = false
       this.$emit('lanche2')
     },
     lanche3() {
       this.lancheDesjejum = false
       this.lanche01 = false
-      this.lanche02 = false
-      this.lanche03 = true
+      this.lanche02 = true
       this.$emit('lanche3')
     },
     finalizarPedidosProgramados() {
