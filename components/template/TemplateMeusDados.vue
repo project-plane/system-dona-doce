@@ -18,6 +18,7 @@
 
 
 .meusDados-container {
+    width: 100%;
     padding: 6rem 4rem 4rem 4rem;
     display: flex;
     flex-direction: column;

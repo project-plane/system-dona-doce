@@ -95,10 +95,9 @@ export default Vue.extend({
 <style scoped lang="scss">
 .containerPedidos {
   width: 100%;
-  padding: 4rem;
+  padding: 6rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;
-  margin-top: 10vh;
   .headerPedidos {
     width: 30%;
     display: flex;
