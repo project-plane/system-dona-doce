@@ -1,15 +1,35 @@
 <template>
-    <div class="historicoPedidos-container">
-        <span>Em Construção...</span>
+    <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
+    <div v-else class="historicoPedidos-container">
+        <pre>{{ historico }}</pre>
     </div>
 </template>
 
+
+<script lang="ts">
+import Vue from 'vue'
+import HttpHistoryClient from '@/server/pedidos'
+export default Vue.extend({
+    data () {
+        return {
+            historico: ''
+        }
+    },
+
+    async fetch () {
+        await HttpHistoryClient.OrderHistory().then( (res) => {
+            this.historico = res.data
+        })
+    }
+})
+</script>
 
 <style lang="scss" scoped>
 
 
 .historicoPedidos-container {
     width: 100%;
+    height: 100vh;
     padding: 6rem 4rem 4rem 4rem;
     display: flex;
     flex-direction: column;

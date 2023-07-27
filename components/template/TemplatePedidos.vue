@@ -28,14 +28,14 @@
         </div>
       </div>
     </div>
-    <div class="listPedidos" v-if="statusPedidos === 0">
+    <div v-if="statusPedidos === 0" class="listPedidos">
       <div v-for="pedido in listPedidos" :key="pedido.id">
-        <CardPedido :dataPedido="pedido" @click.native="openPedido(pedido)" />
+        <CardPedido :data-pedido="pedido" @click.native="openPedido(pedido)" />
       </div>
     </div>
-    <div class="listPedidos" v-else>
+    <div v-else class="listPedidos">
       <div v-for="pedido in listAllReceitas" :key="pedido.id">
-        <CardCoffee :pedidoCoffee="pedido" />
+        <CardCoffee :pedido-coffee="pedido" />
       </div>
     </div>
   </div>
@@ -44,9 +44,9 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import TemplateFinalizationPedidoVue from './TemplateFinalizationPedido.vue'
 import httpPedidos from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
-import TemplateFinalizationPedidoVue from './TemplateFinalizationPedido.vue'
 
 export default Vue.extend({
   layout: 'pedidos',
@@ -95,6 +95,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 .containerPedidos {
   width: 100%;
+  height: 100vh;
   padding: 6rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;

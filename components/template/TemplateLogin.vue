@@ -6,14 +6,14 @@
       </div>
       <form class="form_login" @submit.prevent="accessLogin">
         <Input
-          label="Email"
           v-model="dataLogin.email"
+          label="Email"
           type="text"
           placeholder="Digite seu e-mail"
         />
         <Input
-          label="Password"
           v-model="dataLogin.password"
+          label="Password"
           type="password"
           placeholder="Digite sua senha"
         />
@@ -21,7 +21,7 @@
           <span @click="recoverPassword">Esqueci a minha senha</span>
         </div>
 
-        <ButtonPirula @click="accessLogin" title="Login" />
+        <ButtonPirula title="Login" @click="accessLogin" />
         <div v-if="statusMessage">
           <h5 style="color: var(--red)">{{ message }}</h5>
         </div>
@@ -74,7 +74,7 @@ export default Vue.extend({
 
           if (error.response.data.statusCode === 401) {
             this.$toast.error('Dados inválidos!!!')
-            return
+            
           }
         })
     },

@@ -1,4 +1,5 @@
 <template>
+  
   <div class="templatePedidos">
     <NavBarPedidos />
     <Nuxt />
@@ -12,16 +13,20 @@ export default Vue.extend({
   methods: {
     routePedido() {
       this.$store.commit('BARRA_PEDIDOS_NAV', true)
-      this.$router.push('/pedidos/newPedidos')
+      this.$router.push('/pedidos/newPedidos')      
     },
+
+    
   },
+
 })
 </script>
 
 <style scoped lang="scss">
+
 .templatePedidos {
   width: 100%;
   height: 100vh;
-  background: var(--red);
+  // background-color: red;
 }
 </style>
