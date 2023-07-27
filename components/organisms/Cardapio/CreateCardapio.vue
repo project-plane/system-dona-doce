@@ -8,7 +8,7 @@
             <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red"/>
           </div>
           
-          <div class="calendar-input" v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList">
+          <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList" class="calendar-input">
             <span>Dia: {{ formatDate(date) }}</span>
             
 
@@ -17,7 +17,7 @@
                 <span>Opção {{ index }}</span>
                 <select v-model="cardapio.createItensMenu[index - 1].fk_revenues">
                 <option disabled value="">Selecionar Receita</option>
-                <option :value="receita.id" v-for="(receita, index) in optionsReceitas" :key="index">
+                <option v-for="(receita, index) in optionsReceitas" :key="index" :value="receita.id">
                   {{ receita.description }} 
                 </option>
                 </select>
@@ -28,13 +28,13 @@
   
               </div>
 
-            <button class="add-option" @click="addOnCardapio" v-if="qtdeCardapio < 4">+ Adicionar Opção</button>
+            <button v-if="qtdeCardapio < 4" class="add-option" @click="addOnCardapio">+ Adicionar Opção</button>
 
 
           </div>
           
         </div>
-        <div class="row-button" v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList">
+        <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList && qtdeCardapio !== 0" class="row-button">
           <Button title="Salvar" @click.native="saveDayCardapio" />
         </div>
   </Container>
@@ -61,19 +61,15 @@ export default Vue.extend({
         createItensMenu: [
           {
             fk_revenues: '',
-            fk_category: '491aebc2-1c69-11ee-be56-0242ac120002'
           },
           {
             fk_revenues: '',
-            fk_category: '518a6828-1c69-11ee-be56-0242ac120002'
           },
           {
             fk_revenues: '',
-            fk_category: '57c25f34-1c69-11ee-be56-0242ac120002'
           },
           {
             fk_revenues: '',
-            fk_category: '619dec9e-1c69-11ee-be56-0242ac120002'
           }
         ]
       },
@@ -96,6 +92,9 @@ export default Vue.extend({
 
   watch: {
     date (newValue) {
+      if(this.days.length === 0) {
+        this.cardapio.dateMenu = newValue
+      }
       this.days.map ( (item) => {
         if(dayjs(item.dateMenu).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
           console.log('existe na listagem')
