@@ -11,7 +11,7 @@
       </div>
       <div class="selectPedido">
         <p>Qtd Selecionada</p>
-        <input type="text" v-model="pedidoCoffee.yield_per_quantity" />
+        <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
       </div>
     </div>
     <button @click="addPedidos">Adicionar Pedido</button>
@@ -34,14 +34,16 @@ export default Vue.extend({
         this.$toast.info('Campo quantidade vazio')
         return
       }
-      const dadosPedidos = {
-        imgLanche: this.tipoLanches.revenues.imagem,
-        descriptionLanche: this.tipoLanches.revenues.description,
-        valueLanche: this.tipoLanches.revenues.value,
-        qtdLanche: this.tipoLanches.revenues.yield_per_quantity,
-      }
 
-      this.$store.commit('SAVE_DADOS_PEDIDOS_PROGRAMADOS', dadosPedidos)
+      
+      // const createOrderItemDto = {
+      //   imgLanche: this.tipoLanches.revenues.imagem,
+      //   descriptionLanche: this.tipoLanches.revenues.description,
+      //   valueLanche: this.tipoLanches.revenues.value,
+      //   qtdLanche: this.tipoLanches.revenues.yield_per_quantity,
+      // }
+
+      // this.$store.commit('SAVE_DADOS_PEDIDOS_PROGRAMADOS', createOrderItemDto)
 
       this.tipoLanches.yield_per_quantity = ''
       this.$toast.success('Pedido adicionado com sucesso!!!')

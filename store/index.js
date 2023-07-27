@@ -3,7 +3,9 @@ export const state = () => ({
   openModalPreviewReceita: false,
   openModalPreviewEmpresa: false,
   openModalReceita: false,
-  dadosPedidos: [],
+  dataNewOrder: {
+    createOrderItemDto: []
+  },
   barraRoute: false,
   qtdPedidos: 0
 })
@@ -21,8 +23,8 @@ export const mutations = {
   OPEN_MODAL_RECEITA(state, payload) {
     state.openModalReceita = payload
   },
-  SAVE_DADOS_PEDIDOS_PROGRAMADOS(state, payload) {
-    state.dadosPedidos.push(payload)
+  CREATE_NEW_ORDER(state, payload) {
+    state.dataNewOrder.createOrderItemDto.push(payload)
   },
   BARRA_PEDIDOS_NAV(state, payload) {
     state.barraRoute = payload

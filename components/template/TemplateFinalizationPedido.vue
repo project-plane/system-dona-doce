@@ -1,11 +1,11 @@
 <template>
   <div class="contentCardPedido">
     <MenuPedidos
+      :data-pedido="dataPedido"
       @lancheDesjejum="lancheDesjejum"
       @lanche1="lanche1"
       @lanche2="lanche2"
       @lanche3="lanche3"
-      :dataPedido="dataPedido"
     />
 
     <div v-if="statusDesjejum" class="cardsPedidos">
@@ -13,7 +13,7 @@
         v-for="pedidosProgramation in listPedidos"
         :key="pedidosProgramation.id"
       >
-        <CardProgramation :tipoLanches="pedidosProgramation" />
+        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="491aebc2-1c69-11ee-be56-0242ac120002" />
       </div>
     </div>
     <div v-if="statusLanche1" class="cardsPedidos">
@@ -21,7 +21,7 @@
         v-for="pedidosProgramation in listPedidos"
         :key="pedidosProgramation.id"
       >
-        <CardProgramation :tipoLanches="pedidosProgramation" />
+        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="518a6828-1c69-11ee-be56-0242ac120002"/>
       </div>
     </div>
     <div v-if="statusLanche2" class="cardsPedidos">
@@ -29,7 +29,7 @@
         v-for="pedidosProgramation in listPedidos"
         :key="pedidosProgramation.id"
       >
-        <CardProgramation :tipoLanches="pedidosProgramation" />
+        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="57c25f34-1c69-11ee-be56-0242ac120002"/>
       </div>
     </div>
   </div>
@@ -99,7 +99,7 @@ export default Vue.extend({
 }
 .cardsPedidos {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
   padding: 20px 0;
 }
