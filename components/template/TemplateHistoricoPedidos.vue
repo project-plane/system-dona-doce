@@ -1,7 +1,7 @@
 <template>
     <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
     <div v-else class="historicoPedidos-container">
-        <pre>{{ historico }}</pre>
+        oi
     </div>
 </template>
 
@@ -29,11 +29,11 @@ export default Vue.extend({
 
 .historicoPedidos-container {
     width: 100%;
-    height: 100vh;
+    background-color: var(--red);
     padding: 6rem 4rem 4rem 4rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
 }

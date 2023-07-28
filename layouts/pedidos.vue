@@ -27,6 +27,6 @@ export default Vue.extend({
 .templatePedidos {
   width: 100%;
   height: 100vh;
-  // background-color: red;
+  background-color: var(--red);
 }
 </style>
