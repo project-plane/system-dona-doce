@@ -1,7 +1,14 @@
 <template>
     <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
     <div v-else class="historicoPedidos-container">
-        oi
+        <div class="list-historic">
+            <div v-for="(item, index) in historico" :key="index">
+                <CardHistorico :data="item"  />
+
+                <ModalHistorico :data="item" v-if="$store.state.openModalHistorico"/>
+            </div>
+            
+        </div>      
     </div>
 </template>
 
@@ -12,7 +19,8 @@ import HttpHistoryClient from '@/server/pedidos'
 export default Vue.extend({
     data () {
         return {
-            historico: ''
+            historico: [],
+            showModal: false
         }
     },
 
@@ -29,12 +37,18 @@ export default Vue.extend({
 
 .historicoPedidos-container {
     width: 100%;
+    height: 100%;
     background-color: var(--red);
     padding: 6rem 4rem 4rem 4rem;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
+
+    .list-historic {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+    }
 
 }
 </style>

@@ -28,6 +28,9 @@
         </div>
       </div>
     </div>
+    <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponiveis</h3>
+
+    <div v-if="$fetchState.pending && statusPedidos === 0">Carregando dados..</div>
     <div v-if="statusPedidos === 0" class="listPedidos">
       <div v-for="pedido in listPedidos" :key="pedido.id">
         <CardPedido :data-pedido="pedido" @click.native="openPedido(pedido)" />
@@ -60,14 +63,6 @@ export default Vue.extend({
   },
 
   async fetch() {
-    await httpPedidos
-      .GetMenu()
-      .then((res) => {
-        this.listPedidos = res.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
     await httpReceitas
       .GetAllReceitas()
       .then((res) => {
@@ -76,6 +71,16 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+
+    await httpPedidos
+      .GetMenu()
+      .then((res) => {
+        this.listPedidos = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    
   },
 
   methods: {
@@ -100,9 +105,10 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   .headerPedidos {
-    width: 30%;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 1rem;
     align-items: center;
     padding-bottom: 2rem;
     h3 {
@@ -122,17 +128,18 @@ export default Vue.extend({
     }
     .input_radio {
       display: flex;
-      gap: 1rem;
+      gap: 0.5rem;
       align-items: center;
       justify-content: center;
 
       .input {
         display: flex;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         gap: 0.5rem;
         img {
           color: var(--white);
+          width: 1.2rem;
         }
 
         .coffee,
@@ -148,6 +155,7 @@ export default Vue.extend({
     width: 100%;
     display: flex;
     gap: 1rem;
+    margin-top: 0.3rem;
     flex-wrap: wrap;
   }
 }
