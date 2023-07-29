@@ -11,10 +11,10 @@
       </div>
       <div class="selectPedido">
         <p>Qtd Selecionada</p>
-        <input type="text" v-model="tipoLanches.revenues.yield_per_quantity" />
+        <input v-model="tipoLanches.revenues.yield_per_quantity" type="text" />
       </div>
     </div>
-    <button @click="addPedidos">Adicionar Pedido</button>
+    <button @click="addPedidos(tipoLanches)">Adicionar Pedido</button>
   </div>
 </template>
 
@@ -27,24 +27,27 @@ export default Vue.extend({
       type: Object,
       required: true,
     },
+    tipoPedido: {
+      type: String,
+      required: true
+    }
+  },
+
+  data () {
+    return {
+      pedido: {
+        fk_revenue: "string",
+        fk_categoryOrderItem: "string",
+        amountItem: 0
+      }
+    }
   },
   methods: {
-    addPedidos() {
-      if (!this.tipoLanches.revenues.yield_per_quantity) {
-        this.$toast.info('Campo quantidade vazio')
-        return
-      }
-      const dadosPedidos = {
-        imgLanche: this.tipoLanches.revenues.imagem,
-        descriptionLanche: this.tipoLanches.revenues.description,
-        valueLanche: this.tipoLanches.revenues.value,
-        qtdLanche: this.tipoLanches.revenues.yield_per_quantity,
-      }
-
-      this.$store.commit('SAVE_DADOS_PEDIDOS_PROGRAMADOS', dadosPedidos)
-
-      this.tipoLanches.yield_per_quantity = ''
-      this.$toast.success('Pedido adicionado com sucesso!!!')
+    addPedidos(lanche) {
+      this.pedido.fk_revenue = lanche.fk_revenues
+      this.pedido.amountItem = Number(lanche.revenues.yield_per_quantity)
+      this.pedido.fk_categoryOrderItem = this.tipoPedido
+      this.$store.commit('CREATE_NEW_ORDER', this.pedido)
     },
   },
 })
@@ -54,7 +57,7 @@ export default Vue.extend({
 .containerCard {
   width: 100%;
   background: var(--white);
-  border-radius: 4px;
+  border-radius: 0.4rem;
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -79,6 +82,9 @@ export default Vue.extend({
   }
   img {
     width: 100%;
+    border-radius: 0.4rem 0.4rem 0 0;
+    background-size: cover;
+    object-fit: cover;
     height: 250px;
   }
   .descriptionPedido {
@@ -86,6 +92,7 @@ export default Vue.extend({
   button {
     background: var(--bg_heade_table);
     padding: 1rem 0;
+    border-radius: 0 0 0.4rem 0.4rem;
     font-size: 1rem;
   }
 }

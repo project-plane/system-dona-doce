@@ -10,17 +10,17 @@
     </div>
     <div class="menu">
       <div class="titleLanches">
-        <button @click="desjejum" :class="{ active: lancheDesjejum }">
+        <button :class="{ active: lancheDesjejum }" @click="desjejum">
           Desjejum
         </button>
-        <button @click="lanche1" :class="{ active: lanche01 }">
+        <button :class="{ active: lanche01 }" @click="lanche1">
           Lanche 01
         </button>
-        <button @click="lanche2" :class="{ active: lanche02 }">
+        <button :class="{ active: lanche02 }" @click="lanche2">
           Lanche 02
         </button>
       </div>
-      <div class="btnFinalizar" v-if="$store.state.dadosPedidos.length === 4">
+      <div v-if="$store.state.dataNewOrder.createOrderItemDto.length === 4" class="btnFinalizar">
         <button @click="finalizarPedidosProgramados">
           Finalizar Pedido
           <img src="~/assets/icons/seta.svg" alt="" />
@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import HttpPedidos from '@/server/pedidos'
 export default Vue.extend({
   layout: 'pedidos',
   props: {
@@ -74,10 +74,16 @@ export default Vue.extend({
       this.lanche02 = true
       this.$emit('lanche3')
     },
-    finalizarPedidosProgramados() {
-      this.$store.commit('BARRA_PEDIDOS_NAV', false)
-      this.$toast.success('Pedido criado com sucesso!!!')
-      this.$router.push('/pedidos')
+    async finalizarPedidosProgramados() {
+      // this.$store.commit('BARRA_PEDIDOS_NAV', false)
+      // this.$toast.success('Pedido criado com sucesso!!!')
+      // this.$router.push('/pedidos')
+
+      await HttpPedidos.CreateNewOrder(this.$store.state.dataNewOrder).then( (res) => {
+        console.log(res)
+      }).catch( (error) => {
+        console.log(error)
+      })
     },
   },
 })

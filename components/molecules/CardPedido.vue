@@ -41,7 +41,7 @@ export default Vue.extend({
   width: 100%;
   height: 100%;
   background: var(--white);
-  border-radius: 4px;
+  border-radius: 0.3rem;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -50,6 +50,11 @@ export default Vue.extend({
     flex-direction: column;
     border-bottom: 1px solid var(--border);
     padding-bottom: 2rem;
+
+    span {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
   }
   .pedidos {
     width: 100%;
