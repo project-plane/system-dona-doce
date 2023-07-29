@@ -1,14 +1,15 @@
 <template>
     <div class="card-historico-container">
         <div class="header-card">
-            <span><strong>Data do Pedido:</strong> {{ formatDate(date) }}</span>
-            <span><strong>Valor:</strong> R$ {{ valorPedido }}</span>
+            <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
+            <span><strong>Valor:</strong> R$ {{ data.valueOrder }}</span>
         </div>
 
         <div class="footer-card">
-            <span><strong>Status: </strong><br/>{{ orderStatus }}</span>
-            <ButtonPirula title="Ver Detalhes" />
+            <span><strong>Status: </strong><br/>{{ data.orderStatus.description }}</span>
+            <ButtonPirula title="Ver Detalhes" @click.native="openModalHistorico"/>
         </div>
+
     </div>
 </template>
 
@@ -17,16 +18,19 @@ import Vue from 'vue'
 import dayjs from 'dayjs'
 export default Vue.extend({
     props: {
-        date: String,
-        valorPedido: Number,
-        orderStatus: String
+        data: Object,
     },
 
     methods: {
         formatDate(date) {
             return dayjs(date).format('DD/MM/YYYY')
+        },
+
+        openModalHistorico() {
+            this.$store.commit('OPEN_MODAL_HISTORICO', true)
         }
     }
+    
     
 })
 </script>
