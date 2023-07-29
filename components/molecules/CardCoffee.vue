@@ -76,6 +76,7 @@ export default Vue.extend({
       input {
         border: 1px solid var(--red);
         height: 35px;
+        width: 40%;
       }
     }
   }
