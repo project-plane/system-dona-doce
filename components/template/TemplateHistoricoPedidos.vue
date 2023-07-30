@@ -1,11 +1,10 @@
 <template>
     <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
     <div v-else class="historicoPedidos-container">
+        <h3>Calendário aqui... em desenvolvimento</h3>
         <div class="list-historic">
             <div v-for="(item, index) in historico" :key="index">
-                <CardHistorico :data="item"  />
-
-                <ModalHistorico :data="item" v-if="$store.state.openModalHistorico"/>
+                <CardHistorico :data="item" />
             </div>
             
         </div>      
@@ -20,7 +19,6 @@ export default Vue.extend({
     data () {
         return {
             historico: [],
-            showModal: false
         }
     },
 
@@ -41,6 +39,7 @@ export default Vue.extend({
     background-color: var(--red);
     padding: 6rem 4rem 4rem 4rem;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
 
     .list-historic {

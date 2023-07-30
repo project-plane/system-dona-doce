@@ -48,6 +48,7 @@ export default Vue.extend({
   .negativeSpace {
     width: 70%;
     min-height: 50%;
+    height: 95%;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -65,6 +66,7 @@ export default Vue.extend({
       width: 100%;
       background: var(--white);
       padding: 1rem;
+      overflow-y: auto;
       border-radius: 5px;
     }
   }
