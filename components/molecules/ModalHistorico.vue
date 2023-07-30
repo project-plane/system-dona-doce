@@ -3,34 +3,64 @@
     <div class="dataEmpresa">
       <div class="header-order">
         <h3>Data do Pedido: {{ formatDate(data.dateOrder) }}</h3>
+        <h3>Valor do Pedido: R${{ data.valueOrder }}</h3>
       </div>
 
-      <div class="resume-content">
-        <h4>Desjejum</h4>
-        <div v-for="(item, index) in desjejum">
-          <pre>{{ item }}</pre>
-          
-        </div>
-        <span v-if="desjejum.length === 0">Não possui...</span>
-      </div>
+      <h4>Desjejum</h4>
+      <table class="resume-content">
+        <tr v-if="dejejum.length !== 0">
+          <th>Item</th>
+          <th>Qtde</th>
+          <th>Imagem</th>
+          <th>Valor</th>
+        </tr>
+        
+        <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
+          <td>{{ item.revenues.description }}</td>
+          <td>{{ item.amountItem }}</td>
+          <td> <img :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`" alt=""></td>
+          <td>R$ {{ item.valueOrderItem }}</td>
+        </tr>
+        <tr v-if="dejejum.length === 0">Não possui...</tr>
+      </table>
 
-      <div class="resume-content">
-        <h4>Lanche 01</h4>
-        <div v-for="(item, index) in lanche01">
-          <pre>{{ item }}</pre>
-          
-        </div>
-        <span v-if="lanche01.length === 0">Não possui...</span>
-      </div>
 
-      <div class="resume-content">
-        <h4>Lanche 02</h4>
-        <div v-for="(item, index) in lanche02">
-          <pre>{{ item }}</pre>
-          
-        </div>
-        <span v-if="lanche02.length === 0">Não possui...</span>
-      </div>
+      <h4>Lanche 01</h4>
+      <table class="resume-content">
+        <tr v-if="lanche01.length !== 0">
+          <th>Item</th>
+          <th>Qtde</th>
+          <th>Imagem</th>
+          <th>Valor</th>
+        </tr>
+        
+        <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
+          <td>{{ item.revenues.description }}</td>
+          <td>{{ item.amountItem }}</td>
+          <td> <img :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`" alt=""></td>
+          <td>R$ {{ item.valueOrderItem }}</td>
+        </tr>
+        <tr v-if="lanche01.length === 0">Não possui...</tr>
+      </table>
+
+      <h4>Lanche 02</h4>
+      <table class="resume-content">
+        <tr v-if="lanche02.length !== 0">
+          <th>Item</th>
+          <th>Qtde</th>
+          <th>Imagem</th>
+          <th>Valor</th>
+        </tr>
+        
+        <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
+          <td>{{ item.revenues.description }}</td>
+          <td>{{ item.amountItem }}</td>
+          <td> <img :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`" alt=""></td>
+          <td>R$ {{ item.valueOrderItem }}</td>
+        </tr>
+
+        <tr v-if="lanche02.length === 0">Não possui...</tr>
+      </table>
 
 
       
@@ -48,7 +78,7 @@ export default Vue.extend({
 
   data () {
     return {
-      desjejum: [],
+      dejejum: [],
       lanche01: [],
       lanche02: []
     }
@@ -58,6 +88,12 @@ export default Vue.extend({
       this.data.orderItem.map( (item) => {
         if(item.categoryOrderItem.description === 'Lanche 1') {
           this.lanche01.push(item)
+        }
+        if(item.categoryOrderItem.description === 'Dejejum') {
+          this.dejejum.push(item)
+        }
+        if(item.categoryOrderItem.description === 'Lanche 2') {
+          this.lanche02.push(item)
         }
       })
     },
@@ -80,10 +116,21 @@ export default Vue.extend({
   gap: 1rem;
   flex-direction: column;
 
-  .resume-content {
+  .header-order {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .resume-content {
+    text-align: left;
     border-bottom: 1px dotted var(--red);
+
+    td {
+
+      img {
+        width: 2.5rem;
+      }
+    }
   }
 }
 </style>
