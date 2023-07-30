@@ -7,8 +7,10 @@
 
         <div class="footer-card">
             <span><strong>Status: </strong><br/>{{ data.orderStatus.description }}</span>
-            <ButtonPirula title="Ver Detalhes" @click.native="openModalHistorico"/>
+            <ButtonPirula title="Ver Detalhes" @click.native="() => showModal = true"/>
         </div>
+
+        <ModalHistorico v-if="showModal" :data="data" @closeModal="() => showModal = false" />
 
     </div>
 </template>
@@ -21,13 +23,20 @@ export default Vue.extend({
         data: Object,
     },
 
+    data () {
+        return {
+            showModal: false
+        }
+    },
+
     methods: {
         formatDate(date) {
             return dayjs(date).format('DD/MM/YYYY')
         },
 
         openModalHistorico() {
-            this.$store.commit('OPEN_MODAL_HISTORICO', true)
+            this.showModal = true
+            // this.$store.commit('OPEN_MODAL_HISTORICO', true)
         }
     }
     

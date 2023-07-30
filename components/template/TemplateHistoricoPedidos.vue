@@ -3,9 +3,9 @@
     <div v-else class="historicoPedidos-container">
         <div class="list-historic">
             <div v-for="(item, index) in historico" :key="index">
-                <CardHistorico :data="item"  />
+                <CardHistorico :data="item" />
 
-                <ModalHistorico :data="item" v-if="$store.state.openModalHistorico"/>
+                
             </div>
             
         </div>      
@@ -20,7 +20,6 @@ export default Vue.extend({
     data () {
         return {
             historico: [],
-            showModal: false
         }
     },
 
