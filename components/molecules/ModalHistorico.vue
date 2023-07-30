@@ -3,7 +3,8 @@
     <div class="dataEmpresa">
       <div class="header-order">
         <h3>Data do Pedido: {{ formatDate(data.dateOrder) }}</h3>
-        <h3>Valor do Pedido: R${{ data.valueOrder }}</h3>
+        <!-- <h4>Status: {{ data.orderStatus.description }}</h4> -->
+        <h3>Total: R${{ data.valueOrder }}</h3>
       </div>
 
       <h4>Desjejum</h4>
@@ -119,6 +120,7 @@ export default Vue.extend({
   .header-order {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid var(--bg_color_modal);
   }
 
   .resume-content {
