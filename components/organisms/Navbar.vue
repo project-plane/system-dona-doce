@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-container">
-    <span>Dona Doce</span>
-    <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon"/>
+    <img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt="">
+    <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon" />
   </div>
 </template>
 
@@ -21,6 +21,11 @@ export default Vue.extend({})
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+
+  .logo {
+    width: 160px;
+    height: 60px;
+  }
 
   span {
     color: var(--red);
