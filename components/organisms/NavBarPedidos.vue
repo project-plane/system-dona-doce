@@ -1,6 +1,6 @@
 <template>
   <div class="navbar-container">
-    <span>Dona Doce</span>
+    <img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt="">
     <div class="menuNavigation">
 
       <nuxt-link to="/pedidos">Realizar Pedidos</nuxt-link>
@@ -44,22 +44,28 @@ export default Vue.extend({
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+
+  .logo {
+    width: 160px;
+    height: 60px;
+  }
+
   .menuNavigation {
     display: flex;
     gap: 3rem;
     align-items: center;
 
     a {
-            color: black;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-        }
-     
-        a.nuxt-link-exact-active {
-          color: var(--red);
-          border-bottom: 5px solid var(--red);
-        }
+      color: black;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    a.nuxt-link-exact-active {
+      color: var(--red);
+      border-bottom: 5px solid var(--red);
+    }
 
     .logout {
       display: flex;
@@ -71,6 +77,7 @@ export default Vue.extend({
       img {
         width: 1.2rem;
       }
+
       span {
         color: black;
         font-weight: 500;

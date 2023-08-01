@@ -81,17 +81,14 @@ export default Vue.extend({
       await httpReceitaPorCliente.CreateReceitaPorCliente(dadosReceitaPorCliente)
         .then((res) => {
           if (res.status === 201) {
-            this.$toat.success('Valor inserido com sucesso!!!')
+            this.$toast.success('Valor inserido com sucesso!!!')
             return
           }
         })
         .catch((error) => {
-          console.log(error.response.data);
           this.$toast.error(error.response.data.message)
           return
         })
-      console.log(dadosReceitaPorCliente);
-
     }
   },
 })

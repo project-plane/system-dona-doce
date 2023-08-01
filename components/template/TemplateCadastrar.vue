@@ -45,7 +45,7 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      statusEmpresa: true,
+      statusEmpresa: false,
       statusClientes: false,
       statusUsers: false,
       statusIngredientes: false,

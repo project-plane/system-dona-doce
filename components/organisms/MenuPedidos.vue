@@ -79,9 +79,9 @@ export default Vue.extend({
       // this.$toast.success('Pedido criado com sucesso!!!')
       // this.$router.push('/pedidos')
 
-      await HttpPedidos.CreateNewOrder(this.$store.state.dataNewOrder).then( (res) => {
+      await HttpPedidos.CreateNewOrder(this.$store.state.dataNewOrder).then((res) => {
         console.log(res)
-      }).catch( (error) => {
+      }).catch((error) => {
         console.log(error)
       })
     },
@@ -95,22 +95,27 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
   .headerPedidos {
     h2 {
       color: var(--white);
     }
   }
+
   .menu {
     width: 100%;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #e5d7c5;
+
     .titleLanches {
       display: flex;
       gap: 0.5rem;
+
       .active {
         background: var(--bg_color);
       }
+
       button {
         height: 50px;
         width: 130px;
@@ -121,6 +126,7 @@ export default Vue.extend({
         border-top-right-radius: 4px;
       }
     }
+
     .btnFinalizar {
       button {
         display: flex;
@@ -128,6 +134,7 @@ export default Vue.extend({
         gap: 1.3rem;
         padding: 0.5rem;
         font-size: 1.1rem;
+
         img {
           height: 20px;
         }
