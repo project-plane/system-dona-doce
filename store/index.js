@@ -33,7 +33,7 @@ export const mutations = {
   QTD_PDIDOS(state, payload) {
     console.log(payload);
   },
-  OPEN_MODAL_HISTORICO(state, payload){
+  OPEN_MODAL_HISTORICO(state, payload) {
     state.openModalHistorico = payload
   }
 }

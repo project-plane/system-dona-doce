@@ -57,7 +57,7 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveEmpresa: true,
+      isActiveEmpresa: false,
       isActiveClient: false,
       isActiveUser: false,
       isActiveIngredientes: false,
@@ -211,9 +211,7 @@ export default Vue.extend({
     }
 
     .isIconDropdownCadastrar {
-      img {
-        rotate: 180deg;
-      }
+      rotate: 180deg;
     }
   }
 

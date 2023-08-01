@@ -1,35 +1,21 @@
 <template>
   <div class="contentCardPedido">
-    <MenuPedidos
-      :data-pedido="dataPedido"
-      @lancheDesjejum="lancheDesjejum"
-      @lanche1="lanche1"
-      @lanche2="lanche2"
-      @lanche3="lanche3"
-    />
+    <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
+      @lanche3="lanche3" />
 
     <div v-if="statusDesjejum" class="cardsPedidos">
-      <div
-        v-for="pedidosProgramation in listPedidos"
-        :key="pedidosProgramation.id"
-      >
+      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
         <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="491aebc2-1c69-11ee-be56-0242ac120002" />
       </div>
     </div>
     <div v-if="statusLanche1" class="cardsPedidos">
-      <div
-        v-for="pedidosProgramation in listPedidos"
-        :key="pedidosProgramation.id"
-      >
-        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="518a6828-1c69-11ee-be56-0242ac120002"/>
+      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
+        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="518a6828-1c69-11ee-be56-0242ac120002" />
       </div>
     </div>
     <div v-if="statusLanche2" class="cardsPedidos">
-      <div
-        v-for="pedidosProgramation in listPedidos"
-        :key="pedidosProgramation.id"
-      >
-        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="57c25f34-1c69-11ee-be56-0242ac120002"/>
+      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
+        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="57c25f34-1c69-11ee-be56-0242ac120002" />
       </div>
     </div>
   </div>
@@ -97,6 +83,7 @@ export default Vue.extend({
   margin-top: 10vh;
   padding: 2rem 4rem;
 }
+
 .cardsPedidos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
