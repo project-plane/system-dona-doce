@@ -1,15 +1,7 @@
 <template>
   <div class="containerGrid">
-    <MenuCreate
-      v-show="midiaAba"
-      @empresa="empresa"
-      @client="client"
-      @users="users"
-      @ingredientes="ingredientes"
-      @estoque="estoque"
-      @receitas="receitas"
-      @menu="menu"
-    />
+    <MenuCreate v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
+      @estoque="estoque" @receitas="receitas" @receitasPorCliente="receitasPorCliente" @menu="menu" />
 
     <div v-show="midiaFluxo" class="scroll_container">
       <div v-if="statusEmpresa">
@@ -36,6 +28,9 @@
         <CreateReceitas />
         <TableReceitas />
       </div>
+      <div v-if="statusReceitasPorCliente">
+        <CreateReceitasPorCliente />
+      </div>
       <div v-if="statusMenu">
         <CreateCardapio />
         <TableCardapios />
@@ -50,22 +45,23 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      statusEmpresa: true,
+      statusEmpresa: false,
       statusClientes: false,
       statusUsers: false,
       statusIngredientes: false,
       statusEstoque: false,
       statusReceitas: false,
+      statusReceitasPorCliente: false,
       statusMenu: false,
-      
-      window:{
+
+      window: {
         width: 0
       },
       midiaAba: true,
       midiaFluxo: true,
     }
   },
-  mounted(){
+  mounted() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
   },
@@ -86,6 +82,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusReceitasPorCliente = false
       this.statusMenu = false
     },
     users() {
@@ -95,6 +92,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusReceitasPorCliente = false
       this.statusMenu = false
     },
     client() {
@@ -104,6 +102,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusReceitasPorCliente = false
       this.statusMenu = false
     },
     ingredientes() {
@@ -113,6 +112,7 @@ export default Vue.extend({
       this.statusIngredientes = true
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusReceitasPorCliente = false
       this.statusMenu = false
     },
     estoque() {
@@ -122,6 +122,17 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = true
       this.statusReceitas = false
+      this.statusReceitasPorCliente = false
+      this.statusMenu = false
+    },
+    receitasPorCliente() {
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = false
+      this.statusReceitasPorCliente = true
       this.statusMenu = false
     },
     receitas() {
@@ -131,6 +142,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = true
+      this.statusReceitasPorCliente = false
       this.statusMenu = false
     },
     menu() {
@@ -140,6 +152,7 @@ export default Vue.extend({
       this.statusIngredientes = false
       this.statusEstoque = false
       this.statusReceitas = false
+      this.statusReceitasPorCliente = false
       this.statusMenu = true
     }
   },
@@ -149,7 +162,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .containerGrid {
   display: flex;
-  
+
   .scroll_container {
     width: 80%;
     height: 90vh;
