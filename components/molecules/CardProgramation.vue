@@ -1,17 +1,19 @@
 <template>
-  <div class="containerCard">
-    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`" alt="" />
-    <div class="cardPedido">
-      <div class="descriptionPedido">
-        <h3>{{ tipoLanches.revenues.description }}</h3>
-        <p>R$ {{ tipoLanches.revenues.value }}</p>
+  <div>
+    <div class="containerCard">
+      <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`" alt="" />
+      <div class="cardPedido">
+        <div class="descriptionPedido">
+          <h3>{{ tipoLanches.revenues.description }}</h3>
+          <p>R$ {{ tipoLanches.revenues.value }}</p>
+        </div>
+        <div class="selectPedido">
+          <p>Qtd Selecionada</p>
+          <input v-model="qtdPedido" type="text" />
+        </div>
       </div>
-      <div class="selectPedido">
-        <p>Qtd Selecionada</p>
-        <input v-model="tipoLanches.revenues.yield_per_quantity" type="text" />
-      </div>
+      <button @click="addPedidos(tipoLanches)">Adicionar Pedido</button>
     </div>
-    <button @click="addPedidos(tipoLanches)">Adicionar Pedido</button>
   </div>
 </template>
 
@@ -32,19 +34,18 @@ export default Vue.extend({
 
   data() {
     return {
-      pedido: {
-        fk_revenue: "string",
-        fk_categoryOrderItem: "string",
-        amountItem: 0
-      }
+      qtdPedido: ''
     }
   },
   methods: {
     addPedidos(lanche) {
-      this.pedido.fk_revenue = lanche.fk_revenues
-      this.pedido.amountItem = Number(lanche.revenues.yield_per_quantity)
-      this.pedido.fk_categoryOrderItem = this.tipoPedido
-      this.$store.commit('CREATE_NEW_ORDER', this.pedido)
+      if (!this.qtdPedido) {
+        this.$toast.error('Preencha o campo quantidade!!!')
+        return
+      }
+      this.$emit('pedidos', this.qtdPedido, lanche.fk_revenues)
+      this.$toast.success('Pedido adicionado com sucesso!!!')
+      this.qtdPedido = ''
     },
   },
 })
