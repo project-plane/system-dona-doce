@@ -20,10 +20,18 @@
           Lanche 02
         </button>
       </div>
-      <div v-if="$store.state.dataNewOrder.createOrderItemDto.length === 4" class="btnFinalizar">
+      <div class="btnFinalizar">
+        <div class="qtdPedidos">
+          <img src="~/assets/icons/shopCar.svg">
+          <span v-if="qtdPedidos.length > 0">
+            <p>{{ qtdPedidos.length }}</p>
+          </span>
+        </div>
+        <!-- <div class="qtdPedidos" v-if="qtdPedidos.length > 0">
+          </div> -->
         <button @click="finalizarPedidosProgramados">
           Finalizar Pedido
-          <img src="~/assets/icons/seta.svg" alt="" />
+          <img src="~/assets/icons/seta.svg" />
         </button>
       </div>
     </div>
@@ -32,7 +40,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import HttpPedidos from '@/server/pedidos'
+
 export default Vue.extend({
   layout: 'pedidos',
   props: {
@@ -40,6 +48,10 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    qtdPedidos: {
+      type: [Array, Object],
+      required: true
+    }
   },
   data() {
     return {
@@ -74,16 +86,8 @@ export default Vue.extend({
       this.lanche02 = true
       this.$emit('lanche3')
     },
-    async finalizarPedidosProgramados() {
-      // this.$store.commit('BARRA_PEDIDOS_NAV', false)
-      // this.$toast.success('Pedido criado com sucesso!!!')
-      // this.$router.push('/pedidos')
-
-      await HttpPedidos.CreateNewOrder(this.$store.state.dataNewOrder).then((res) => {
-        console.log(res)
-      }).catch((error) => {
-        console.log(error)
-      })
+    finalizarPedidosProgramados() {
+      this.$emit('finalizarPedido')
     },
   },
 })
@@ -128,6 +132,41 @@ export default Vue.extend({
     }
 
     .btnFinalizar {
+      width: 50%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: .8rem;
+
+      img {
+        width: 35px;
+        height: 35px;
+      }
+
+      .qtdPedidos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+          position: relative;
+          top: -15px;
+          left: -15px;
+
+          p {
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg_color);
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+          }
+        }
+      }
+
       button {
         display: flex;
         align-items: center;
