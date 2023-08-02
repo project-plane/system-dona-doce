@@ -1,21 +1,11 @@
 <template>
   <div class="contentCardPedido">
     <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
-      @lanche3="lanche3" />
+      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto" />
 
-    <div v-if="statusDesjejum" class="cardsPedidos">
+    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
       <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="491aebc2-1c69-11ee-be56-0242ac120002" />
-      </div>
-    </div>
-    <div v-if="statusLanche1" class="cardsPedidos">
-      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="518a6828-1c69-11ee-be56-0242ac120002" />
-      </div>
-    </div>
-    <div v-if="statusLanche2" class="cardsPedidos">
-      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" tipo-pedido="57c25f34-1c69-11ee-be56-0242ac120002" />
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
     </div>
   </div>
@@ -24,7 +14,8 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import httpPedidos from '~/server/cardapio'
+import httpCardapio from '~/server/cardapio'
+import HttpPedidos from '@/server/pedidos'
 
 export default Vue.extend({
   data() {
@@ -34,6 +25,10 @@ export default Vue.extend({
       statusLanche2: false,
       listPedidos: [],
       dataPedido: '',
+      tipoPedido: '491aebc2-1c69-11ee-be56-0242ac120002',
+      addPedidos: {
+        createOrderItemDto: []
+      }
     }
   },
 
@@ -41,7 +36,7 @@ export default Vue.extend({
     const id = this.$route.query.id
     this.dataPedido = this.$route.query.dataPedido
 
-    await httpPedidos
+    await httpCardapio
       .GetFindMenu(id)
       .then((res) => {
         this.listPedidos = res.data.itemMenu
@@ -53,22 +48,43 @@ export default Vue.extend({
   },
 
   methods: {
+    pedidos(qtdOrder, fk_revenue) {
+      this.addPedidos.createOrderItemDto.push({
+        fk_categoryOrderItem: this.tipoPedido,
+        amountItem: Number(qtdOrder),
+        fk_revenue: fk_revenue
+      })
+
+    },
+    async finalizarPedido() {
+      if (this.addPedidos.createOrderItemDto.length === 0) {
+        this.$toast.error('Inserira ao menos um item para realizar pedido.')
+        return
+      }
+      await HttpPedidos.CreateNewOrder(this.addPedidos)
+        .then((res) => {
+          console.log(res);
+
+        })
+        .catch((error) => {
+          console.log(error);
+
+        })
+    },
     lancheDesjejum() {
+      this.tipoPedido = '491aebc2-1c69-11ee-be56-0242ac120002'
       this.statusDesjejum = true
       this.statusLanche1 = false
       this.statusLanche2 = false
     },
     lanche1() {
+      this.tipoPedido = '518a6828-1c69-11ee-be56-0242ac120002'
       this.statusDesjejum = false
       this.statusLanche1 = true
       this.statusLanche2 = false
     },
     lanche2() {
-      this.statusDesjejum = false
-      this.statusLanche1 = false
-      this.statusLanche2 = true
-    },
-    lanche3() {
+      this.tipoPedido = '57c25f34-1c69-11ee-be56-0242ac120002'
       this.statusDesjejum = false
       this.statusLanche1 = false
       this.statusLanche2 = true
