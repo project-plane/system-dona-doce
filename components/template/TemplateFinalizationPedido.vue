@@ -1,11 +1,28 @@
 <template>
   <div class="contentCardPedido">
-    <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
-      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto"/>
+    <MenuPedidos
+      :data-pedido="dataPedido"
+      @lancheDesjejum="lancheDesjejum"
+      @lanche1="lanche1"
+      @lanche2="lanche2"
+      @finalizarPedido="finalizarPedido"
+      :qtdPedidos="addPedidos.createOrderItemDto"
+      :listaCompletReceita="teste"
+    />
 
-    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
-      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
+    <div
+      v-if="statusDesjejum || statusLanche1 || statusLanche2"
+      class="cardsPedidos"
+    >
+      <div
+        v-for="pedidosProgramation in listPedidos"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation
+          :tipo-lanches="pedidosProgramation"
+          :tipo-pedido="tipoPedido"
+          @pedidos="pedidos"
+        />
       </div>
     </div>
   </div>
@@ -20,6 +37,7 @@ import HttpPedidos from '@/server/pedidos'
 export default Vue.extend({
   data() {
     return {
+      teste: [],
       statusDesjejum: true,
       statusLanche1: false,
       statusLanche2: false,
@@ -27,8 +45,8 @@ export default Vue.extend({
       dataPedido: '',
       tipoPedido: '491aebc2-1c69-11ee-be56-0242ac120002',
       addPedidos: {
-        createOrderItemDto: []
-      }
+        createOrderItemDto: [],
+      },
     }
   },
 
@@ -48,13 +66,19 @@ export default Vue.extend({
   },
 
   methods: {
-    pedidos(qtdOrder, fk_revenue) {
+    pedidos(qtdOrder, fk_revenue, index) {
       this.addPedidos.createOrderItemDto.push({
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
-        fk_revenue: fk_revenue
+        fk_revenue: fk_revenue,
       })
-
+      this.teste.push({
+        fk_categoryOrderItem: this.tipoPedido,
+        amountItem: Number(qtdOrder),
+        fk_revenue: fk_revenue,
+        listReceita: index.revenues,
+      })
+      console.log(this.teste)
     },
     async finalizarPedido() {
       if (this.addPedidos.createOrderItemDto.length === 0) {
@@ -64,8 +88,7 @@ export default Vue.extend({
       await HttpPedidos.CreateNewOrder(this.addPedidos)
         .then((res) => {
           this.$toast.success('Pedido realizado com sucesso!!!')
-          console.log(res);
-
+          console.log(res)
         })
         .catch((error) => {
           console.log(error)
