@@ -21,7 +21,7 @@
         </button>
       </div>
       <div class="btnFinalizar">
-        <div class="qtdPedidos">
+        <div class="qtdPedidos" @click="() => showModal = true">
           <img src="~/assets/icons/shopCar.svg">
           <span v-if="qtdPedidos.length > 0">
             <p>{{ qtdPedidos.length }}</p>
@@ -35,6 +35,9 @@
         </button>
       </div>
     </div>
+
+      <ModalCarrinho v-if="showModal" :data="qtdPedidos" @closeModal="() => showModal = false" />
+
   </div>
 </template>
 
@@ -59,9 +62,13 @@ export default Vue.extend({
       lancheDesjejum: true,
       lanche01: false,
       lanche02: false,
+      showModal: false
     }
   },
   methods: {
+    openModalHistorico() {
+      this.showModal = true
+    },
     desjejum() {
       this.lancheDesjejum = true
       this.lanche01 = false
@@ -147,6 +154,7 @@ export default Vue.extend({
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         span {
           position: relative;
