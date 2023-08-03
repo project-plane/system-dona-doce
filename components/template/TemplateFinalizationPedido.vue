@@ -1,7 +1,7 @@
 <template>
   <div class="contentCardPedido">
     <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
-      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto" />
+      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto"/>
 
     <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
       <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
@@ -63,12 +63,13 @@ export default Vue.extend({
       }
       await HttpPedidos.CreateNewOrder(this.addPedidos)
         .then((res) => {
+          this.$toast.success('Pedido realizado com sucesso!!!')
           console.log(res);
 
         })
         .catch((error) => {
-          console.log(error);
-
+          console.log(error)
+          this.$toast.info('Ocorreu um erro!')
         })
     },
     lancheDesjejum() {

@@ -44,7 +44,7 @@ export default Vue.extend({
         return
       }
       this.$emit('pedidos', this.qtdPedido, lanche.fk_revenues)
-      this.$toast.success('Pedido adicionado com sucesso!!!')
+      this.$toast.info(`(${this.qtdPedido}X) ${lanche.revenues.description} ADICIONADO AO CARRINHO`)
       this.qtdPedido = ''
     },
   },

@@ -2,7 +2,7 @@
     <div class="card-historico-container">
         <div class="header-card">
             <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
-            <span><strong>Valor:</strong> R$ {{ data.valueOrder }}</span>
+            <span><strong>Valor:</strong> R$ {{ valueorder(data.orderItem) }}</span>
         </div>
 
         <div class="footer-card">
@@ -25,11 +25,21 @@ export default Vue.extend({
 
     data () {
         return {
-            showModal: false
+            showModal: false,
+            totalOrderValue: 0,
         }
     },
 
     methods: {
+        valueorder(listOrder) {
+            this.totalOrderValue = 0
+            listOrder.map( (item) => {
+                this.totalOrderValue = this.totalOrderValue + (Number(item.amountItem) * Number(item.valueOrderItem))
+            })
+
+            return this.totalOrderValue
+        },
+
         formatDate(date) {
             return dayjs(date).format('DD/MM/YYYY')
         },

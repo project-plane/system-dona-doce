@@ -1,12 +1,23 @@
 <template>
     <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
     <div v-else class="historicoPedidos-container">
-        <h3>Calendário aqui... em desenvolvimento</h3>
-        <div class="list-historic">
+        <div class="list-historic" v-if="historico.length > 3">
+
             <div v-for="(item, index) in historico" :key="index">
                 <CardHistorico :data="item" />
             </div>
+
+            <span v-if="historico.length === 0">Não há nada para mostrar aqui</span>
             
+        </div>
+        <div class="list-historic unique" v-else>
+
+            <div v-for="(item, index) in historico" :key="index">
+                <CardHistorico :data="item" />
+            </div>
+
+            <span v-if="historico.length === 0">Não há nada para mostrar aqui</span>
+
         </div>      
     </div>
 </template>
@@ -48,6 +59,13 @@ export default Vue.extend({
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1rem;
     }
+
+    .unique {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+
 
 }
 </style>
