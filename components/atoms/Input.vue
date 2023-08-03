@@ -1,7 +1,7 @@
 <template>
   <div class="input_container">
     <span>{{ label }}</span>
-    <input 
+    <input
       :style="block"
       :type="type"
       :value="value"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   props: {
@@ -57,7 +57,6 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  
 
   span {
     font-size: 1rem;
