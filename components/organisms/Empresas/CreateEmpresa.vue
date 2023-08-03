@@ -44,7 +44,12 @@
       />
     </ContainerInput>
     <ContainerInput>
-      <Input label="UF" type="text" placeholder="ex: AM" v-model="dataEmpresa.uf" />
+      <Input
+        label="UF"
+        type="text"
+        placeholder="ex: AM"
+        v-model="dataEmpresa.uf"
+      />
       <Input
         label="Fone"
         type="number"
@@ -61,9 +66,8 @@
       />
     </ContainerInput>
     <div class="row-button">
-      <Button title="Salvar" @functionClick="saveClient"  />
+      <Button title="Salvar" @functionClick="saveClient" />
     </div>
-    
   </Container>
 </template>
 
@@ -74,7 +78,6 @@ import httpEmpresa from '~/server/empresa'
 export default Vue.extend({
   data() {
     return {
-
       dataEmpresa: {
         corporate_name: '',
         cnpj: '',
@@ -85,14 +88,11 @@ export default Vue.extend({
         uf: '',
         fone: '',
         email: '',
-      }
-      
+      },
     }
   },
   methods: {
-
     async saveClient() {
-
       if (
         !this.dataEmpresa.corporate_name ||
         !this.dataEmpresa.cnpj ||
@@ -106,52 +106,43 @@ export default Vue.extend({
       ) {
         this.$toast.error('Preencha todos os campos!!!')
       } else {
-        
-        
-        await httpEmpresa.CreateEmpresa(this.dataEmpresa).then((res) => {
-          if (res.status === 201) {
-            this.$toast.success('Empresa criada com sucesso')
-          }
+        await httpEmpresa
+          .CreateEmpresa(this.dataEmpresa)
+          .then((res) => {
+            if (res.status === 201) {
+              this.$toast.success('Empresa criada com sucesso')
+            }
 
-          this.dataEmpresa.corporate_name = ''
-          this.dataEmpresa.cnpj = ''
-          this.dataEmpresa.address = ''
-          this.dataEmpresa.cep = ''
-          this.dataEmpresa.county = ''
-          this.dataEmpresa.district = ''
-          this.dataEmpresa.uf = ''
-          this.dataEmpresa.fone = ''
-          this.dataEmpresa.email = ''
+            this.dataEmpresa.corporate_name = ''
+            this.dataEmpresa.cnpj = ''
+            this.dataEmpresa.address = ''
+            this.dataEmpresa.cep = ''
+            this.dataEmpresa.county = ''
+            this.dataEmpresa.district = ''
+            this.dataEmpresa.uf = ''
+            this.dataEmpresa.fone = ''
+            this.dataEmpresa.email = ''
 
-          this.$nuxt.refresh()
-
-        })
-        .catch((error) => {
-          const erros = JSON.parse(error.request.response)
-          
-          if(Array.isArray(erros.message)) {
-            erros.message.map( (item) => {
-            this.$toast.error(item)
+            this.$nuxt.refresh()
           })
-          } else {
-            this.$toast.error(erros.message)
-          }
-          
+          .catch((error) => {
+            const erros = JSON.parse(error.request.response)
 
-
-        })
+            if (Array.isArray(erros.message)) {
+              erros.message.map((item) => {
+                this.$toast.error(item)
+              })
+            } else {
+              this.$toast.error(erros.message)
+            }
+          })
       }
-
-      
-
-      
     },
   },
 })
 </script>
 
 <style lang="scss" scoped>
-
 .row-button {
   display: flex;
   justify-content: flex-end;
