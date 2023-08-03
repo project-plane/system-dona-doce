@@ -29,10 +29,29 @@
                 <td>{{ receita.description }}</td>
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
-                  <input type="number" v-model="valueReceitaPorCliente[index]">
+                  <span>
+                    R$
+                    <input
+                      type="number"
+                      v-model="valueReceitaPorCliente[index]"
+                    />
+                    <!-- <the-mask
+                      :mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
+                      v-model="valueReceitaPorCliente[index]"
+                    /> -->
+                  </span>
                 </td>
                 <td>
-                  <ButtonPirula @click.native="salvarReceitaPorCliente(receita.id, index)" title="Salvar" />
+                  <div class="btnReceita">
+                    <ButtonPirula
+                      @click.native="salvarReceitaPorCliente(receita.id, index)"
+                      title="Salvar"
+                    />
+                    <ButtonPirula
+                      @click.native="updateReceitaPorCliente(receita.id, index)"
+                      title="Atualizar Valores"
+                    />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -52,7 +71,7 @@ export default Vue.extend({
   data() {
     return {
       valueReceitaPorCliente: [],
-      textSearch: ''
+      textSearch: '',
     }
   },
   props: {
@@ -62,8 +81,8 @@ export default Vue.extend({
     },
     dataClient: {
       type: [Array, Object],
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
@@ -78,7 +97,7 @@ export default Vue.extend({
         )
       })
       return itemSearch
-    }
+    },
   },
 
   methods: {
@@ -86,7 +105,6 @@ export default Vue.extend({
       this.$store.commit('OPEN_MODAL', false)
     },
     async salvarReceitaPorCliente(idReceita, index) {
-
       if (!this.valueReceitaPorCliente) {
         this.$toast.error('Preencha o valor do cliente!!!')
         return
@@ -95,10 +113,11 @@ export default Vue.extend({
       const dadosReceitaPorCliente = {
         fk_revenue: idReceita,
         fk_client: this.dataClient.id,
-        unique_value: Number(this.valueReceitaPorCliente[index])
+        unique_value: Number(this.valueReceitaPorCliente[index]),
       }
 
-      await httpReceitaPorCliente.CreateReceitaPorCliente(dadosReceitaPorCliente)
+      await httpReceitaPorCliente
+        .CreateReceitaPorCliente(dadosReceitaPorCliente)
         .then((res) => {
           if (res.status === 201) {
             this.$toast.success('Valor inserido com sucesso!!!')
@@ -106,9 +125,29 @@ export default Vue.extend({
           }
         })
         .catch((error) => {
-          this.$toast.error(error.response.data.message)
+          this.$toast.info(
+            `${error.response.data.message}, por favor atualizar valor`
+          )
           return
         })
+    },
+    async updateReceitaPorCliente(idRevenue, index) {
+      const updateReceitaPorCliente = {
+        fk_revenue: idRevenue,
+        fk_client: this.dataClient.id,
+        unique_value: Number(this.valueReceitaPorCliente[index]),
+      }
+
+      await httpReceitaPorCliente
+        .UpdateReceitaPorCliente(updateReceitaPorCliente)
+        .then((res) => {
+          this.$toast.success('Valor Atualizado com sucesso!!!')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      console.log(updateReceitaPorCliente)
     },
   },
 })
@@ -151,6 +190,13 @@ export default Vue.extend({
 
       .btnClose {
         cursor: pointer;
+      }
+      .btnReceita {
+        display: flex;
+        gap: 0.5rem;
+        button {
+          height: 10px;
+        }
       }
     }
   }
