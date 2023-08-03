@@ -21,5 +21,8 @@ export default {
   },
   CreateReceitaPorCliente: async (data) => {
     return await http.post('revenue-per-client', data)
+  },
+  UpdateReceitaPorCliente: async (data) => {
+    return await http.put('revenue-per-client', data)
   }
 }
