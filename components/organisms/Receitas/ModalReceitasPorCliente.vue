@@ -25,10 +25,10 @@
                 <td>{{ receita.description }}</td>
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
-                  <input type="text" v-model="valueReceitaPorCliente">
+                  <input type="text" v-model="valueReceitaPorCliente[index]">
                 </td>
                 <td>
-                  <ButtonPirula @click.native="salvarReceitaPorCliente(receita.id)" title="Salvar" />
+                  <ButtonPirula @click.native="salvarReceitaPorCliente(receita.id, index)" title="Salvar" />
                 </td>
               </tr>
             </tbody>
@@ -47,7 +47,7 @@ import httpReceitaPorCliente from '~/server/receitas'
 export default Vue.extend({
   data() {
     return {
-      valueReceitaPorCliente: ''
+      valueReceitaPorCliente: []
     }
   },
   props: {
@@ -65,7 +65,7 @@ export default Vue.extend({
     closeModal() {
       this.$store.commit('OPEN_MODAL', false)
     },
-    async salvarReceitaPorCliente(idReceita) {
+    async salvarReceitaPorCliente(idReceita, index) {
 
       if (!this.valueReceitaPorCliente) {
         this.$toast.error('Preencha o valor do cliente!!!')
@@ -75,7 +75,7 @@ export default Vue.extend({
       const dadosReceitaPorCliente = {
         fk_revenue: idReceita,
         fk_client: this.idCliente,
-        unique_value: Number(this.valueReceitaPorCliente)
+        unique_value: Number(this.valueReceitaPorCliente[index])
       }
 
       await httpReceitaPorCliente.CreateReceitaPorCliente(dadosReceitaPorCliente)
