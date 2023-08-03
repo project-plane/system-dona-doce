@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="containerCard">
-      <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`" alt="" />
+      <img
+        :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`"
+        alt=""
+      />
       <div class="cardPedido">
         <div class="descriptionPedido">
           <h3>{{ tipoLanches.revenues.description }}</h3>
@@ -28,13 +31,13 @@ export default Vue.extend({
     },
     tipoPedido: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
     return {
-      qtdPedido: ''
+      qtdPedido: '',
     }
   },
   methods: {
@@ -43,8 +46,15 @@ export default Vue.extend({
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
-      this.$emit('pedidos', this.qtdPedido, lanche.fk_revenues)
-      this.$toast.info(`(${this.qtdPedido}X) ${lanche.revenues.description} ADICIONADO AO CARRINHO`)
+      this.$emit(
+        'pedidos',
+        this.qtdPedido,
+        lanche.fk_revenues,
+        this.tipoLanches
+      )
+      this.$toast.info(
+        `(${this.qtdPedido}X) ${lanche.revenues.description} ADICIONADO AO CARRINHO`
+      )
       this.qtdPedido = ''
     },
   },
@@ -91,7 +101,8 @@ export default Vue.extend({
     height: 250px;
   }
 
-  .descriptionPedido {}
+  .descriptionPedido {
+  }
 
   button {
     background: var(--bg_heade_table);

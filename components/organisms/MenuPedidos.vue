@@ -21,8 +21,8 @@
         </button>
       </div>
       <div class="btnFinalizar">
-        <div class="qtdPedidos" @click="() => showModal = true">
-          <img src="~/assets/icons/shopCar.svg">
+        <div class="qtdPedidos" @click="() => (showModal = true)">
+          <img src="~/assets/icons/shopCar.svg" />
           <span v-if="qtdPedidos.length > 0">
             <p>{{ qtdPedidos.length }}</p>
           </span>
@@ -36,8 +36,12 @@
       </div>
     </div>
 
-      <ModalCarrinho v-if="showModal" :data="qtdPedidos" @closeModal="() => showModal = false" />
-
+    <ModalCarrinho
+      v-if="showModal"
+      :listaCompletReceita="listaCompletReceita"
+      :data="qtdPedidos"
+      @closeModal="() => (showModal = false)"
+    />
   </div>
 </template>
 
@@ -53,8 +57,12 @@ export default Vue.extend({
     },
     qtdPedidos: {
       type: [Array, Object],
-      required: true
-    }
+      required: true,
+    },
+    listaCompletReceita: {
+      type: [Array, Object],
+      required: true,
+    },
   },
   data() {
     return {
@@ -62,7 +70,7 @@ export default Vue.extend({
       lancheDesjejum: true,
       lanche01: false,
       lanche02: false,
-      showModal: false
+      showModal: false,
     }
   },
   methods: {
