@@ -143,7 +143,7 @@ export default Vue.extend({
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      gap: .8rem;
+      gap: 1.4rem;
 
       img {
         width: 35px;
