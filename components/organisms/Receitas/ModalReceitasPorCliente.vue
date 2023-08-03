@@ -29,25 +29,19 @@
                 <td>{{ receita.description }}</td>
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
-                  <span>
-                    <!-- <input
-                      type="number"
-                      v-model="valueReceitaPorCliente[index]"
-                    /> -->
-                    <the-mask
-                      :mask="[
-                        'R$ #,##',
-                        'R$ ##,##',
-                        'R$ ###,##',
-                        'R$ ####,##',
-                        'R$ #####,##',
-                      ]"
-                      v-model="valueReceitaPorCliente[index]"
-                      type="text"
-                      masked="true"
-                      placeholder="Digite o novo valor"
-                    />
-                  </span>
+                  <the-mask
+                    :mask="[
+                      'R$ #,##',
+                      'R$ ##,##',
+                      'R$ ###,##',
+                      'R$ ####,##',
+                      'R$ #####,##',
+                    ]"
+                    v-model="valueReceitaPorCliente[index]"
+                    type="text"
+                    masked="true"
+                    placeholder="Digite o novo valor"
+                  />
                 </td>
                 <td>
                   <div class="btnReceita">
