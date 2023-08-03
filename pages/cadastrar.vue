@@ -6,7 +6,7 @@
 import Vue from 'vue'
 export default Vue.extend({
   head: {
-      title: "Cadastro - Dona Doce"
+    title: "Cadastro - Dona Doce"
   },
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
   <LoadingPage v-if="loading" />
   <ContainerTable v-else>
-    <ModalReceitasPorCliente v-if="$store.state.openModal" :listAllReceita="listAllReceita" :idCliente="idCliente" />
+    <ModalReceitasPorCliente v-if="$store.state.openModal" :listAllReceita="listAllReceita" :dataClient="dataClient" />
     <div class="headerTable">
       <span>Receitas por Clientes</span>
     </div>
@@ -24,7 +24,7 @@
           <td>{{ client.address }}</td>
           <td>{{ client.fone }}</td>
           <td>
-            <button @click="openModalReceitaPorCliente(client.id)">
+            <button @click="openModalReceitaPorCliente(client)">
               <img src="~/assets/icons/vinculo.svg" alt="" />
             </button>
           </td>
@@ -46,7 +46,7 @@ export default Vue.extend({
       loading: false,
       listAllClients: [],
       listAllReceita: [],
-      idCliente: ''
+      dataClient: ''
     }
   },
 
@@ -70,9 +70,9 @@ export default Vue.extend({
   },
 
   methods: {
-    openModalReceitaPorCliente(id) {
+    openModalReceitaPorCliente(client) {
       this.$store.commit('OPEN_MODAL', true)
-      this.idCliente = id
+      this.dataClient = client
 
     }
   },

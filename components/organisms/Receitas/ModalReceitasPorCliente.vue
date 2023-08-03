@@ -4,11 +4,15 @@
       <div class="bodyModal">
         <div class="container">
           <div class="header">
-            <Title title="Receita por Cliente" />
+            <div>
+              <Title title="Receita por Cliente" />
+              <h3>Empresa: {{ dataClient.corporate_name }}</h3>
+            </div>
             <div @click="closeModal">
               <img class="btnClose" src="~/assets/icons/close.svg" alt="" />
             </div>
           </div>
+          <InputSearch v-model="textSearch" />
           <table>
             <thead>
               <tr>
@@ -20,12 +24,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(receita, index) in listAllReceita" :key="receita.id">
+              <tr v-for="(receita, index) in filterItems" :key="receita.id">
                 <td>{{ index + 1 }}</td>
                 <td>{{ receita.description }}</td>
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
-                  <input type="text" v-model="valueReceitaPorCliente[index]">
+                  <input type="number" v-model="valueReceitaPorCliente[index]">
                 </td>
                 <td>
                   <ButtonPirula @click.native="salvarReceitaPorCliente(receita.id, index)" title="Salvar" />
@@ -47,7 +51,8 @@ import httpReceitaPorCliente from '~/server/receitas'
 export default Vue.extend({
   data() {
     return {
-      valueReceitaPorCliente: []
+      valueReceitaPorCliente: [],
+      textSearch: ''
     }
   },
   props: {
@@ -55,9 +60,24 @@ export default Vue.extend({
       type: [Array, Object],
       required: true,
     },
-    idCliente: {
-      type: String,
+    dataClient: {
+      type: [Array, Object],
       required: true
+    }
+  },
+
+  computed: {
+    filterItems() {
+      let itemSearch = []
+
+      itemSearch = this.listAllReceita.filter((item) => {
+        return (
+          item.description
+            .toLowerCase()
+            .indexOf(this.textSearch.toLowerCase()) > -1
+        )
+      })
+      return itemSearch
     }
   },
 
@@ -74,7 +94,7 @@ export default Vue.extend({
 
       const dadosReceitaPorCliente = {
         fk_revenue: idReceita,
-        fk_client: this.idCliente,
+        fk_client: this.dataClient.id,
         unique_value: Number(this.valueReceitaPorCliente[index])
       }
 
@@ -89,7 +109,7 @@ export default Vue.extend({
           this.$toast.error(error.response.data.message)
           return
         })
-    }
+    },
   },
 })
 </script>
