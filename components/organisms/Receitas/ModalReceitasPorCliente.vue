@@ -30,15 +30,23 @@
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
                   <span>
-                    R$
-                    <input
+                    <!-- <input
                       type="number"
                       v-model="valueReceitaPorCliente[index]"
-                    />
-                    <!-- <the-mask
-                      :mask="['#.##', '##.##', '###.##', '####.##', '#####.##']"
-                      v-model="valueReceitaPorCliente[index]"
                     /> -->
+                    <the-mask
+                      :mask="[
+                        'R$ #,##',
+                        'R$ ##,##',
+                        'R$ ###,##',
+                        'R$ ####,##',
+                        'R$ #####,##',
+                      ]"
+                      v-model="valueReceitaPorCliente[index]"
+                      type="text"
+                      masked="true"
+                      placeholder="Digite o novo valor"
+                    />
                   </span>
                 </td>
                 <td>
@@ -110,10 +118,14 @@ export default Vue.extend({
         return
       }
 
+      const convertValue = this.valueReceitaPorCliente[index]
+        .replace('R$', '')
+        .replace(',', '.')
+
       const dadosReceitaPorCliente = {
         fk_revenue: idReceita,
         fk_client: this.dataClient.id,
-        unique_value: Number(this.valueReceitaPorCliente[index]),
+        unique_value: Number(convertValue),
       }
 
       await httpReceitaPorCliente
@@ -132,16 +144,23 @@ export default Vue.extend({
         })
     },
     async updateReceitaPorCliente(idRevenue, index) {
+      const convertValue = this.valueReceitaPorCliente[index]
+        .replace('R$', '')
+        .replace(',', '.')
+
       const updateReceitaPorCliente = {
         fk_revenue: idRevenue,
         fk_client: this.dataClient.id,
-        unique_value: Number(this.valueReceitaPorCliente[index]),
+        unique_value: Number(convertValue),
       }
 
       await httpReceitaPorCliente
         .UpdateReceitaPorCliente(updateReceitaPorCliente)
         .then((res) => {
-          this.$toast.success('Valor Atualizado com sucesso!!!')
+          if (res.status === 200) {
+            this.$toast.success('Valor Atualizado com sucesso!!!')
+            return
+          }
         })
         .catch((error) => {
           console.log(error)
