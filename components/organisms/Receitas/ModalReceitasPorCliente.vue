@@ -29,29 +29,20 @@
                 <td>{{ receita.description }}</td>
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
-                  <the-mask
-                    :mask="[
-                      'R$ #,##',
-                      'R$ ##,##',
-                      'R$ ###,##',
-                      'R$ ####,##',
-                      'R$ #####,##',
-                    ]"
+                  <InputValue
                     v-model="valueReceitaPorCliente[index]"
-                    type="text"
-                    masked="true"
                     placeholder="Digite o novo valor"
                   />
                 </td>
                 <td>
                   <div class="btnReceita">
-                    <ButtonPirula
+                    <Button
                       @click.native="salvarReceitaPorCliente(receita.id, index)"
                       title="Salvar"
                     />
-                    <ButtonPirula
+                    <Button
                       @click.native="updateReceitaPorCliente(receita.id, index)"
-                      title="Atualizar Valores"
+                      title="Atualizar"
                     />
                   </div>
                 </td>
@@ -206,9 +197,12 @@ export default Vue.extend({
       }
       .btnReceita {
         display: flex;
-        gap: 0.5rem;
+        justify-content: center;
+        gap: 1rem;
         button {
-          height: 10px;
+          background: var(--blue);
+          height: 30px;
+          width: 90px;
         }
       }
     }

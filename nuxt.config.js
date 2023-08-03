@@ -18,6 +18,9 @@ export default {
   plugins: [
     {
       src: '~plugins/v-calendar.js',
+      ssr: false
+    },
+    {
       src: '~plugins/v-mask.js',
       ssr: false
     }
