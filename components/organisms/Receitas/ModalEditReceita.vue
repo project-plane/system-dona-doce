@@ -12,11 +12,7 @@
               </div>
             </div>
             <div @click="closeModal">
-              <img
-                style="cursor: pointer"
-                src="~/assets/icons/close.svg"
-                alt=""
-              />
+              <img style="cursor: pointer" src="~/assets/icons/close.svg" alt="" />
             </div>
           </div>
           <div class="btnAddIngrediente">
@@ -27,53 +23,30 @@
               <Label for="ingrediente">Ingrediente</Label>
               <select name="" id="ingrediente" v-model="selected">
                 <option disabled value="">Selecionar Ingrediente</option>
-                <option
-                  v-for="itemIngredient in listIngredients"
-                  :key="itemIngredient.id"
-                >
+                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id">
                   {{ itemIngredient.description }}
                 </option>
               </select>
             </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input
-                type="number"
-                id="qtd"
-                placeholder="quantidade"
-                v-model="qtdIngrediente"
-              />
+              <input type="number" id="qtd" placeholder="quantidade" v-model="qtdIngrediente" />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente(idReceita)">Inserir</button>
             </div>
           </div>
           <div class="body" v-for="receita in listReceitas" :key="receita.id">
-            <div class="input">
-              <Label for="ingrediente">Ingrediente</Label>
-              <input
-                style="background: #d6d6d6; cursor: no-drop"
-                type="text"
-                disabled
-                v-model="receita.ingredients.description"
-              />
-            </div>
-            <div class="input">
-              <Label for="qtd">Quantidade</Label>
-              <input
-                type="number"
-                id="qtd"
-                placeholder="quantidade"
-                v-model="receita.amount_ingredient"
-              />
-            </div>
+            <Input label="Ingrediente" v-model="receita.ingredients.description" type="text" disabled="disabled"
+              block="background: #d6d6d6; cursor: no-drop" />
+
+            <Input label="Valor Ingrediente" v-model="receita.ingredients.value" type="text" disabled="disabled"
+              block="background: #d6d6d6; cursor: no-drop" />
+
+            <Input label="Quantidade" v-model="receita.amount_ingredient" type="number" />
 
             <div class="close">
-              <img
-                src="~/assets/icons/close.svg"
-                alt=""
-                @click="deletarIngrediente(receita)"
-              />
+              <img src="~/assets/icons/close.svg" alt="" @click="deletarIngrediente(receita)" />
             </div>
           </div>
           <div class="valorTotal" v-if="updateIngrediente.length !== 0">
@@ -84,16 +57,9 @@
             <h3>Valor Total</h3>
             <h3>R$ {{ valorAtual }}</h3>
           </div>
-          <Button
-            @functionClick="editarIngredienteReceita(listReceitas)"
-            title="Atualizar Dados"
-            v-if="updateIngrediente.length === 0"
-          />
-          <Button
-            v-else
-            @functionClick="editReceita(idReceita)"
-            title="Salvar"
-          />
+          <Button @functionClick="editarIngredienteReceita(listReceitas)" title="Atualizar Dados"
+            v-if="updateIngrediente.length === 0" />
+          <Button v-else @functionClick="editReceita(idReceita)" title="Salvar" />
         </div>
       </div>
     </BeadFrame>
@@ -170,8 +136,20 @@ export default Vue.extend({
       this.listIngredients.map(async (e) => {
         if (e.description === this.selected) {
           const dado = this.listReceitas.find((item) => {
+
             return item.ingredients.description === this.selected
           })
+          const adicionarIngrediente = [
+            {
+              fk_ingredient: e.id,
+              fk_revenues: id,
+              value: e.value,
+              amount_ingredient: Number(this.qtdIngrediente),
+            },
+          ]
+          // console.log((e));
+          console.log(adicionarIngrediente);
+
           if (!dado) {
             const adicionarIngrediente = [
               {
@@ -313,9 +291,11 @@ export default Vue.extend({
   align-items: center;
   padding: 2rem 0;
   z-index: 1;
+
   .bodyModal {
     background: var(--white);
     min-height: 50%;
+
     .container {
       width: 100%;
       height: 90vh;
@@ -324,10 +304,12 @@ export default Vue.extend({
       flex-direction: column;
       gap: 2rem;
       overflow-y: auto;
+
       .btnAddIngrediente {
         width: 100%;
         display: flex;
         justify-content: flex-end;
+
         button {
           background: var(--blue);
           color: var(--white);
@@ -335,14 +317,17 @@ export default Vue.extend({
           border-radius: 5px;
         }
       }
+
       .header {
         width: 100%;
         display: flex;
         justify-content: space-between;
+
         .headerReceita {
           width: 100%;
           display: flex;
           gap: 1rem;
+
           img {
             width: 30%;
           }
@@ -352,21 +337,25 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
-        grid-template-columns: 3fr 3fr 1fr;
+        grid-template-columns: minmax(2ch, 30ch) 3fr 3fr 1fr;
         padding-bottom: 1rem;
         gap: 1rem;
+
         .input {
           display: flex;
           flex-direction: column;
+
           input,
           select {
             border: 1px solid var(--bg_opacity);
           }
         }
+
         .btnIngrediente {
           width: 100%;
           display: flex;
           align-items: flex-end;
+
           button {
             width: 100%;
             padding: 0.6rem;
@@ -376,10 +365,13 @@ export default Vue.extend({
             border-radius: 4px;
           }
         }
+
         .close {
           display: flex;
           align-items: center;
           justify-content: center;
+          margin-top: 30px;
+
           img {
             cursor: pointer;
             width: 20px;
@@ -389,6 +381,7 @@ export default Vue.extend({
       }
     }
   }
+
   .valorTotal {
     position: relative;
     width: 100%;
