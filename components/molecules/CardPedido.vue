@@ -1,11 +1,9 @@
 <template>
   <div class="containerCard">
     <div class="dataPedido">
-      <span
-        >{{ new Date(dataPedido.dateMenu).getDate() }}/{{
-          new Date(dataPedido.dateMenu).getMonth() + 1
-        }}/{{ new Date(dataPedido.dateMenu).getFullYear() }}</span
-      >
+      <span>{{ new Date(dataPedido.dateMenu).getDate() }}/{{
+        new Date(dataPedido.dateMenu).getMonth() + 1
+      }}/{{ new Date(dataPedido.dateMenu).getFullYear() }}</span>
     </div>
     <div class="pedidos">
       <div class="qtdPedidos">
@@ -45,6 +43,7 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   padding: 1rem;
+
   .dataPedido {
     display: flex;
     flex-direction: column;
@@ -56,6 +55,7 @@ export default Vue.extend({
       font-size: 1.1rem;
     }
   }
+
   .pedidos {
     width: 100%;
     display: flex;
@@ -63,6 +63,7 @@ export default Vue.extend({
     align-items: center;
     gap: 3rem;
     padding-top: 2rem;
+
     .qtdPedidos {
       display: flex;
       flex-direction: column;

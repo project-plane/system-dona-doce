@@ -1,9 +1,6 @@
 <template>
   <div class="containerCard">
-    <img
-      :src="`https://api.donadoce.gedroid.com/img_revenue/${pedidoCoffee.imagem}`"
-      alt=""
-    />
+    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${pedidoCoffee.imagem}`" alt="" />
     <div class="cardPedido">
       <div class="descriptionPedido">
         <h3>{{ pedidoCoffee.description }}</h3>
@@ -14,7 +11,7 @@
         <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
       </div>
     </div>
-    <button @click="addPedidos">Adicionar Pedido</button>
+    <button @click="addPedidos">Adicionar</button>
   </div>
 </template>
 
@@ -35,7 +32,7 @@ export default Vue.extend({
         return
       }
 
-      
+
       // const createOrderItemDto = {
       //   imgLanche: this.tipoLanches.revenues.imagem,
       //   descriptionLanche: this.tipoLanches.revenues.description,
@@ -60,19 +57,23 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+
   .cardPedido {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     padding: 1rem;
+
     .selectPedido {
       display: flex;
       gap: 1rem;
       align-items: center;
       justify-content: space-between;
+
       p {
         color: var(--red);
       }
+
       input {
         border: 1px solid var(--red);
         height: 35px;
@@ -80,12 +81,14 @@ export default Vue.extend({
       }
     }
   }
+
   img {
     width: 438px;
     height: 250px;
   }
-  .descriptionPedido {
-  }
+
+  .descriptionPedido {}
+
   button {
     background: var(--bg_heade_table);
     padding: 1rem 0;

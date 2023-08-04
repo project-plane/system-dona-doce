@@ -12,7 +12,7 @@
           <input v-model="qtdPedido" type="text" />
         </div>
       </div>
-      <button @click="addPedidos(tipoLanches)">Adicionar Pedido</button>
+      <button @click="addPedidos(tipoLanches)">Adicionar</button>
     </div>
   </div>
 </template>
