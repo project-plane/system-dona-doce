@@ -19,6 +19,7 @@
           </option>
         </select>
       </div>
+      <!-- {{ cardapioModal.itemMenu[0] }} -->
       <div class="input-select">
         <span>Lanche 1</span>
         <select v-model="cardapio.recreateItensMenu[1].fk_revenues">
@@ -68,20 +69,16 @@ export default Vue.extend({
       cardapio: {
         recreateItensMenu: [
           {
-            fk_revenues: '',
-            fk_category: '491aebc2-1c69-11ee-be56-0242ac120002'
+            fk_revenues: this.cardapioModal.itemMenu[0].revenues.id,
           },
           {
-            fk_revenues: '',
-            fk_category: '518a6828-1c69-11ee-be56-0242ac120002'
+            fk_revenues: this.cardapioModal.itemMenu[1].revenues.id,
           },
           {
-            fk_revenues: '',
-            fk_category: '57c25f34-1c69-11ee-be56-0242ac120002'
+            fk_revenues: this.cardapioModal.itemMenu[2].revenues.id,
           },
           {
-            fk_revenues: '',
-            fk_category: '619dec9e-1c69-11ee-be56-0242ac120002'
+            fk_revenues: this.cardapioModal.itemMenu[3].revenues.id,
           }
         ]
       }
@@ -104,7 +101,6 @@ export default Vue.extend({
     },
 
     async updateCardapio() {
-
       const fkCategoryList = this.cardapio.recreateItensMenu.map(item => item.fk_revenues);
 
 
@@ -114,13 +110,11 @@ export default Vue.extend({
 
         this.$toast.error('Não podem haver receitas duplicadas para o mesmo dia')
       } else {
+
         await httpCardapio.UpdateMenu(this.cardapioModal.id, this.cardapio).then((res) => {
           this.$store.commit('OPEN_MODAL', false)
           this.$toast.success('Cardápio atualizado com sucesso!')
           this.$nuxt.refresh()
-
-
-
         })
           .catch((error) => {
             console.log(error);
