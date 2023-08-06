@@ -1,42 +1,45 @@
 <template>
   <LoadingPage v-if="loading" />
-    <Container v-else>
-        <Title title="Novo Cardápio" />
-        <div class="calendar-content">
-          <div class="calendar">
-            <span>Selecione uma data</span>
-            <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red"/>
-          </div>
-          
-          <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList" class="calendar-input">
-            <span>Dia: {{ formatDate(date) }}</span>
-            
+  <Container v-else>
+    <Title title="Novo Cardápio" />
+    <div class="calendar-content">
+      <div class="calendar">
+        <span>Selecione uma data</span>
+        <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red" />
+      </div>
 
-            <div v-for="index in qtdeCardapio" :key="index" class="input-select">
-              <div class="input-internal">
-                <span>Opção {{ index }}</span>
-                <select v-model="cardapio.createItensMenu[index - 1].fk_revenues">
-                <option disabled value="">Selecionar Receita</option>
-                <option v-for="(receita, index) in optionsReceitas" :key="index" :value="receita.id">
-                  {{ receita.description }} 
-                </option>
-                </select>
-                
-                </div>
+      <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
+        class="calendar-input">
+        <span>Dia: {{ formatDate(date) }}</span>
 
-                <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio">
-  
-              </div>
 
-            <button v-if="qtdeCardapio < 4" class="add-option" @click="addOnCardapio">+ Adicionar Opção</button>
-
+        <div v-for="index in qtdeCardapio" :key="index" class="input-select">
+          <div class="input-internal">
+            <span>Opção {{ index }}</span>
+            <select v-model="cardapio.createItensMenu[index - 1].fk_revenues">
+              <option disabled value="">Selecionar Receita</option>
+              <option v-for="(receita, index) in optionsReceitas" :key="index" :value="receita.id">
+                {{ receita.description }}
+              </option>
+            </select>
 
           </div>
-          
+
+          <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio">
+
         </div>
-        <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList && qtdeCardapio !== 0" class="row-button">
-          <Button title="Salvar" @click.native="saveDayCardapio" />
-        </div>
+
+        <button v-if="qtdeCardapio < 4" class="add-option" @click="addOnCardapio">+ Adicionar Opção</button>
+
+
+      </div>
+
+    </div>
+    <div
+      v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList && qtdeCardapio !== 0"
+      class="row-button">
+      <Button title="Salvar" @click.native="saveDayCardapio" />
+    </div>
   </Container>
 </template>
 
@@ -55,7 +58,7 @@ export default Vue.extend({
       datesToVerify: [],
       loading: true,
       existOnList: false,
-      qtdeCardapio: 0,
+      qtdeCardapio: 4,
       cardapio: {
         dateMenu: '',
         createItensMenu: [
@@ -91,12 +94,12 @@ export default Vue.extend({
 
 
   watch: {
-    date (newValue) {
-      if(this.days.length === 0) {
+    date(newValue) {
+      if (this.days.length === 0) {
         this.cardapio.dateMenu = newValue
       }
-      this.days.map ( (item) => {
-        if(dayjs(item.dateMenu).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
+      this.days.map((item) => {
+        if (dayjs(item.dateMenu).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
           console.log('existe na listagem')
           this.existOnList = true
         } else {
@@ -105,7 +108,7 @@ export default Vue.extend({
           this.cardapio.dateMenu = newValue
         }
       })
-      
+
 
       this.existOnList = this.datesToVerify.includes(this.formatDate(this.date))
 
@@ -117,19 +120,19 @@ export default Vue.extend({
 
 
   async mounted() {
-    await httpReceitas.GetReceitas().then( (res) => {
+    await httpReceitas.GetReceitas().then((res) => {
       this.optionsReceitas = res.data
-      })
+    })
   },
-  
+
 
   async created() {
-    await httpCardapio.GetMenu().then( (res) => {
-        this.days = res.data
-        this.days.map( (item) => {
-          this.toEdit.push(item)
-          this.datesToVerify.push(this.formatDate(item.dateMenu))
-        })
+    await httpCardapio.GetMenu().then((res) => {
+      this.days = res.data
+      this.days.map((item) => {
+        this.toEdit.push(item)
+        this.datesToVerify.push(this.formatDate(item.dateMenu))
+      })
     })
 
 
@@ -139,12 +142,12 @@ export default Vue.extend({
 
   methods: {
 
-    addOnCardapio () {
-      this.qtdeCardapio ++
+    addOnCardapio() {
+      this.qtdeCardapio++
     },
 
-    removeOnCardapio () {
-      this.qtdeCardapio --
+    removeOnCardapio() {
+      this.qtdeCardapio--
     },
 
     formatDate(date) {
@@ -158,47 +161,46 @@ export default Vue.extend({
 
       const fkCategoryList = this.cardapio.createItensMenu.map(item => item.fk_revenues);
 
-    
+
       const hasDuplicatesFkCategory = this.hasDuplicates(fkCategoryList);
 
       if (hasDuplicatesFkCategory) {
-        
+
         this.$toast.error('Não podem haver receitas duplicadas para o mesmo dia')
       } else {
         await httpCardapio.SetNewMenu(this.cardapio).then(async (res) => {
-        this.$toast.success('Cardapio Cadastrado com Sucesso!')
-        this.$nuxt.refresh()
+          this.$toast.success('Cardapio Cadastrado com Sucesso!')
+          this.$nuxt.refresh()
 
 
-        await httpCardapio.GetMenu().then( (res) => {
-        this.days = res.data
-        this.$nuxt.refresh()
-    })
-      }).catch( (error) => {
-        console.log(error)
-        this.$toast.error('Não foi possivel cadastrar o cardapio ')
-      })
+          await httpCardapio.GetMenu().then((res) => {
+            this.days = res.data
+            this.$nuxt.refresh()
+          })
+        }).catch((error) => {
+          console.log(error)
+          this.$toast.error('Não foi possivel cadastrar o cardapio ')
+        })
       }
 
-      
-     
+
+
     }
   },
 
 
-  
+
 
 })
 </script>
 
 <style lang="scss" scoped>
-
 .calendar-content {
   margin-top: -1rem;
   display: flex;
   justify-content: space-between;
 
-  
+
 
   .calendar {
     display: flex;
@@ -253,8 +255,8 @@ export default Vue.extend({
         cursor: pointer;
         margin-bottom: 0.5rem;
       }
-  
-     
+
+
     }
 
     .add-option {
@@ -271,7 +273,8 @@ export default Vue.extend({
     flex-direction: column;
     gap: 1rem;
 
-    .calendar, .calendar-input {
+    .calendar,
+    .calendar-input {
       width: 100%;
       border-left: none;
       padding-left: 0;
