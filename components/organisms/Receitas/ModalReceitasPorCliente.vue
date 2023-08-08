@@ -36,9 +36,11 @@
                 </td>
                 <td>
                   <div class="btnReceita">
+
                     <Button @click.native="salvarReceitaPorCliente(receita.fk_revenue, index)" title="Salvar"
                       v-if="receita.unique_value === null" />
                     <Button @click.native="salvarReceitaPorCliente(receita.fk_revenue, index)" title="Atualizar" v-else />
+
                   </div>
                 </td>
               </tr>
