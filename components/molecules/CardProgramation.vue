@@ -1,10 +1,7 @@
 <template>
   <div>
     <div class="containerCard">
-      <img
-        :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`"
-        alt=""
-      />
+      <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`" alt="" />
       <div class="cardPedido">
         <div class="descriptionPedido">
           <h3>{{ tipoLanches.revenues.description }}</h3>
@@ -99,9 +96,6 @@ export default Vue.extend({
     background-size: cover;
     object-fit: cover;
     height: 250px;
-  }
-
-  .descriptionPedido {
   }
 
   button {
