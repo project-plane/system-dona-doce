@@ -29,21 +29,12 @@
                 <td>{{ receita.description }}</td>
                 <td>R$ {{ receita.value.toFixed(2) }}</td>
                 <td>
-                  <InputValue
-                    v-model="valueReceitaPorCliente[index]"
-                    placeholder="Digite o novo valor"
-                  />
+                  <InputValue v-model="valueReceitaPorCliente[index]" placeholder="Digite o novo valor" />
                 </td>
                 <td>
                   <div class="btnReceita">
-                    <Button
-                      @click.native="salvarReceitaPorCliente(receita.id, index)"
-                      title="Salvar"
-                    />
-                    <Button
-                      @click.native="updateReceitaPorCliente(receita.id, index)"
-                      title="Atualizar"
-                    />
+                    <Button @click.native="salvarReceitaPorCliente(receita.id, index)" title="Salvar" />
+                    <Button @click.native="updateReceitaPorCliente(receita.id, index)" title="Atualizar" />
                   </div>
                 </td>
               </tr>
@@ -195,10 +186,12 @@ export default Vue.extend({
       .btnClose {
         cursor: pointer;
       }
+
       .btnReceita {
         display: flex;
         justify-content: center;
         gap: 1rem;
+
         button {
           background: var(--blue);
           height: 30px;

@@ -87,8 +87,6 @@ export default Vue.extend({
     height: 250px;
   }
 
-  .descriptionPedido {}
-
   button {
     background: var(--bg_heade_table);
     padding: 1rem 0;
