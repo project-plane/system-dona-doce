@@ -1,14 +1,8 @@
 <template>
   <LoadingPage v-if="loading" />
   <ContainerTable v-else>
-    <ModalEditReceita
-      v-if="$store.state.openModal"
-      :dataReceita="dataReceita"
-    />
-    <PreviewReceita
-      v-if="$store.state.openModalPreviewReceita"
-      :listFindReceita="listFindReceita"
-    />
+    <ModalEditReceita v-if="$store.state.openModal" :dataReceita="dataReceita" />
+    <PreviewReceita v-if="$store.state.openModalPreviewReceita" :listFindReceita="listFindReceita" />
     <div class="headerTable">
       <span>Lista de Receitas</span>
       <InputSearch v-model="textSearch" />
@@ -28,10 +22,7 @@
         <tr v-for="(receita, index) in filterItems" :key="receita.id">
           <td>{{ index + 1 }}</td>
           <td class="img">
-            <img
-              :src="`https://api.donadoce.gedroid.com/img_revenue/${receita.imagem}`"
-              alt=""
-            />
+            <img :src="`https://api.donadoce.gedroid.com/img_revenue/${receita.imagem}`" alt="" />
           </td>
           <td>{{ receita.description }}</td>
           <td v-if="receita.status === 0">Coffee</td>
@@ -141,32 +132,39 @@ export default Vue.extend({
     font-weight: 600;
   }
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
   font-size: 0.9rem;
+
   thead {
     width: 100%;
     background: var(--bg_heade_table);
+
     tr th {
       padding: 0.6rem 0;
     }
   }
+
   tbody tr td {
     text-align: center;
     padding: 1rem 0;
   }
+
   tbody tr .img img {
     width: 50px;
     height: 50px;
   }
+
   tbody tr .iconsOptions {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+
     button {
       background: transparent;
 

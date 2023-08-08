@@ -18,7 +18,8 @@
               <tr>
                 <th>ID</th>
                 <th>Receita</th>
-                <th>Valor Atual</th>
+                <th>Valor Receita</th>
+                <th>Valor Cliente</th>
                 <th>Valor Cliente</th>
                 <th>Opções</th>
               </tr>
@@ -27,14 +28,17 @@
               <tr v-for="(receita, index) in filterItems" :key="receita.id">
                 <td>{{ index + 1 }}</td>
                 <td>{{ receita.description }}</td>
-                <td>R$ {{ receita.value.toFixed(2) }}</td>
+                <td>R$ {{ receita.revenue_value }}</td>
+                <td v-if="receita.unique_value === null"><strong>R$ 0,00</strong></td>
+                <td v-else><strong>R$ {{ receita.sale_value }}</strong></td>
                 <td>
                   <InputValue v-model="valueReceitaPorCliente[index]" placeholder="Digite o novo valor" />
                 </td>
                 <td>
                   <div class="btnReceita">
-                    <Button @click.native="salvarReceitaPorCliente(receita.id, index)" title="Salvar" />
-                    <Button @click.native="updateReceitaPorCliente(receita.id, index)" title="Atualizar" />
+                    <Button @click.native="salvarReceitaPorCliente(receita.fk_revenue, index)" title="Salvar"
+                      v-if="receita.unique_value === null" />
+                    <Button @click.native="salvarReceitaPorCliente(receita.fk_revenue, index)" title="Atualizar" v-else />
                   </div>
                 </td>
               </tr>
@@ -67,6 +71,19 @@ export default Vue.extend({
       type: [Array, Object],
       required: true,
     },
+  },
+
+  async fetch() {
+    await httpReceitaPorCliente.GetAllReceitaPorCliente(this.dataClient.id)
+      .then((res) => {
+        this.listAllReceita = res.data
+        console.log(res.data);
+
+      })
+      .catch((error) => {
+        console.log(error);
+
+      })
   },
 
   computed: {
@@ -118,6 +135,10 @@ export default Vue.extend({
           )
           return
         })
+
+      this.valueReceitaPorCliente[index] = ''
+
+      this.$nuxt.refresh()
     },
     async updateReceitaPorCliente(idRevenue, index) {
       const convertValue = this.valueReceitaPorCliente[index]
@@ -141,8 +162,6 @@ export default Vue.extend({
         .catch((error) => {
           console.log(error)
         })
-
-      console.log(updateReceitaPorCliente)
     },
   },
 })
