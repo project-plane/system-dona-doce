@@ -5,65 +5,37 @@
         <img src="~/assets/icons/user.svg" alt="user_create" />
         <h4>Cadastro</h4>
       </div>
-      <img
-        class="setaDropdown"
-        :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
-        src="~/assets/icons/setaDropdown.svg"
-        alt=""
-      />
+      <img class="setaDropdown" :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
+        src="~/assets/icons/setaDropdown.svg" alt="" />
     </div>
     <nav class="menu_navigation" v-show="isDropdownCadastrar">
       <ul>
-        <li
-          :class="{ active: isActiveEmpresa }"
-          @click="buttonEmpresa(isActiveEmpresa)"
-        >
+        <li :class="{ active: isActiveEmpresa }" @click="buttonEmpresa(isActiveEmpresa)">
           Unidade
         </li>
-        <li
-          :class="{ active: isActiveClient }"
-          @click="buttonClient(isActiveClient)"
-        >
+        <li :class="{ active: isActiveClient }" @click="buttonClient(isActiveClient)">
           Cliente
         </li>
-        <li
-          :class="{ active: isActiveUser }"
-          @click="buttonUsers(isActiveUser)"
-        >
+        <li :class="{ active: isActiveUser }" @click="buttonUsers(isActiveUser)">
           Funcionário
         </li>
-        <li
-          :class="{ active: isActiveIngredientes }"
-          @click="buttonIngredientes(isActiveIngredientes)"
-        >
+        <li :class="{ active: isActiveIngredientes }" @click="buttonIngredientes(isActiveIngredientes)">
           Ingrediente
         </li>
-        <li
-          :class="{ active: isActiveEstoque }"
-          @click="buttonEstoque(isActiveEstoque)"
-        >
+        <li :class="{ active: isActiveEstoque }" @click="buttonEstoque(isActiveEstoque)">
           Estoque
         </li>
         <li>
-          <span
-            class="btnDropdown"
-            :class="{ isIconDropdown: isIconDropdown }"
-            @click="dropdownReceita"
-          >
+          <span class="btnDropdown" :class="{ isIconDropdown: isIconDropdown }" @click="dropdownReceita">
             Receita
             <img src="~/assets/icons/setaDropdown.svg" alt="" />
           </span>
           <div class="dropdown" v-show="isDropdown">
-            <span
-              :class="{ active: isActiveReceitas }"
-              @click="buttonReceitas(isActiveReceitas)"
-            >
+            <span :class="{ active: isActiveReceitas }" @click="buttonReceitas(isActiveReceitas)">
               Cadastrar Receita
             </span>
-            <span
-              :class="{ active: isActiveReceitasPorCliente }"
-              @click="buttonReceitasPorCliente(isActiveReceitasPorCliente)"
-            >
+            <span :class="{ active: isActiveReceitasPorCliente }"
+              @click="buttonReceitasPorCliente(isActiveReceitasPorCliente)">
               Valor Receita Por Cliente
             </span>
           </div>
@@ -95,8 +67,8 @@ export default Vue.extend({
       isActiveMenu: false,
       isDropdown: false,
       isIconDropdown: false,
-      isIconDropdownCadastrar: false,
-      isDropdownCadastrar: false,
+      isIconDropdownCadastrar: true,
+      isDropdownCadastrar: true,
     }
   },
 
