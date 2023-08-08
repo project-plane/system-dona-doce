@@ -120,7 +120,9 @@ export default Vue.extend({
 <style scoped lang="scss">
 .contentCardPedido {
   width: 100%;
-  margin-top: 10vh;
+  height: auto;
+  background-color: var(--red);
+  margin-top: 7vh;
   padding: 2rem 4rem;
 }
 
