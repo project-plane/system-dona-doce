@@ -1,28 +1,12 @@
 <template>
   <div class="contentCardPedido">
-    <MenuPedidos
-      :data-pedido="dataPedido"
-      @lancheDesjejum="lancheDesjejum"
-      @lanche1="lanche1"
-      @lanche2="lanche2"
-      @finalizarPedido="finalizarPedido"
-      :qtdPedidos="addPedidos.createOrderItemDto"
-      :listaCompletReceita="teste"
-    />
+    <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
+      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto"
+      :listaCompletReceita="listaCompletReceita" />
 
-    <div
-      v-if="statusDesjejum || statusLanche1 || statusLanche2"
-      class="cardsPedidos"
-    >
-      <div
-        v-for="pedidosProgramation in listPedidos"
-        :key="pedidosProgramation.id"
-      >
-        <CardProgramation
-          :tipo-lanches="pedidosProgramation"
-          :tipo-pedido="tipoPedido"
-          @pedidos="pedidos"
-        />
+    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
+      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
     </div>
   </div>
@@ -37,7 +21,7 @@ import HttpPedidos from '@/server/pedidos'
 export default Vue.extend({
   data() {
     return {
-      teste: [],
+      listaCompletReceita: [],
       statusDesjejum: true,
       statusLanche1: false,
       statusLanche2: false,
@@ -58,7 +42,6 @@ export default Vue.extend({
       .GetFindMenu(id)
       .then((res) => {
         this.listPedidos = res.data.itemMenu
-        console.log(res.data)
       })
       .catch((error) => {
         console.log(error)
@@ -67,18 +50,39 @@ export default Vue.extend({
 
   methods: {
     pedidos(qtdOrder, fk_revenue, index) {
+
+      const existecategoryOrderItem = this.listaCompletReceita.find((item) => {
+        return item.fk_categoryOrderItem === this.tipoPedido && item.fk_revenue === fk_revenue
+      })
+
+      if (existecategoryOrderItem) {
+        this.$toast.error('Receita já adicionada ao pedido!!!')
+        return
+      }
+
       this.addPedidos.createOrderItemDto.push({
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
       })
-      this.teste.push({
+      this.listaCompletReceita.push({
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
         listReceita: index.revenues,
       })
-      console.log(this.teste)
+
+      this.listPedidos.map((item) => {
+        if (fk_revenue === item.revenues.id) {
+          this.$toast.info(
+            `(${qtdOrder}X) ${item.revenues.description} ADICIONADO AO CARRINHO`
+          )
+
+        }
+        console.log(item.revenues.id);
+
+      })
+
     },
     async finalizarPedido() {
       if (this.addPedidos.createOrderItemDto.length === 0) {
