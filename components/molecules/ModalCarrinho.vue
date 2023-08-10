@@ -1,8 +1,5 @@
 <template>
-  <ModalPreview
-    titleModal="Carrinho - Ainda em Desenvolvimento"
-    @closeModal="closeModal"
-  >
+  <ModalPreview titleModal="Carrinho - Ainda em Desenvolvimento" @closeModal="closeModal">
     <div class="dataEmpresa" v-if="$fetchState.pending">
       Carregando dados do carrinho...
     </div>
@@ -10,18 +7,18 @@
       <h4>Desjejum</h4>
       <table class="resume-content">
         <thead>
-          <tr v-if="dejejum.length !== 0">
+          <tr v-if="desjejum.length !== 0">
             <th>Item</th>
             <th>Qtde</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
+          <tr v-for="(item, index) in desjejum" :key="index" class="order-line">
             <td>{{ item.receita_descricao }}</td>
             <td>{{ item.qtde }}</td>
           </tr>
-          <tr v-if="dejejum.length === 0">
+          <tr v-if="desjejum.length === 0">
             Não possui...
           </tr>
         </tbody>
@@ -62,7 +59,7 @@
   </ModalPreview>
 </template>
 
-  <script lang="ts">
+<script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -75,7 +72,7 @@ export default Vue.extend({
 
   data() {
     return {
-      dejejum: [],
+      desjejum: [],
       lanche01: [],
       lanche02: [],
     }
@@ -86,7 +83,7 @@ export default Vue.extend({
       if (
         item.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
       ) {
-        this.dejejum.push({
+        this.desjejum.push({
           qtde: item.amountItem,
           receita_descricao: item.listReceita.description,
         })
@@ -120,7 +117,7 @@ export default Vue.extend({
 })
 </script>
 
-  <style scoped lang="scss">
+<style scoped lang="scss">
 .dataEmpresa {
   width: 100%;
   display: flex;

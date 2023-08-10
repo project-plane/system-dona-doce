@@ -49,9 +49,6 @@ export default Vue.extend({
         lanche.fk_revenues,
         this.tipoLanches
       )
-      this.$toast.info(
-        `(${this.qtdPedido}X) ${lanche.revenues.description} ADICIONADO AO CARRINHO`
-      )
       this.qtdPedido = ''
     },
   },
