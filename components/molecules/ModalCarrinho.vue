@@ -1,5 +1,8 @@
 <template>
-  <ModalPreview titleModal="Carrinho - Ainda em Desenvolvimento" @closeModal="closeModal">
+  <ModalPreview
+    titleModal="Carrinho - Ainda em Desenvolvimento"
+    @closeModal="closeModal"
+  >
     <div class="dataEmpresa" v-if="$fetchState.pending">
       Carregando dados do carrinho...
     </div>
@@ -14,9 +17,19 @@
         </thead>
 
         <tbody>
-          <tr v-for="(item, index) in desjejum" :key="index" class="order-line">
+          <tr v-for="(item, index) in desjejum" :key="index">
             <td>{{ item.receita_descricao }}</td>
-            <td>{{ item.qtde }}</td>
+            <td class="tdQtde">
+              <button
+                class="btnValue"
+                @click="subtractValue(item)"
+                v-if="item.qtde !== 1"
+              >
+                <span>-</span>
+              </button>
+              {{ item.qtde }}
+              <button class="btnValue" @click="addValue(item)">+</button>
+            </td>
           </tr>
           <tr v-if="desjejum.length === 0">
             Não possui...
@@ -31,9 +44,19 @@
           <th>Qtde</th>
         </tr>
 
-        <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
+        <tr v-for="(item, index) in lanche01" :key="index">
           <td>{{ item.receita_descricao }}</td>
-          <td>{{ item.qtde }}</td>
+          <td class="tdQtde">
+            <button
+              class="btnValue"
+              @click="subtractValue(item)"
+              v-if="item.qtde !== 1"
+            >
+              <span>-</span>
+            </button>
+            {{ item.qtde }}
+            <button class="btnValue" @click="addValue(item)">+</button>
+          </td>
         </tr>
         <tr v-if="lanche01.length === 0">
           Não possui...
@@ -47,14 +70,25 @@
           <th>Qtde</th>
         </tr>
 
-        <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
+        <tr v-for="(item, index) in lanche02" :key="index">
           <td>{{ item.receita_descricao }}</td>
-          <td>{{ item.qtde }}</td>
+          <td class="tdQtde">
+            <button
+              class="btnValue"
+              @click="subtractValue(item)"
+              v-if="item.qtde !== 1"
+            >
+              <span>-</span>
+            </button>
+            {{ item.qtde }}
+            <button class="btnValue" @click="addValue(item)">+</button>
+          </td>
         </tr>
         <tr v-if="lanche02.length === 0">
           Não possui...
         </tr>
       </table>
+      <Button @click.native="salvarPedido" title="Salvar" />
     </div>
   </ModalPreview>
 </template>
@@ -75,6 +109,7 @@ export default Vue.extend({
       desjejum: [],
       lanche01: [],
       lanche02: [],
+      disabledBtn: true,
     }
   },
 
@@ -113,6 +148,20 @@ export default Vue.extend({
     closeModal() {
       this.$emit('closeModal')
     },
+    subtractValue(value) {
+      value.qtde--
+    },
+    addValue(value) {
+      value.qtde++
+    },
+    salvarPedido() {
+      const dataCarrinho = {
+        desjejum: this.desjejum,
+        lanche01: this.lanche01,
+        lanche02: this.lanche02,
+      }
+      console.log(dataCarrinho)
+    },
   },
 })
 </script>
@@ -143,11 +192,30 @@ export default Vue.extend({
         img {
           width: 2.5rem;
         }
+        button {
+          width: 30px;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          color: var(--white);
+          background: var(--blue);
+          font-size: 1rem;
+        }
       }
 
       td:nth-child(1),
       th:nth-child(1) {
         text-align: left;
+      }
+
+      .tdQtde {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
       }
     }
   }
