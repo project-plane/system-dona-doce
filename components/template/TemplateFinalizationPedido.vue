@@ -1,12 +1,28 @@
 <template>
   <div class="contentCardPedido">
-    <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
-      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto"
-      :listaCompletReceita="listaCompletReceita" />
+    <MenuPedidos
+      :data-pedido="dataPedido"
+      @lancheDesjejum="lancheDesjejum"
+      @lanche1="lanche1"
+      @lanche2="lanche2"
+      @finalizarPedido="finalizarPedido"
+      :qtdPedidos="addPedidos.createOrderItemDto"
+      :listaCompletReceita="listaCompletReceita"
+    />
 
-    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
-      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
+    <div
+      v-if="statusDesjejum || statusLanche1 || statusLanche2"
+      class="cardsPedidos"
+    >
+      <div
+        v-for="pedidosProgramation in listPedidos"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation
+          :tipo-lanches="pedidosProgramation"
+          :tipo-pedido="tipoPedido"
+          @pedidos="pedidos"
+        />
       </div>
     </div>
   </div>
@@ -50,9 +66,11 @@ export default Vue.extend({
 
   methods: {
     pedidos(qtdOrder, fk_revenue, index) {
-
       const existecategoryOrderItem = this.listaCompletReceita.find((item) => {
-        return item.fk_categoryOrderItem === this.tipoPedido && item.fk_revenue === fk_revenue
+        return (
+          item.fk_categoryOrderItem === this.tipoPedido &&
+          item.fk_revenue === fk_revenue
+        )
       })
 
       if (existecategoryOrderItem) {
@@ -77,12 +95,9 @@ export default Vue.extend({
           this.$toast.info(
             `(${qtdOrder}X) ${item.revenues.description} ADICIONADO AO CARRINHO`
           )
-
         }
-        console.log(item.revenues.id);
-
+        console.log(item.revenues.id)
       })
-
     },
     async finalizarPedido() {
       if (this.addPedidos.createOrderItemDto.length === 0) {
