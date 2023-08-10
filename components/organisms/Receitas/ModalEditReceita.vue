@@ -5,14 +5,39 @@
         <div class="container">
           <div class="header">
             <div class="headerReceita">
-              <img :src="imgFile" alt="" />
+              <div class="img">
+                <label for="editInputFile">
+                  <img
+                    v-if="!editUrlImgPreview"
+                    src="~/assets/icons/imgFile.svg"
+                    alt=""
+                  />
+                  <img
+                    v-if="editUrlImgPreview"
+                    class="imgFile"
+                    :src="editUrlImgPreview"
+                    alt=""
+                  />
+                </label>
+                <input
+                  id="editInputFile"
+                  type="file"
+                  accept="image/*"
+                  name="editInputFile"
+                  @change="fileMethods"
+                />
+              </div>
               <div class="textReceita">
                 <h1>Editar Receita</h1>
                 <Title :title="title" />
               </div>
             </div>
             <div @click="closeModal">
-              <img style="cursor: pointer" src="~/assets/icons/close.svg" alt="" />
+              <img
+                style="cursor: pointer"
+                src="~/assets/icons/close.svg"
+                alt=""
+              />
             </div>
           </div>
           <div class="btnAddIngrediente">
@@ -23,30 +48,56 @@
               <Label for="ingrediente">Ingrediente</Label>
               <select name="" id="ingrediente" v-model="selected">
                 <option disabled value="">Selecionar Ingrediente</option>
-                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id">
+                <option
+                  v-for="itemIngredient in listIngredients"
+                  :key="itemIngredient.id"
+                >
                   {{ itemIngredient.description }}
                 </option>
               </select>
             </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input type="number" id="qtd" placeholder="quantidade" v-model="qtdIngrediente" />
+              <input
+                type="number"
+                id="qtd"
+                placeholder="quantidade"
+                v-model="qtdIngrediente"
+              />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente(idReceita)">Inserir</button>
             </div>
           </div>
           <div class="body" v-for="receita in listReceitas" :key="receita.id">
-            <Input label="Ingrediente" v-model="receita.ingredients.description" type="text" disabled="disabled"
-              block="background: #d6d6d6; cursor: no-drop" />
+            <Input
+              label="Ingrediente"
+              v-model="receita.ingredients.description"
+              type="text"
+              disabled="disabled"
+              block="background: #d6d6d6; cursor: no-drop"
+            />
 
-            <Input label="Valor Ingrediente" v-model="receita.ingredients.value" type="text" disabled="disabled"
-              block="background: #d6d6d6; cursor: no-drop" />
+            <Input
+              label="Valor Ingrediente"
+              v-model="receita.ingredients.value"
+              type="text"
+              disabled="disabled"
+              block="background: #d6d6d6; cursor: no-drop"
+            />
 
-            <Input label="Quantidade" v-model="receita.amount_ingredient" type="number" />
+            <Input
+              label="Quantidade"
+              v-model="receita.amount_ingredient"
+              type="number"
+            />
 
             <div class="close">
-              <img src="~/assets/icons/close.svg" alt="" @click="deletarIngrediente(receita)" />
+              <img
+                src="~/assets/icons/close.svg"
+                alt=""
+                @click="deletarIngrediente(receita)"
+              />
             </div>
           </div>
           <div class="valorTotal" v-if="updateIngrediente.length !== 0">
@@ -57,9 +108,16 @@
             <h3>Valor Total</h3>
             <h3>R$ {{ valorAtual }}</h3>
           </div>
-          <Button @functionClick="editarIngredienteReceita(listReceitas)" title="Atualizar Dados"
-            v-if="updateIngrediente.length === 0" />
-          <Button v-else @functionClick="editReceita(idReceita)" title="Salvar" />
+          <Button
+            @functionClick="editarIngredienteReceita(listReceitas)"
+            title="Atualizar Dados"
+            v-if="updateIngrediente.length === 0"
+          />
+          <Button
+            v-else
+            @functionClick="editReceita(idReceita)"
+            title="Salvar"
+          />
         </div>
       </div>
     </BeadFrame>
@@ -88,7 +146,8 @@ export default Vue.extend({
       listFindReceita: [],
       listReceitas: [],
       idReceita: '',
-      imgFile: '',
+      editUrlImgFile: null,
+      editUrlImgPreview: null,
       title: '',
       updateIngrediente: [],
       selected: '',
@@ -110,7 +169,7 @@ export default Vue.extend({
         this.idReceita = this.listFindReceita.id
         this.title = this.listFindReceita.description
         this.listReceitas = this.listFindReceita.ingredients_Revenues
-        this.imgFile = `https://api.donadoce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
+        this.editUrlImgPreview = `https://api.donadoce.gedroid.com/img_revenue/${this.listFindReceita.imagem}`
         this.valorAtual = this.listFindReceita.value.toFixed(2)
       })
       .catch((error) => {
@@ -131,12 +190,17 @@ export default Vue.extend({
       this.statusAddIngrediente = true
     },
 
+    fileMethods(e) {
+      const file = e.target.files[0]
+      this.editUrlImgPreview = URL.createObjectURL(file)
+      this.editUrlImgFile = e.target.files[0]
+    },
+
     // Inserir um ingrediente dentro da receita
     inserirIngrediente(id) {
       this.listIngredients.map(async (e) => {
         if (e.description === this.selected) {
           const dado = this.listReceitas.find((item) => {
-
             return item.ingredients.description === this.selected
           })
           const adicionarIngrediente = [
@@ -147,8 +211,6 @@ export default Vue.extend({
               amount_ingredient: Number(this.qtdIngrediente),
             },
           ]
-          // console.log((e));
-          console.log(adicionarIngrediente);
 
           if (!dado) {
             const adicionarIngrediente = [
@@ -252,6 +314,7 @@ export default Vue.extend({
           JSON.stringify(this.listFindReceita.ingredients_Revenues)
         )
         formData.append('old_imagem', this.listFindReceita.imagem)
+        formData.append('imagem', this.editUrlImgFile)
         formData.append('yield_per_quantity', this.yield_per_quantity)
         formData.append('time_in_hours', this.time_in_hours)
         formData.append('presumed_profit', this.presumed_profit)
@@ -328,8 +391,38 @@ export default Vue.extend({
           display: flex;
           gap: 1rem;
 
-          img {
-            width: 30%;
+          .img {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            border: 0.06rem solid var(--border);
+            border-radius: 0.25rem;
+            label {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              font-weight: 800;
+              font-size: 1.2rem;
+              letter-spacing: 3px;
+              cursor: pointer;
+              img {
+                width: 100px;
+                height: 100x;
+              }
+              .imgFile {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            input[type='file'] {
+              display: none;
+            }
           }
         }
       }
