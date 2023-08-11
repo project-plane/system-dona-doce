@@ -1,28 +1,12 @@
 <template>
   <div class="contentCardPedido">
-    <MenuPedidos
-      :data-pedido="dataPedido"
-      @lancheDesjejum="lancheDesjejum"
-      @lanche1="lanche1"
-      @lanche2="lanche2"
-      @finalizarPedido="finalizarPedido"
-      :qtdPedidos="addPedidos.createOrderItemDto"
-      :listaCompletReceita="listaCompletReceita"
-    />
+    <MenuPedidos :data-pedido="dataPedido" @lancheDesjejum="lancheDesjejum" @lanche1="lanche1" @lanche2="lanche2"
+      @finalizarPedido="finalizarPedido" :qtdPedidos="addPedidos.createOrderItemDto"
+      :listaCompletReceita="listaCompletReceita" />
 
-    <div
-      v-if="statusDesjejum || statusLanche1 || statusLanche2"
-      class="cardsPedidos"
-    >
-      <div
-        v-for="pedidosProgramation in listPedidos"
-        :key="pedidosProgramation.id"
-      >
-        <CardProgramation
-          :tipo-lanches="pedidosProgramation"
-          :tipo-pedido="tipoPedido"
-          @pedidos="pedidos"
-        />
+    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
+      <div v-for="pedidosProgramation in listPedidos" :key="pedidosProgramation.id">
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
     </div>
   </div>
