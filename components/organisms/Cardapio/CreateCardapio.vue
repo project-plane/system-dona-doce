@@ -11,30 +11,22 @@
       <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
         class="calendar-input">
         <span>Dia: {{ formatDate(date) }}</span>
-
-
         <div v-for="index in qtdeCardapio" :key="index" class="input-select">
           <div class="input-internal">
             <span>Opção {{ index }}</span>
             <select v-model="cardapio.createItensMenu[index - 1].fk_revenues">
               <option disabled value="">Selecionar Receita</option>
-              <option v-for="(receita, index) in optionsReceitas" :key="index" :value="receita.id">
+              <option v-for="(receita, index) in optionsProgramation" :key="index" :value="receita.id">
                 {{ receita.description }}
               </option>
             </select>
-
           </div>
-
           <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio">
-
         </div>
-
         <button v-if="qtdeCardapio < 4" class="add-option" @click="addOnCardapio">+ Adicionar Opção</button>
-
-
       </div>
-
     </div>
+
     <div
       v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList && qtdeCardapio !== 0"
       class="row-button">
@@ -53,6 +45,7 @@ export default Vue.extend({
     return {
       days: [],
       optionsReceitas: [],
+      optionsProgramation: [],
       date: '',
       toEdit: [],
       datesToVerify: [],
@@ -92,7 +85,6 @@ export default Vue.extend({
     },
   },
 
-
   watch: {
     date(newValue) {
       if (this.days.length === 0) {
@@ -100,31 +92,31 @@ export default Vue.extend({
       }
       this.days.map((item) => {
         if (dayjs(item.dateMenu).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
-          console.log('existe na listagem')
           this.existOnList = true
         } else {
-          console.log('não existe - n pode mostrar')
           this.existOnList = false
           this.cardapio.dateMenu = newValue
         }
       })
 
-
       this.existOnList = this.datesToVerify.includes(this.formatDate(this.date))
-
 
       this.date = new Date(newValue).toISOString()
     },
   },
 
-
-
   async mounted() {
     await httpReceitas.GetReceitas().then((res) => {
       this.optionsReceitas = res.data
     })
-  },
 
+    this.optionsReceitas.map((item) => {
+      if (item.status === 1) {
+        this.optionsProgramation.push(item)
+
+      }
+    })
+  },
 
   async created() {
     await httpCardapio.GetMenu().then((res) => {
@@ -134,7 +126,6 @@ export default Vue.extend({
         this.datesToVerify.push(this.formatDate(item.dateMenu))
       })
     })
-
 
     this.loading = false
 
@@ -161,7 +152,6 @@ export default Vue.extend({
 
       const fkCategoryList = this.cardapio.createItensMenu.map(item => item.fk_revenues);
 
-
       const hasDuplicatesFkCategory = this.hasDuplicates(fkCategoryList);
 
       if (hasDuplicatesFkCategory) {
@@ -172,7 +162,6 @@ export default Vue.extend({
           this.$toast.success('Cardapio Cadastrado com Sucesso!')
           this.$nuxt.refresh()
 
-
           await httpCardapio.GetMenu().then((res) => {
             this.days = res.data
             this.$nuxt.refresh()
@@ -182,15 +171,8 @@ export default Vue.extend({
           this.$toast.error('Não foi possivel cadastrar o cardapio ')
         })
       }
-
-
-
     }
   },
-
-
-
-
 })
 </script>
 
@@ -199,8 +181,6 @@ export default Vue.extend({
   margin-top: -1rem;
   display: flex;
   justify-content: space-between;
-
-
 
   .calendar {
     display: flex;
@@ -255,8 +235,6 @@ export default Vue.extend({
         cursor: pointer;
         margin-bottom: 0.5rem;
       }
-
-
     }
 
     .add-option {

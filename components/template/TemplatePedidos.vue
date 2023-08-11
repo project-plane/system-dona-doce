@@ -2,26 +2,14 @@
   <div class="containerPedidos">
     <div class="headerPedidos">
       <div class="input_radio">
-        <input
-          id="programation"
-          v-model="statusPedidos"
-          type="radio"
-          name="programation"
-          :value="0"
-        />
+        <input id="programation" v-model="statusPedidos" type="radio" name="programation" :value="0" />
         <div class="input">
           <img src="~/assets/icons/programationWhite.svg" alt="" />
           <label class="programado" for="programation"> Programado </label>
         </div>
       </div>
       <div class="input_radio">
-        <input
-          id="programation"
-          v-model="statusPedidos"
-          type="radio"
-          name="programation"
-          :value="1"
-        />
+        <input id="programation" v-model="statusPedidos" type="radio" name="programation" :value="1" />
         <div class="input">
           <img src="~/assets/icons/coffeeWhite.svg" alt="" />
           <label class="programado" for="programation"> Coffee </label>
@@ -37,7 +25,7 @@
       </div>
     </div>
     <div v-else class="listPedidos">
-      <div v-for="pedido in listAllReceitas" :key="pedido.id">
+      <div v-for="pedido in listOrderCoffee" :key="pedido.id">
         <CardCoffee :pedido-coffee="pedido" />
       </div>
     </div>
@@ -57,6 +45,7 @@ export default Vue.extend({
     return {
       listPedidos: [],
       listAllReceitas: [],
+      listOrderCoffee: [],
       selected: '',
       statusPedidos: 0,
     }
@@ -64,9 +53,17 @@ export default Vue.extend({
 
   async fetch() {
     await httpReceitas
-      .GetAllReceitas()
+      .GetReceitas()
       .then((res) => {
         this.listAllReceitas = res.data
+        this.listAllReceitas.map((item) => {
+          if (item.status === 0) {
+            this.listOrderCoffee.push(item)
+          }
+
+        })
+        // console.log(this.listAllReceitas);
+
       })
       .catch((error) => {
         console.log(error)
@@ -80,7 +77,7 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
-    
+
   },
 
   methods: {
@@ -104,6 +101,7 @@ export default Vue.extend({
   padding: 6rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;
+
   .headerPedidos {
     width: 100%;
     display: flex;
@@ -111,21 +109,26 @@ export default Vue.extend({
     gap: 1rem;
     align-items: center;
     padding-bottom: 2rem;
+
     h3 {
       color: var(--white);
     }
+
     .inputPedido {
       width: 25%;
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
+
       label {
         color: var(--white);
       }
+
       input {
         width: 100%;
       }
     }
+
     .input_radio {
       display: flex;
       gap: 0.5rem;
@@ -137,6 +140,7 @@ export default Vue.extend({
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
+
         img {
           color: var(--white);
           width: 1.2rem;
@@ -151,6 +155,7 @@ export default Vue.extend({
       }
     }
   }
+
   .listPedidos {
     width: 100%;
     display: flex;
