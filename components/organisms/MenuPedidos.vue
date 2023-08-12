@@ -20,28 +20,27 @@
           Lanche 02
         </button>
       </div>
-      <div class="btnFinalizar">
+      <!-- <div class="btnFinalizar">
         <div class="qtdPedidos" @click="() => (showModal = true)">
           <img src="~/assets/icons/shopCar.svg" />
           <span v-if="qtdPedidos.length > 0">
             <p>{{ qtdPedidos.length }}</p>
           </span>
         </div>
-        <!-- <div class="qtdPedidos" v-if="qtdPedidos.length > 0">
-          </div> -->
+        
         <button @click="finalizarPedidosProgramados">
           Finalizar Pedido
           <img src="~/assets/icons/seta.svg" />
         </button>
-      </div>
+      </div> -->
     </div>
 
-    <ModalCarrinho
+    <!-- <ModalCarrinho
       v-if="showModal"
-      :listaCompletReceita="listaCompletReceita"
+      :listaCompletaReceita="listaCompletaReceita"
       :data="qtdPedidos"
       @closeModal="() => (showModal = false)"
-    />
+    /> -->
   </div>
 </template>
 
@@ -59,7 +58,7 @@ export default Vue.extend({
       type: [Array, Object],
       required: true,
     },
-    listaCompletReceita: {
+    listaCompletaReceita: {
       type: [Array, Object],
       required: true,
     },
@@ -117,6 +116,7 @@ export default Vue.extend({
 
   .headerPedidos {
     h2 {
+      font-size: 1.4rem;
       color: var(--white);
     }
   }
@@ -136,9 +136,9 @@ export default Vue.extend({
       }
 
       button {
-        height: 50px;
-        width: 130px;
-        font-size: 1.1rem;
+        height: 2.5rem;
+        width: 7.5rem;
+        font-size: 1rem;
         background: #ea4e42;
         padding: 0.5rem 1rem;
         border-top-left-radius: 4px;
