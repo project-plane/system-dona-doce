@@ -55,6 +55,7 @@ export default Vue.extend({
 
             sessionStorage.getItem('token')
             this.$router.push('/pedidos')
+            this.$toast.success('Bem-vindo à área de clientes do sistema Dona Doce!!!')
             return
           } else {
             sessionStorage.setItem('token', res.data.token)
