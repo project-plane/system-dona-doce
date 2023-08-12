@@ -26,7 +26,7 @@
             <td class="tdQtde">
               <button
                 class="btnValue"
-                @click="subtractValue(item)"
+                @click="subtractValue(item, 'dejejum')"
                 v-if="item.qtde !== 1"
               >
                 <span>-</span>
@@ -165,6 +165,7 @@ export default Vue.extend({
 
     dejejum: {
       handler() {
+        this.countdejejum = 0
         this.dejejum.map( (res) => {
           this.countdejejum = this.countdejejum + (Number(res.qtde) * Number(res.v_unidade))
         })
@@ -174,8 +175,9 @@ export default Vue.extend({
 
     lanche01: {
       handler() {
+        this.countlanche01 = 0
         this.lanche01.map( (res) => {
-          this.countlanche02 = this.countlanche02 + (Number(res.qtde) * Number(res.v_unidade))
+          this.countlanche01 = this.countlanche01 + (Number(res.qtde) * Number(res.v_unidade))
         })
       },
       deep: true
@@ -183,8 +185,9 @@ export default Vue.extend({
 
     lanche02: {
       handler() {
+        this.countlanche02 = 0
         this.lanche02.map( (res) => {
-          this.countlanche01 = this.countlanche01 + (Number(res.qtde) * Number(res.v_unidade))
+          this.countlanche02 = this.countlanche02 + (Number(res.qtde) * Number(res.v_unidade))
         })
       },
       deep: true
@@ -236,7 +239,7 @@ export default Vue.extend({
     closeModal() {
       this.$emit('closeModal')
     },
-    subtractValue(value) {
+    subtractValue(value, type) {
       value.qtde--
 
       this.listaCompletaReceita.map((item) => {
@@ -244,6 +247,8 @@ export default Vue.extend({
           item.amountItem = value.qtde
         }
       })
+
+      
 
     },
     addValue(value) {
