@@ -7,6 +7,6 @@ export default {
     },
 
     OrderHistory: async () => {
-        return await http.get(`order/client`)
+        return await http.get(`order/all?clientskip=0&limit=10000`)
     }
 }

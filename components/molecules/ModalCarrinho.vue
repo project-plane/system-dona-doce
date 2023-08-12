@@ -1,23 +1,27 @@
 <template>
   <ModalPreview
-    titleModal="Carrinho - Ainda em Desenvolvimento"
+    titleModal="Carrinho"
     @closeModal="closeModal"
   >
     <div class="dataEmpresa" v-if="$fetchState.pending">
       Carregando dados do carrinho...
     </div>
     <div class="dataEmpresa" v-else>
-      <h4>Desjejum</h4>
+
+      <h4>Dejejum</h4>
       <table class="resume-content">
         <thead>
-          <tr v-if="desjejum.length !== 0">
+          <tr v-if="dejejum.length !== 0">
             <th>Item</th>
             <th>Qtde</th>
+            <th>V. Unidade</th>
+            <th>Total</th>
+            <th>Opções</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr v-for="(item, index) in desjejum" :key="index">
+          <tr v-for="(item, index) in dejejum" :key="index">
             <td>{{ item.receita_descricao }}</td>
             <td class="tdQtde">
               <button
@@ -30,8 +34,13 @@
               {{ item.qtde }}
               <button class="btnValue" @click="addValue(item)">+</button>
             </td>
+            <td>R$ {{ item.v_unidade }}</td>
+            <td>R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
+            <td>
+              <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
+            </td>
           </tr>
-          <tr v-if="desjejum.length === 0">
+          <tr v-if="dejejum.length === 0">
             Não possui...
           </tr>
         </tbody>
@@ -40,8 +49,11 @@
       <h4>Lanche 01</h4>
       <table class="resume-content">
         <tr v-if="lanche01.length !== 0">
-          <th>Item</th>
-          <th>Qtde</th>
+            <th>Item</th>
+            <th>Qtde</th>
+            <th>V. Unidade</th>
+            <th>Total</th>
+            <th>Opções</th>
         </tr>
 
         <tr v-for="(item, index) in lanche01" :key="index">
@@ -57,6 +69,11 @@
             {{ item.qtde }}
             <button class="btnValue" @click="addValue(item)">+</button>
           </td>
+          <td>R$ {{ item.v_unidade }}</td>
+          <td>R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
+          <td>
+            <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
+          </td>
         </tr>
         <tr v-if="lanche01.length === 0">
           Não possui...
@@ -67,7 +84,10 @@
       <table class="resume-content">
         <tr v-if="lanche02.length !== 0">
           <th>Item</th>
-          <th>Qtde</th>
+            <th>Qtde</th>
+            <th>V. Unidade</th>
+            <th>Total</th>
+            <th>Opções</th>
         </tr>
 
         <tr v-for="(item, index) in lanche02" :key="index">
@@ -83,13 +103,26 @@
             {{ item.qtde }}
             <button class="btnValue" @click="addValue(item)">+</button>
           </td>
+          <td>R$ {{ item.v_unidade }}</td>
+          <td>R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
+          <td>
+            <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
+          </td>
         </tr>
         <tr v-if="lanche02.length === 0">
           Não possui...
         </tr>
       </table>
-      <Button @click.native="salvarPedido" title="Salvar" />
+
+
+      <div class="finalizar-pedido-content">
+        <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02 }}</span>
+        <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
+      </div>
+      
+      
     </div>
+    
   </ModalPreview>
 </template>
 
@@ -98,7 +131,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    listaCompletReceita: {
+    listaCompletaReceita: {
       type: [Array, Object],
       required: true,
     },
@@ -106,21 +139,73 @@ export default Vue.extend({
 
   data() {
     return {
-      desjejum: [],
+      dejejum: [],
       lanche01: [],
       lanche02: [],
       disabledBtn: true,
+
+      countdejejum: 0,
+      countlanche01: 0,
+      countlanche02: 0
     }
   },
 
   async fetch() {
-    await this.listaCompletReceita.map(async (item) => {
+    await this.renderList()
+  },
+
+  watch: {
+    listaCompletaReceita: {
+      handler(newValue) {
+          console.log(newValue)
+          this.$emit('listaAtualizadaDoModal', newValue)
+      },
+      deep: true
+    },
+
+    dejejum: {
+      handler() {
+        this.dejejum.map( (res) => {
+          this.countdejejum = this.countdejejum + (Number(res.qtde) * Number(res.v_unidade))
+        })
+      },
+      deep: true
+    },
+
+    lanche01: {
+      handler() {
+        this.lanche01.map( (res) => {
+          this.countlanche02 = this.countlanche02 + (Number(res.qtde) * Number(res.v_unidade))
+        })
+      },
+      deep: true
+    },
+
+    lanche02: {
+      handler() {
+        this.lanche02.map( (res) => {
+          this.countlanche01 = this.countlanche01 + (Number(res.qtde) * Number(res.v_unidade))
+        })
+      },
+      deep: true
+    }
+  },
+
+  methods: {
+    totalValue(unity, qtde) {
+      return  Number(unity) * Number(qtde)
+    }, 
+
+    async renderList() {
+      await this.listaCompletaReceita.map(async (item) => {
       if (
         item.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
       ) {
-        this.desjejum.push({
+        this.dejejum.push({
           qtde: item.amountItem,
           receita_descricao: item.listReceita.description,
+          category: item.fk_categoryOrderItem,
+          v_unidade: item.listReceita.value
         })
       }
 
@@ -130,6 +215,8 @@ export default Vue.extend({
         this.lanche01.push({
           qtde: item.amountItem,
           receita_descricao: item.listReceita.description,
+          category: item.fk_categoryOrderItem,
+          v_unidade: item.listReceita.value
         })
       }
 
@@ -139,30 +226,59 @@ export default Vue.extend({
         this.lanche02.push({
           qtde: item.amountItem,
           receita_descricao: item.listReceita.description,
+          category: item.fk_categoryOrderItem,
+          v_unidade: item.listReceita.value
         })
       }
     })
-  },
+    },
 
-  methods: {
     closeModal() {
       this.$emit('closeModal')
     },
     subtractValue(value) {
       value.qtde--
+
+      this.listaCompletaReceita.map((item) => {
+        if(item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+          item.amountItem = value.qtde
+        }
+      })
+
     },
     addValue(value) {
       value.qtde++
+
+      this.listaCompletaReceita.map((item) => {
+        if(item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+          item.amountItem = value.qtde
+        }
+      })
     },
-    salvarPedido() {
-      const dataCarrinho = {
-        desjejum: this.desjejum,
-        lanche01: this.lanche01,
-        lanche02: this.lanche02,
-      }
-      console.log(dataCarrinho)
+
+    deleteItem(value) {
+      const listaTemporaria = this.listaCompletaReceita
+      listaTemporaria.map((item) => {
+        if(item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+          const indice = listaTemporaria.indexOf(item);
+
+          // eslint-disable-next-line vue/no-mutating-props
+          this.listaCompletaReceita.splice(indice, 1)
+
+        }
+
+        this.dejejum = []
+        this.lanche01 = []
+        this.lanche02 = []
+
+        this.renderList()
+      })
     },
-  },
+
+    finalizarPedido() {
+      this.$emit('finalizarPedido')
+    },
+  }
 })
 </script>
 
@@ -189,9 +305,6 @@ export default Vue.extend({
       width: 100%;
 
       td {
-        img {
-          width: 2.5rem;
-        }
         button {
           width: 30px;
           height: 16px;
@@ -205,6 +318,11 @@ export default Vue.extend({
         }
       }
 
+      .btnDelete {
+          width: 1.2rem;
+          cursor: pointer;
+      }
+
       td:nth-child(1),
       th:nth-child(1) {
         text-align: left;
@@ -213,10 +331,23 @@ export default Vue.extend({
       .tdQtde {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         gap: 1rem;
+
+        
       }
+    }
+  }
+
+  .finalizar-pedido-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-weight: 600;
     }
   }
 }
