@@ -21,22 +21,14 @@
               <Label for="ingrediente">Ingrediente</Label>
               <select id="ingrediente" v-model="selected" name="">
                 <option disabled value="">Selecionar Ingrediente</option>
-                <option
-                  v-for="itemIngredient in listIngredients"
-                  :key="itemIngredient.id"
-                >
+                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id">
                   {{ itemIngredient.description }}
                 </option>
               </select>
             </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input
-                id="qtd"
-                v-model="qtdIngrediente"
-                type="number"
-                placeholder="quantidade"
-              />
+              <input id="qtd" v-model="qtdIngrediente" type="number" placeholder="quantidade" />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
@@ -52,11 +44,7 @@
               <h4>Valor Unitário</h4>
               <h4>Valor Total</h4>
             </div>
-            <div
-              v-for="amountReceita in amountReceitas"
-              :key="amountReceita.id"
-              class="footerBody"
-            >
+            <div v-for="amountReceita in amountReceitas" :key="amountReceita.id" class="footerBody">
               <span>{{ amountReceita.ingrediente }}</span>
               <span>{{ amountReceita.qtd }}</span>
               <span>R$ {{ amountReceita.valorUnitario }}</span>
@@ -67,6 +55,10 @@
               <span>R$ {{ valorTotal }}</span>
               <span class="total">Valor de Venda Padrão</span>
               <input type="number" v-model="valorReceita" />
+              <span class="total">Quantidade Mínima</span>
+              <input type="number" v-model="qtdMinima" />
+              <span class="total">Quantidade Máxima</span>
+              <input type="number" v-model="qtdMaxima" />
             </div>
             <Button title="Salvar" @functionClick="saveReceita" />
           </div>
@@ -96,6 +88,8 @@ export default Vue.extend({
       valorTotal: '',
       valorReceita: '',
       valorTotalReceita: '',
+      qtdMinima: '',
+      qtdMaxima: '',
       yield_per_quantity: 0,
       time_in_hours: 0,
       presumed_profit: 0,
@@ -217,9 +211,11 @@ export default Vue.extend({
   align-items: center;
   padding: 2rem 0;
   z-index: 1;
+
   .bodyModal {
     background: var(--white);
     min-height: 50%;
+
     .container {
       width: 100%;
       height: 90vh;
@@ -228,29 +224,36 @@ export default Vue.extend({
       flex-direction: column;
       gap: 2rem;
       overflow-y: auto;
+
       .header {
         width: 100%;
         height: 40%;
         display: flex;
         justify-content: space-between;
+
         .headerReceita {
           width: 100%;
           display: flex;
           gap: 1rem;
+
           img {
             width: 30%;
           }
         }
+
         .coffee {
           color: var(--red);
         }
+
         .programation {
           color: var(--blue);
         }
+
         img {
           cursor: pointer;
         }
       }
+
       .body {
         width: 100%;
         display: grid;
@@ -258,18 +261,22 @@ export default Vue.extend({
         border-bottom: 2px dashed var(--bg_opacity);
         padding-bottom: 1rem;
         gap: 1rem;
+
         .input {
           display: flex;
           flex-direction: column;
+
           input,
           select {
             border: 1px solid var(--bg_opacity);
           }
         }
+
         .btnIngrediente {
           width: 100%;
           display: flex;
           align-items: flex-end;
+
           button {
             width: 100%;
             padding: 0.6rem;
@@ -280,22 +287,27 @@ export default Vue.extend({
           }
         }
       }
+
       .footer {
         width: 100%;
+
         .footerHeader {
           display: grid;
           grid-template-columns: 3fr 3fr 3fr 2fr;
           padding: 0.7rem 1rem;
           border-bottom: 2px solid var(--bg_opacity);
         }
+
         .footerBody {
           display: grid;
           grid-template-columns: 3fr 3fr 3fr 2fr;
           padding: 0.7rem 1rem;
         }
+
         .footerBody:nth-child(2n + 1) {
           background: #e9e9e9;
         }
+
         .footerTable {
           display: grid;
           grid-template-columns: 6fr 2fr;
@@ -303,10 +315,12 @@ export default Vue.extend({
           padding: 0.7rem 1rem;
           margin-top: 20px;
           border-top: 2px solid var(--bg_opacity);
+
           span {
             font-size: 1.2rem;
             font-weight: 800;
           }
+
           input {
             border: 1px solid var(--bg_opacity);
             height: 30px;

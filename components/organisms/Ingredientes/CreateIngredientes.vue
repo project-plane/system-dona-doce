@@ -2,23 +2,22 @@
   <Container>
     <Title title="Novo Ingrediente" />
     <ContainerInput>
-      <Input
-        v-model="nameIngrediente"
-        label="Nome"
-        type="text"
-        placeholder="Digite o nome ingrediente"
-      />
-      <Input
-        v-model="priceIngrediente"
-        label="Preço"
-        type="number"
-        placeholder="Digite o preco ingrediente"
-      />
+      <Input v-model="nameIngrediente" label="Nome" type="text" placeholder="Digite o nome ingrediente" />
+      <Input v-model="priceIngrediente" label="Preço" type="number" placeholder="Digite o preco ingrediente" />
+      <div class="input">
+        <span>Medida</span>
+        <select v-model="selected">
+          <option disabled value="">Selecionar Tipo de Medida</option>
+          <option>Kg</option>
+          <option>Litro</option>
+          <option>Unidade</option>
+        </select>
+      </div>
     </ContainerInput>
     <div class="row-button">
       <Button title="Salvar" @functionClick="createIngrediente" />
     </div>
-    
+
   </Container>
 </template>
 
@@ -32,6 +31,7 @@ export default Vue.extend({
     return {
       nameIngrediente: '',
       priceIngrediente: '',
+      selected: ''
     }
   },
   methods: {
@@ -43,6 +43,7 @@ export default Vue.extend({
       const ingrediente = {
         description: this.nameIngrediente,
         value: Number(this.priceIngrediente),
+        unidade: this.selected
       }
 
       await httpIngrediente
@@ -51,14 +52,14 @@ export default Vue.extend({
           if (res.status === 201) {
             this.$toast.success('Ingrediente criado com sucesso!!!')
           }
-          this.nameIngrediente = ''
-          this.priceIngrediente = ''
+
         })
         .catch((error) => {
           this.$toast.error('Ingrediente já existente!!!')
         })
       this.nameIngrediente = ''
       this.priceIngrediente = ''
+      this.selected = ''
       this.$nuxt.refresh()
     },
   },
@@ -66,6 +67,22 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+
+  span {
+    font-size: 1rem;
+  }
+
+  select {
+    border: 0.06rem solid var(--border);
+    border-radius: 0.25rem;
+  }
+}
 
 .row-button {
   display: flex;
