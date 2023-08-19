@@ -161,13 +161,23 @@ export default Vue.extend({
       this.valorTotal = valorTotal.toFixed(2)
 
       this.qtdIngrediente = ''
+      this.qtdMinima = ''
+      this.qtdMaxima = ''
       this.valorReceita = ''
       this.selected = ''
     },
     async saveReceita() {
-      if (!this.valorReceita) {
-        this.$toast.error('Preencha o campo de venda')
+      if (!this.valorReceita || !this.qtdMinima || !this.qtdMaxima) {
+        this.$toast.error('Preencha todos os campos!!!')
+        return
       }
+
+      if (this.qtdMinima > this.qtdMaxima) {
+        this.$toast.error('Valor Minimo não pode ser maior que o Valor Máximo')
+        this.qtdMaxima = ''
+        return
+      }
+
       const status = this.dadosReceitas.status
       const formData = new FormData()
       formData.append('description', this.dadosReceitas.receita)
@@ -177,6 +187,8 @@ export default Vue.extend({
       formData.append('yield_per_quantity', this.yield_per_quantity)
       formData.append('time_in_hours', this.time_in_hours)
       formData.append('presumed_profit', this.presumed_profit)
+      formData.append('base_min_amount', this.qtdMinima)
+      formData.append('base_max_amount', this.qtdMaxima)
       formData.append('status', status)
 
       await httpReceitas

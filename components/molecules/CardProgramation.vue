@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="containerCard">
-      <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.revenues.imagem}`" alt="" />
+      <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.imagem}`" alt="" />
       <div class="cardPedido">
         <div class="descriptionPedido">
-          <h3>{{ tipoLanches.revenues.description }}</h3>
-          <p>R$ {{ tipoLanches.revenues.value }}</p>
+          <h3>{{ tipoLanches.descriptionRevenue }}</h3>
+          <p>R$ {{ tipoLanches.valeuRevenue }}</p>
         </div>
         <div class="selectPedido">
           <p>Qtd Selecionada</p>
@@ -15,7 +15,7 @@
       <button @click="addPedidos(tipoLanches)">Adicionar</button>
     </div>
   </div>
-</template>
+</template> 
 
 <script lang="ts">
 import Vue from 'vue'
@@ -26,6 +26,7 @@ export default Vue.extend({
       type: Object,
       required: true,
     },
+
     tipoPedido: {
       type: String,
       required: true,
@@ -37,12 +38,14 @@ export default Vue.extend({
       qtdPedido: '',
     }
   },
+
   methods: {
     addPedidos(lanche) {
       if (!this.qtdPedido) {
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
+
       this.$emit(
         'pedidos',
         this.qtdPedido,
@@ -53,53 +56,53 @@ export default Vue.extend({
     },
   },
 })
-</script>
 
-<style scoped lang="scss">
-.containerCard {
-  width: 100%;
-  background: var(--white);
-  border-radius: 0.4rem;
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
+</script> 
 
-  .cardPedido {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
+<style scoped lang="scss"> .containerCard {
+   width: 100%;
+   background: var(--white);
+   border-radius: 0.4rem;
+   display: flex;
+   flex-direction: column;
+   margin-top: 20px;
 
-    .selectPedido {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      justify-content: space-between;
+   .cardPedido {
+     display: flex;
+     flex-direction: column;
+     gap: 2rem;
+     padding: 1rem;
 
-      p {
-        color: var(--red);
-      }
+     .selectPedido {
+       display: flex;
+       gap: 1rem;
+       align-items: center;
+       justify-content: space-between;
 
-      input {
-        border: 1px solid var(--red);
-        height: 35px;
-      }
-    }
-  }
+       p {
+         color: var(--red);
+       }
 
-  img {
-    width: 100%;
-    border-radius: 0.4rem 0.4rem 0 0;
-    background-size: cover;
-    object-fit: cover;
-    height: 250px;
-  }
+       input {
+         border: 1px solid var(--red);
+         height: 35px;
+       }
+     }
+   }
 
-  button {
-    background: var(--bg_heade_table);
-    padding: 1rem 0;
-    border-radius: 0 0 0.4rem 0.4rem;
-    font-size: 1rem;
-  }
-}
-</style>
+   img {
+     width: 100%;
+     border-radius: 0.4rem 0.4rem 0 0;
+     background-size: cover;
+     object-fit: cover;
+     height: 250px;
+   }
+
+   button {
+     background: var(--bg_heade_table);
+     padding: 1rem 0;
+     border-radius: 0 0 0.4rem 0.4rem;
+     font-size: 1rem;
+   }
+ }
+</style> 
