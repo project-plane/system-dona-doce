@@ -1,8 +1,5 @@
 <template>
-  <ModalPreview
-    titleModal="Carrinho"
-    @closeModal="closeModal"
-  >
+  <ModalPreview titleModal="Carrinho" @closeModal="closeModal">
     <div class="dataEmpresa" v-if="$fetchState.pending">
       Carregando dados do carrinho...
     </div>
@@ -24,11 +21,7 @@
           <tr v-for="(item, index) in dejejum" :key="index">
             <td>{{ item.receita_descricao }}</td>
             <td class="tdQtde">
-              <button
-                class="btnValue"
-                @click="subtractValue(item, 'dejejum')"
-                v-if="item.qtde !== 1"
-              >
+              <button class="btnValue" @click="subtractValue(item, 'dejejum')" v-if="item.qtde !== 1">
                 <span>-</span>
               </button>
               {{ item.qtde }}
@@ -49,21 +42,17 @@
       <h4>Lanche 01</h4>
       <table class="resume-content">
         <tr v-if="lanche01.length !== 0">
-            <th>Item</th>
-            <th>Qtde</th>
-            <th>V. Unidade</th>
-            <th>Total</th>
-            <th>Opções</th>
+          <th>Item</th>
+          <th>Qtde</th>
+          <th>V. Unidade</th>
+          <th>Total</th>
+          <th>Opções</th>
         </tr>
 
         <tr v-for="(item, index) in lanche01" :key="index">
           <td>{{ item.receita_descricao }}</td>
           <td class="tdQtde">
-            <button
-              class="btnValue"
-              @click="subtractValue(item)"
-              v-if="item.qtde !== 1"
-            >
+            <button class="btnValue" @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
             {{ item.qtde }}
@@ -84,20 +73,16 @@
       <table class="resume-content">
         <tr v-if="lanche02.length !== 0">
           <th>Item</th>
-            <th>Qtde</th>
-            <th>V. Unidade</th>
-            <th>Total</th>
-            <th>Opções</th>
+          <th>Qtde</th>
+          <th>V. Unidade</th>
+          <th>Total</th>
+          <th>Opções</th>
         </tr>
 
         <tr v-for="(item, index) in lanche02" :key="index">
           <td>{{ item.receita_descricao }}</td>
           <td class="tdQtde">
-            <button
-              class="btnValue"
-              @click="subtractValue(item)"
-              v-if="item.qtde !== 1"
-            >
+            <button class="btnValue" @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
             {{ item.qtde }}
@@ -119,10 +104,10 @@
         <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02 }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
-      
-      
+
+
     </div>
-    
+
   </ModalPreview>
 </template>
 
@@ -157,8 +142,8 @@ export default Vue.extend({
   watch: {
     listaCompletaReceita: {
       handler(newValue) {
-          console.log(newValue)
-          this.$emit('listaAtualizadaDoModal', newValue)
+        console.log(newValue)
+        this.$emit('listaAtualizadaDoModal', newValue)
       },
       deep: true
     },
@@ -166,7 +151,7 @@ export default Vue.extend({
     dejejum: {
       handler() {
         this.countdejejum = 0
-        this.dejejum.map( (res) => {
+        this.dejejum.map((res) => {
           this.countdejejum = this.countdejejum + (Number(res.qtde) * Number(res.v_unidade))
         })
       },
@@ -176,7 +161,7 @@ export default Vue.extend({
     lanche01: {
       handler() {
         this.countlanche01 = 0
-        this.lanche01.map( (res) => {
+        this.lanche01.map((res) => {
           this.countlanche01 = this.countlanche01 + (Number(res.qtde) * Number(res.v_unidade))
         })
       },
@@ -186,7 +171,7 @@ export default Vue.extend({
     lanche02: {
       handler() {
         this.countlanche02 = 0
-        this.lanche02.map( (res) => {
+        this.lanche02.map((res) => {
           this.countlanche02 = this.countlanche02 + (Number(res.qtde) * Number(res.v_unidade))
         })
       },
@@ -196,44 +181,44 @@ export default Vue.extend({
 
   methods: {
     totalValue(unity, qtde) {
-      return  Number(unity) * Number(qtde)
-    }, 
+      return Number(unity) * Number(qtde)
+    },
 
     async renderList() {
       await this.listaCompletaReceita.map(async (item) => {
-      if (
-        item.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
-      ) {
-        this.dejejum.push({
-          qtde: item.amountItem,
-          receita_descricao: item.listReceita.description,
-          category: item.fk_categoryOrderItem,
-          v_unidade: item.listReceita.value
-        })
-      }
+        if (
+          item.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
+        ) {
+          this.dejejum.push({
+            qtde: item.amountItem,
+            receita_descricao: item.listReceita.descriptionRevenue,
+            category: item.fk_categoryOrderItem,
+            v_unidade: item.listReceita.valeuRevenue
+          })
+        }
 
-      if (
-        item.fk_categoryOrderItem === '518a6828-1c69-11ee-be56-0242ac120002'
-      ) {
-        this.lanche01.push({
-          qtde: item.amountItem,
-          receita_descricao: item.listReceita.description,
-          category: item.fk_categoryOrderItem,
-          v_unidade: item.listReceita.value
-        })
-      }
+        if (
+          item.fk_categoryOrderItem === '518a6828-1c69-11ee-be56-0242ac120002'
+        ) {
+          this.lanche01.push({
+            qtde: item.amountItem,
+            receita_descricao: item.listReceita.descriptionRevenue,
+            category: item.fk_categoryOrderItem,
+            v_unidade: item.listReceita.valeuRevenue
+          })
+        }
 
-      if (
-        item.fk_categoryOrderItem === '57c25f34-1c69-11ee-be56-0242ac120002'
-      ) {
-        this.lanche02.push({
-          qtde: item.amountItem,
-          receita_descricao: item.listReceita.description,
-          category: item.fk_categoryOrderItem,
-          v_unidade: item.listReceita.value
-        })
-      }
-    })
+        if (
+          item.fk_categoryOrderItem === '57c25f34-1c69-11ee-be56-0242ac120002'
+        ) {
+          this.lanche02.push({
+            qtde: item.amountItem,
+            receita_descricao: item.listReceita.descriptionRevenue,
+            category: item.fk_categoryOrderItem,
+            v_unidade: item.listReceita.valeuRevenue
+          })
+        }
+      })
     },
 
     closeModal() {
@@ -243,19 +228,19 @@ export default Vue.extend({
       value.qtde--
 
       this.listaCompletaReceita.map((item) => {
-        if(item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+        if (item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
           item.amountItem = value.qtde
         }
       })
 
-      
+
 
     },
     addValue(value) {
       value.qtde++
 
       this.listaCompletaReceita.map((item) => {
-        if(item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+        if (item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
           item.amountItem = value.qtde
         }
       })
@@ -264,7 +249,7 @@ export default Vue.extend({
     deleteItem(value) {
       const listaTemporaria = this.listaCompletaReceita
       listaTemporaria.map((item) => {
-        if(item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+        if (item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
           const indice = listaTemporaria.indexOf(item);
 
           // eslint-disable-next-line vue/no-mutating-props
@@ -324,8 +309,8 @@ export default Vue.extend({
       }
 
       .btnDelete {
-          width: 1.2rem;
-          cursor: pointer;
+        width: 1.2rem;
+        cursor: pointer;
       }
 
       td:nth-child(1),
@@ -340,7 +325,7 @@ export default Vue.extend({
         align-items: center;
         gap: 1rem;
 
-        
+
       }
     }
   }
