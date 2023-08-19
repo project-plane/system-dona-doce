@@ -43,7 +43,7 @@ export default Vue.extend({
       const ingrediente = {
         description: this.nameIngrediente,
         value: Number(this.priceIngrediente),
-        unidade: this.selected
+        unit_of_measurement: this.selected
       }
 
       await httpIngrediente

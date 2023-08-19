@@ -5,18 +5,8 @@
         <span class="title"> Dona Doce </span>
       </div>
       <form class="form_login" @submit.prevent="accessLogin">
-        <Input
-          v-model="dataLogin.email"
-          label="Email"
-          type="text"
-          placeholder="Digite seu e-mail"
-        />
-        <Input
-          v-model="dataLogin.password"
-          label="Password"
-          type="password"
-          placeholder="Digite sua senha"
-        />
+        <Input v-model="dataLogin.email" label="Email" type="text" placeholder="Digite seu e-mail" />
+        <Input v-model="dataLogin.password" label="Password" type="password" placeholder="Digite sua senha" />
         <div class="recupera_senha">
           <span @click="recoverPassword">Esqueci a minha senha</span>
         </div>
@@ -75,7 +65,7 @@ export default Vue.extend({
 
           if (error.response.data.statusCode === 401) {
             this.$toast.error('Dados inválidos!!!')
-            
+
           }
         })
     },
@@ -104,6 +94,7 @@ export default Vue.extend({
       justify-content: flex-start !important;
     }
   }
+
   .main_login {
     width: 100%;
     height: 100%;
@@ -111,6 +102,7 @@ export default Vue.extend({
     flex-direction: column;
     justify-content: center;
     width: 100%;
+
     .form_login {
       display: flex;
       flex-direction: column;
@@ -126,11 +118,13 @@ export default Vue.extend({
     }
   }
 }
+
 .title_login {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
 }
+
 .title {
   color: var(--red);
   font-size: 3rem;

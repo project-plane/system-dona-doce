@@ -1,50 +1,12 @@
 <template>
   <div class="card_create">
-    <div class="title_create" @click="spaceMenu">
-      <div class="cadastrar">
-        <img src="~/assets/icons/user.svg" alt="user_create" />
-        <h4>Cadastro</h4>
-      </div>
-      <img class="setaDropdown" :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
-        src="~/assets/icons/setaDropdown.svg" alt="" />
+    <div>
+      <Dashboard />
+
+      <cadastro v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
+        @estoque="estoque" @receitas="receitas" @receitasPorCliente="receitasPorCliente" @menu="menu" />
     </div>
-    <nav class="menu_navigation" v-show="isDropdownCadastrar">
-      <ul>
-        <li :class="{ active: isActiveEmpresa }" @click="buttonEmpresa(isActiveEmpresa)">
-          Unidade
-        </li>
-        <li :class="{ active: isActiveClient }" @click="buttonClient(isActiveClient)">
-          Cliente
-        </li>
-        <li :class="{ active: isActiveUser }" @click="buttonUsers(isActiveUser)">
-          Funcionário
-        </li>
-        <li :class="{ active: isActiveIngredientes }" @click="buttonIngredientes(isActiveIngredientes)">
-          Ingrediente
-        </li>
-        <li :class="{ active: isActiveEstoque }" @click="buttonEstoque(isActiveEstoque)">
-          Estoque
-        </li>
-        <li>
-          <span class="btnDropdown" :class="{ isIconDropdown: isIconDropdown }" @click="dropdownReceita">
-            Receita
-            <img src="~/assets/icons/setaDropdown.svg" alt="" />
-          </span>
-          <div class="dropdown" v-show="isDropdown">
-            <span :class="{ active: isActiveReceitas }" @click="buttonReceitas(isActiveReceitas)">
-              Cadastrar Receita
-            </span>
-            <span :class="{ active: isActiveReceitasPorCliente }"
-              @click="buttonReceitasPorCliente(isActiveReceitasPorCliente)">
-              Valor Receita Por Cliente
-            </span>
-          </div>
-        </li>
-        <li :class="{ active: isActiveMenu }" @click="buttonMenu(isActiveMenu)">
-          Cardápio
-        </li>
-      </ul>
-    </nav>
+
     <div class="footerMenu">
       <ButtonPirula title="Sair" @click.native="logout" />
       <span>Version 0.0.1 - Em Desenvolvimento</span>
@@ -69,96 +31,33 @@ export default Vue.extend({
       isIconDropdown: false,
       isIconDropdownCadastrar: true,
       isDropdownCadastrar: true,
+      midiaAba: true
     }
   },
 
   methods: {
-    buttonEmpresa(activeEmpresa: boolean) {
-      this.isActiveEmpresa = true
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
+    empresa(activeEmpresa: boolean) {
       this.$emit('empresa')
     },
-    buttonClient(activeClient: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = true
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
+    client(activeClient: boolean) {
       this.$emit('client')
     },
-    buttonUsers(activeUser: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = true
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
+    users(activeUser: boolean) {
       this.$emit('users')
     },
-    buttonIngredientes(activeIngredientes: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = true
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
+    ingredientes(activeIngredientes: boolean) {
       this.$emit('ingredientes')
     },
-    buttonEstoque(activeEstoque: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = true
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
+    estoque(activeEstoque: boolean) {
       this.$emit('estoque')
     },
-    buttonReceitas(activeReceitas: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = true
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
+    receitas(activeReceitas: boolean) {
       this.$emit('receitas')
     },
-    buttonReceitasPorCliente(activeReceitas: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = true
-      this.isActiveMenu = false
+    receitasPorCliente(activeReceitas: boolean) {
       this.$emit('receitasPorCliente')
     },
-    buttonMenu(isActiveMenu: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = true
+    menu(isActiveMenu: boolean) {
       this.$emit('menu')
     },
     dropdownReceita() {
@@ -180,7 +79,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .card_create {
   width: 20%;
-  height: 91vh;
+  min-height: 91vh;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
