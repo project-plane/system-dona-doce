@@ -40,7 +40,7 @@
                     <Button @click.native="salvarReceitaPorCliente(receita.fk_revenue, index)" title="Salvar"
                       v-if="receita.unique_value === null" />
                     <Button style="background: #FA5C4F;"
-                      @click.native="salvarReceitaPorCliente(receita.fk_revenue, index)" title="Atualizar" v-else />
+                      @click.native="updateReceitaPorCliente(receita.fk_revenue, index)" title="Atualizar" v-else />
 
                   </div>
                 </td>
@@ -62,14 +62,11 @@ export default Vue.extend({
   data() {
     return {
       valueReceitaPorCliente: [],
+      listAllReceita: [],
       textSearch: '',
     }
   },
   props: {
-    listAllReceita: {
-      type: [Array, Object],
-      required: true,
-    },
     dataClient: {
       type: [Array, Object],
       required: true,
@@ -109,7 +106,7 @@ export default Vue.extend({
       this.$store.commit('OPEN_MODAL', false)
     },
     async salvarReceitaPorCliente(idReceita, index) {
-      if (!this.valueReceitaPorCliente) {
+      if (!this.valueReceitaPorCliente[index]) {
         this.$toast.error('Preencha o valor do cliente!!!')
         return
       }
@@ -140,10 +137,13 @@ export default Vue.extend({
         })
 
       this.valueReceitaPorCliente[index] = ''
-
       this.$nuxt.refresh()
     },
     async updateReceitaPorCliente(idRevenue, index) {
+      if (!this.valueReceitaPorCliente[index]) {
+        this.$toast.error('Preencha o valor do cliente!!!')
+        return
+      }
       const convertValue = this.valueReceitaPorCliente[index]
         .replace('R$', '')
         .replace(',', '.')
@@ -165,6 +165,10 @@ export default Vue.extend({
         .catch((error) => {
           console.log(error)
         })
+
+      this.valueReceitaPorCliente[index] = ''
+      this.$nuxt.refresh()
+
     },
   },
 })

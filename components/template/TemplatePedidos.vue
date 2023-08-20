@@ -38,6 +38,7 @@ import Vue from 'vue'
 import TemplateFinalizationPedidoVue from './TemplateFinalizationPedido.vue'
 import httpPedidos from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
+import httpMeusDados from '@/server/meusDados'
 
 export default Vue.extend({
   layout: 'pedidos',
@@ -62,8 +63,6 @@ export default Vue.extend({
           }
 
         })
-        // console.log(this.listAllReceitas);
-
       })
       .catch((error) => {
         console.log(error)
@@ -76,6 +75,16 @@ export default Vue.extend({
       })
       .catch((error) => {
         console.log(error)
+      })
+
+    await httpMeusDados.MeusDados()
+      .then((res) => {
+        console.log(res.data);
+
+      })
+      .catch((error) => {
+        console.log(error);
+
       })
 
   },
