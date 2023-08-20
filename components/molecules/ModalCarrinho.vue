@@ -21,11 +21,14 @@
           <tr v-for="(item, index) in dejejum" :key="index">
             <td>{{ item.receita_descricao }}</td>
             <td class="tdQtde">
-              <button class="btnValue" @click="subtractValue(item, 'dejejum')" v-if="item.qtde !== 1">
+              <button @click="subtractValue(item)" v-if="item.qtde !== 1">
+                <span>-</span>
+              </button>
+              <button class="btnDisabled" v-else>
                 <span>-</span>
               </button>
               {{ item.qtde }}
-              <button class="btnValue" @click="addValue(item)">+</button>
+              <button @click="addValue(item)">+</button>
             </td>
             <td>R$ {{ item.v_unidade }}</td>
             <td>R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
@@ -52,11 +55,14 @@
         <tr v-for="(item, index) in lanche01" :key="index">
           <td>{{ item.receita_descricao }}</td>
           <td class="tdQtde">
-            <button class="btnValue" @click="subtractValue(item)" v-if="item.qtde !== 1">
+            <button @click="subtractValue(item)" v-if="item.qtde !== 1">
+              <span>-</span>
+            </button>
+            <button class="btnDisabled" v-else>
               <span>-</span>
             </button>
             {{ item.qtde }}
-            <button class="btnValue" @click="addValue(item)">+</button>
+            <button @click="addValue(item)">+</button>
           </td>
           <td>R$ {{ item.v_unidade }}</td>
           <td>R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
@@ -82,11 +88,14 @@
         <tr v-for="(item, index) in lanche02" :key="index">
           <td>{{ item.receita_descricao }}</td>
           <td class="tdQtde">
-            <button class="btnValue" @click="subtractValue(item)" v-if="item.qtde !== 1">
+            <button @click="subtractValue(item)" v-if="item.qtde !== 1">
+              <span>-</span>
+            </button>
+            <button class="btnDisabled" v-else>
               <span>-</span>
             </button>
             {{ item.qtde }}
-            <button class="btnValue" @click="addValue(item)">+</button>
+            <button @click="addValue(item)">+</button>
           </td>
           <td>R$ {{ item.v_unidade }}</td>
           <td>R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
@@ -99,12 +108,10 @@
         </tr>
       </table>
 
-
       <div class="finalizar-pedido-content">
         <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02 }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
-
 
     </div>
 
@@ -224,7 +231,7 @@ export default Vue.extend({
     closeModal() {
       this.$emit('closeModal')
     },
-    subtractValue(value, type) {
+    subtractValue(value) {
       value.qtde--
 
       this.listaCompletaReceita.map((item) => {
@@ -232,9 +239,6 @@ export default Vue.extend({
           item.amountItem = value.qtde
         }
       })
-
-
-
     },
     addValue(value) {
       value.qtde++
@@ -254,7 +258,6 @@ export default Vue.extend({
 
           // eslint-disable-next-line vue/no-mutating-props
           this.listaCompletaReceita.splice(indice, 1)
-
         }
 
         this.dejejum = []
@@ -306,6 +309,11 @@ export default Vue.extend({
           background: var(--blue);
           font-size: 1rem;
         }
+
+        .btnDisabled {
+          background: gray;
+          cursor: no-drop;
+        }
       }
 
       .btnDelete {
@@ -324,8 +332,6 @@ export default Vue.extend({
         justify-content: space-between;
         align-items: center;
         gap: 1rem;
-
-
       }
     }
   }
@@ -338,6 +344,7 @@ export default Vue.extend({
 
     span {
       font-weight: 600;
+      font-size: 1.4rem;
     }
   }
 }
