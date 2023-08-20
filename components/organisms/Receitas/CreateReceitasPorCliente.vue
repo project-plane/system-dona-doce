@@ -1,7 +1,7 @@
 <template>
   <LoadingPage v-if="loading" />
   <ContainerTable v-else>
-    <ModalReceitasPorCliente v-if="$store.state.openModal" :listAllReceita="listAllReceita" :dataClient="dataClient" />
+    <ModalReceitasPorCliente v-if="$store.state.openModal" :dataClient="dataClient" />
     <div class="headerTable">
       <span>Receitas por Clientes</span>
     </div>
@@ -45,7 +45,6 @@ export default Vue.extend({
     return {
       loading: false,
       listAllClients: [],
-      listAllReceita: [],
       dataClient: ''
     }
   },
@@ -58,14 +57,6 @@ export default Vue.extend({
       })
       .catch((error) => {
         console.log(error)
-      })
-
-    await httpReceita.GetAllReceitas()
-      .then((res) => {
-        this.listAllReceita = res.data
-      })
-      .catch((error) => {
-        console.log(error);
       })
   },
 
