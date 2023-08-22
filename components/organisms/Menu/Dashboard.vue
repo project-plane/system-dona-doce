@@ -5,13 +5,17 @@
         <img src="~/assets/icons/chart.svg" alt="user_create" />
         <h4>Dashboard</h4>
       </div>
-      <img class="setaDropdown" :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
-        src="~/assets/icons/setaDropdown.svg" alt="" />
+      <img
+        class="setaDropdown"
+        :class="{ isIconDropdown: isIconDropdown }"
+        src="~/assets/icons/setaDropdown.svg"
+        alt=""
+      />
     </div>
-    <nav class="menu_navigation" v-show="isDropdownCadastrar">
+    <nav class="menu_navigation" v-show="isDropdown">
       <ul>
-        <li :class="{ active: isActiveEmpresa }" @click="buttonEmpresa(isActiveEmpresa)">
-          <NuxtLink to="/dashboard">Dashboard</NuxtLink>
+        <li>
+          <NuxtLink to="/dashboard/dashboard">Dashboard</NuxtLink>
         </li>
       </ul>
     </nav>
@@ -23,45 +27,15 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveEmpresa: false,
-      isActiveClient: false,
-      isActiveUser: false,
-      isIconDropdownCadastrar: false,
-      isDropdownCadastrar: false,
+      isIconDropdown: false,
+      isDropdown: false,
     }
   },
 
   methods: {
-    buttonEmpresa(activeEmpresa: boolean) {
-      this.isActiveEmpresa = true
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.$emit('empresa')
-    },
-    buttonClient(activeClient: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = true
-      this.isActiveUser = false
-      this.$emit('client')
-    },
-    buttonUsers(activeUser: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = true
-      this.$emit('users')
-    },
-
-    dropdownReceita() {
+    spaceMenu() {
       this.isDropdown = !this.isDropdown
       this.isIconDropdown = !this.isIconDropdown
-    },
-    spaceMenu() {
-      this.isDropdownCadastrar = !this.isDropdownCadastrar
-      this.isIconDropdownCadastrar = !this.isIconDropdownCadastrar
-    },
-    logout() {
-      sessionStorage.removeItem('token')
-      this.$router.push('/login')
     },
   },
 })
@@ -92,7 +66,7 @@ export default Vue.extend({
     }
   }
 
-  .isIconDropdownCadastrar {
+  .isIconDropdown {
     rotate: 180deg;
   }
 }

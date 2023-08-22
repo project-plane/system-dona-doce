@@ -1,6 +1,8 @@
 <template>
   <div class="navbar-container">
-    <NuxtLink to="/cadastrar"><img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt=""></NuxtLink>
+    <NuxtLink to="/cadastrar/unidade"
+      ><img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt=""
+    /></NuxtLink>
     <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon" />
   </div>
 </template>

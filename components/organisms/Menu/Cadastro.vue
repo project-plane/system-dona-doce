@@ -5,43 +5,54 @@
         <img src="~/assets/icons/user.svg" alt="user_create" />
         <h4>Cadastro</h4>
       </div>
-      <img class="setaDropdown" :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
-        src="~/assets/icons/setaDropdown.svg" alt="" />
+      <img
+        class="setaDropdown"
+        :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
+        src="~/assets/icons/setaDropdown.svg"
+        alt=""
+      />
     </div>
     <nav class="menu_navigation" v-show="isDropdownCadastrar">
       <ul>
-        <li :class="{ active: isActiveEmpresa }" @click="buttonEmpresa(isActiveEmpresa)">
-          Unidade
-        </li>
-        <li :class="{ active: isActiveClient }" @click="buttonClient(isActiveClient)">
-          Cliente
-        </li>
-        <li :class="{ active: isActiveUser }" @click="buttonUsers(isActiveUser)">
-          Funcionário
-        </li>
-        <li :class="{ active: isActiveIngredientes }" @click="buttonIngredientes(isActiveIngredientes)">
-          Ingrediente
-        </li>
-        <li :class="{ active: isActiveEstoque }" @click="buttonEstoque(isActiveEstoque)">
-          Estoque
+        <li>
+          <NuxtLink to="/cadastrar/unidade">Unidade</NuxtLink>
         </li>
         <li>
-          <span class="btnDropdown" :class="{ isIconDropdown: isIconDropdown }" @click="dropdownReceita">
+          <NuxtLink to="/cadastrar/cliente">Cliente</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/cadastrar/user">Funcionário</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/cadastrar/ingrediente">Ingrediente</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/cadastrar/estoque">Estoque</NuxtLink>
+        </li>
+        <li>
+          <span
+            class="btnDropdown"
+            :class="{ isIconDropdown: isIconDropdown }"
+            @click="dropdownReceita"
+          >
             Receita
             <img src="~/assets/icons/setaDropdown.svg" alt="" />
           </span>
           <div class="dropdown" v-show="isDropdown">
-            <span :class="{ active: isActiveReceitas }" @click="buttonReceitas(isActiveReceitas)">
-              Cadastrar Receita
+            <span>
+              <NuxtLink to="/cadastrar/receita/receita"
+                >Cadastrar Receita</NuxtLink
+              >
             </span>
-            <span :class="{ active: isActiveReceitasPorCliente }"
-              @click="buttonReceitasPorCliente(isActiveReceitasPorCliente)">
-              Valor Receita Por Cliente
+            <span>
+              <NuxtLink to="/cadastrar/receita/receitaporcliente"
+                >Valor Receita Por Cliente</NuxtLink
+              >
             </span>
           </div>
         </li>
-        <li :class="{ active: isActiveMenu }" @click="buttonMenu(isActiveMenu)">
-          Cardápio
+        <li>
+          <NuxtLink to="/cadastrar/cardapio">Cardápio</NuxtLink>
         </li>
       </ul>
     </nav>
@@ -53,14 +64,6 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveEmpresa: false,
-      isActiveClient: false,
-      isActiveUser: false,
-      isActiveIngredientes: false,
-      isActiveEstoque: false,
-      isActiveReceitas: false,
-      isActiveReceitasPorCliente: false,
-      isActiveMenu: false,
       isDropdown: false,
       isIconDropdown: false,
       isIconDropdownCadastrar: false,
@@ -69,94 +72,6 @@ export default Vue.extend({
   },
 
   methods: {
-    buttonEmpresa(activeEmpresa: boolean) {
-      this.isActiveEmpresa = true
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
-      this.$emit('empresa')
-    },
-    buttonClient(activeClient: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = true
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
-      this.$emit('client')
-    },
-    buttonUsers(activeUser: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = true
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
-      this.$emit('users')
-    },
-    buttonIngredientes(activeIngredientes: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = true
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
-      this.$emit('ingredientes')
-    },
-    buttonEstoque(activeEstoque: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = true
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
-      this.$emit('estoque')
-    },
-    buttonReceitas(activeReceitas: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = true
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = false
-      this.$emit('receitas')
-    },
-    buttonReceitasPorCliente(activeReceitas: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = true
-      this.isActiveMenu = false
-      this.$emit('receitasPorCliente')
-    },
-    buttonMenu(isActiveMenu: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.isActiveIngredientes = false
-      this.isActiveEstoque = false
-      this.isActiveReceitas = false
-      this.isActiveReceitasPorCliente = false
-      this.isActiveMenu = true
-      this.$emit('menu')
-    },
     dropdownReceita() {
       this.isDropdown = !this.isDropdown
       this.isIconDropdown = !this.isIconDropdown
@@ -213,15 +128,11 @@ export default Vue.extend({
     gap: 1.5rem;
 
     li {
+      width: 100%;
       cursor: pointer;
       font-size: 1.1rem;
       list-style: none;
       border-bottom: 1px solid var(--border);
-    }
-
-    .active {
-      color: var(--red);
-      font-weight: bold;
     }
   }
 
