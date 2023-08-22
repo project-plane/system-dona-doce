@@ -63,7 +63,7 @@ export default Vue.extend({
       isActiveMenu: false,
       isDropdown: false,
       isIconDropdown: false,
-      isIconDropdownCadastrar: true,
+      isIconDropdownCadastrar: false,
       isDropdownCadastrar: false,
     }
   },

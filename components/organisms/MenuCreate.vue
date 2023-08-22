@@ -3,7 +3,7 @@
     <div>
       <Dashboard />
 
-      <cadastro v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
+      <Cadastro v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
         @estoque="estoque" @receitas="receitas" @receitasPorCliente="receitasPorCliente" @menu="menu" />
     </div>
 

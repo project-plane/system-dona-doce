@@ -11,13 +11,7 @@
     <nav class="menu_navigation" v-show="isDropdownCadastrar">
       <ul>
         <li :class="{ active: isActiveEmpresa }" @click="buttonEmpresa(isActiveEmpresa)">
-          Unidade
-        </li>
-        <li :class="{ active: isActiveClient }" @click="buttonClient(isActiveClient)">
-          Cliente
-        </li>
-        <li :class="{ active: isActiveUser }" @click="buttonUsers(isActiveUser)">
-          Funcionário
+          <NuxtLink to="/dashboard">Dashboard</NuxtLink>
         </li>
       </ul>
     </nav>
@@ -32,7 +26,7 @@ export default Vue.extend({
       isActiveEmpresa: false,
       isActiveClient: false,
       isActiveUser: false,
-      isIconDropdownCadastrar: true,
+      isIconDropdownCadastrar: false,
       isDropdownCadastrar: false,
     }
   },
