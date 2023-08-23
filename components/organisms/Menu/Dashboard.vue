@@ -5,13 +5,17 @@
         <img src="~/assets/icons/chart.svg" alt="user_create" />
         <h4>Dashboard</h4>
       </div>
-      <img class="setaDropdown" :class="{ isIconDropdown: isIconDropdown }" src="~/assets/icons/setaDropdown.svg"
-        alt="" />
+      <img
+        class="setaDropdown"
+        :class="{ isIconDropdown: isIconDropdown }"
+        src="~/assets/icons/setaDropdown.svg"
+        alt=""
+      />
     </div>
     <nav class="menu_navigation" v-show="isDropdown">
       <ul>
         <li>
-          <NuxtLink to="/dashboard/dashboard">Dashboard</NuxtLink>
+          <NuxtLink to="/dashboard/dashboard">Visão Geral</NuxtLink>
         </li>
       </ul>
     </nav>
