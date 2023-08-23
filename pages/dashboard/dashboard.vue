@@ -1,20 +1,8 @@
 <template>
   <div class="dashboardPage">
-    <HeaderDashboard />
+    <CalendarHeader />
 
-    <div class="dashboard">
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-      <CardDashboard />
-    </div>
+    <ListDashboard />
   </div>
 </template>
 
@@ -28,6 +16,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .dashboardPage {
+  width: 100%;
   padding: 2rem;
 
   .dashboard {

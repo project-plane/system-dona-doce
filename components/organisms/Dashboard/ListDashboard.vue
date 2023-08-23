@@ -15,11 +15,10 @@
 </template>
 
 <style lang="scss" scoped>
-
 .cards-container {
     padding: 2rem 2vw;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 1rem;
 }
 </style>
