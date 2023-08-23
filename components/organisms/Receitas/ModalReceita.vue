@@ -72,6 +72,15 @@
               <span class="total">Quantidade Máxima</span>
               <input type="number" v-model="qtdMaxima" />
             </div>
+            <div
+              class="alertMax"
+              v-show="parseInt(this.qtdMinima) >= parseInt(this.qtdMaxima)"
+            >
+              <p>
+                OBS: A quantidade máxima não pode ser menor ou igual a
+                quantidade mínima
+              </p>
+            </div>
             <Button title="Salvar" @functionClick="saveReceita" />
           </div>
         </div>
@@ -184,8 +193,10 @@ export default Vue.extend({
         return
       }
 
-      if (this.qtdMinima > this.qtdMaxima) {
-        this.$toast.error('Valor Minimo não pode ser maior que o Valor Máximo')
+      if (parseInt(this.qtdMinima) >= parseInt(this.qtdMaxima)) {
+        this.$toast.error(
+          'A quantidade máxima não pode ser menor ou igual a quantidade mínima'
+        )
         this.qtdMaxima = ''
         return
       }
@@ -349,6 +360,11 @@ export default Vue.extend({
             border: 1px solid var(--bg_opacity);
             height: 30px;
           }
+        }
+        .alertMax {
+          color: var(--red);
+          font-weight: bold;
+          padding: 1rem 0;
         }
       }
     }

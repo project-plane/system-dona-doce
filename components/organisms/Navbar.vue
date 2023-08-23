@@ -25,6 +25,7 @@ export default Vue.extend({})
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+  z-index: 1;
 
   .logo {
     width: 160px;
