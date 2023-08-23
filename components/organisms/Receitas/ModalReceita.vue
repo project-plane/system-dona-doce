@@ -21,14 +21,22 @@
               <Label for="ingrediente">Ingrediente</Label>
               <select id="ingrediente" v-model="selected" name="">
                 <option disabled value="">Selecionar Ingrediente</option>
-                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id">
+                <option
+                  v-for="itemIngredient in listIngredients"
+                  :key="itemIngredient.id"
+                >
                   {{ itemIngredient.description }}
                 </option>
               </select>
             </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input id="qtd" v-model="qtdIngrediente" type="number" placeholder="quantidade" />
+              <input
+                id="qtd"
+                v-model="qtdIngrediente"
+                type="number"
+                placeholder="quantidade"
+              />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
@@ -44,7 +52,11 @@
               <h4>Valor Unitário</h4>
               <h4>Valor Total</h4>
             </div>
-            <div v-for="amountReceita in amountReceitas" :key="amountReceita.id" class="footerBody">
+            <div
+              v-for="amountReceita in amountReceitas"
+              :key="amountReceita.id"
+              class="footerBody"
+            >
               <span>{{ amountReceita.ingrediente }}</span>
               <span>{{ amountReceita.qtd }}</span>
               <span>R$ {{ amountReceita.valorUnitario }}</span>

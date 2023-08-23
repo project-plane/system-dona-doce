@@ -1,15 +1,14 @@
 <template>
-  <TemplateCadastrar />
+  <TemplateDashboard />
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
-  head: {
-    title: "Cadastro - Dona Doce"
-  },
+  layout: 'dashboard',
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 </style>
