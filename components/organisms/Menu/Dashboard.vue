@@ -5,13 +5,13 @@
         <img src="~/assets/icons/chart.svg" alt="user_create" />
         <h4>Dashboard</h4>
       </div>
-      <img class="setaDropdown" :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
+      <img class="setaDropdown" :class="{ iconDropdown: iconDropdown }"
         src="~/assets/icons/setaDropdown.svg" alt="" />
     </div>
     <nav class="menu_navigation" v-show="isDropdownCadastrar">
       <ul>
-        <li :class="{ active: isActiveEmpresa }" @click="buttonEmpresa(isActiveEmpresa)">
-          <NuxtLink to="/dashboard">Dashboard</NuxtLink>
+        <li :class="{ active: isActiveDashboard }" @click="buttonDashboardGeral(isActiveDashboard)">
+          Visão Geral
         </li>
       </ul>
     </nav>
@@ -26,43 +26,28 @@ export default Vue.extend({
       isActiveEmpresa: false,
       isActiveClient: false,
       isActiveUser: false,
-      isIconDropdownCadastrar: false,
+      isIconDropdownCadastrar: true,
       isDropdownCadastrar: false,
     }
   },
 
   methods: {
-    buttonEmpresa(activeEmpresa: boolean) {
+    buttonDashboardGeral() {
       this.isActiveEmpresa = true
-      this.isActiveClient = false
-      this.isActiveUser = false
-      this.$emit('empresa')
-    },
-    buttonClient(activeClient: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = true
-      this.isActiveUser = false
-      this.$emit('client')
-    },
-    buttonUsers(activeUser: boolean) {
-      this.isActiveEmpresa = false
-      this.isActiveClient = false
-      this.isActiveUser = true
-      this.$emit('users')
+
+      this.$emit('dashboard')
     },
 
     dropdownReceita() {
       this.isDropdown = !this.isDropdown
       this.isIconDropdown = !this.isIconDropdown
     },
+
     spaceMenu() {
       this.isDropdownCadastrar = !this.isDropdownCadastrar
-      this.isIconDropdownCadastrar = !this.isIconDropdownCadastrar
+      this.iconDropdown = !this.iconDropdown
     },
-    logout() {
-      sessionStorage.removeItem('token')
-      this.$router.push('/login')
-    },
+
   },
 })
 </script>
@@ -92,7 +77,7 @@ export default Vue.extend({
     }
   }
 
-  .isIconDropdownCadastrar {
+  .iconDropdown {
     rotate: 180deg;
   }
 }
