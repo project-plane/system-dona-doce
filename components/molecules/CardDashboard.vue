@@ -34,7 +34,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .cardDashboard {
-  width: 33%;
+  width: 100%;
   border: 1px solid var(--border);
   background: var(--white);
   border-radius: 10px;

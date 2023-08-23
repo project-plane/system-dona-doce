@@ -5,7 +5,8 @@
 
     <div v-show="midiaFluxo" class="scroll_container">
       <div v-if="statusDashboard">
-        <h1>oi</h1>
+        <CalendarHeader />
+        <ListDashboard />
       </div>
       <div v-if="statusEmpresa">
         <CreateEmpresa />
