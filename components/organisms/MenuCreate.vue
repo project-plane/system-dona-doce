@@ -1,9 +1,8 @@
 <template>
   <div class="card_create">
     <div>
-      <Dashboard />
-
-      <cadastro v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
+      <Dashboard @dashboard="dashboard"/>
+      <Cadastro v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
         @estoque="estoque" @receitas="receitas" @receitasPorCliente="receitasPorCliente" @menu="menu" />
     </div>
 
@@ -36,6 +35,9 @@ export default Vue.extend({
   },
 
   methods: {
+    dashboard() {
+      this.$emit('dashboard')
+    },
     empresa(activeEmpresa: boolean) {
       this.$emit('empresa')
     },
