@@ -23,18 +23,17 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveEmpresa: false,
+      isActiveDashboard: true,
       isActiveClient: false,
       isActiveUser: false,
       isIconDropdownCadastrar: true,
-      isDropdownCadastrar: false,
+      isDropdownCadastrar: true,
     }
   },
 
   methods: {
     buttonDashboardGeral() {
-      this.isActiveEmpresa = true
-
+      this.isActiveDashboard = true
       this.$emit('dashboard')
     },
 

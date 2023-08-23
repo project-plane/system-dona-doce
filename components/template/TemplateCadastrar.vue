@@ -39,7 +39,10 @@
         <CreateCardapio />
         <TableCardapios />
       </div>
+
+
     </div>
+
   </div>
 </template>
 
@@ -49,7 +52,7 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      statusDashboard: false,
+      statusDashboard: true,
       statusEmpresa: false,
       statusClientes: false,
       statusUsers: false,
