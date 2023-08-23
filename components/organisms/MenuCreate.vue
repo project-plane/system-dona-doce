@@ -2,7 +2,6 @@
   <div class="card_create">
     <div>
       <Dashboard />
-
       <Cadastro />
     </div>
 
@@ -32,7 +31,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .card_create {
   width: 20%;
-  min-height: 90vh;
+  height: 90vh;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;

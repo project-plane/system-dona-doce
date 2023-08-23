@@ -1,9 +1,5 @@
 <template>
-  <div class="dashboardPage">
-    <CalendarHeader />
-
-    <ListDashboard />
-  </div>
+  <TemplateDashboard />
 </template>
 
 <script lang="ts">
@@ -14,15 +10,5 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped lang="scss">
-.dashboardPage {
-  width: 100%;
-  padding: 2rem;
-
-  .dashboard {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-  }
-}
+<style scoped>
 </style>
