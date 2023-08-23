@@ -1,9 +1,13 @@
 <template>
   <div class="containerGrid">
     <MenuCreate v-show="midiaAba" @empresa="empresa" @client="client" @users="users" @ingredientes="ingredientes"
-      @estoque="estoque" @receitas="receitas" @receitasPorCliente="receitasPorCliente" @menu="menu" />
+      @estoque="estoque" @dashboard="dashboard" @receitas="receitas" @receitasPorCliente="receitasPorCliente" @menu="menu" />
 
     <div v-show="midiaFluxo" class="scroll_container">
+      <div v-if="statusDashboard">
+        <CalendarHeader />
+        <ListDashboard />
+      </div>
       <div v-if="statusEmpresa">
         <CreateEmpresa />
         <TableEmpresa />
@@ -35,7 +39,10 @@
         <CreateCardapio />
         <TableCardapios />
       </div>
+
+
     </div>
+
   </div>
 </template>
 
@@ -45,6 +52,7 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
+      statusDashboard: true,
       statusEmpresa: false,
       statusClientes: false,
       statusUsers: false,
@@ -75,7 +83,19 @@ export default Vue.extend({
         this.midiaFluxo = true;
       }
     },
+    dashboard() {
+      this.statusDashboard = true
+      this.statusEmpresa = false
+      this.statusClientes = false
+      this.statusUsers = false
+      this.statusIngredientes = false
+      this.statusEstoque = false
+      this.statusReceitas = false
+      this.statusReceitasPorCliente = false
+      this.statusMenu = false
+    },
     empresa() {
+      this.statusDashboard = false
       this.statusEmpresa = true
       this.statusClientes = false
       this.statusUsers = false
@@ -86,6 +106,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     users() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = true
@@ -96,6 +117,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     client() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = true
       this.statusUsers = false
@@ -106,6 +128,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     ingredientes() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = false
@@ -116,6 +139,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     estoque() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = false
@@ -126,6 +150,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     receitasPorCliente() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = false
@@ -136,6 +161,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     receitas() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = false
@@ -146,6 +172,7 @@ export default Vue.extend({
       this.statusMenu = false
     },
     menu() {
+      this.statusDashboard = false
       this.statusEmpresa = false
       this.statusClientes = false
       this.statusUsers = false
