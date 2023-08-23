@@ -1,6 +1,7 @@
 <template>
   <div class="dashboardPage">
-    <h1>Dashboard</h1>
+    <HeaderDashboard />
+
     <div class="dashboard">
       <CardDashboard />
       <CardDashboard />
@@ -21,7 +22,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-
+  layout: 'dashboard',
 })
 </script>
 
@@ -31,7 +32,7 @@ export default Vue.extend({
 
   .dashboard {
     display: flex;
-    gap: .4rem;
+    gap: 0.4rem;
     flex-wrap: wrap;
   }
 }

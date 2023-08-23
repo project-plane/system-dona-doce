@@ -5,7 +5,7 @@
 import Vue from 'vue'
 export default Vue.extend({
   head: {
-      title: "Dona Doce"
+    title: 'Dona Doce',
   },
 })
 </script>

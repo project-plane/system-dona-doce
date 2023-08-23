@@ -5,13 +5,13 @@
         <img src="~/assets/icons/chart.svg" alt="user_create" />
         <h4>Dashboard</h4>
       </div>
-      <img class="setaDropdown" :class="{ iconDropdown: iconDropdown }"
-        src="~/assets/icons/setaDropdown.svg" alt="" />
+      <img class="setaDropdown" :class="{ isIconDropdown: isIconDropdown }" src="~/assets/icons/setaDropdown.svg"
+        alt="" />
     </div>
-    <nav class="menu_navigation" v-show="isDropdownCadastrar">
+    <nav class="menu_navigation" v-show="isDropdown">
       <ul>
-        <li :class="{ active: isActiveDashboard }" @click="buttonDashboardGeral(isActiveDashboard)">
-          Visão Geral
+        <li>
+          <NuxtLink to="/dashboard/dashboard">Dashboard</NuxtLink>
         </li>
       </ul>
     </nav>
@@ -23,30 +23,16 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveDashboard: true,
-      isActiveClient: false,
-      isActiveUser: false,
-      isIconDropdownCadastrar: true,
-      isDropdownCadastrar: true,
+      isIconDropdown: false,
+      isDropdown: false,
     }
   },
 
   methods: {
-    buttonDashboardGeral() {
-      this.isActiveDashboard = true
-      this.$emit('dashboard')
-    },
-
-    dropdownReceita() {
+    spaceMenu() {
       this.isDropdown = !this.isDropdown
       this.isIconDropdown = !this.isIconDropdown
     },
-
-    spaceMenu() {
-      this.isDropdownCadastrar = !this.isDropdownCadastrar
-      this.iconDropdown = !this.iconDropdown
-    },
-
   },
 })
 </script>
@@ -76,7 +62,7 @@ export default Vue.extend({
     }
   }
 
-  .iconDropdown {
+  .isIconDropdown {
     rotate: 180deg;
   }
 }

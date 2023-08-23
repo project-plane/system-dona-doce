@@ -2,10 +2,7 @@
   <div>
     <Navbar />
     <div class="content">
-      <MenuCreate />
-      <div class="scroll_container">
-        <Nuxt />
-      </div>
+      <Nuxt />
     </div>
   </div>
 </template>
