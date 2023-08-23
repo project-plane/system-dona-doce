@@ -19,7 +19,7 @@
       <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
         <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
-      <h1>Fora de Estopque</h1>
+      <h1>Fora do Cardapio</h1>
     </div>
   </div>
 </template> 
@@ -30,6 +30,7 @@ import Vue from 'vue'
 import httpCardapio from '~/server/cardapio'
 import HttpPedidos from '@/server/pedidos'
 import httpRevenueClient from '@/server/receitas'
+import httpMeusDados from '@/server/meusDados'
 
 export default Vue.extend({
   data() {
@@ -42,10 +43,16 @@ export default Vue.extend({
       dataPedido: '',
       tipoPedido: '491aebc2-1c69-11ee-be56-0242ac120002',
       showModal: false,
-      addPedidos: [],
+      addPedidos: {
+        fk_menu: this.$route.query.id,
+        createOrderItemDto: [],
+        createOrderNotMenuItemDto: []
+      },
       i: 0,
       listAllRevenueClient: [],
-      revenueClient: []
+      revenueClient: [],
+      listReceita: [],
+      idClient: ''
     }
   },
 
@@ -62,7 +69,15 @@ export default Vue.extend({
         console.log(error)
       })
 
-    await httpRevenueClient.GetAllReceitaPorCliente('f963137a-67c1-4445-bd7f-d7fb802c5386')
+    await httpMeusDados.MeusDados()
+      .then((res) => {
+        this.idClient = res.data.id
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+    await httpRevenueClient.GetAllReceitaPorCliente(this.idClient)
       .then((res) => {
         this.listAllRevenueClient = res.data
       })
@@ -70,10 +85,17 @@ export default Vue.extend({
         console.log(error);
       })
 
-    this.listPedidos.map((pedidos) => {
+    await httpRevenueClient.GetReceitas()
+      .then((res) => {
+        this.listReceita = res.data
+      })
+      .catch((error) => {
+        console.log(error);
+      })
 
+
+    this.listPedidos.map((pedidos) => {
       this.listAllRevenueClient.map((revenueClient) => {
-        console.log(revenueClient);
         if (pedidos.revenues.description === revenueClient.description) {
           this.revenueClient.push({
             fk_revenues: pedidos.fk_revenues,
@@ -121,25 +143,12 @@ export default Vue.extend({
         this.$toast.error('Insira ao menos um item para realizar pedido.')
       } else {
         this.listaCompletaReceita.map((item) => {
-          this.addPedidos.push({
-            fk_menu: item.fk_categoryOrderItem,
-            createOrderItemDto: [
-              {
-                fk_categoryOrderItem: item.fk_categoryOrderItem,
-                amountItem: Number(item.amountItem),
-                fk_revenue: item.fk_revenue,
-              }
-            ]
-          })
           this.addPedidos.createOrderItemDto.push({
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
           })
         })
-
-        console.log(this.addPedidos);
-
 
         await HttpPedidos.CreateNewOrder(this.addPedidos)
           .then((res) => {

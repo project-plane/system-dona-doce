@@ -23,8 +23,10 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      isActiveDashboard: false,
-      iconDropdown: true,
+      isActiveEmpresa: false,
+      isActiveClient: false,
+      isActiveUser: false,
+      isIconDropdownCadastrar: true,
       isDropdownCadastrar: false,
     }
   },
