@@ -36,6 +36,7 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: auto;
 
   .footerMenu {
     display: flex;
