@@ -24,8 +24,54 @@
             <span>R$: 00.00</span>
           </div>
         </li>
-  
-
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
       </ul>
     </div>
     <button class="btnExibir">Exibir tudo</button>
@@ -45,7 +91,7 @@ export default Vue.extend({})
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
+  padding: 2rem 0;
 
   .description {
     height: 100%;
@@ -56,16 +102,20 @@ export default Vue.extend({})
       justify-content: space-between;
       align-items: center;
       padding: 0 1rem 0 1rem;
+
       span {
         color: var(--red);
       }
+
       span:nth-child(1) {
         font-size: 1.3rem;
         font-weight: bold;
       }
     }
+
     ul {
       overflow-y: auto;
+
       .qtdIngredients {
         display: flex;
         justify-content: space-between;

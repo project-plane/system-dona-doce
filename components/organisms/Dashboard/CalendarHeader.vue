@@ -1,6 +1,8 @@
 <template>
   <div class="calendar-container">
-    <div class="columnLeft">
+    <HeaderDashboard />
+    <CalendarDashboard />
+    <!-- <div class="columnLeft">
       <div class="headerCalendar">
         <h1>Agenda</h1>
         <div class="btns">
@@ -10,11 +12,7 @@
 
           <v-date-picker v-model="date" mode="date">
             <template v-slot="{ inputEvents }">
-              <button
-                :class="{ focus: !isToday }"
-                @click="calendarShowOrNot(false)"
-                v-on="inputEvents"
-              >
+              <button :class="{ focus: !isToday }" @click="calendarShowOrNot(false)" v-on="inputEvents">
                 Calendário
               </button>
             </template>
@@ -49,18 +47,8 @@
             <strong v-if="visualization">R$: 5.854,00</strong>
             <strong v-else>R$: --------</strong>
           </div>
-          <img
-            v-if="visualization"
-            @click="visualization = false"
-            src="~/assets/icons/eye.svg"
-            alt=""
-          />
-          <img
-            v-else
-            @click="visualization = true"
-            src="~/assets/icons/eyeClose.svg"
-            alt=""
-          />
+          <img v-if="visualization" @click="visualization = false" src="~/assets/icons/eye.svg" alt="" />
+          <img v-else @click="visualization = true" src="~/assets/icons/eyeClose.svg" alt="" />
         </div>
       </div>
       <div class="selectInput">
@@ -79,7 +67,7 @@
           </select>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -143,6 +131,7 @@ export default Vue.extend({
   padding: 1rem 2vw;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
   .columnLeft {
@@ -178,6 +167,7 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
     .headerValue {
       display: flex;
       gap: 2rem;
@@ -215,10 +205,12 @@ export default Vue.extend({
         }
       }
     }
+
     .selectInput {
       display: flex;
-      
+
       gap: 1rem;
+
       .input {
         width: 100%;
         display: flex;
