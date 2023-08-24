@@ -1,14 +1,12 @@
 <template>
   <div class="informationFinance">
     <div class="finance">
-      <h3>Financeiro</h3>
+      <h4>Financeiro</h4>
     </div>
     <div class="informationOrder">
-      <h2>Informações do pedido</h2>
-      <span
-        >clique no card de pedido para visualizar as informações
-        secundárias</span
-      >
+      <h3>Informações do pedido</h3>
+      <span>clique no card de pedido para visualizar as informações
+        secundárias</span>
       <img src="~/assets/icons/cooke.svg" alt="" />
     </div>
   </div>
@@ -23,21 +21,24 @@ export default Vue.extend({})
 <style scoped lang="scss">
 .informationFinance {
   width: 100%;
-  height: 100vh;
+  height: 50%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 1rem;
+
   .informationOrder {
-    h2 {
-      font-size: 1.7rem;
+    h3 {
+      font-size: 1.3rem;
       color: var(--red);
     }
+
     img {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
+      width: auto;
       padding: 2rem;
     }
   }

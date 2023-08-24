@@ -20,14 +20,20 @@ export default Vue.extend({})
 <style scoped lang="scss">
 .dashboardPage {
   width: 100%;
+  height: 100vh;
   display: flex;
   gap: 2rem;
+
   .historicOrders {
-    width: 80%;
+    width: 70%;
   }
 
   .informationOrders {
-    width: 40%;
+    width: 30%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border-left: 1px solid var(--border);
   }
 }
