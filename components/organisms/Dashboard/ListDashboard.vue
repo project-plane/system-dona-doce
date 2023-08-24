@@ -18,7 +18,8 @@
 .cards-container {
   padding: 2rem 2vw;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1rem;
+  overflow-y: auto;
 }
 </style>

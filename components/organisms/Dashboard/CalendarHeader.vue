@@ -140,7 +140,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .calendar-container {
-  padding: 2rem 2vw;
+  padding: 1rem 2vw;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -217,9 +217,10 @@ export default Vue.extend({
     }
     .selectInput {
       display: flex;
-      flex-direction: column;
+      
       gap: 1rem;
       .input {
+        width: 100%;
         display: flex;
         flex-direction: column;
       }
