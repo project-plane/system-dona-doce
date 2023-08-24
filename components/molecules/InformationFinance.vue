@@ -5,10 +5,8 @@
     </div>
     <div class="informationOrder">
       <h3>Informações do pedido</h3>
-      <span
-        >clique no card de pedido para visualizar as informações
-        secundárias</span
-      >
+      <span>clique no card de pedido para visualizar as informações
+        secundárias</span>
       <img src="~/assets/icons/cooke.svg" alt="" />
     </div>
   </div>
@@ -29,11 +27,13 @@ export default Vue.extend({})
   flex-direction: column;
   justify-content: space-between;
   padding: 1rem;
+
   .informationOrder {
     h3 {
       font-size: 1.3rem;
       color: var(--red);
     }
+
     img {
       display: flex;
       justify-content: center;
