@@ -1,26 +1,22 @@
 <template>
   <div class="cards-container">
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
+    <div v-for="(pedidos, index) in dataPedidos" :key="pedidos">
+      <CardDashboard :dataPedidos="pedidos" :index="index" />
+    </div>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  props: {
+    dataPedidos: {
+      type: [Array, Object],
+      required: true
+    },
+  },
+})
+</script>
 
 <style lang="scss" scoped>
 .cards-container {
