@@ -8,7 +8,8 @@ export const state = () => ({
     createOrderItemDto: []
   },
   barraRoute: false,
-  qtdPedidos: 0
+  qtdPedidos: 0,
+  dadosPedidos: {}
 })
 
 export const mutations = {
@@ -35,5 +36,8 @@ export const mutations = {
   },
   OPEN_MODAL_HISTORICO(state, payload) {
     state.openModalHistorico = payload
+  },
+  DADOS_PEDIDOS(state, payload) {
+    state.dadosPedidos = payload
   }
 }

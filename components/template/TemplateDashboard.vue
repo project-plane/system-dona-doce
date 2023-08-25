@@ -2,7 +2,7 @@
   <div class="dashboardPage">
     <div class="historicOrders">
       <CalendarHeader />
-      <ListDashboard />
+      <ListDashboard :dataPedidos="dataPedidos" />
     </div>
     <div class="informationOrders">
       <DetailsBuy />
@@ -14,7 +14,38 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({})
+export default Vue.extend({
+  data() {
+    return {
+      dataPedidos: [
+        {
+          empresa: 'Amazonia Refeicoes',
+          cliente: 'Cometais',
+          status: 1,
+          total: 145
+        },
+        {
+          empresa: 'AMAZÔNIA REFEIÇÕES',
+          cliente: 'UNICOBA',
+          status: 0,
+          total: 2458
+        },
+        {
+          empresa: 'SODEXO',
+          cliente: 'COMPONEL',
+          status: 0,
+          total: 21548
+        },
+        {
+          empresa: 'VV REFEIÇÕES',
+          cliente: 'HALLEY DAVISON',
+          status: 1,
+          total: 260
+        }
+      ]
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">
