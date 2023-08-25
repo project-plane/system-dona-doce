@@ -2,46 +2,10 @@
   <div class="detailsBuy">
     <div class="description">
       <div class="headerDetails">
-        <h3>Compras</h3>
+        <h2>Compras</h2>
         <span>Total R$: 00.00</span>
       </div>
-      <ul>
-        <li>
-          <div class="qtdIngredients">
-            <span>50kg de Farinha de trigo</span>
-            <span>R$: 00.00</span>
-          </div>
-        </li>
-        <li>
-          <div class="qtdIngredients">
-            <span>50kg de Farinha de trigo</span>
-            <span>R$: 00.00</span>
-          </div>
-        </li>
-        <li>
-          <div class="qtdIngredients">
-            <span>50kg de Farinha de trigo</span>
-            <span>R$: 00.00</span>
-          </div>
-        </li>
-        <li>
-          <div class="qtdIngredients">
-            <span>50kg de Farinha de trigo</span>
-            <span>R$: 00.00</span>
-          </div>
-        </li>
-        <li>
-          <div class="qtdIngredients">
-            <span>50kg de Farinha de trigo</span>
-            <span>R$: 00.00</span>
-          </div>
-        </li>
-        <li>
-          <div class="qtdIngredients">
-            <span>50kg de Farinha de trigo</span>
-            <span>R$: 00.00</span>
-          </div>
-        </li>
+      <ul :class="{ space: spaceUl }">
         <li>
           <div class="qtdIngredients">
             <span>50kg de Farinha de trigo</span>
@@ -74,29 +38,36 @@
         </li>
       </ul>
     </div>
-    <button class="btnExibir">Exibir tudo</button>
+    <button class="btnExibir" @click="exibirTudo">Exibir tudo</button>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({})
+export default Vue.extend({
+  data() {
+    return {
+      spaceUl: false
+    }
+  },
+  methods: {
+    exibirTudo() {
+      this.spaceUl = !this.spaceUl
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">
 .detailsBuy {
-  height: 50%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 2rem 0;
+  padding-top: 2rem;
 
   .description {
-    height: 100%;
-    overflow-y: auto;
-
     .headerDetails {
       display: flex;
       justify-content: space-between;
@@ -113,7 +84,12 @@ export default Vue.extend({})
       }
     }
 
+    .space {
+      height: 100%;
+    }
+
     ul {
+      height: 250px;
       overflow-y: auto;
 
       .qtdIngredients {
