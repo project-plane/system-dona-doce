@@ -20,8 +20,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .cards-container {
-  height: 300px;
-  padding: 2rem 2vw;
+  height: auto;
+  padding: 2rem 2vw 5rem 2vw;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1rem;
