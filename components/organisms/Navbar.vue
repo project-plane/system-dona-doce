@@ -5,7 +5,12 @@
         ><img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt=""
       /></NuxtLink>
     </div>
-    <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon" />
+
+      <NuxtLink to="/cadastrar/unidade" class="btn-dashboard" v-if="$nuxt.$route.path === '/dashboard/dashboard'"
+        >Ir para Cadastros <div class="arrow"></div></NuxtLink>
+
+    <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon" v-else/>
+    
   </div>
 </template>
 
@@ -40,6 +45,32 @@ export default Vue.extend({})
 
   img {
     width: 2.1rem;
+  }
+
+  .btn-dashboard {
+    width: 10rem;
+    height: 100%;
+    display: flex;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--red);
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    transition: 0.3s;
+
+    .arrow {
+      width: 2.5rem;
+      background-color: var(--white);
+      height: 70%;
+      clip-path: polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%);
+    }
+  }
+
+  .btn-dashboard:hover {
+    padding: 1rem 0.1rem 1rem 1rem;
   }
 }
 </style>

@@ -41,6 +41,54 @@ export default Vue.extend({
           cliente: 'HALLEY DAVISON',
           status: 1,
           total: 260
+        },
+        {
+          empresa: 'Amazonia Refeicoes',
+          cliente: 'Cometais',
+          status: 1,
+          total: 145
+        },
+        {
+          empresa: 'AMAZÔNIA REFEIÇÕES',
+          cliente: 'UNICOBA',
+          status: 0,
+          total: 2458
+        },
+        {
+          empresa: 'SODEXO',
+          cliente: 'COMPONEL',
+          status: 0,
+          total: 21548
+        },
+        {
+          empresa: 'VV REFEIÇÕES',
+          cliente: 'HALLEY DAVISON',
+          status: 1,
+          total: 260
+        },
+        {
+          empresa: 'Amazonia Refeicoes',
+          cliente: 'Cometais',
+          status: 1,
+          total: 145
+        },
+        {
+          empresa: 'AMAZÔNIA REFEIÇÕES',
+          cliente: 'UNICOBA',
+          status: 0,
+          total: 2458
+        },
+        {
+          empresa: 'SODEXO',
+          cliente: 'COMPONEL',
+          status: 0,
+          total: 21548
+        },
+        {
+          empresa: 'VV REFEIÇÕES',
+          cliente: 'HALLEY DAVISON',
+          status: 1,
+          total: 260
         }
       ]
     }
@@ -57,6 +105,9 @@ export default Vue.extend({
 
   .historicOrders {
     width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .informationOrders {
