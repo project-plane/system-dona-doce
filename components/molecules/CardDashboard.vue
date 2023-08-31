@@ -4,24 +4,33 @@
       <div class="titleCompany">
         <p>{{ index + 1 }}</p>
         <div class="descriptionCompany">
-          <span>{{ dataPedidos.empresa }}</span>
-          <h2>{{ dataPedidos.cliente }}</h2>
-          <span v-if="dataPedidos.status === 1" class="programado">Programado</span>
+          <span v-if="dataPedidos.user.Clients === null"></span>
+          <h2 v-else>{{ dataPedidos.user.Clients.corporate_name }}</h2>
+          <span v-if="dataPedidos.status === 1" class="programado"
+            >Programado</span
+          >
           <span v-else class="coffee">Coffee</span>
         </div>
       </div>
       <div>
-        <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.status === 1">
-        <img src="~/assets/icons/coffee.svg" alt="" v-else>
+        <img
+          src="~/assets/icons/programado.svg"
+          alt=""
+          v-if="dataPedidos.status === 1"
+        />
+        <img src="~/assets/icons/coffee.svg" alt="" v-else />
       </div>
     </div>
     <div class="dataOrder">
       <div class="descriptionOrder">
-        <span>Total R$ {{ dataPedidos.total }}</span>
+        <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
         <span>Finalizar as</span>
         <span>09:30</span>
       </div>
-      <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
+      <ButtonPirula
+        title="Exibir Pedidos"
+        @click.native="exibirPedidos(dataPedidos)"
+      />
     </div>
   </div>
 </template>
@@ -33,18 +42,26 @@ export default Vue.extend({
   props: {
     dataPedidos: {
       type: [Array, Object],
-      required: true
+      required: true,
+    },
+    allPedidos: {
+      type: [Array, Object],
+      required: true,
     },
     index: {
       type: Number,
-      required: true
+      required: true,
     },
+  },
+  data() {
+    return {
+      somaValeu: 0,
+    }
   },
   methods: {
     exibirPedidos(dataPedidos) {
       this.$store.commit('DADOS_PEDIDOS', dataPedidos)
-
-    }
+    },
   },
 })
 </script>
@@ -58,7 +75,7 @@ export default Vue.extend({
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
 
   .titleCard {
     display: flex;
@@ -68,7 +85,7 @@ export default Vue.extend({
 
     .titleCompany {
       display: flex;
-      gap: .7rem;
+      gap: 0.7rem;
 
       .descriptionCompany {
         .programado {
@@ -81,7 +98,7 @@ export default Vue.extend({
       }
 
       h2 {
-        margin: -10px 0
+        margin: -10px 0;
       }
     }
   }
