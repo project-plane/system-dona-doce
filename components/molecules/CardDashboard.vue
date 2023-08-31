@@ -2,24 +2,26 @@
   <div class="cardDashboard">
     <div class="titleCard">
       <div class="titleCompany">
-        <p>1</p>
+        <p>{{ index + 1 }}</p>
         <div class="descriptionCompany">
-          <span>Amazonia Refeicoes</span>
-          <h2>Cometais</h2>
-          <span>Programado</span>
+          <span>{{ dataPedidos.empresa }}</span>
+          <h2>{{ dataPedidos.cliente }}</h2>
+          <span v-if="dataPedidos.status === 1" class="programado">Programado</span>
+          <span v-else class="coffee">Coffee</span>
         </div>
       </div>
       <div>
-        <img src="~/assets/icons/programado.svg" alt="">
+        <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.status === 1">
+        <img src="~/assets/icons/coffee.svg" alt="" v-else>
       </div>
     </div>
     <div class="dataOrder">
       <div class="descriptionOrder">
-        <span>Total R$ 145,00</span>
+        <span>Total R$ {{ dataPedidos.total }}</span>
         <span>Finalizar as</span>
         <span>09:30</span>
       </div>
-      <ButtonPirula title="Exibir Pedidos" />
+      <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
     </div>
   </div>
 </template>
@@ -28,7 +30,22 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  props: {
+    dataPedidos: {
+      type: [Array, Object],
+      required: true
+    },
+    index: {
+      type: Number,
+      required: true
+    },
+  },
+  methods: {
+    exibirPedidos(dataPedidos) {
+      this.$store.commit('DADOS_PEDIDOS', dataPedidos)
 
+    }
+  },
 })
 </script>
 
@@ -54,8 +71,12 @@ export default Vue.extend({
       gap: .7rem;
 
       .descriptionCompany {
-        span:nth-child(3) {
+        .programado {
           color: var(--blue);
+        }
+
+        .coffee {
+          color: var(--red);
         }
       }
 

@@ -1,85 +1,7 @@
 <template>
   <div class="calendar-container">
-    <div class="columnLeft">
-      <div class="headerCalendar">
-        <h1>Agenda</h1>
-        <div class="btns">
-          <button :class="{ focus: isToday }" @click="calendarShowOrNot(true)">
-            Hoje
-          </button>
-
-          <v-date-picker v-model="date" mode="date">
-            <template v-slot="{ inputEvents }">
-              <button
-                :class="{ focus: !isToday }"
-                @click="calendarShowOrNot(false)"
-                v-on="inputEvents"
-              >
-                Calendário
-              </button>
-            </template>
-          </v-date-picker>
-        </div>
-      </div>
-
-      <div class="row-calendar">
-        <div class="calendar">
-          <span> {{ formatDateDayOfWeek(date) }}</span>
-          <h2>{{ formatDateDayAndMes(date) }}</h2>
-        </div>
-      </div>
-    </div>
-    <div class="columnRight">
-      <div class="headerValue">
-        <div class="valueLeft">
-          <div class="valueReceber">
-            <span>Valor total a receber</span>
-            <strong v-if="visualization">R$: 7.854,00</strong>
-            <strong v-else>R$: --------</strong>
-          </div>
-          <div class="valueCompras">
-            <span>Compras</span>
-            <strong v-if="visualization">R$: 2.000,00</strong>
-            <strong v-else>R$: --------</strong>
-          </div>
-        </div>
-        <div class="valueRight">
-          <div class="valueLucro">
-            <span>Lucro</span>
-            <strong v-if="visualization">R$: 5.854,00</strong>
-            <strong v-else>R$: --------</strong>
-          </div>
-          <img
-            v-if="visualization"
-            @click="visualization = false"
-            src="~/assets/icons/eye.svg"
-            alt=""
-          />
-          <img
-            v-else
-            @click="visualization = true"
-            src="~/assets/icons/eyeClose.svg"
-            alt=""
-          />
-        </div>
-      </div>
-      <div class="selectInput">
-        <div class="input">
-          <label>Visualizar pedido(s)</label>
-          <select>
-            <option value="">Programado</option>
-            <option value="">Coffee</option>
-          </select>
-        </div>
-        <div class="input">
-          <label>Clientes / Empresas</label>
-          <select>
-            <option value="">Clientes</option>
-            <option value="">Empresas</option>
-          </select>
-        </div>
-      </div>
-    </div>
+    <HeaderDashboard />
+    <CalendarDashboard />
   </div>
 </template>
 
@@ -140,9 +62,10 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .calendar-container {
-  padding: 2rem 2vw;
+  padding: 1rem 2vw;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
   .columnLeft {
@@ -178,6 +101,7 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
     .headerValue {
       display: flex;
       gap: 2rem;
@@ -215,11 +139,14 @@ export default Vue.extend({
         }
       }
     }
+
     .selectInput {
       display: flex;
-      flex-direction: column;
+
       gap: 1rem;
+
       .input {
+        width: 100%;
         display: flex;
         flex-direction: column;
       }

@@ -1,24 +1,30 @@
 <template>
   <div class="cards-container">
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
-    <CardDashboard />
+    <div v-for="(pedidos, index) in dataPedidos" :key="pedidos">
+      <CardDashboard :dataPedidos="pedidos" :index="index" />
+    </div>
   </div>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  props: {
+    dataPedidos: {
+      type: [Array, Object],
+      required: true
+    },
+  },
+})
+</script>
+
 <style lang="scss" scoped>
 .cards-container {
-  padding: 2rem 2vw;
+  height: auto;
+  padding: 2rem 2vw 5rem 2vw;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1rem;
+  overflow-y: auto;
 }
 </style>
