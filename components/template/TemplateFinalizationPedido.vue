@@ -1,28 +1,54 @@
 <template>
   <div class="contentCardPedido">
     <div class="header-pedidos">
-      <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
-        @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
+      <MenuPedidos
+        :data-pedido="dataPedido"
+        :qtdPedidos="listaCompletaReceita"
+        @lancheDesjejum="lancheDesjejum"
+        @lanche1="lanche1"
+        @lanche2="lanche2"
+        @finalizarPedido="finalizarPedido"
+      />
       <div class="qtdPedidos" @click="() => (showModal = true)">
         <img src="~/assets/icons/shopCar.svg" />
         <span v-if="listaCompletaReceita.length > 0">
           <p>{{ listaCompletaReceita.length }}</p>
         </span>
-        <p style="margin-left: 0.5rem;">Carrinho</p>
+        <p style="margin-left: 0.5rem">Carrinho</p>
       </div>
     </div>
 
-    <ModalCarrinho v-if="showModal" :listaCompletaReceita="listaCompletaReceita" @closeModal="() => (showModal = false)"
-      @finalizarPedido="finalizarPedido" @listaAtualizadaDoModal="listaAtualizadaDoModal" />
+    <ModalCarrinho
+      v-if="showModal"
+      :listaCompletaReceita="listaCompletaReceita"
+      @closeModal="() => (showModal = false)"
+      @finalizarPedido="finalizarPedido"
+      @listaAtualizadaDoModal="listaAtualizadaDoModal"
+    />
 
-    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
-      <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
+    <div
+      v-if="statusDesjejum || statusLanche1 || statusLanche2"
+      class="cardsPedidos"
+    >
+      <div
+        v-for="pedidosProgramation in revenueClient"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation
+          :tipo-lanches="pedidosProgramation"
+          :tipo-pedido="tipoPedido"
+          @pedidos="pedidos"
+        />
       </div>
       <h1>Fora do Cardapio</h1>
+      <div v-for="p in foraEstoque" :key="p.id">
+        <div v-if="p.status !== 0">
+          <pre>{{ p }}</pre>
+        </div>
+      </div>
     </div>
   </div>
-</template> 
+</template>
 
 <script lang="ts">
 import Vue from 'vue'
@@ -46,13 +72,14 @@ export default Vue.extend({
       addPedidos: {
         fk_menu: this.$route.query.id,
         createOrderItemDto: [],
-        createOrderNotMenuItemDto: []
+        createOrderNotMenuItemDto: [],
       },
       i: 0,
       listAllRevenueClient: [],
       revenueClient: [],
       listReceita: [],
-      idClient: ''
+      foraEstoque: [],
+      idClient: '',
     }
   },
 
@@ -63,49 +90,65 @@ export default Vue.extend({
     await httpCardapio
       .GetFindMenu(id)
       .then((res) => {
-        this.listPedidos = res.data.itemMenu
+        this.listPedidos = res.data
       })
       .catch((error) => {
         console.log(error)
       })
 
-    await httpMeusDados.MeusDados()
+    await httpMeusDados
+      .MeusDados()
       .then((res) => {
         this.idClient = res.data.id
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
       })
 
-    await httpRevenueClient.GetAllReceitaPorCliente(this.idClient)
+    await httpRevenueClient
+      .GetAllReceitaPorCliente(this.idClient)
       .then((res) => {
         this.listAllRevenueClient = res.data
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
       })
 
-    await httpRevenueClient.GetReceitas()
+    await httpRevenueClient
+      .GetReceitas()
       .then((res) => {
         this.listReceita = res.data
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
       })
 
-
-    this.listPedidos.map((pedidos) => {
-      this.listAllRevenueClient.map((revenueClient) => {
+    this.listPedidos.itemMenu.map((pedidos) => {
+      this.listReceita.map((revenueClient) => {
         if (pedidos.revenues.description === revenueClient.description) {
           this.revenueClient.push({
             fk_revenues: pedidos.fk_revenues,
             descriptionRevenue: revenueClient.description,
             valeuRevenue: revenueClient.sale_value,
-            imagem: pedidos.revenues.imagem
+            imagem: pedidos.revenues.imagem,
           })
         }
       })
     })
+
+    const foraEstoqueAtualizado = []
+    this.listReceita.find((fora) => {
+      var itemV = this.revenueClient.find(
+        (itemMenu) =>
+          itemMenu.fk_revenues === fora.id && fora.revenue_status !== 1
+      )
+      // console.log(itemV)
+
+      if (!itemV) {
+        foraEstoqueAtualizado.push(fora)
+      }
+    })
+    this.foraEstoque = foraEstoqueAtualizado
   },
 
   methods: {
@@ -129,7 +172,7 @@ export default Vue.extend({
         listReceita: index,
       })
 
-      this.listPedidos.map((item) => {
+      this.listPedidos.itemMenu.map((item) => {
         if (fk_revenue === item.revenues.id) {
           this.$toast.info(
             `(${qtdOrder}X) ${item.revenues.description} ADICIONADO AO CARRINHO`
@@ -187,65 +230,65 @@ export default Vue.extend({
     },
   },
 })
+</script>
 
-</script> 
+<style scoped lang="scss">
+.contentCardPedido {
+  width: 100%;
+  height: auto;
+  background-color: var(--red);
+  margin-top: 7vh;
+  padding: 2rem 4rem;
 
-<style scoped lang="scss"> .contentCardPedido {
-   width: 100%;
-   height: auto;
-   background-color: var(--red);
-   margin-top: 7vh;
-   padding: 2rem 4rem;
+  .header-pedidos {
+    display: flex;
+    align-items: flex-end;
 
-   .header-pedidos {
-     display: flex;
-     align-items: flex-end;
+    .qtdPedidos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-bottom: 1px solid #e5d7c5;
+      background: #ea4e42;
+      padding: 0.5rem 1rem;
+      color: var(--white);
+      height: 2.5rem;
+      width: 7.5rem;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
 
-     .qtdPedidos {
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       cursor: pointer;
-       border-bottom: 1px solid #e5d7c5;
-       background: #ea4e42;
-       padding: 0.5rem 1rem;
-       color: var(--white);
-       height: 2.5rem;
-       width: 7.5rem;
-       border-top-left-radius: 4px;
-       border-top-right-radius: 4px;
+      img {
+        width: 35px;
+      }
 
-       img {
-         width: 35px;
-       }
+      span {
+        position: relative;
+        top: -15px;
+        left: -15px;
+        color: var(--text_color) !important;
 
-       span {
-         position: relative;
-         top: -15px;
-         left: -15px;
-         color: var(--text_color) !important;
+        p {
+          width: 25px;
+          height: 25px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: var(--bg_color);
+          color: var(--red) !important;
+          border-radius: 50%;
+          position: absolute;
+          top: -10px;
+        }
+      }
+    }
+  }
+}
 
-         p {
-           width: 25px;
-           height: 25px;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-           background: var(--bg_color);
-           color: var(--red) !important;
-           border-radius: 50%;
-           position: absolute;
-           top: -10px;
-         }
-       }
-     }
-   }
- }
-
- .cardsPedidos {
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-   gap: 1rem;
-   padding: 20px 0;
- }
-</style> 
+.cardsPedidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 20px 0;
+}
+</style>

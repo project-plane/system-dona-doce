@@ -6,12 +6,8 @@
     </div>
     <div class="cardDashboard">
       <div v-for="(pedidos, index) in dataPedidos" :key="index">
-        <CardDashboard
-          :dataPedidos="pedidos"
-          :allPedidos="dataPedidos"
-          :index="index"
-          @click.native="clickOrderFind(pedidos)"
-        />
+        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
+          @click.native="clickOrderFind(pedidos)" />
       </div>
     </div>
   </div>
@@ -64,17 +60,20 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .cards-container {
   height: auto;
-  padding: 2rem 2vw 5rem 2vw;
+  padding: 2rem;
   overflow-y: auto;
+
   .inputCheckbox {
     display: flex;
     align-items: center;
     gap: 0.4rem;
     margin-bottom: 1rem;
+
     label {
       font-weight: bold;
     }
   }
+
   .cardDashboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));

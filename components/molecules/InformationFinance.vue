@@ -20,10 +20,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(dadosPedidos, index) in orderFindClient.orderItem"
-                :key="index"
-              >
+              <tr v-for="(dadosPedidos, index) in orderFindClient.orderItem" :key="index">
                 <td>{{ dadosPedidos.amountItem }}</td>
                 <td>{{ dadosPedidos.revenues.description }}</td>
                 <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
@@ -41,10 +38,8 @@
     </div>
     <div class="informationOrder" v-else>
       <h3>Informações do pedido</h3>
-      <span
-        >Clique no card de pedido para visualizar as informações
-        secundárias</span
-      >
+      <span>Clique no card de pedido para visualizar as informações
+        secundárias</span>
       <img src="~/assets/icons/cooke.svg" alt="" />
     </div>
   </div>
@@ -82,28 +77,35 @@ export default Vue.extend({
   width: 100%;
   height: 100%;
   padding: 0 1rem;
-  .finance {
-  }
+
+  .finance {}
+
   .orderClient {
-    height: 225px;
-    overflow: scroll;
+    height: 300px;
+    overflow-y: scroll;
+
     .order {
       padding: 1rem;
+
       table {
         width: 100%;
         text-align: center;
         border-collapse: collapse;
+
         thead {
           border-bottom: 1px solid var(--border);
           padding: 1rem 0;
+
           tr th {
             padding: 0.6rem 0;
           }
         }
+
         .totalOrder {
           border-top: 1px solid var(--border);
           font-size: 1.2rem;
           font-weight: bold;
+
           td {
             padding: 0.6rem 0;
           }
@@ -114,8 +116,8 @@ export default Vue.extend({
 
   .informationOrder {
     padding: 0 1rem;
-    height: 265px;
-    overflow: scroll;
+    height: 300px;
+    overflow-y: scroll;
 
     h3 {
       font-size: 1.3rem;
