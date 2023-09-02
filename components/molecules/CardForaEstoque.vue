@@ -1,17 +1,17 @@
 <template>
   <div class="containerCard">
-    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.imagem}`" alt="" />
+    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${foraDeEstoque.imagem}`" alt="" />
     <div class="cardPedido">
       <div class="descriptionPedido">
-        <h3>{{ tipoLanches.descriptionRevenue }}</h3>
-        <p>R$ {{ tipoLanches.valeuRevenue }}</p>
+        <h3>{{ foraDeEstoque.description }}</h3>
+        <p>R$ {{ foraDeEstoque.value }}</p>
       </div>
       <div class="selectPedido">
         <p>Qtd Selecionada</p>
         <input v-model="qtdPedido" type="text" />
       </div>
     </div>
-    <button @click="addPedidos(tipoLanches)">Adicionar</button>
+    <button @click="addPedidos(foraDeEstoque)">Adicionar</button>
   </div>
 </template> 
 
@@ -20,7 +20,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    tipoLanches: {
+    foraDeEstoque: {
       type: Object,
       required: true,
     },
@@ -45,10 +45,10 @@ export default Vue.extend({
       }
 
       this.$emit(
-        'pedidos',
+        'pedidosForeEstoque',
         this.qtdPedido,
-        lanche.fk_revenues,
-        this.tipoLanches
+        lanche.id,
+        this.foraDeEstoque
       )
       this.qtdPedido = ''
     },

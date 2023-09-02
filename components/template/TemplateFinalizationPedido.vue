@@ -1,50 +1,30 @@
 <template>
   <div class="contentCardPedido">
     <div class="header-pedidos">
-      <MenuPedidos
-        :data-pedido="dataPedido"
-        :qtdPedidos="listaCompletaReceita"
-        @lancheDesjejum="lancheDesjejum"
-        @lanche1="lanche1"
-        @lanche2="lanche2"
-        @finalizarPedido="finalizarPedido"
-      />
+      <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
+        @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
       <div class="qtdPedidos" @click="() => (showModal = true)">
         <img src="~/assets/icons/shopCar.svg" />
-        <span v-if="listaCompletaReceita.length > 0">
-          <p>{{ listaCompletaReceita.length }}</p>
+        <span v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0">
+          <p>{{ listaCompletaReceita.length + listaForaEstoque.length }}</p>
         </span>
         <p style="margin-left: 0.5rem">Carrinho</p>
       </div>
     </div>
 
-    <ModalCarrinho
-      v-if="showModal"
-      :listaCompletaReceita="listaCompletaReceita"
-      @closeModal="() => (showModal = false)"
-      @finalizarPedido="finalizarPedido"
-      @listaAtualizadaDoModal="listaAtualizadaDoModal"
-    />
+    <ModalCarrinho v-if="showModal" :listaCompletaReceita="listaCompletaReceita" :listaForaEstoque="listaForaEstoque"
+      @closeModal="() => (showModal = false)" @finalizarPedido="finalizarPedido"
+      @listaAtualizadaDoModal="listaAtualizadaDoModal" @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque" />
 
-    <div
-      v-if="statusDesjejum || statusLanche1 || statusLanche2"
-      class="cardsPedidos"
-    >
-      <div
-        v-for="pedidosProgramation in revenueClient"
-        :key="pedidosProgramation.id"
-      >
-        <CardProgramation
-          :tipo-lanches="pedidosProgramation"
-          :tipo-pedido="tipoPedido"
-          @pedidos="pedidos"
-        />
+    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
+      <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
-      <h1>Fora do Cardapio</h1>
+    </div>
+    <h1>Fora do Cardapio</h1>
+    <div class="cardsPedidos">
       <div v-for="p in foraEstoque" :key="p.id">
-        <div v-if="p.status !== 0">
-          <pre>{{ p }}</pre>
-        </div>
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
       </div>
     </div>
   </div>
@@ -62,6 +42,7 @@ export default Vue.extend({
   data() {
     return {
       listaCompletaReceita: [],
+      listaForaEstoque: [],
       statusDesjejum: true,
       statusLanche1: false,
       statusLanche2: false,
@@ -79,6 +60,7 @@ export default Vue.extend({
       revenueClient: [],
       listReceita: [],
       foraEstoque: [],
+      listProgramation: [],
       idClient: '',
     }
   },
@@ -118,13 +100,18 @@ export default Vue.extend({
       .GetReceitas()
       .then((res) => {
         this.listReceita = res.data
+        this.listReceita.map((item) => {
+          if (item.status === 1) {
+            this.listProgramation.push(item)
+          }
+        })
       })
       .catch((error) => {
         console.log(error)
       })
 
     this.listPedidos.itemMenu.map((pedidos) => {
-      this.listReceita.map((revenueClient) => {
+      this.listAllRevenueClient.map((revenueClient) => {
         if (pedidos.revenues.description === revenueClient.description) {
           this.revenueClient.push({
             fk_revenues: pedidos.fk_revenues,
@@ -137,13 +124,11 @@ export default Vue.extend({
     })
 
     const foraEstoqueAtualizado = []
-    this.listReceita.find((fora) => {
+    this.listProgramation.find((fora) => {
       var itemV = this.revenueClient.find(
         (itemMenu) =>
-          itemMenu.fk_revenues === fora.id && fora.revenue_status !== 1
+          itemMenu.fk_revenues === fora.id
       )
-      // console.log(itemV)
-
       if (!itemV) {
         foraEstoqueAtualizado.push(fora)
       }
@@ -159,19 +144,16 @@ export default Vue.extend({
           item.fk_revenue === fk_revenue
         )
       })
-
       if (existecategoryOrderItem) {
         this.$toast.error('Receita já adicionada ao pedido!!!')
         return
       }
-
       this.listaCompletaReceita.push({
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
         listReceita: index,
       })
-
       this.listPedidos.itemMenu.map((item) => {
         if (fk_revenue === item.revenues.id) {
           this.$toast.info(
@@ -181,8 +163,35 @@ export default Vue.extend({
       })
     },
 
+    pedidosForeEstoque(qtdOrder, fk_revenue, index) {
+      const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
+        return (
+          item.fk_categoryOrderItem === this.tipoPedido &&
+          item.fk_revenue === fk_revenue
+        )
+      })
+      if (existecategoryOrderItem) {
+        this.$toast.error('Receita já adicionada ao pedido!!!')
+        return
+      }
+      this.listaForaEstoque.push({
+        fk_categoryOrderItem: this.tipoPedido,
+        amountItem: Number(qtdOrder),
+        fk_revenue: fk_revenue,
+        listReceita: index,
+      })
+      this.foraEstoque.map((item) => {
+
+        if (fk_revenue === item.id) {
+          this.$toast.info(
+            `(${qtdOrder}X) ${item.description} ADICIONADO AO CARRINHO`
+          )
+        }
+      })
+    },
+
     async finalizarPedido() {
-      if (this.listaCompletaReceita.length === 0) {
+      if (this.listaCompletaReceita.length === 0 && this.listaForaEstoque.length === 0) {
         this.$toast.error('Insira ao menos um item para realizar pedido.')
       } else {
         this.listaCompletaReceita.map((item) => {
@@ -191,6 +200,15 @@ export default Vue.extend({
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
           })
+        })
+
+        this.listaForaEstoque.map((item) => {
+          this.addPedidos.createOrderNotMenuItemDto.push({
+            fk_categoryOrderItem: item.fk_categoryOrderItem,
+            amountItem: Number(item.amountItem),
+            fk_revenue: item.fk_revenue,
+          })
+
         })
 
         await HttpPedidos.CreateNewOrder(this.addPedidos)
@@ -206,6 +224,10 @@ export default Vue.extend({
 
     listaAtualizadaDoModal(e) {
       this.listaCompletaReceita = e
+    },
+
+    listaAtualizadaForaEstoque(e) {
+      this.listaForaEstoque = e
     },
 
     lancheDesjejum() {
@@ -282,6 +304,11 @@ export default Vue.extend({
         }
       }
     }
+  }
+
+  .foraEstoque {
+    display: flex;
+    flex-direction: column;
   }
 }
 
