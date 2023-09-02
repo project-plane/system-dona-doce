@@ -46,8 +46,7 @@ export default Vue.extend({
   padding: 0 2rem;
 
   .logo {
-    width: 160px;
-    height: 60px;
+    height: 100%;
   }
 
   .menuNavigation {
