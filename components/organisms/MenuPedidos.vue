@@ -20,27 +20,7 @@
           Lanche 02
         </button>
       </div>
-      <!-- <div class="btnFinalizar">
-        <div class="qtdPedidos" @click="() => (showModal = true)">
-          <img src="~/assets/icons/shopCar.svg" />
-          <span v-if="qtdPedidos.length > 0">
-            <p>{{ qtdPedidos.length }}</p>
-          </span>
-        </div>
-        
-        <button @click="finalizarPedidosProgramados">
-          Finalizar Pedido
-          <img src="~/assets/icons/seta.svg" />
-        </button>
-      </div> -->
     </div>
-
-    <!-- <ModalCarrinho
-      v-if="showModal"
-      :listaCompletaReceita="listaCompletaReceita"
-      :data="qtdPedidos"
-      @closeModal="() => (showModal = false)"
-    /> -->
   </div>
 </template>
 
