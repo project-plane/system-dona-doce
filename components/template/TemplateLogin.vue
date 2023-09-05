@@ -55,17 +55,24 @@ export default Vue.extend({
 
             sessionStorage.getItem('token')
             this.$router.push('/pedidos')
-            this.$toast.success(
-              'Bem-vindo à área de clientes do sistema Dona Doce!!!'
-            )
-            return
+            this.$toast.success('Bem-vindo à área de clientes do sistema Dona Doce!!!', {
+              position: "top-center",
+              timeout: 5000,
+              icon: false,
+              closeButton: false
+            })
+
           } else {
             sessionStorage.setItem('token', res.data.token)
 
             sessionStorage.getItem('token')
-            this.$toast.success('Bem-vindo ao Sistema Dona Doce!!!')
+            this.$toast.error('Bem-vindo ao Sistema Dona Doce!!!', {
+              position: "top-center",
+              timeout: 5000,
+              icon: false,
+              closeButton: false
+            })
             this.$router.push('/dashboard/dashboard')
-            return
           }
         })
         .catch((error) => {
