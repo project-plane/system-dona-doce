@@ -21,8 +21,14 @@
         <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
     </div>
-    <h1>Fora do Cardapio</h1>
-    <div class="cardsPedidos">
+    <h2>Fora do Cardapio</h2>
+    <div class="cardsPedidos" v-if="foraEstoque.length > 3">
+      <div v-for="p in foraEstoque" :key="p.id">
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
+      </div>
+    </div>
+
+    <div class="cardsPedidos unique" v-else>
       <div v-for="p in foraEstoque" :key="p.id">
         <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
       </div>
@@ -318,4 +324,9 @@ export default Vue.extend({
   gap: 1rem;
   padding: 20px 0;
 }
+
+.unique {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 </style>

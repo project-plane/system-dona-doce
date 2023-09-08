@@ -4,7 +4,7 @@
       Carregando dados do carrinho...
     </div>
     <div class="dataEmpresa" v-else>
-      <h4>Dejejum</h4>
+      <h4>Desjejum</h4>
       <table class="resume-content">
         <thead>
           <tr v-if="dejejum.length !== 0">

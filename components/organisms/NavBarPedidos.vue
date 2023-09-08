@@ -58,6 +58,7 @@ export default Vue.extend({
       color: black;
       text-decoration: none;
       padding: 0.5rem 1rem;
+      width: auto;
       font-size: 0.9rem;
     }
 
