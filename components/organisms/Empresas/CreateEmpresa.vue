@@ -66,7 +66,7 @@
       />
     </ContainerInput>
     <div class="row-button">
-      <Button title="Salvar" @functionClick="saveClient" />
+      <Button title="Salvar" @functionClick="saveClient" :isDisabled="isDisabled"/>
     </div>
   </Container>
 </template>
@@ -78,6 +78,7 @@ import httpEmpresa from '~/server/empresa'
 export default Vue.extend({
   data() {
     return {
+      isDisabled: false,
       dataEmpresa: {
         corporate_name: '',
         cnpj: '',
@@ -93,6 +94,7 @@ export default Vue.extend({
   },
   methods: {
     async saveClient() {
+      this.isDisabled = true
       if (
         !this.dataEmpresa.corporate_name ||
         !this.dataEmpresa.cnpj ||
@@ -137,6 +139,7 @@ export default Vue.extend({
             }
           })
       }
+      this.isDisabled = false
     },
   },
 })

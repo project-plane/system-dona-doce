@@ -1,5 +1,5 @@
 <template>
-    <button class="btn" @click="$emit('functionClick')">{{ title }}</button>
+    <button class="btn" @click="$emit('functionClick')" :disabled="isDisabled">{{ title }}</button>
 </template>
 
 <script lang="ts">
@@ -11,6 +11,11 @@ export default Vue.extend({
       type: String,
       default: '',
       required: true,
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+      required: false
     },
     classEditBtn: {
       type: String,
@@ -47,5 +52,11 @@ export default Vue.extend({
   color: var(--white);
   border-radius: 0.25rem;
   font-size: 1rem;
+  transition: 0.2s;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 50%;
 }
 </style>
