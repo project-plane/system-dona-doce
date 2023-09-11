@@ -1,12 +1,6 @@
 <template>
-  <the-mask
-    :mask="['R$ #,##', 'R$ ##,##', 'R$ ###,##', 'R$ ####,##', 'R$ #####,##']"
-    :value="value"
-    @input="updateValue"
-    type="text"
-    :masked="true"
-    :placeholder="placeholder"
-  />
+  <the-mask :mask="['R$ #,##', 'R$ ##,##', 'R$ ###,##', 'R$ ####,##', 'R$ #####,##']" :value="value" @input="updateValue"
+    type="text" :masked="true" :placeholder="placeholder" />
   <!-- <input
       :style="block"
       :type="type"

@@ -1,5 +1,5 @@
 <template>
-  <label for="">
+  <label>
     <slot />
   </label>
 </template>
@@ -10,4 +10,7 @@ export default Vue.extend({})
 </script>
 
 <style scoped>
+label {
+  font-size: 1rem;
+}
 </style>

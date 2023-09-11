@@ -6,19 +6,26 @@
         <div class="descriptionCompany">
           <span v-if="dataPedidos.user.Clients === null"></span>
           <h2 v-else>{{ dataPedidos.user.Clients.corporate_name }}</h2>
-          <span v-if="dataPedidos.status === 1" class="programado"
-            >Programado</span
-          >
+          <span v-if="dataPedidos.status === 1" class="programado">Programado</span>
           <span v-else class="coffee">Coffee</span>
         </div>
       </div>
-      <div>
-        <img
-          src="~/assets/icons/programado.svg"
-          alt=""
-          v-if="dataPedidos.status === 1"
-        />
-        <img src="~/assets/icons/coffee.svg" alt="" v-else />
+      <div class="iconsStatus">
+        <div class="icons">
+          <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.status === 1" />
+          <img src="~/assets/icons/coffee.svg" alt="" v-else />
+          <img src="~/assets/icons/3dot.svg" alt="" @click="statusOrder">
+        </div>
+        <div :class="{ selectOrder: selectOrder }">
+          <select v-model="selected">
+            <option value="">Agendado</option>
+            <option value="">Pré-Produção</option>
+            <option value="">Em Processamento</option>
+            <option value="">Em Entrega</option>
+            <option value="">Entregue</option>
+          </select>
+
+        </div>
       </div>
     </div>
     <div class="dataOrder">
@@ -27,10 +34,7 @@
         <span>Finalizar as</span>
         <span>09:30</span>
       </div>
-      <ButtonPirula
-        title="Exibir Pedidos"
-        @click.native="exibirPedidos(dataPedidos)"
-      />
+      <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
     </div>
   </div>
 </template>
@@ -56,12 +60,17 @@ export default Vue.extend({
   data() {
     return {
       somaValeu: 0,
+      selected: '',
+      selectOrder: true
     }
   },
   methods: {
     exibirPedidos(dataPedidos) {
       this.$store.commit('DADOS_PEDIDOS', dataPedidos)
     },
+    statusOrder() {
+      this.selectOrder = !this.selectOrder
+    }
   },
 })
 </script>
@@ -99,6 +108,25 @@ export default Vue.extend({
 
       h2 {
         margin: -10px 0;
+      }
+    }
+
+    .iconsStatus {
+      .icons {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 1rem;
+
+        img:nth-child(2) {
+          cursor: pointer;
+        }
+      }
+
+
+
+      .selectOrder {
+        display: none;
       }
     }
   }
