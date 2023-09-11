@@ -5,12 +5,8 @@
         <img src="~/assets/icons/user.svg" alt="user_create" />
         <h4>Cadastro</h4>
       </div>
-      <img
-        class="setaDropdown"
-        :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
-        src="~/assets/icons/setaDropdown.svg"
-        alt=""
-      />
+      <img class="setaDropdown" :class="{ isIconDropdownCadastrar: isIconDropdownCadastrar }"
+        src="~/assets/icons/setaDropdown.svg" alt="" />
     </div>
     <nav class="menu_navigation" v-show="isDropdownCadastrar">
       <ul>
@@ -30,29 +26,24 @@
           <NuxtLink to="/cadastrar/estoque">Estoque</NuxtLink>
         </li>
         <li>
-          <span
-            class="btnDropdown"
-            :class="{ isIconDropdown: isIconDropdown }"
-            @click="dropdownReceita"
-          >
+          <span class="btnDropdown" :class="{ isIconDropdown: isIconDropdown }" @click="dropdownReceita">
             Receita
             <img src="~/assets/icons/setaDropdown.svg" alt="" />
           </span>
           <div class="dropdown" v-show="isDropdown">
             <span>
-              <NuxtLink to="/cadastrar/receita/receita"
-                >Cadastrar Receita</NuxtLink
-              >
+              <NuxtLink to="/cadastrar/receita/receita">Cadastrar Receita</NuxtLink>
             </span>
             <span>
-              <NuxtLink to="/cadastrar/receita/receitaporcliente"
-                >Valor Receita Por Cliente</NuxtLink
-              >
+              <NuxtLink to="/cadastrar/receita/receitaporcliente">Valor Receita Por Cliente</NuxtLink>
             </span>
           </div>
         </li>
         <li>
           <NuxtLink to="/cadastrar/cardapio">Cardápio</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/cadastrar/rota">Rota Motorista</NuxtLink>
         </li>
       </ul>
     </nav>

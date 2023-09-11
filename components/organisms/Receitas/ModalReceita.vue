@@ -21,22 +21,14 @@
               <Label for="ingrediente">Ingrediente</Label>
               <select id="ingrediente" v-model="selected" name="">
                 <option disabled value="">Selecionar Ingrediente</option>
-                <option
-                  v-for="itemIngredient in listIngredients"
-                  :key="itemIngredient.id"
-                >
+                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id">
                   {{ itemIngredient.description }}
                 </option>
               </select>
             </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input
-                id="qtd"
-                v-model="qtdIngrediente"
-                type="number"
-                placeholder="quantidade"
-              />
+              <input id="qtd" v-model="qtdIngrediente" type="number" placeholder="quantidade" />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
@@ -49,14 +41,10 @@
             <div class="footerHeader">
               <h4>Ingrediente</h4>
               <h4>QTD</h4>
-              <h4>Valor Unitário</h4>
+              <h4>Valor Porção</h4>
               <h4>Valor Total</h4>
             </div>
-            <div
-              v-for="amountReceita in amountReceitas"
-              :key="amountReceita.id"
-              class="footerBody"
-            >
+            <div v-for="amountReceita in amountReceitas" :key="amountReceita.id" class="footerBody">
               <span>{{ amountReceita.ingrediente }}</span>
               <span>{{ amountReceita.qtd }}</span>
               <span>R$ {{ amountReceita.valorUnitario }}</span>
@@ -72,10 +60,7 @@
               <span class="total">Quantidade Máxima</span>
               <input type="number" v-model="qtdMaxima" />
             </div>
-            <div
-              class="alertMax"
-              v-show="parseInt(this.qtdMinima) >= parseInt(this.qtdMaxima)"
-            >
+            <div class="alertMax" v-show="parseInt(this.qtdMinima) >= parseInt(this.qtdMaxima)">
               <p>
                 OBS: A quantidade máxima não pode ser menor ou igual a
                 quantidade mínima
@@ -148,6 +133,8 @@ export default Vue.extend({
       }
 
       this.listIngredients.map((item) => {
+        console.log(item);
+
         if (item.description === this.selected) {
           const ingredienteExiste = this.amountReceitas.find(
             (amountReceita) => {
@@ -158,11 +145,11 @@ export default Vue.extend({
             this.amountReceitas.push({
               qtd: this.qtdIngrediente,
               ingrediente: this.selected,
-              valorUnitario: item.value,
-              valor: (item.value * this.qtdIngrediente).toFixed(2),
+              valorUnitario: item.value_per_serving,
+              valor: (item.value_per_serving * this.qtdIngrediente).toFixed(2),
             })
             // array que armazena os valores
-            this.amountValue.push(item.value * this.qtdIngrediente)
+            this.amountValue.push(item.value_per_serving * this.qtdIngrediente)
             this.ingredients.push({
               fk_ingredient: item.id,
               amount_ingredient: Number(this.qtdIngrediente),
@@ -361,6 +348,7 @@ export default Vue.extend({
             height: 30px;
           }
         }
+
         .alertMax {
           color: var(--red);
           font-weight: bold;
