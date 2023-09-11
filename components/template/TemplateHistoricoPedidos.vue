@@ -2,25 +2,31 @@
     <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
     <div v-else class="historicoPedidos-container">
         <h3>Histórico por data</h3>
-        <v-date-picker v-model="range" is-range>
-            <template v-slot="{ inputValue, inputEvents }">
-                <input
-                    :value="inputValue.start"
-                    v-on="inputEvents.start"
-                    class="input-range"
-                />
-
-                <img src="../../assets/icons/setaDropdown.svg" alt="">
-
-                <input
-                    :value="inputValue.end"
-                    v-on="inputEvents.end"
-                    class="input-range"
-                />
-            </template>
-        </v-date-picker>
+        <div class="input-calendar">
+            <v-date-picker v-model="range" is-range>
+                <template v-slot="{ inputValue, inputEvents }">
+                    <button v-on="inputEvents.start" class="btn-calendar">
+                        <img src="../../assets/icons/calendar.svg" alt="">
+                    </button>
+                </template>
+            </v-date-picker>
 
 
+            <div class="label-calendar">
+                <div class="date">
+                    <span><strong>Inicial</strong> </span>
+                    {{ formatDate(range.start) }}
+                </div>
+                <div class="date">
+                    <span><strong>Final</strong></span>
+                {{ formatDate(range.end) }}
+                </div>
+                
+            </div>
+
+        </div>
+        
+        
         <div class="list-historic" v-if="listFiltered.length > 3">
             
 
@@ -80,6 +86,10 @@ export default Vue.extend({
 
     methods:{
 
+        formatDate(date) {
+            return dayjs(date).format('DD/MM/YYYY')
+        },
+
         removeTimeInfo (date) { 
             return new Date(date.toISOString().split('T')[0]) 
         },
@@ -111,6 +121,38 @@ export default Vue.extend({
     align-items: flex-start;
     gap: 0.5rem;
 
+    .input-calendar {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-items: center;
+        background-color: var(--white);
+        padding: 0.3rem;
+        gap: 0.5rem;
+        width: auto;
+        font-size: 0.7rem;
+        border-radius: 0.25rem;
+        color: var(--text_color);
+
+
+        .btn-calendar {
+            background-color: transparent;
+            border: none;
+            border-radius: 0.25rem;
+        }
+
+        .label-calendar {
+            display: flex;
+            flex-direction: column;
+
+            .date{
+                justify-content: space-between;
+                gap: 0.25rem;
+                display: flex;
+            }
+        }
+    }
+
     .list-historic {
         margin-top: 1rem;
         width: 100%;
@@ -132,11 +174,6 @@ export default Vue.extend({
         border-radius: 0.25rem;
         font-weight: 600;
         color: var(--text_color);
-    }
-
-    img {
-        width: 1rem;
-        transform: rotate(-90deg);
     }
 
 

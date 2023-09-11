@@ -6,52 +6,32 @@
         <span>Ingrediente</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Ingrediente</option>
-          <option
-            v-for="ingrediente in listIngrediente"
-            :key="ingrediente.id"
-            :value="ingrediente.id"
-          >
+          <option v-for="ingrediente in listIngrediente" :key="ingrediente.id" :value="ingrediente.id">
             {{ ingrediente.description }}
           </option>
         </select>
       </div>
-      <Input
-        label="Quantidade"
-        type="number"
-        placeholder="Inserir Quantidade"
-        v-model="quantidade"
-      />
+      <Input label="Quantidade" type="number" placeholder="Inserir Quantidade" v-model="quantidade" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        block="background: #d6d6d6; cursor: no-drop"
-        label="Valor Ingrediente"
-        type="number"
-        placeholder=""
-        v-model="valorUnitario"
-        disabled="disabled"
-      />
-      <div class="inputRadio">
-        <div class="radio">
-          <input
-            type="radio"
-            v-model="is_output"
-            name="status"
-            :value="false"
-          />
-          <Label>Entrada</Label>
-        </div>
-        <div class="radio">
+      <!-- <Input block="background: #d6d6d6; cursor: no-drop" label="Valor Ingrediente" type="number" placeholder=""
+        v-model="valorUnitario" disabled="disabled" /> -->
+      <!-- <div class="inputRadio"> -->
+      <div class="radio">
+        <input type="radio" v-model="is_output" name="status" :value="false" />
+        <Label>Entrada</Label>
+      </div>
+      <!-- <div class="radio">
           <input type="radio" v-model="is_output" name="status" :value="true" />
           <Label>Saída</Label>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
     </ContainerInput>
     <div class="input_create"></div>
     <div class="row-button">
       <Button title="Salvar" @functionClick="saveEstoque" />
     </div>
-    
+
   </Container>
 </template>
 
@@ -65,6 +45,8 @@ export default Vue.extend({
   data() {
     return {
       valorUnitario: '',
+      amount: '',
+      medida: '',
       quantidade: '',
       selected: '',
       is_output: '',
@@ -85,23 +67,28 @@ export default Vue.extend({
   watch: {
     selected(newValue) {
       this.listIngrediente.map((e) => {
+        console.log(e);
+
         if (e.id === newValue) {
           this.valorUnitario = Number(e.value).toFixed(2)
+          this.amount = Number(e.amount).toFixed(2)
+          this.medida = e.unit_of_measurement
         }
       })
     },
   },
   methods: {
     async saveEstoque() {
-      if (!this.selected || !this.quantidade || !this.valorUnitario) {
+      if (!this.selected || !this.quantidade) {
         this.$toast.error('Preencha todos os campos!!!')
         return
       }
       const dataEstoque = {
         fk_ingredient: this.selected,
-        amount: Number(this.quantidade),
+        amount: Number(this.quantidade * this.amount),
         unitary_value: Number(this.valorUnitario),
         is_output: this.is_output,
+        unit_of_measurement: 'g'
       }
 
       await httpEstoque
@@ -142,7 +129,7 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  
+
 
   span {
     font-size: 1rem;
@@ -153,18 +140,21 @@ export default Vue.extend({
     border-radius: 0.25rem;
   }
 }
+
 .inputRadio {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  .radio {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.2rem;
-  }
+
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  gap: 0.2rem;
 }
 
 .row-button {

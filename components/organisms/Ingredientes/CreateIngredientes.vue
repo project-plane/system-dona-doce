@@ -3,16 +3,27 @@
     <Title title="Novo Ingrediente" />
     <ContainerInput>
       <Input v-model="nameIngrediente" label="Nome" type="text" placeholder="Digite o nome ingrediente" />
-      <Input v-model="priceIngrediente" label="Preço" type="number" placeholder="Digite o preco ingrediente" />
       <div class="input">
         <span>Medida</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Tipo de Medida</option>
-          <option>Kg</option>
-          <option>Litro</option>
-          <option>Unidade</option>
+          <option value="g">Grama</option>
+          <option value="ml">Litro</option>
+          <option value="u">Unidade</option>
         </select>
       </div>
+      <Input v-model="qtdIngrediente" label="Quantidade" type="number" placeholder="Digite a qtd " />
+
+      <!-- <Input v-model="priceIngrediente" label="Preço p/ quantidade" type="number"
+        placeholder="Digite o preco ingrediente" /> -->
+      <div class="input">
+        <Label>Preço p/ quantidade </Label>
+        <InputValue style="width: 100%; height: 2.8rem;" v-model="priceIngrediente" placeholder="Digite o novo valor" />
+      </div>
+
+      <Input block="background: #d6d6d6; cursor: no-drop" v-model="vlPorcaoIngrediente" label="Valor p/ Porção"
+        type="number" placeholder="R$ 0,00" disabled="disabled" />
+
     </ContainerInput>
     <div class="row-button">
       <Button title="Salvar" @functionClick="createIngrediente" />
@@ -31,8 +42,22 @@ export default Vue.extend({
     return {
       nameIngrediente: '',
       priceIngrediente: '',
-      selected: ''
+      qtdIngrediente: '',
+      selected: '',
+      vlPorcaoIngrediente: ''
     }
+  },
+  watch: {
+    priceIngrediente(newValue) {
+      const convertValue = this.priceIngrediente
+        .replace('R$', '')
+        .replace(',', '.')
+      newValue = convertValue
+
+      this.priceIngrediente = convertValue
+
+      this.vlPorcaoIngrediente = Number(newValue / this.qtdIngrediente).toFixed(3)
+    },
   },
   methods: {
     async createIngrediente() {
@@ -40,10 +65,13 @@ export default Vue.extend({
       if (!this.nameIngrediente || !this.priceIngrediente) {
         this.$toast.error('Preencha todos os campos!!!')
       }
+
       const ingrediente = {
         description: this.nameIngrediente,
-        value: Number(this.priceIngrediente),
-        unit_of_measurement: this.selected
+        unit_of_measurement: this.selected,
+        value_per_serving: Number(this.vlPorcaoIngrediente),
+        amount: Number(this.qtdIngrediente),
+        value: Number(this.priceIngrediente)
       }
 
       await httpIngrediente
@@ -59,6 +87,7 @@ export default Vue.extend({
         })
       this.nameIngrediente = ''
       this.priceIngrediente = ''
+      this.qtdIngrediente = ''
       this.selected = ''
       this.$nuxt.refresh()
     },

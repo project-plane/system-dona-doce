@@ -5,13 +5,13 @@
       <Input
         label="Empresa"
         type="text"
-        placeholder="Digitar nome empresa"
+        placeholder="Ex: Moto Honda da Amazonia LTDA"
         v-model="corporate_name"
       />
       <Input
         label="Nome Fantasia"
         type="text"
-        placeholder="Digitar nome fantasia"
+        placeholder="Ex: Honda"
         v-model="name_fantasy"
       />
     </ContainerInput>
@@ -19,14 +19,15 @@
       <Input
         label="CNPJ"
         type="text"
-        placeholder="Digitar CNPJ"
+        placeholder="Ex: XX.XXX.XXX/0001-XX"
+        v-mask="['##.###.###/####-##']"
         v-model="cnpj"
       />
 
       <Input
         label="Inscrição Estadual"
         type="text"
-        placeholder="Digitar inscrição estadual"
+        placeholder="Ex: XX.XXX.XXX"
         v-model="ie"
       />
     </ContainerInput>
@@ -34,31 +35,38 @@
       <Input
         label="Endereço"
         type="text"
-        placeholder="Digitar endereço"
+        placeholder="Ex: Rua Socorro Dutra, 37"
         v-model="address"
       />
-      <Input label="CEP" type="text" placeholder="Digitar CEP" v-model="cep" />
+      <Input 
+        label="CEP" 
+        type="text" 
+        placeholder="Ex: XXXXX-XXX" 
+        v-mask="['XXXXX-XXX']"
+        v-model="cep" 
+      />
     </ContainerInput>
     <ContainerInput>
       <Input
         label="Fone"
         type="text"
-        placeholder="Digitar fone"
+        placeholder="Ex: XXXXXXXXX"
         v-model="fone"
       />
       <Input
         label="Bairro"
         type="text"
-        placeholder="Digitar bairro"
+        placeholder="Ex: Centro"
         v-model="district"
       />
     </ContainerInput>
     <ContainerInput>
       <Input
-        label="Estado"
+        label="UF"
         type="text"
-        placeholder="Digitar estado"
+        placeholder="Ex: AM"
         v-model="uf"
+        v-mask="['AA']"
       />
       <Input
         label="Cidade"
@@ -140,7 +148,7 @@
       </tbody>
     </table>
     <div class="row-button">
-      <Button @click.native="saveClient" title="Salvar" />
+      <Button @click.native="saveClient" title="Salvar" :isDisabled="isDisabled"/>
     </div>
   </Container>
 </template>
@@ -154,6 +162,7 @@ import httpEmpresa from '~/server/empresa'
 export default Vue.extend({
   data() {
     return {
+      isDisabled: false,
       selected: '',
       corporate_name: '',
       cnpj: '',
@@ -192,6 +201,7 @@ export default Vue.extend({
   },
   methods: {
     addClient() {
+      
       let idEmpresa
       this.listEmpresa.map((e) => {
         if (this.selected === e.corporate_name) {
@@ -274,10 +284,13 @@ export default Vue.extend({
         createCompany: this.createCompany,
       }
 
+      this.isDisabled = true
+
       await httpClient
         .CreateClient(dataClient)
         .then((res) => {
           this.$toast.success('Cliente criado com sucesso!!!')
+          
         })
         .catch((error) => {
           console.log(error)
@@ -298,6 +311,8 @@ export default Vue.extend({
       this.createCompany = []
 
       this.$nuxt.refresh()
+
+      this.isDisabled = false
     },
   },
 })

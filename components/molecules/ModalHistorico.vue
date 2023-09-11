@@ -3,6 +3,7 @@
     <div class="dataEmpresa">
       <div class="header-order">
         <h3>Data do Pedido: {{ formatDate(data.dateOrder) }}</h3>
+        <h3>Status: {{ data.orderStatus.description }}</h3>
         <h3>Total: R${{ countdejejum + countlanche01 + countlanche02 }}</h3>
       </div>
 
@@ -67,6 +68,10 @@
 
         <tr v-if="lanche02.length === 0">Não possui...</tr>
       </table>
+
+
+
+      <Button v-if="data.orderStatus.description === 'Solicitado' || data.orderStatus.description === 'Agendado' || data.orderStatus.description === 'Pré-Produção'" title="Cancelar pedido"/>
 
 
       
