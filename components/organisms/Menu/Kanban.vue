@@ -1,6 +1,7 @@
 <template>
     <div>
       <div class="title_create" @click="spaceMenu">
+        
         <div class="cadastrar">
           <img src="~/assets/icons/kanban.svg" alt="user_create" />
           <h4>Kanban</h4>
@@ -15,7 +16,11 @@
       <nav v-show="isDropdown" class="menu_navigation">
         <ul>
           <li>
-            <NuxtLink to="/kanban">Ir para Kanban</NuxtLink>
+            <NuxtLink to="/kanban/producao">Ir para Produção</NuxtLink>
+          </li>
+
+          <li>
+            <NuxtLink to="/kanban/entrega">Ir para Entrega</NuxtLink>
           </li>
         </ul>
       </nav>
@@ -25,6 +30,7 @@
   <script lang="ts">
   import Vue from 'vue'
   export default Vue.extend({
+
     data() {
       return {
         isIconDropdown: false,

@@ -3,7 +3,7 @@
         <div class="cardKanban-number">
             {{ dataObject.id }}
         </div>
-        <div class="cardKanban-infos">
+        <div v-if="typeCard !== 'entrega'" class="cardKanban-infos">
             <div class="legend">
                 <span>Receita</span>
                 <span>Qtde</span>
@@ -17,6 +17,19 @@
                 <span>{{ dataObject.horario }}</span>
                 <span v-if="typeCard === 'client'">{{ dataObject.idOrdem }}</span>
                 <span v-if="typeCard === 'client'">{{dataObject.cliente}}</span>
+            </div>
+        </div>
+
+        <div v-else class="cardKanban-infos">
+            <div class="legend">
+                <span>Unidade</span>
+                <span>Endereço</span>
+                <span>Bairro</span>
+            </div>
+            <div class="value">
+                <span>{{ dataObject.unidade }}</span>
+                <span>{{ dataObject.endereco }}</span>
+                <span>{{ dataObject.bairro }}</span>
             </div>
         </div>
     </div>

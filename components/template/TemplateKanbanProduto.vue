@@ -1,6 +1,5 @@
 <template>
     <div class="kanban-container">
-
         <div class="kanban-header">
             <h3>Produção {{formatDate(new Date())}}</h3>
             
@@ -17,7 +16,6 @@
             </div>
         </div>
         
-
         <div class="kanban-content">
 
             <div class="kanban-column">
@@ -108,7 +106,7 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 1rem;
 
     .kanban-header {
         width: 100%;

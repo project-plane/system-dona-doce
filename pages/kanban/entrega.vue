@@ -1,5 +1,5 @@
 <template>
-    <TemplateKanban />
+    <TemplateKanbanEntrega />
 </template>
 
 <script lang="ts">
