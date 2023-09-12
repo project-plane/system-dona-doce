@@ -3,8 +3,7 @@
 
         <div class="kanban-header">
             <h3>Produção {{formatDate(new Date())}}</h3>
-
-
+            
             <div class="kanban-selects">
                 <select  v-model="typeProduct">
                     <option value="programado">Programado</option>
@@ -16,7 +15,6 @@
                     <option value="product">Produção por produto</option>
                 </select>
             </div>
-            
         </div>
         
 
@@ -31,7 +29,7 @@
                 </div>
 
                 <draggable v-model="list" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in list" :key="index" :data-object="item" :typeCard="typeKanban"/>
+                    <CardKanban v-for="(item, index) in list" :key="index" :data-object="item" :type-card="typeKanban"/>
                 </draggable>
             </div>
 

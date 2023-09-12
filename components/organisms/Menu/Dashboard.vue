@@ -12,10 +12,10 @@
         alt=""
       />
     </div>
-    <nav class="menu_navigation" v-show="isDropdown">
+    <nav v-show="isDropdown" class="menu_navigation">
       <ul>
         <li>
-          <NuxtLink to="/dashboard/dashboard">Visão Geral</NuxtLink>
+          <NuxtLink to="/dashboard/dashboard">Ir para Dashboard</NuxtLink>
         </li>
       </ul>
     </nav>
