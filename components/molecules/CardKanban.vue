@@ -8,15 +8,15 @@
                 <span>Receita</span>
                 <span>Qtde</span>
                 <span>Horário</span>
-                <span>ID</span>
-                <span>Cliente</span>
+                <span v-if="typeCard === 'client'">ID</span>
+                <span v-if="typeCard === 'client'">Cliente</span>
             </div>
             <div class="value">
                 <span>{{ dataObject.nameRecipe }}</span>
                 <span>{{ dataObject.qtde }}</span>
                 <span>{{ dataObject.horario }}</span>
-                <span>{{ dataObject.idOrdem }}</span>
-                <span>{{dataObject.cliente}}</span>
+                <span v-if="typeCard === 'client'">{{ dataObject.idOrdem }}</span>
+                <span v-if="typeCard === 'client'">{{dataObject.cliente}}</span>
             </div>
         </div>
     </div>
@@ -28,7 +28,8 @@ import Vue from 'vue'
 export default Vue.extend({
     props: {
         // eslint-disable-next-line vue/require-default-prop
-        dataObject: Object
+        dataObject: Object,
+        typeCard: String
     },
 
 })
@@ -45,6 +46,7 @@ export default Vue.extend({
     display: flex;
     border-radius: 0.25rem;
     padding: 0.5rem;
+    cursor: grab;
 
     .cardKanban-number {
         width: 15%;
