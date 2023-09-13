@@ -6,10 +6,10 @@
       /></NuxtLink>
     </div>
 
-      <NuxtLink to="/cadastrar/unidade" class="btn-dashboard" v-if="$nuxt.$route.path === '/dashboard/dashboard'"
+      <NuxtLink v-if="$nuxt.$route.path === '/dashboard/dashboard' || $nuxt.$route.path === '/kanban/producao' || $nuxt.$route.path === '/kanban/entrega'" to="/cadastrar/unidade" class="btn-dashboard"
         >Ir para Cadastros <div class="arrow"></div></NuxtLink>
 
-    <img src="~/assets/icons/menu_hamburge.svg" alt="menu_icon" v-else/>
+    <img v-else src="~/assets/icons/menu_hamburge.svg" alt="menu_icon"/>
     
   </div>
 </template>

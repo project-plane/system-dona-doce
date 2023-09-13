@@ -3,6 +3,7 @@
     <div>
       <Dashboard />
       <Cadastro />
+      <Kanban />
     </div>
 
     <div class="footerMenu">
