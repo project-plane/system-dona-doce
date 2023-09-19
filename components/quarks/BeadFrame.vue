@@ -9,6 +9,12 @@
             <slot />
         </div>
     </div>
+    <div class="containerFrame" v-else>
+        <img class="svg" src="@/static/icon/cutEffect.svg" alt="">
+        <div class="contentSlot">
+            <slot />
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
