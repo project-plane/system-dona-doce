@@ -1,36 +1,68 @@
 <template>
   <div class="contentCardPedido">
     <div class="header-pedidos">
-      <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
-        @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
+      <MenuPedidos
+        :data-pedido="dataPedido"
+        :qtdPedidos="listaCompletaReceita"
+        @lancheDesjejum="lancheDesjejum"
+        @lanche1="lanche1"
+        @lanche2="lanche2"
+        @finalizarPedido="finalizarPedido"
+      />
       <div class="qtdPedidos" @click="() => (showModal = true)">
         <img src="~/assets/icons/shopCar.svg" />
-        <span v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0">
+        <span
+          v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0"
+        >
           <p>{{ listaCompletaReceita.length + listaForaEstoque.length }}</p>
         </span>
         <p style="margin-left: 0.5rem">Carrinho</p>
       </div>
     </div>
 
-    <ModalCarrinho v-if="showModal" :listaCompletaReceita="listaCompletaReceita" :listaForaEstoque="listaForaEstoque"
-      @closeModal="() => (showModal = false)" @finalizarPedido="finalizarPedido"
-      @listaAtualizadaDoModal="listaAtualizadaDoModal" @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque" />
+    <ModalCarrinho
+      v-if="showModal"
+      :listaCompletaReceita="listaCompletaReceita"
+      :listaForaEstoque="listaForaEstoque"
+      @closeModal="() => (showModal = false)"
+      @finalizarPedido="finalizarPedido"
+      @listaAtualizadaDoModal="listaAtualizadaDoModal"
+      @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque"
+    />
 
-    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
-      <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
+    <div
+      v-if="statusDesjejum || statusLanche1 || statusLanche2"
+      class="cardsPedidos"
+    >
+      <div
+        v-for="pedidosProgramation in revenueClient"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation
+          :tipo-lanches="pedidosProgramation"
+          :tipo-pedido="tipoPedido"
+          @pedidos="pedidos"
+        />
       </div>
     </div>
     <h2>Fora do Cardapio</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
+        <CardForaEstoque
+          :foraDeEstoque="p"
+          :tipo-pedido="tipoPedido"
+          @pedidosForeEstoque="pedidosForeEstoque"
+        />
       </div>
     </div>
 
     <div class="cardsPedidos unique" v-else>
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
+        <CardForaEstoque
+          :foraDeEstoque="p"
+          :tipo-pedido="tipoPedido"
+          @pedidosForeEstoque="pedidosForeEstoque"
+        />
       </div>
     </div>
   </div>
@@ -132,8 +164,7 @@ export default Vue.extend({
     const foraEstoqueAtualizado = []
     this.listProgramation.find((fora) => {
       var itemV = this.revenueClient.find(
-        (itemMenu) =>
-          itemMenu.fk_revenues === fora.id
+        (itemMenu) => itemMenu.fk_revenues === fora.id
       )
       if (!itemV) {
         foraEstoqueAtualizado.push(fora)
@@ -143,7 +174,7 @@ export default Vue.extend({
   },
 
   methods: {
-    pedidos(qtdOrder, fk_revenue, index) {
+    pedidos(qtdOrder, fk_revenue, index, typeOrder) {
       const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
         return (
           item.fk_categoryOrderItem === this.tipoPedido &&
@@ -159,6 +190,7 @@ export default Vue.extend({
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
         listReceita: index,
+        method_of_preparation: typeOrder,
       })
       this.listPedidos.itemMenu.map((item) => {
         if (fk_revenue === item.revenues.id) {
@@ -169,7 +201,7 @@ export default Vue.extend({
       })
     },
 
-    pedidosForeEstoque(qtdOrder, fk_revenue, index) {
+    pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder) {
       const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
         return (
           item.fk_categoryOrderItem === this.tipoPedido &&
@@ -185,9 +217,9 @@ export default Vue.extend({
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
         listReceita: index,
+        method_of_preparation: typeOrder,
       })
       this.foraEstoque.map((item) => {
-
         if (fk_revenue === item.id) {
           this.$toast.info(
             `(${qtdOrder}X) ${item.description} ADICIONADO AO CARRINHO`
@@ -197,7 +229,10 @@ export default Vue.extend({
     },
 
     async finalizarPedido() {
-      if (this.listaCompletaReceita.length === 0 && this.listaForaEstoque.length === 0) {
+      if (
+        this.listaCompletaReceita.length === 0 &&
+        this.listaForaEstoque.length === 0
+      ) {
         this.$toast.error('Insira ao menos um item para realizar pedido.')
       } else {
         this.listaCompletaReceita.map((item) => {
@@ -205,6 +240,7 @@ export default Vue.extend({
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
+            method_of_preparation: item.method_of_preparation,
           })
         })
 
@@ -213,8 +249,8 @@ export default Vue.extend({
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
+            method_of_preparation: item.method_of_preparation,
           })
-
         })
 
         await HttpPedidos.CreateNewOrder(this.addPedidos)
@@ -326,7 +362,7 @@ export default Vue.extend({
 }
 
 .unique {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
 </style>

@@ -7,7 +7,11 @@
     {{ this.$store.state.selectedTipo }}
     {{ this.$store.state.selectedStatus }}
     <div v-if="this.$store.state.selectedTipo === ''" class="cardDashboard">
-      <div v-for="(pedidos, index) in dataPedidos" :key="index">
+      <div
+        v-for="(pedidos, index) in dataPedidos"
+        :key="index"
+        style="width: 49%"
+      >
         <CardDashboard
           :dataPedidos="pedidos"
           :allPedidos="dataPedidos"
@@ -20,7 +24,11 @@
       v-if="this.$store.state.selectedTipo === 'programmed'"
       class="cardDashboard"
     >
-      <div v-for="(pedidos, index) in pedidoProgramado" :key="index">
+      <div
+        v-for="(pedidos, index) in pedidoProgramado"
+        :key="index"
+        style="width: 49%"
+      >
         <CardDashboard
           :dataPedidos="pedidos"
           :allPedidos="dataPedidos"
@@ -34,7 +42,11 @@
       v-if="this.$store.state.selectedTipo === 'coffe'"
       class="cardDashboard"
     >
-      <div v-for="(pedidos, index) in pedidoCoffee" :key="index">
+      <div
+        v-for="(pedidos, index) in pedidoCoffee"
+        :key="index"
+        style="width: 49%"
+      >
         <CardDashboard
           :dataPedidos="pedidos"
           :allPedidos="dataPedidos"
