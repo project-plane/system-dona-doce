@@ -29,7 +29,7 @@
         <div class="input">
           <label>Status</label>
           <select v-model="selectedAgenda">
-            <option value="" disabled>Todos</option>
+            <option value="">Todos</option>
             <option value="Solicitado">Solicitado</option>
             <option value="Agendado">Agendado</option>
             <option value="Pré-Produção">Pré-Produção</option>
