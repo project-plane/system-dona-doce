@@ -4,10 +4,43 @@
       <input type="checkbox" v-model="selectAll" />
       <Label>Selecionar Todos</Label>
     </div>
-    <div class="cardDashboard">
+    {{ this.$store.state.selectedTipo }}
+    {{ this.$store.state.selectedStatus }}
+    <div v-if="this.$store.state.selectedTipo === ''" class="cardDashboard">
       <div v-for="(pedidos, index) in dataPedidos" :key="index">
-        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
-          @click.native="clickOrderFind(pedidos)" />
+        <CardDashboard
+          :dataPedidos="pedidos"
+          :allPedidos="dataPedidos"
+          :index="index"
+          @click.native="clickOrderFind(pedidos)"
+        />
+      </div>
+    </div>
+    <div
+      v-if="this.$store.state.selectedTipo === 'programmed'"
+      class="cardDashboard"
+    >
+      <div v-for="(pedidos, index) in pedidoProgramado" :key="index">
+        <CardDashboard
+          :dataPedidos="pedidos"
+          :allPedidos="dataPedidos"
+          :index="index"
+          @click.native="clickOrderFind(pedidos)"
+        />
+      </div>
+    </div>
+
+    <div
+      v-if="this.$store.state.selectedTipo === 'coffe'"
+      class="cardDashboard"
+    >
+      <div v-for="(pedidos, index) in pedidoCoffee" :key="index">
+        <CardDashboard
+          :dataPedidos="pedidos"
+          :allPedidos="dataPedidos"
+          :index="index"
+          @click.native="clickOrderFind(pedidos)"
+        />
       </div>
     </div>
   </div>
@@ -24,6 +57,8 @@ export default Vue.extend({
       selectAll: '',
       dataPedidos: [],
       selectOrder: [],
+      pedidoProgramado: [],
+      pedidoCoffee: [],
     }
   },
   async fetch() {
@@ -35,6 +70,16 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+
+    this.dataPedidos.map((e) => {
+      console.log(e)
+
+      if (e.order_type === 'programmed') {
+        this.pedidoProgramado.push(e)
+      } else {
+        this.pedidoCoffee.push(e)
+      }
+    })
   },
   watch: {
     selectAll(newValue, oldValue) {
@@ -75,8 +120,10 @@ export default Vue.extend({
   }
 
   .cardDashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 }
