@@ -2,82 +2,91 @@
   <div v-if="loading" class="loading">
     <span>...Atualizando Status</span>
   </div>
-  <div v-else class="cards">
-    <div class="titleCard">
-      <div class="titleCompany">
-        <p>{{ index + 1 }}</p>
-        <div class="descriptionCompany">
-          <span v-if="dataPedidos.user.Clients === null"></span>
-          <h2 v-else>{{ dataPedidos.user.Clients.corporate_name }}</h2>
-          <span
-            v-if="dataPedidos.order_type === 'programmed'"
-            class="programado"
-            >Programado</span
-          >
-          <span v-else class="coffee">Coffee</span>
+  <div v-else>
+    <div
+      v-if="
+        this.$store.state.selectedStatus ===
+          this.dataPedidos.orderStatus.description ||
+        this.$store.state.selectedStatus === ''
+      "
+      class="cards"
+    >
+      <div class="titleCard">
+        <div class="titleCompany">
+          <p>{{ index + 1 }}</p>
+          <div class="descriptionCompany">
+            <span v-if="dataPedidos.user.Clients === null"></span>
+            <h2 v-else>{{ dataPedidos.user.Clients.corporate_name }}</h2>
+            <span
+              v-if="dataPedidos.order_type === 'programmed'"
+              class="programado"
+              >Programado</span
+            >
+            <span v-else class="coffee">Coffee</span>
+          </div>
+        </div>
+        <div class="iconsStatus">
+          <div class="icons">
+            <img
+              src="~/assets/icons/programado.svg"
+              alt=""
+              v-if="dataPedidos.order_type === 'programmed'"
+            />
+            <img src="~/assets/icons/coffee.svg" alt="" v-else />
+            <img src="~/assets/icons/3dot.svg" alt="" @click="statusOrder" />
+          </div>
+          <div :class="{ selectOrder: selectOrder }">
+            <select
+              v-model="selected"
+              style="
+                border: 1px solid var(--border);
+                height: 1.6rem;
+                margin: 0.4rem 0;
+              "
+            >
+              <option value="" disabled>Status</option>
+              <option value="022ac120002-1c69-11ee-be56-0242ac120002">
+                Solicitado
+              </option>
+              <option value="11ee6828-1c69-11ee-be56-c691200020241">
+                Agendado
+              </option>
+              <option value="314e2828-1c69-11ee-be56-c691200020241">
+                Pré-Produção
+              </option>
+              <option value="45690813-1c69-11ee-be56-c691200020241">
+                Em Processamento
+              </option>
+              <option value="789850813-1c69-11ee-be56-c691200020241">
+                Em Entrega
+              </option>
+              <option value="1c69c120002-575f34-1c69-be56-0242ac1201c69">
+                Entregue
+              </option>
+              <option value="016b9c84-4e7f-81ee-be56-0242ac1200022fe2af">
+                Revisão Admin
+              </option>
+              <option value="22afa4e4-4e7f-14ee-be56-0222afa2d22afb092">
+                Revisão Cliente
+              </option>
+              <option value="55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4">
+                Cancelado
+              </option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="iconsStatus">
-        <div class="icons">
-          <img
-            src="~/assets/icons/programado.svg"
-            alt=""
-            v-if="dataPedidos.order_type === 'programmed'"
-          />
-          <img src="~/assets/icons/coffee.svg" alt="" v-else />
-          <img src="~/assets/icons/3dot.svg" alt="" @click="statusOrder" />
+      <div class="dataOrder">
+        <div class="descriptionOrder">
+          <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
+          <span>Finalizar as</span>
+          <span>09:30</span>
         </div>
-        <div :class="{ selectOrder: selectOrder }">
-          <select
-            v-model="selected"
-            style="
-              border: 1px solid var(--border);
-              height: 1.6rem;
-              margin: 0.4rem 0;
-            "
-          >
-            <option value="" disabled>Status</option>
-            <option value="022ac120002-1c69-11ee-be56-0242ac120002">
-              Solicitado
-            </option>
-            <option value="11ee6828-1c69-11ee-be56-c691200020241">
-              Agendado
-            </option>
-            <option value="314e2828-1c69-11ee-be56-c691200020241">
-              Pré-Produção
-            </option>
-            <option value="45690813-1c69-11ee-be56-c691200020241">
-              Em Processamento
-            </option>
-            <option value="789850813-1c69-11ee-be56-c691200020241">
-              Em Entrega
-            </option>
-            <option value="1c69c120002-575f34-1c69-be56-0242ac1201c69">
-              Entregue
-            </option>
-            <option value="016b9c84-4e7f-81ee-be56-0242ac1200022fe2af">
-              Revisão Admin
-            </option>
-            <option value="22afa4e4-4e7f-14ee-be56-0222afa2d22afb092">
-              Revisão Cliente
-            </option>
-            <option value="55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4">
-              Cancelado
-            </option>
-          </select>
-        </div>
+        <ButtonPirula
+          title="Exibir Pedidos"
+          @click.native="exibirPedidos(dataPedidos)"
+        />
       </div>
-    </div>
-    <div class="dataOrder">
-      <div class="descriptionOrder">
-        <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
-        <span>Finalizar as</span>
-        <span>09:30</span>
-      </div>
-      <ButtonPirula
-        title="Exibir Pedidos"
-        @click.native="exibirPedidos(dataPedidos)"
-      />
     </div>
   </div>
 </template>
