@@ -20,8 +20,8 @@
           style="border: 1px solid var(--border); height: 30px"
         >
           <option value="" disabled>Selecione o tipo de pedido</option>
-          <option value="assado">Assado</option>
-          <option value="congelado">Congelado</option>
+          <option value="roast">Assado</option>
+          <option value="frozen">Congelado</option>
         </select>
       </div>
     </div>
