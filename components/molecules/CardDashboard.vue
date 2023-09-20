@@ -12,17 +12,18 @@
       </div>
       <div class="iconsStatus">
         <div class="icons">
-          <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.status === 1" />
+          <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.order_type === 'programmed'" />
           <img src="~/assets/icons/coffee.svg" alt="" v-else />
           <img src="~/assets/icons/3dot.svg" alt="" @click="statusOrder">
         </div>
         <div :class="{ selectOrder: selectOrder }">
-          <select v-model="selected">
-            <option value="">Agendado</option>
-            <option value="">Pré-Produção</option>
-            <option value="">Em Processamento</option>
-            <option value="">Em Entrega</option>
-            <option value="">Entregue</option>
+          <select v-model="selected" style="border: 1px solid var(--border); height: 1.6rem; margin: 0.4rem 0;">
+            <option value="" disabled>Status</option>
+            <option value="Agendado">Agendado</option>
+            <option value="Pré-Produção">Pré-Produção</option>
+            <option value="Em Processamento">Em Processamento</option>
+            <option value="Em Entrega">Em Entrega</option>
+            <option value="Entregue">Entregue</option>
           </select>
 
         </div>
@@ -41,6 +42,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
+import httpOrder from '@/server/pedidos'
 
 export default Vue.extend({
   props: {
@@ -61,7 +64,26 @@ export default Vue.extend({
     return {
       somaValeu: 0,
       selected: '',
+      statuOrder: '',
       selectOrder: true
+    }
+  },
+
+  watch: {
+    async selected(newValue, oldValue) {
+      const statuOrder = {
+        fk_orderstatus: newValue
+      }
+      console.log(newValue, this.dataPedidos.id);
+      await httpOrder.UpdateStatusOrder(this.dataPedidos.id, statuOrder)
+        .then((res) => {
+          console.log(res);
+
+        })
+        .catch((error) => {
+          console.log(error);
+
+        })
     }
   },
   methods: {
