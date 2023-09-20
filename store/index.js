@@ -9,7 +9,11 @@ export const state = () => ({
   },
   barraRoute: false,
   qtdPedidos: 0,
-  dadosPedidos: {}
+  dadosPedidos: {},
+  selectedAll: '',
+  selectedTipo: '',
+  selectedStatus: '',
+  selectedClient: '',
 })
 
 export const mutations = {
@@ -39,5 +43,17 @@ export const mutations = {
   },
   DADOS_PEDIDOS(state, payload) {
     state.dadosPedidos = payload
+  },
+  SELECTED_ALL(state, payload) {
+    state.selectedTipo = payload
+  },
+  SELECTED_TIPO(state, payload) {
+    state.selectedTipo = payload
+  },
+  SELECTED_STATUS(state, payload) {
+    state.selectedStatus = payload
+  },
+  SELECTED_CLIENT(state, payload) {
+    state.selectedClient = payload
   }
 }

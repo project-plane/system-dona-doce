@@ -8,7 +8,11 @@
 
       <v-date-picker v-model="date" mode="date">
         <template v-slot="{ inputEvents }">
-          <button :class="{ focus: !isToday }" @click="calendarShowOrNot(false)" v-on="inputEvents">
+          <button
+            :class="{ focus: !isToday }"
+            @click="calendarShowOrNot(false)"
+            v-on="inputEvents"
+          >
             Calendário
           </button>
         </template>
@@ -16,32 +20,32 @@
       <div class="selectInput">
         <div class="input">
           <label>Tipo Pedido</label>
-          <select>
-            <option value="" disabled>Selecionar tipo pedido</option>
-            <option value="">Programado</option>
-            <option value="">Coffee</option>
+          <select v-model="selectedType">
+            <option value="">Todos</option>
+            <option value="programmed">Programado</option>
+            <option value="coffe">Coffee</option>
           </select>
         </div>
         <div class="input">
           <label>Status</label>
-          <select>
-            <option value="">Selecionar status</option>
-            <option value="">Solicitado</option>
-            <option value="">Agendado</option>
-            <option value="">Pré-Produção</option>
-            <option value="">Em Processamento</option>
-            <option value="">Em Entrega</option>
-            <option value="">Entregue</option>
+          <select v-model="selectedAgenda">
+            <option value="" disabled>Todos</option>
+            <option value="Solicitado">Solicitado</option>
+            <option value="Agendado">Agendado</option>
+            <option value="Pré-Produção">Pré-Produção</option>
+            <option value="Em Processamento">Em Processamento</option>
+            <option value="Em Entrega">Em Entrega</option>
+            <option value="Entregue">Entregue</option>
           </select>
         </div>
         <div class="input">
           <label>Clientes</label>
-          <select>
-            <option value="">Selecionar Cliente</option>
-            <option value="">Sodex</option>
-            <option value="">V&V Refeições</option>
-            <option value="">Prato Bom</option>
-            <option value="">VA Refeições</option>
+          <select v-model="selectedClient">
+            <option value="" disabled>Selecionar Cliente</option>
+            <option value="Sodex">Sodex</option>
+            <option value="V&V Refeições">V&V Refeições</option>
+            <option value="Prato Bom">Prato Bom</option>
+            <option value="VA Refeições">VA Refeições</option>
           </select>
         </div>
       </div>
@@ -68,7 +72,17 @@ export default Vue.extend({
       calendarStatus: false,
       date: new Date(),
       visualization: false,
+      selectedType: '',
+      selectedAgenda: '',
+      selectedClient: '',
     }
+  },
+
+  props: {
+    teste: {
+      type: Number,
+      required: true,
+    },
   },
 
   watch: {
@@ -81,6 +95,15 @@ export default Vue.extend({
       } else {
         this.isToday = true
       }
+    },
+    selectedType(newValue) {
+      this.$store.commit('SELECTED_TIPO', newValue)
+    },
+    selectedAgenda(newValue) {
+      this.$store.commit('SELECTED_STATUS', newValue)
+    },
+    selectedClient(newValue) {
+      this.$store.commit('SELECTED_CLIENT', newValue)
     },
   },
 
