@@ -1,36 +1,33 @@
 <template>
-    <div class="contentLoading">
-      <div>
-        <div class="containerImg">
-          <img src="@/assets/img/cupCake.png" alt="">
-          <div class="bite">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+  <div class="contentLoading">
+    <div>
+      <div class="containerImg">
+        <img src="@/assets/img/cupCake.png" alt="" />
+        <div class="bite">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
-        <h3>Carregando</h3>
       </div>
+      <h3>Carregando</h3>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
   data() {
-    return {
-        
-    }
-  }
+    return {}
+  },
 })
 </script>
 
 <style lang="scss" scoped>
 $size: 1.5rem;
-.contentLoading{
-  
+.contentLoading {
   width: 100%;
-  height: 50vh;
+  height: 30vh;
   background: var(--bg_color);
   z-index: 9;
   top: 0;
@@ -38,12 +35,12 @@ $size: 1.5rem;
   display: grid;
   place-items: center;
 
-  .containerImg{
-    animation: containerImg 2s cubic-bezier(1,-0.27, 0, 1) infinite alternate;
+  .containerImg {
+    animation: containerImg 2s cubic-bezier(1, -0.27, 0, 1) infinite alternate;
     transform-origin: center;
     transform-box: fill-box;
     width: fit-content;
-    .bite{
+    .bite {
       background: var(--bg_color);
       width: fit-content;
       height: 1rem;
@@ -52,60 +49,59 @@ $size: 1.5rem;
       bottom: 6.3rem;
       left: 3.5rem;
       transform: rotateZ(-115deg);
-      div{
+      div {
         min-width: $size;
         height: $size;
         background: var(--bg_color);
         border-radius: 50%;
         position: relative;
-        bottom: .4rem;
+        bottom: 0.4rem;
       }
-      div:nth-child(2){
+      div:nth-child(2) {
         position: relative;
-        bottom: .7rem;
+        bottom: 0.7rem;
       }
-      animation: bite 2s cubic-bezier(1,-0.27, 0, 1) infinite alternate;
+      animation: bite 2s cubic-bezier(1, -0.27, 0, 1) infinite alternate;
     }
   }
-  h3{
+  h3 {
     position: relative;
     bottom: 1rem;
-    width: 8rem
+    width: 8rem;
   }
-  h3:after{
+  h3:after {
     content: '';
-    animation: title 2s cubic-bezier(1,-0.27, 0, 1) infinite;
+    animation: title 2s cubic-bezier(1, -0.27, 0, 1) infinite;
   }
 }
 
 @keyframes bite {
-  from{
+  from {
     opacity: 0;
   }
-  to{
+  to {
     opacity: 1;
   }
 }
 
 @keyframes containerImg {
-  from{
-    transform: rotateZ(0deg)
+  from {
+    transform: rotateZ(0deg);
   }
-  to{
-    transform: rotateZ(-15deg)
+  to {
+    transform: rotateZ(-15deg);
   }
 }
 
 @keyframes title {
-  0%{
-    content: '.'
+  0% {
+    content: '.';
   }
-  50%{
-    content: '..'
+  50% {
+    content: '..';
   }
-  100%{
-    content: '...'
+  100% {
+    content: '...';
   }
 }
-
 </style>
