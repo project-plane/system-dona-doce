@@ -1,9 +1,6 @@
 <template>
   <div class="containerCard">
-    <img
-      :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.imagem}`"
-      alt=""
-    />
+    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.imagem}`" alt="" />
     <div class="cardPedido">
       <div class="descriptionPedido">
         <h3>{{ tipoLanches.descriptionRevenue }}</h3>
@@ -15,10 +12,7 @@
       </div>
       <div class="selectPedido">
         <p>Tipo</p>
-        <select
-          v-model="selected"
-          style="border: 1px solid var(--border); height: 30px"
-        >
+        <select v-model="selected" style="border: 1px solid var(--border); height: 30px">
           <option value="" disabled>Selecione o tipo de pedido</option>
           <option value="roast">Assado</option>
           <option value="frozen">Congelado</option>
@@ -54,7 +48,7 @@ export default Vue.extend({
 
   methods: {
     addPedidos(lanche) {
-      if (!this.qtdPedido) {
+      if (!this.qtdPedido || !this.selected) {
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
@@ -67,6 +61,7 @@ export default Vue.extend({
         this.selected
       )
       this.qtdPedido = ''
+      this.selected = ''
     },
   },
 })

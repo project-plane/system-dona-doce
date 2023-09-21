@@ -1,68 +1,36 @@
 <template>
   <div class="contentCardPedido">
     <div class="header-pedidos">
-      <MenuPedidos
-        :data-pedido="dataPedido"
-        :qtdPedidos="listaCompletaReceita"
-        @lancheDesjejum="lancheDesjejum"
-        @lanche1="lanche1"
-        @lanche2="lanche2"
-        @finalizarPedido="finalizarPedido"
-      />
+      <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
+        @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
       <div class="qtdPedidos" @click="() => (showModal = true)">
         <img src="~/assets/icons/shopCar.svg" />
-        <span
-          v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0"
-        >
+        <span v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0">
           <p>{{ listaCompletaReceita.length + listaForaEstoque.length }}</p>
         </span>
         <p style="margin-left: 0.5rem">Carrinho</p>
       </div>
     </div>
 
-    <ModalCarrinho
-      v-if="showModal"
-      :listaCompletaReceita="listaCompletaReceita"
-      :listaForaEstoque="listaForaEstoque"
-      @closeModal="() => (showModal = false)"
-      @finalizarPedido="finalizarPedido"
-      @listaAtualizadaDoModal="listaAtualizadaDoModal"
-      @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque"
-    />
+    <ModalCarrinho v-if="showModal" :listaCompletaReceita="listaCompletaReceita" :listaForaEstoque="listaForaEstoque"
+      @closeModal="() => (showModal = false)" @finalizarPedido="finalizarPedido"
+      @listaAtualizadaDoModal="listaAtualizadaDoModal" @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque" />
 
-    <div
-      v-if="statusDesjejum || statusLanche1 || statusLanche2"
-      class="cardsPedidos"
-    >
-      <div
-        v-for="pedidosProgramation in revenueClient"
-        :key="pedidosProgramation.id"
-      >
-        <CardProgramation
-          :tipo-lanches="pedidosProgramation"
-          :tipo-pedido="tipoPedido"
-          @pedidos="pedidos"
-        />
+    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
+      <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
       </div>
     </div>
     <h2>Fora do Cardapio</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque
-          :foraDeEstoque="p"
-          :tipo-pedido="tipoPedido"
-          @pedidosForeEstoque="pedidosForeEstoque"
-        />
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
       </div>
     </div>
 
     <div class="cardsPedidos unique" v-else>
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque
-          :foraDeEstoque="p"
-          :tipo-pedido="tipoPedido"
-          @pedidosForeEstoque="pedidosForeEstoque"
-        />
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
       </div>
     </div>
   </div>
@@ -262,6 +230,9 @@ export default Vue.extend({
             this.$toast.info('Ocorreu um erro!')
           })
       }
+      this.showModal = false
+      this.listaCompletaReceita = []
+      this.listaForaEstoque = []
     },
 
     listaAtualizadaDoModal(e) {
