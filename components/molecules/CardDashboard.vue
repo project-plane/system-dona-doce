@@ -81,6 +81,7 @@
                 src="~/assets/icons/3dot.svg"
                 alt=""
                 v-if="dataPedidos.orderStatus.description !== 'Entregue'"
+                @click="statusOrder"
               />
             </div>
           </div>

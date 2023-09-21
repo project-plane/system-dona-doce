@@ -1,7 +1,7 @@
 <template>
     <div class="cardKanban-container">
         <div class="cardKanban-number">
-            {{ dataObject.id }}
+            Teste
         </div>
         <div v-if="typeCard !== 'entrega'" class="cardKanban-infos">
             <div class="legend">
@@ -12,9 +12,9 @@
                 <span v-if="typeCard === 'client'">Cliente</span>
             </div>
             <div class="value">
-                <span>{{ dataObject.nameRecipe }}</span>
-                <span>{{ dataObject.qtde }}</span>
-                <span>{{ dataObject.horario }}</span>
+                <span>{{ dataObject.description }}</span>
+                <span>{{ dataObject.amount_actual }}</span>
+                <span>09:00</span>
                 <span v-if="typeCard === 'client'">{{ dataObject.idOrdem }}</span>
                 <span v-if="typeCard === 'client'">{{dataObject.cliente}}</span>
             </div>

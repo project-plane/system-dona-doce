@@ -27,7 +27,7 @@
                 </div>
 
                 <draggable v-model="list" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in list" :key="index" :data-object="item" :type-card="typeKanban"/>
+                    <CardKanban v-for="(item, index) in listLanche01" :key="index" :data-object="item" :type-card="typeKanban"/>             
                 </draggable>
             </div>
 
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="kanban-list">
-                   
+                    <CardKanban v-for="(item, index) in listLanche02" :key="index" :data-object="item" :type-card="typeKanban"/>
                 </div>
             </div>
 
@@ -49,8 +49,14 @@
                     <span v-else>15:00</span>
                     <span>Total: 1.102</span>
                 </div>
+
+                <div class="kanban-list">
+                    <CardKanban v-for="(item, index) in listDejejum" :key="index" :data-object="item" :type-card="typeKanban"/>
+                </div>
       
             </div>
+
+            
         </div>
     </div>
 </template>
@@ -59,6 +65,8 @@
 import Vue from 'vue'
 import draggable from 'vuedraggable';
 import dayjs from 'dayjs'
+import httpKanban from '~/server/kanban/index'
+
 export default Vue.extend({
     components: { draggable},
     data () {
@@ -71,8 +79,33 @@ export default Vue.extend({
                 {id: 0, nameRecipe: 'Bolo de Chocolate', qtde: 500, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
                 {id: 1, nameRecipe: 'Cookie', qtde: 200, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
                 {id: 2, nameRecipe: 'Jacaré', qtde: 500, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
-            ]
+            ],
+            listKanban: [],
+            listLanche01: [],
+            listLanche02: [],
+            listDejejum: []
         }
+    },
+
+    async created() {
+        await httpKanban.GetKanban().then( (res) => {
+            this.listKanban = res.data
+
+            res.data.map( (item) => {
+                if(item.description_category === 'Lanche 1') {
+                    this.listLanche01.push(item)
+                }
+
+                if(item.description_category === 'Lanche 2') {
+                    this.listLanche02.push(item)
+                }
+
+                if(item.description_category === 'Dejejum') {
+                    this.listDejejum.push(item)
+                }
+                
+            })
+        })
     },
 
     methods: {
