@@ -132,8 +132,7 @@ export default Vue.extend({
     const foraEstoqueAtualizado = []
     this.listProgramation.find((fora) => {
       var itemV = this.revenueClient.find(
-        (itemMenu) =>
-          itemMenu.fk_revenues === fora.id
+        (itemMenu) => itemMenu.fk_revenues === fora.id
       )
       if (!itemV) {
         foraEstoqueAtualizado.push(fora)
@@ -143,7 +142,7 @@ export default Vue.extend({
   },
 
   methods: {
-    pedidos(qtdOrder, fk_revenue, index) {
+    pedidos(qtdOrder, fk_revenue, index, typeOrder) {
       const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
         return (
           item.fk_categoryOrderItem === this.tipoPedido &&
@@ -159,6 +158,7 @@ export default Vue.extend({
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
         listReceita: index,
+        method_of_preparation: typeOrder,
       })
       this.listPedidos.itemMenu.map((item) => {
         if (fk_revenue === item.revenues.id) {
@@ -169,7 +169,7 @@ export default Vue.extend({
       })
     },
 
-    pedidosForeEstoque(qtdOrder, fk_revenue, index) {
+    pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder) {
       const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
         return (
           item.fk_categoryOrderItem === this.tipoPedido &&
@@ -185,9 +185,9 @@ export default Vue.extend({
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
         listReceita: index,
+        method_of_preparation: typeOrder,
       })
       this.foraEstoque.map((item) => {
-
         if (fk_revenue === item.id) {
           this.$toast.info(
             `(${qtdOrder}X) ${item.description} ADICIONADO AO CARRINHO`
@@ -197,7 +197,10 @@ export default Vue.extend({
     },
 
     async finalizarPedido() {
-      if (this.listaCompletaReceita.length === 0 && this.listaForaEstoque.length === 0) {
+      if (
+        this.listaCompletaReceita.length === 0 &&
+        this.listaForaEstoque.length === 0
+      ) {
         this.$toast.error('Insira ao menos um item para realizar pedido.')
       } else {
         this.listaCompletaReceita.map((item) => {
@@ -205,6 +208,7 @@ export default Vue.extend({
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
+            method_of_preparation: item.method_of_preparation,
           })
         })
 
@@ -213,8 +217,8 @@ export default Vue.extend({
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
+            method_of_preparation: item.method_of_preparation,
           })
-
         })
 
         await HttpPedidos.CreateNewOrder(this.addPedidos)
@@ -226,6 +230,9 @@ export default Vue.extend({
             this.$toast.info('Ocorreu um erro!')
           })
       }
+      this.showModal = false
+      this.listaCompletaReceita = []
+      this.listaForaEstoque = []
     },
 
     listaAtualizadaDoModal(e) {
@@ -326,7 +333,7 @@ export default Vue.extend({
 }
 
 .unique {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
 </style>

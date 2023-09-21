@@ -2,100 +2,33 @@
   <Container>
     <Title title="Cadastrar Cliente" />
     <ContainerInput>
-      <Input
-        label="Empresa"
-        type="text"
-        placeholder="Ex: Moto Honda da Amazonia LTDA"
-        v-model="corporate_name"
-      />
-      <Input
-        label="Nome Fantasia"
-        type="text"
-        placeholder="Ex: Honda"
-        v-model="name_fantasy"
-      />
+      <Input label="Empresa" type="text" placeholder="Ex: Moto Honda da Amazonia LTDA" v-model="corporate_name" />
+      <Input label="Nome Fantasia" type="text" placeholder="Ex: Honda" v-model="name_fantasy" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        label="CNPJ"
-        type="text"
-        placeholder="Ex: XX.XXX.XXX/0001-XX"
-        v-mask="['##.###.###/####-##']"
-        v-model="cnpj"
-      />
+      <Input label="CNPJ" type="text" placeholder="Ex: XX.XXX.XXX/0001-XX" v-mask="['##.###.###/####-##']"
+        v-model="cnpj" />
 
-      <Input
-        label="Inscrição Estadual"
-        type="text"
-        placeholder="Ex: XX.XXX.XXX"
-        v-model="ie"
-      />
+      <Input label="Inscrição Estadual" type="text" placeholder="Ex: XX.XXX.XXX" v-model="ie" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        label="Endereço"
-        type="text"
-        placeholder="Ex: Rua Socorro Dutra, 37"
-        v-model="address"
-      />
-      <Input 
-        label="CEP" 
-        type="text" 
-        placeholder="Ex: XXXXX-XXX" 
-        v-mask="['XXXXX-XXX']"
-        v-model="cep" 
-      />
+      <Input label="Endereço" type="text" placeholder="Ex: Rua Socorro Dutra, 37" v-model="address" />
+      <Input label="CEP" type="text" placeholder="Ex: XXXXX-XXX" v-mask="['XXXXX-XXX']" v-model="cep" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        label="Fone"
-        type="text"
-        placeholder="Ex: XXXXXXXXX"
-        v-model="fone"
-      />
-      <Input
-        label="Bairro"
-        type="text"
-        placeholder="Ex: Centro"
-        v-model="district"
-      />
+      <Input label="Fone" type="text" placeholder="Ex: XXXXXXXXX" v-model="fone" />
+      <Input label="Bairro" type="text" placeholder="Ex: Centro" v-model="district" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        label="UF"
-        type="text"
-        placeholder="Ex: AM"
-        v-model="uf"
-        v-mask="['AA']"
-      />
-      <Input
-        label="Cidade"
-        type="text"
-        placeholder="Digitar cidade"
-        v-model="county"
-      />
+      <Input label="UF" type="text" placeholder="Ex: AM" v-model="uf" v-mask="['AA']" />
+      <Input label="Cidade" type="text" placeholder="Digitar cidade" v-model="county" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        label="Responsável"
-        type="text"
-        placeholder="Digitar responsável"
-        v-model="accountable"
-      />
-      <Input
-        label="E-mail"
-        type="text"
-        placeholder="Digitar e-mail"
-        v-model="createUser.email"
-      />
+      <Input label="Responsável" type="text" placeholder="Digitar responsável" v-model="accountable" />
+      <Input label="E-mail" type="text" placeholder="Digitar e-mail" v-model="createUser.email" />
     </ContainerInput>
     <ContainerInput>
-      <Input
-        label="Senha"
-        type="password"
-        placeholder="Digitar senha"
-        v-model="createUser.password"
-      />
+      <Input label="Senha" type="password" placeholder="Digitar senha" v-model="createUser.password" />
     </ContainerInput>
 
     <h3>Associar unidade - cliente</h3>
@@ -109,18 +42,8 @@
           </option>
         </select>
       </div>
-      <Input
-        label="Responsável"
-        type="text"
-        placeholder="Digitar nome responsável"
-        v-model="accountableCompany"
-      />
-      <Input
-        label="Fone"
-        type="text"
-        placeholder="Digitar fone responsável"
-        v-model="foneCompany"
-      />
+      <Input label="Responsável" type="text" placeholder="Digitar nome responsável" v-model="accountableCompany" />
+      <Input label="Fone" type="text" placeholder="Digitar fone responsável" v-model="foneCompany" />
       <button @click="addClient">Adicionar</button>
     </div>
     <table v-if="createCompany.length !== 0">
@@ -138,17 +61,13 @@
           <td>{{ company.accountable }}</td>
           <td>{{ company.fone }}</td>
           <td>
-            <img
-              src="~/assets/icons/close.svg"
-              alt=""
-              @click="removeEmpresaAssociada(company)"
-            />
+            <img src="~/assets/icons/close.svg" alt="" @click="removeEmpresaAssociada(company)" />
           </td>
         </tr>
       </tbody>
     </table>
     <div class="row-button">
-      <Button @click.native="saveClient" title="Salvar" :isDisabled="isDisabled"/>
+      <Button @click.native="saveClient" title="Salvar" :isDisabled="isDisabled" />
     </div>
   </Container>
 </template>
@@ -201,7 +120,7 @@ export default Vue.extend({
   },
   methods: {
     addClient() {
-      
+
       let idEmpresa
       this.listEmpresa.map((e) => {
         if (this.selected === e.corporate_name) {
@@ -261,8 +180,7 @@ export default Vue.extend({
         !this.address ||
         !this.cep ||
         !this.accountable ||
-        !this.createUser ||
-        this.createCompany.length === 0
+        !this.createUser
       ) {
         this.$toast.error('Preencha todos os campos!!!')
         return
@@ -290,7 +208,7 @@ export default Vue.extend({
         .CreateClient(dataClient)
         .then((res) => {
           this.$toast.success('Cliente criado com sucesso!!!')
-          
+
         })
         .catch((error) => {
           console.log(error)
@@ -324,6 +242,7 @@ export default Vue.extend({
   border-top: 1px solid var(--border);
   padding: 1rem 0 1rem 0;
   width: 100%;
+
   button {
     border-radius: 0.25rem;
     font-weight: bold;
@@ -346,6 +265,7 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   gap: 1rem;
+
   button {
     border-radius: 0.3rem;
     font-weight: bold;
@@ -360,12 +280,14 @@ export default Vue.extend({
     margin-top: 30px;
   }
 }
+
 .inputCreate {
   width: 100%;
   padding: 1rem 0;
   display: flex;
   gap: 2rem;
 }
+
 .input {
   width: 100%;
   display: flex;
@@ -386,22 +308,27 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+
   thead {
     width: 100%;
     background: var(--bg_heade_table);
+
     tr th {
       padding: 0.6rem 0;
     }
   }
+
   tbody tr td {
     text-align: center;
     padding: 1rem 0;
+
     img {
       width: 15px;
       height: 15px;
       cursor: pointer;
     }
   }
+
   tbody tr button {
     background: transparent;
   }
