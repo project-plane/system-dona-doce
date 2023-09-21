@@ -3,47 +3,33 @@
     <span>...Atualizando Status</span>
   </div>
   <div v-else>
-    <div
-      v-if="
-        this.$store.state.selectedStatus ===
-          this.dataPedidos.orderStatus.description ||
-        this.$store.state.selectedStatus === ''
-      "
-      class="cards"
-    >
+    <div v-if="this.$store.state.selectedStatus ===
+      this.dataPedidos.orderStatus.description ||
+      this.$store.state.selectedStatus === ''
+      " class="cards">
       <div class="titleCard">
         <div class="titleCompany">
           <p>{{ index + 1 }}</p>
           <div class="descriptionCompany">
-            <span v-if="dataPedidos.user.Clients === null"></span>
-            <h2 v-else>{{ dataPedidos.user.Clients.corporate_name }}</h2>
-            <span
-              v-if="dataPedidos.order_type === 'programmed'"
-              class="programado"
-              >Programado</span
-            >
+            <!-- <span v-if="dataPedidos.user.Clients === null"></span> -->
+            <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
+            <span v-if="dataPedidos.order_type === 'programmed'" class="programado">Programado</span>
             <span v-else class="coffee">Coffee</span>
           </div>
         </div>
+        <span>{{ currentDate() }}</span>
         <div class="iconsStatus">
           <div class="icons">
-            <img
-              src="~/assets/icons/programado.svg"
-              alt=""
-              v-if="dataPedidos.order_type === 'programmed'"
-            />
+            <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.order_type === 'programmed'" />
             <img src="~/assets/icons/coffee.svg" alt="" v-else />
             <img src="~/assets/icons/3dot.svg" alt="" @click="statusOrder" />
           </div>
           <div :class="{ selectOrder: selectOrder }">
-            <select
-              v-model="selected"
-              style="
+            <select v-model="selected" style="
                 border: 1px solid var(--border);
                 height: 1.6rem;
                 margin: 0.4rem 0;
-              "
-            >
+              ">
               <option value="" disabled>Status</option>
               <option value="022ac120002-1c69-11ee-be56-0242ac120002">
                 Solicitado
@@ -82,10 +68,7 @@
           <span>Finalizar as</span>
           <span>09:30</span>
         </div>
-        <ButtonPirula
-          title="Exibir Pedidos"
-          @click.native="exibirPedidos(dataPedidos)"
-        />
+        <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
       </div>
     </div>
   </div>
@@ -147,6 +130,16 @@ export default Vue.extend({
     statusOrder() {
       this.selectOrder = !this.selectOrder
     },
+    currentDate() {
+      const dateOrder = new Date(this.dataPedidos.dateOrder)
+
+      const dia = dateOrder.getDate().toString()
+      const mes = (dateOrder.getMonth() + 1).toString()
+      const ano = dateOrder.getFullYear()
+
+      const data = `${dia}/${mes}/${ano}`
+      return data
+    }
   },
 })
 </script>
@@ -155,6 +148,7 @@ export default Vue.extend({
 h2 {
   font-size: 1.2rem;
 }
+
 .cards {
   width: 100%;
   height: 30vh;
