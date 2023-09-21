@@ -7,7 +7,7 @@
       </button>
 
       <v-date-picker v-model="date" mode="date">
-        <template v-slot="{ inputEvents }">
+        <template #default="{ inputEvents }">
           <button
             :class="{ focus: !isToday }"
             @click="calendarShowOrNot(false)"
@@ -66,6 +66,13 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 
 export default Vue.extend({
+
+  props: {
+    teste: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     return {
       isToday: true,
@@ -74,15 +81,8 @@ export default Vue.extend({
       visualization: false,
       selectedType: '',
       selectedAgenda: '',
-      selectedClient: '',
+      selectedClient: ''
     }
-  },
-
-  props: {
-    teste: {
-      type: Number,
-      required: true,
-    },
   },
 
   watch: {

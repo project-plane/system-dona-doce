@@ -51,6 +51,8 @@
                 </div>
       
             </div>
+
+            {{ listKanban }}
         </div>
     </div>
 </template>
@@ -59,6 +61,8 @@
 import Vue from 'vue'
 import draggable from 'vuedraggable';
 import dayjs from 'dayjs'
+import httpKanban from '~/server/kanban/index'
+
 export default Vue.extend({
     components: { draggable},
     data () {
@@ -71,8 +75,15 @@ export default Vue.extend({
                 {id: 0, nameRecipe: 'Bolo de Chocolate', qtde: 500, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
                 {id: 1, nameRecipe: 'Cookie', qtde: 200, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
                 {id: 2, nameRecipe: 'Jacaré', qtde: 500, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
-            ]
+            ],
+            listKanban: []
         }
+    },
+
+    async created() {
+        await httpKanban.GetKanban().then( (res) => {
+            this.listKanban = res.data
+        })
     },
 
     methods: {
