@@ -11,6 +11,8 @@
             <th>Item</th>
             <th>Qtde</th>
             <th>V. Unidade</th>
+            <th>Fora de Estoque</th>
+            <th>Tipo de Pepraro</th>
             <th>Total</th>
             <th>Opções</th>
           </tr>
@@ -31,6 +33,10 @@
             </td>
             <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
             <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
+            <td v-if="item.type_preparation === 'Fora de Estoque'">Fora de Estoque</td>
+            <td v-else></td>
+            <td v-if="item.method_of_preparation === 'roast'">Assado</td>
+            <td v-else>Congelado</td>
             <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
             <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}</td>
             <td>
@@ -49,6 +55,8 @@
           <th>Item</th>
           <th>Qtde</th>
           <th>V. Unidade</th>
+          <th>Fora de Estoque</th>
+          <th>Tipo de Pepraro</th>
           <th>Total</th>
           <th>Opções</th>
         </tr>
@@ -68,6 +76,10 @@
           </td>
           <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
           <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
+          <td v-if="item.type_preparation === 'Fora de Estoque'">Fora de Estoque</td>
+          <td v-else></td>
+          <td v-if="item.method_of_preparation === 'roast'">Assado</td>
+          <td v-else>Congelado</td>
           <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
           <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}</td>
           <td>
@@ -85,6 +97,8 @@
           <th>Item</th>
           <th>Qtde</th>
           <th>V. Unidade</th>
+          <th>Fora de Estoque</th>
+          <th>Tipo de Pepraro</th>
           <th>Total</th>
           <th>Opções</th>
         </tr>
@@ -104,6 +118,10 @@
           </td>
           <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
           <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
+          <td v-if="item.type_preparation === 'Fora de Estoque'">Fora de Estoque</td>
+          <td v-else></td>
+          <td v-if="item.method_of_preparation === 'roast'">Assado</td>
+          <td v-else>Congelado</td>
           <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
           <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}</td>
           <td>
@@ -232,6 +250,7 @@ export default Vue.extend({
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
+            method_of_preparation: item.method_of_preparation
           })
         }
 
@@ -241,10 +260,9 @@ export default Vue.extend({
           this.lanche01.push({
             qtde: item.amountItem,
             receita_descricao: item.listReceita.descriptionRevenue,
-
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-
+            method_of_preparation: item.method_of_preparation
           })
         }
 
@@ -254,10 +272,9 @@ export default Vue.extend({
           this.lanche02.push({
             qtde: item.amountItem,
             receita_descricao: item.listReceita.descriptionRevenue,
-
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-
+            method_of_preparation: item.method_of_preparation
           })
         }
       })
@@ -272,7 +289,9 @@ export default Vue.extend({
             receita_descricao_foraEstoque: item.listReceita.description,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            v_unidade_foraEstoque: item.listReceita.value
+            v_unidade_foraEstoque: item.listReceita.value,
+            method_of_preparation: item.method_of_preparation,
+            type_preparation: 'Fora de Estoque'
           })
         }
 
@@ -285,7 +304,9 @@ export default Vue.extend({
             receita_descricao_foraEstoque: item.listReceita.description,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            v_unidade_foraEstoque: item.listReceita.value
+            v_unidade_foraEstoque: item.listReceita.value,
+            method_of_preparation: item.method_of_preparation,
+            type_preparation: 'Fora de Estoque'
           })
         }
 
@@ -298,7 +319,9 @@ export default Vue.extend({
             receita_descricao_foraEstoque: item.listReceita.description,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            v_unidade_foraEstoque: item.listReceita.value
+            v_unidade_foraEstoque: item.listReceita.value,
+            method_of_preparation: item.method_of_preparation,
+            type_preparation: 'Fora de Estoque'
           })
         }
       })
