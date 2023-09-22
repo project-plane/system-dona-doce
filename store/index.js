@@ -14,9 +14,13 @@ export const state = () => ({
   selectedTipo: '',
   selectedStatus: '',
   selectedClient: '',
+  listAllOrder: []
 })
 
 export const mutations = {
+  LIST_ALL_ORDER(state, payload) {
+    state.listAllOrder = payload
+  },
   OPEN_MODAL(state, payload) {
     state.openModal = payload
   },
