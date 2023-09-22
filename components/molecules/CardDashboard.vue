@@ -56,7 +56,7 @@
       >
         <div class="titleCard">
           <div class="titleCompany">
-            <p>{{ index + 1 }}</p>
+            <p>{{ dataPedidos.numberOrder }}</p>
             <div class="descriptionCompany">
               <!-- <span v-if="dataPedidos.user.Clients === null"></span> -->
               <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
