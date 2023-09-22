@@ -3,7 +3,7 @@
     <div class="descriptionValue">
       <span class="vendas">Vendas</span>
       <div>
-        <strong v-if="visualization">R$: 7.854,00</strong>
+        <strong v-if="visualization">{{ valorVendas }}</strong>
         <strong v-else>R$: --------</strong>
       </div>
     </div>
@@ -21,8 +21,18 @@
         <strong v-else>R$: --------</strong>
       </div>
     </div>
-    <img v-if="visualization" @click="visualization = false" src="~/assets/icons/eye.svg" alt="" />
-    <img v-else @click="visualization = true" src="~/assets/icons/eyeClose.svg" alt="" />
+    <img
+      v-if="visualization"
+      @click="visualization = false"
+      src="~/assets/icons/eye.svg"
+      alt=""
+    />
+    <img
+      v-else
+      @click="visualization = true"
+      src="~/assets/icons/eyeClose.svg"
+      alt=""
+    />
   </div>
 </template>
 
@@ -33,7 +43,27 @@ export default Vue.extend({
   data() {
     return {
       visualization: true,
+      valorVendas: '',
     }
+  },
+
+  fetch() {
+    const dataOrder = this.$store.state.listAllOrder
+    const valorUniqOrder = []
+    dataOrder.map((e) => {
+      valorUniqOrder.push(e.valueOrder)
+    })
+
+    const valorVendas = valorUniqOrder.reduce((soma, i) => {
+      return soma + i
+    })
+
+    const convertMoney = valorVendas.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+
+    this.valorVendas = convertMoney
   },
 })
 </script>
