@@ -78,14 +78,13 @@ export default Vue.extend({
       .OrderHistory()
       .then((res) => {
         this.dataPedidos = res.data
+        this.$store.commit('LIST_ALL_ORDER', this.dataPedidos)
       })
       .catch((error) => {
         console.log(error)
       })
 
     this.dataPedidos.map((e) => {
-      console.log(e)
-
       if (e.order_type === 'programmed') {
         this.pedidoProgramado.push(e)
       } else {
