@@ -11,30 +11,20 @@
       <div class="descriptionValue">
         <span class="compras">Compras</span>
         <div>
-          <strong v-if="visualization">R$: 2.000,00</strong>
+          <strong v-if="visualization">{{ valorCompras }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
       <div class="descriptionValue">
         <span class="lucro">Lucro</span>
         <div>
-          <strong v-if="visualization">R$: 5.854,00</strong>
+          <strong v-if="visualization">{{ valorTotal }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
     </div>
-    <img
-      v-if="visualization"
-      @click="visualization = false"
-      src="~/assets/icons/eye.svg"
-      alt=""
-    />
-    <img
-      v-else
-      @click="visualization = true"
-      src="~/assets/icons/eyeClose.svg"
-      alt=""
-    />
+    <img v-if="visualization" @click="visualization = false" src="~/assets/icons/eye.svg" alt="" />
+    <img v-else @click="visualization = true" src="~/assets/icons/eyeClose.svg" alt="" />
   </div>
 </template>
 
@@ -47,7 +37,9 @@ export default Vue.extend({
   data() {
     return {
       visualization: true,
-      valorVendas: '',
+      valorVendas: null,
+      valorCompras: null,
+      valorTotal: null,
       listOrder: [],
     }
   },
@@ -67,12 +59,35 @@ export default Vue.extend({
       return soma + i
     })
 
-    const convertMoney = valorVendas.toLocaleString('pt-br', {
+    // converte o valor de vendas para moeda BRL
+    const convertMoedasVendas = valorVendas.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+    const convertyVendas = convertMoedasVendas.replace('R$', '').replace('.', '').replace(',', '.')
+
+    this.valorVendas = convertMoedasVendas
+    this.valorCompras = 2000
+
+    // converte o valor de compras para moeda BRL
+    const convertMoedasCompras = this.valorCompras.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+    const convertyCompras = convertMoedasCompras.replace('R$', '').replace('.', '').replace(',', '.')
+
+    this.valorCompras = convertMoedasCompras
+
+    this.valorTotal = convertyVendas - convertyCompras
+    // converte o valor total para moeda BRL
+    const convertTotal = this.valorTotal.toLocaleString('pt-br', {
       style: 'currency',
       currency: 'BRL',
     })
 
-    this.valorVendas = convertMoney
+    this.valorTotal = convertTotal
+    console.log(convertTotal);
+
   },
 })
 </script>
