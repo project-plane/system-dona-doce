@@ -1,7 +1,7 @@
 <template>
   <Container>
     <Title title="Estoque" />
-    <ContainerInput>
+    <div class="inputs">
       <div class="input">
         <span>Ingrediente</span>
         <select v-model="selected">
@@ -11,21 +11,17 @@
           </option>
         </select>
       </div>
-      <Input label="Quantidade" type="number" placeholder="Inserir Quantidade" v-model="quantidade" />
-    </ContainerInput>
+      <div class="medida" v-if="exibirMedida">
+        <span>Unidade Medida</span>
+        {{ unidadeMedida }}
+      </div>
+      <Input label="Quantidade" type="number" :placeholder="holder" v-model="quantidade" />
+    </div>
     <ContainerInput>
-      <!-- <Input block="background: #d6d6d6; cursor: no-drop" label="Valor Ingrediente" type="number" placeholder=""
-        v-model="valorUnitario" disabled="disabled" /> -->
-      <!-- <div class="inputRadio"> -->
       <div class="radio">
         <input type="radio" v-model="is_output" name="status" :value="false" />
         <Label>Entrada</Label>
       </div>
-      <!-- <div class="radio">
-          <input type="radio" v-model="is_output" name="status" :value="true" />
-          <Label>Saída</Label>
-        </div> -->
-      <!-- </div> -->
     </ContainerInput>
     <div class="input_create"></div>
     <div class="row-button">
@@ -51,6 +47,9 @@ export default Vue.extend({
       selected: '',
       is_output: '',
       listIngrediente: [],
+      unidadeMedida: '',
+      exibirMedida: false,
+      holder: 'Inserir Quantidade'
     }
   },
 
@@ -66,13 +65,26 @@ export default Vue.extend({
   },
   watch: {
     selected(newValue) {
+      this.exibirMedida = true
       this.listIngrediente.map((e) => {
-        console.log(e);
 
         if (e.id === newValue) {
           this.valorUnitario = Number(e.value).toFixed(2)
           this.amount = Number(e.amount).toFixed(2)
           this.medida = e.unit_of_measurement
+          this.unidadeMedida = e.unit_of_measurement
+        }
+        if (e.unit_of_measurement === 'g') {
+          this.holder = 'Ex: XXXX'
+          return
+        }
+        if (e.unit_of_measurement === 'ml') {
+          this.holder = 'Ex: XXXX'
+          return
+        }
+        if (e.unit_of_measurement === 'u') {
+          this.holder = 'Ex: X'
+          return
         }
       })
     },
@@ -124,6 +136,21 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.inputs {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+}
+
+.medida {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+}
+
 .input {
   width: 100%;
   display: flex;
