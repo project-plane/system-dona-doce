@@ -26,9 +26,13 @@
                 </option>
               </select>
             </div>
+            <div class="medida" v-if="unidadeMedida">
+              <label for="qtd">Unidade Medida</label>
+              <span>{{ unidadeMedida }}</span>
+            </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input id="qtd" v-model="qtdIngrediente" type="number" placeholder="quantidade" />
+              <input id="qtd" v-model="qtdIngrediente" type="number" :placeholder="holder" />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
@@ -103,13 +107,10 @@ export default Vue.extend({
       amountReceitas: [],
       amountValue: [],
       ingredients: [],
+      holder: 'Digite a qtd',
+      exibirMedida: false,
+      unidadeMedida: ''
     }
-  },
-
-  watch: {
-    porcentagem(newValue, oldValue) {
-      this.valorTotalReceita = (newValue * this.valorTotal).toFixed(2)
-    },
   },
 
   async fetch() {
@@ -122,6 +123,35 @@ export default Vue.extend({
         console.log(error)
       })
   },
+
+  watch: {
+    porcentagem(newValue, oldValue) {
+      this.valorTotalReceita = (newValue * this.valorTotal).toFixed(2)
+    },
+    selected(newValue) {
+
+      this.listIngredients.map((e) => {
+        console.log(e);
+
+        if (e.description === newValue) {
+          this.unidadeMedida = e.unit_of_measurement
+        }
+        if (e.unit_of_measurement === 'g') {
+          this.holder = 'Ex: XXXX'
+          return
+        }
+        if (e.unit_of_measurement === 'ml') {
+          this.holder = 'Ex: XXXX'
+          return
+        }
+        if (e.unit_of_measurement === 'u') {
+          this.holder = 'Ex: X'
+          return
+        }
+      })
+    }
+  },
+
   methods: {
     closeModal() {
       this.$store.commit('OPEN_MODAL_RECEITA', false)
@@ -279,7 +309,7 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
-        grid-template: 1fr/20rem repeat(2, minmax(min(2.3vw, 1rem), 1fr));
+        grid-template: 1fr/15rem repeat(3, minmax(min(2vw, 1rem), 1fr));
         border-bottom: 2px dashed var(--bg_opacity);
         padding-bottom: 1rem;
         gap: 1rem;
@@ -307,6 +337,14 @@ export default Vue.extend({
             font-weight: 700;
             border-radius: 4px;
           }
+        }
+
+        .medida {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
         }
       }
 

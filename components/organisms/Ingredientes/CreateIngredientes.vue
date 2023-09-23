@@ -7,12 +7,12 @@
         <span>Medida</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Tipo de Medida</option>
-          <option value="g">Grama</option>
+          <option value="g">KG</option>
           <option value="ml">Litro</option>
           <option value="u">Unidade</option>
         </select>
       </div>
-      <Input v-model="qtdIngrediente" label="Quantidade" type="number" placeholder="Digite a qtd " />
+      <Input v-model="qtdIngrediente" label="Quantidade" type="number" :placeholder="holder" />
 
       <!-- <Input v-model="priceIngrediente" label="Preço p/ quantidade" type="number"
         placeholder="Digite o preco ingrediente" /> -->
@@ -44,7 +44,8 @@ export default Vue.extend({
       priceIngrediente: '',
       qtdIngrediente: '',
       selected: '',
-      vlPorcaoIngrediente: ''
+      vlPorcaoIngrediente: '',
+      holder: 'Digite a qtd'
     }
   },
   watch: {
@@ -58,6 +59,20 @@ export default Vue.extend({
 
       this.vlPorcaoIngrediente = Number(newValue / this.qtdIngrediente).toFixed(3)
     },
+    selected(newValue) {
+      if (newValue === 'g') {
+        this.holder = 'Ex: XXXX'
+        return
+      }
+      if (newValue === 'ml') {
+        this.holder = 'Ex: XXXX'
+        return
+      }
+      if (newValue === 'u') {
+        this.holder = 'Ex: X'
+        return
+      }
+    }
   },
   methods: {
     async createIngrediente() {
