@@ -7,52 +7,22 @@
     {{ this.$store.state.selectedTipo }}
     {{ this.$store.state.selectedStatus }}
     <div v-if="this.$store.state.selectedTipo === ''" class="cardDashboard">
-      <div
-        v-for="(pedidos, index) in dataPedidos"
-        :key="index"
-        style="width: 49%"
-      >
-        <CardDashboard
-          :dataPedidos="pedidos"
-          :allPedidos="dataPedidos"
-          :index="index"
-          @click.native="clickOrderFind(pedidos)"
-        />
+      <div v-for="(pedidos, index) in dataPedidos" :key="index" style="width: 49%">
+        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
+          @click.native="clickOrderFind(pedidos)" />
       </div>
     </div>
-    <div
-      v-if="this.$store.state.selectedTipo === 'programmed'"
-      class="cardDashboard"
-    >
-      <div
-        v-for="(pedidos, index) in pedidoProgramado"
-        :key="index"
-        style="width: 49%"
-      >
-        <CardDashboard
-          :dataPedidos="pedidos"
-          :allPedidos="dataPedidos"
-          :index="index"
-          @click.native="clickOrderFind(pedidos)"
-        />
+    <div v-if="this.$store.state.selectedTipo === 'programmed'" class="cardDashboard">
+      <div v-for="(pedidos, index) in pedidoProgramado" :key="index" style="width: 49%">
+        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
+          @click.native="clickOrderFind(pedidos)" />
       </div>
     </div>
 
-    <div
-      v-if="this.$store.state.selectedTipo === 'coffe'"
-      class="cardDashboard"
-    >
-      <div
-        v-for="(pedidos, index) in pedidoCoffee"
-        :key="index"
-        style="width: 49%"
-      >
-        <CardDashboard
-          :dataPedidos="pedidos"
-          :allPedidos="dataPedidos"
-          :index="index"
-          @click.native="clickOrderFind(pedidos)"
-        />
+    <div v-if="this.$store.state.selectedTipo === 'coffe'" class="cardDashboard">
+      <div v-for="(pedidos, index) in pedidoCoffee" :key="index" style="width: 49%">
+        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
+          @click.native="clickOrderFind(pedidos)" />
       </div>
     </div>
   </div>
