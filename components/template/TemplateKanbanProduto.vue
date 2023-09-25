@@ -23,40 +23,43 @@
                 <div class="column-header">
                     <span v-if="typeProduct === 'programado'">Lanche 01</span>
                     <span v-else>09:00</span>
-                    <span>Total: {{ amountQtde(list) }}</span>
+                    <span>Total: {{ amountQtde(listLanche01) }}</span>
                 </div>
 
-                <draggable v-model="list" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in listLanche01" :key="index" :data-object="item" :type-card="typeKanban"/>             
+                <draggable v-model="listLanche01" class="kanban-list" ghost-class="ghost">
+                    <CardKanban v-for="(item, index) in listLanche01" :key="index" :data-object="item" :type-card="typeKanban" :id-order="index + 1"/>             
                 </draggable>
+
+                <span v-if="listLanche01.length === 0">Não há produção programada...</span>
             </div>
 
             <div class="kanban-column">
                 <div class="column-header">
                     <span v-if="typeProduct === 'programado'">Lanche 02</span>
                     <span v-else>13:00</span>
-                    <span>Total: 1.102</span>
+                    <span>Total: {{ amountQtde(listLanche02) }}</span>
                 </div>
 
-                <div class="kanban-list">
-                    <CardKanban v-for="(item, index) in listLanche02" :key="index" :data-object="item" :type-card="typeKanban"/>
-                </div>
+                <draggable v-model="listLanche02" class="kanban-list" ghost-class="ghost">
+                    <CardKanban v-for="(item, index) in listLanche02" :key="index" :id-order="index + 1" :data-object="item" :type-card="typeKanban"/>
+                </draggable>
+
+                <span v-if="listLanche02.length === 0">Não há produção programada...</span>
             </div>
 
             <div class="kanban-column">
                 <div class="column-header">
                     <span v-if="typeProduct === 'programado'">Desjejum {{ formatDateTomorrow(new Date()) }}</span>
                     <span v-else>15:00</span>
-                    <span>Total: 1.102</span>
+                    <span>Total: {{ amountQtde(listDejejum) }}</span>
                 </div>
 
-                <div class="kanban-list">
-                    <CardKanban v-for="(item, index) in listDejejum" :key="index" :data-object="item" :type-card="typeKanban"/>
-                </div>
-      
+                <draggable v-model="listDejejum" class="kanban-list" ghost-class="ghost">
+                    <CardKanban v-for="(item, index) in listDejejum" :key="index" :id-order="index + 1" :data-object="item" :type-card="typeKanban"/>
+                </draggable>
+
+                <span v-if="listDejejum.length === 0">Não há produção programada...</span>
             </div>
-
-            
         </div>
     </div>
 </template>
@@ -74,52 +77,83 @@ export default Vue.extend({
             typeProduct: 'programado',
             typeKanban: 'product',
             dragging: false,
-            enabled: false, 
-            list: [
-                {id: 0, nameRecipe: 'Bolo de Chocolate', qtde: 500, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
-                {id: 1, nameRecipe: 'Cookie', qtde: 200, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
-                {id: 2, nameRecipe: 'Jacaré', qtde: 500, horario: '10:00', idOrdem: 0, cliente: 'Honda'},
-            ],
+            enabled: false,
             listKanban: [],
             listLanche01: [],
             listLanche02: [],
-            listDejejum: []
+            listDejejum: [],
+            localList: []
         }
     },
 
+    watch: {
+        listLanche01 () {
+            localStorage.setItem('lanche01List', JSON.stringify(this.listLanche01));
+        },
+
+        listLanche02 () {
+            localStorage.setItem('lanche02List', JSON.stringify(this.listLanche02));
+        },
+
+        listDejejum () {
+            localStorage.setItem('dejejumList', JSON.stringify(this.listDejejum));
+        }
+
+    },
+
     async created() {
-        await httpKanban.GetKanban().then( (res) => {
-            this.listKanban = res.data
 
-            res.data.map( (item) => {
-                if(item.description_category === 'Lanche 1') {
-                    this.listLanche01.push(item)
-                }
+        if(!localStorage.getItem('kanbanList')){
+            await this.reqKanban()
+            localStorage.setItem('kanbanList', JSON.stringify(this.listKanban));
+            localStorage.setItem('lanche01List', JSON.stringify(this.listLanche01));
+            localStorage.setItem('lanche02List', JSON.stringify(this.listLanche02));
+            localStorage.setItem('dejejumList', JSON.stringify(this.listDejejum));
+        } else {
 
-                if(item.description_category === 'Lanche 2') {
-                    this.listLanche02.push(item)
-                }
-
-                if(item.description_category === 'Dejejum') {
-                    this.listDejejum.push(item)
-                }
-                
-            })
-        })
+            this.listLanche01 = JSON.parse(localStorage.getItem('lanche01List'))
+            this.listLanche02 = JSON.parse(localStorage.getItem('lanche02List'))
+            this.listDejejum = JSON.parse(localStorage.getItem('dejejumList'))
+            
+        }
     },
 
     methods: {
+
+        async reqKanban () {
+            await httpKanban.GetKanban().then( (res) => {
+                this.listKanban = res.data
+
+                res.data.map( (item) => {
+                    if(item.description_category === 'Lanche 1') {
+                        this.listLanche01.push(item)
+                    }
+
+                    if(item.description_category === 'Lanche 2') {
+                        this.listLanche02.push(item)
+                    }
+
+                    if(item.description_category === 'Dejejum') {
+                        this.listDejejum.push(item)
+                    }
+                })
+            })
+        },
+
         formatDate(date){
             return dayjs(date).format('DD/MM/YY')
         },
+
         formatDateTomorrow(date) {
             return dayjs(date).add(1, 'day').format('DD/MM')
         },
+
+
         amountQtde(list) {
             let result = 0
-
+            
             list.map( (item) => {
-                result = result + item.qtde
+                result = result + item.amount_actual
             })
 
             return result
