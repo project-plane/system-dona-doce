@@ -1,7 +1,7 @@
 <template>
     <div class="cardKanban-container">
         <div class="cardKanban-number">
-            Teste
+            {{ idOrder }}
         </div>
         <div v-if="typeCard !== 'entrega'" class="cardKanban-infos">
             <div class="legend">
@@ -42,7 +42,8 @@ export default Vue.extend({
     props: {
         // eslint-disable-next-line vue/require-default-prop
         dataObject: Object,
-        typeCard: String
+        typeCard: String,
+        idOrder: Number
     },
 
 })
