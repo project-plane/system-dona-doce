@@ -1,10 +1,16 @@
 <template>
   <ModalPreview title-modal="Detalhes do pedido" @closeModal="closeModal">
-    <div class="dataEmpresa">
+    <div class="menu-modal">
+      <button v-if="typeContent" class="selected">Itens do Pedido</button>
+      <button v-if="!typeContent" @click="() => typeContent = true">Itens do Pedido</button>
+      <button  v-if="!typeContent" class="selected">Itens do Entrega</button>
+      <button v-if="typeContent" @click="() => typeContent = false">Itens do Entrega</button>
+    </div>
+    <div v-if="typeContent" class="dataEmpresa">
       <div class="header-order">
-        <h3>Data do Pedido: {{ formatDate(data.dateOrder) }}</h3>
-        <h3>Status: {{ data.orderStatus.description }}</h3>
-        <h3>Total: R${{ countdejejum + countlanche01 + countlanche02 }}</h3>
+        <h4>Data do Pedido: {{ formatDate(data.dateOrder) }}</h4>
+        <h4>Status: {{ data.orderStatus.description }}</h4>
+        <h4>Total: R${{ countdejejum + countlanche01 + countlanche02 }}</h4>
       </div>
 
       <h4>Desjejum</h4>
@@ -72,9 +78,48 @@
   
       <Button v-if="data.orderStatus.description === 'Solicitado' || data.orderStatus.description === 'Agendado' || data.orderStatus.description === 'Pré-Produção'" title="Cancelar pedido" :is-disabled="isDisabled" @click.native="cancelAnOrder(data.id)"/>
 
-
-      
     </div>
+
+    <div v-else class="dataEmpresa">
+      <div class="header-order">
+        <h4>Data do Pedido: {{ formatDate(data.dateOrder) }}</h4>
+        <h4>Status: {{ data.orderStatus.description }}</h4>
+      </div>
+
+      <form class="resume-content">
+        <!-- <pre>{{ data }}</pre> -->
+          <div class="input">
+            <label for="">Número de Bandejas</label>
+            <input id="bandeja" type="number">
+          </div>
+
+          <div class="input">
+            <label for="">Número de Bandejas</label>
+            <input id="bandeja" type="date">
+          </div>
+          
+
+          <div class="input">
+            <label for="">Cautela</label>
+            <input id="bandeja" type="file"  accept="image/*,.pdf">
+          </div>
+
+          <div class="input">
+            <label for="">Nota</label>
+            <input id="bandeja" type="file"  accept="image/*,.pdf">
+          </div>
+
+          <div class="input">
+            <label for="">Comprovante de Pagamento</label>
+            <input id="bandeja" type="file"  accept="image/*,.pdf">
+          </div>
+
+
+          <Button title="Salvar" type.native="submit" :is-disabled="isDisabled" @click.native=""/>
+
+      </form>
+    </div>
+
   </ModalPreview>
 </template>
 
@@ -96,7 +141,8 @@ export default Vue.extend({
       countdejejum: 0,
       countlanche01: 0,
       countlanche02: 0,
-      isDisabled: false
+      isDisabled: false,
+      typeContent: false
     }
   },
 
@@ -152,6 +198,23 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.menu-modal {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.3rem;
+
+  button {
+    width: 50%;
+    font-size: 1.2rem;
+    background-color: transparent;
+    font-weight: 600;
+  }
+
+  .selected {
+    color: var(--red);
+  }
+}
 .dataEmpresa {
   width: 100%;
   display: flex;
@@ -184,7 +247,42 @@ export default Vue.extend({
         text-align: left;
       }
     }
-    
+
+    .input {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        label {
+          font-size: 1rem;
+          font-weight: 600;
+        }
+
+        input {
+          width: 30%;
+          text-align: center;
+          border: 1px solid var(--red);
+        }
+
+        input[type=file] {
+          padding: 0.5rem;
+          border-radius: 0.25rem;
+        }
+
+        input[type=date] {
+          padding: 0.5rem;
+          border-radius: 0.25rem;
+          filter: none;
+        }
+
+        input[type=date]::placeholder {
+          color: red;
+        }
+
+      }
+
   }
 
 
