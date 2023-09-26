@@ -10,7 +10,7 @@
                 </select>
 
                 <select  v-model="typeKanban">
-                    <option value="client">Produção por cliente</option>
+                    <!-- <option value="client">Produção por cliente</option> -->
                     <option value="product">Produção por produto</option>
                 </select>
             </div>
@@ -101,27 +101,39 @@ export default Vue.extend({
 
     },
 
+    async mounted () {
+        // Verificador de mudanças
+        await httpKanban.GetKanban().then(async (res) => {
+
+            if(localStorage.getItem('kanbanList') !==  JSON.stringify(res.data)) {
+                await this.reqKanban().then( () => {
+                localStorage.setItem('kanbanList', JSON.stringify(this.listKanban));
+            })
+            }
+        })
+    },
+
     async created() {
 
         if(!localStorage.getItem('kanbanList')){
-            await this.reqKanban()
-            localStorage.setItem('kanbanList', JSON.stringify(this.listKanban));
-            localStorage.setItem('lanche01List', JSON.stringify(this.listLanche01));
-            localStorage.setItem('lanche02List', JSON.stringify(this.listLanche02));
-            localStorage.setItem('dejejumList', JSON.stringify(this.listDejejum));
+            await this.reqKanban().then( () => {
+                localStorage.setItem('kanbanList', JSON.stringify(this.listKanban));
+            })
+            
         } else {
 
             this.listLanche01 = JSON.parse(localStorage.getItem('lanche01List'))
             this.listLanche02 = JSON.parse(localStorage.getItem('lanche02List'))
             this.listDejejum = JSON.parse(localStorage.getItem('dejejumList'))
-            
         }
     },
 
-    methods: {
 
+    methods: {
+        
         async reqKanban () {
             await httpKanban.GetKanban().then( (res) => {
+                [this.listLanche01, this.listLanche02, this.listDejejum]= [[], [], []]
                 this.listKanban = res.data
 
                 res.data.map( (item) => {
