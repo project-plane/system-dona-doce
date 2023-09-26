@@ -4,9 +4,9 @@
     <Nuxt />
   </div>
   <div v-else>
-    <Navbar />
+    <Navbar @showMenu="showMenu"/>
     <div class="content">
-      <MenuCreate />
+      <MenuCreate v-if="menu"/>
       <div class="scroll_container">
         <Nuxt />
       </div>
@@ -20,6 +20,8 @@ export default Vue.extend({
   data() {
     return {
       route: '',
+      menu: true,
+      windowWidth: window.innerWidth
     }
   },
   fetch() {
@@ -27,6 +29,29 @@ export default Vue.extend({
 
     this.route = router
   },
+
+  watch: {
+    windowWidth(newWidth) {
+      if (newWidth > 900 && !this.menu) {
+        this.menu = true
+      }
+  }
+},
+
+  created() {
+    window.addEventListener("resize", this.handleWindowResize);
+  },
+
+  methods: {
+    showMenu(e){
+      this.menu = e
+    },
+
+    handleWindowResize() {
+      // Atualize a propriedade windowWidth com o novo tamanho da tela
+      this.windowWidth = window.innerWidth;
+    }
+  }
 })
 </script>
 
@@ -38,6 +63,18 @@ export default Vue.extend({
     width: 80%;
     height: 90vh;
     overflow-y: scroll;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    .scroll_container {
+      width: 100%;
+    }
   }
 }
 </style>

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <button class="buttonLogin">{{ title }}</button>
-  </div>
+    <button class="buttonLogin" :disabled="isDisabled">{{ title }}</button>
 </template>
 
 <script lang="ts">
@@ -14,6 +12,11 @@ export default Vue.extend({
       default: '',
       required: true,
     },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
   },
 })
 </script>
@@ -23,5 +26,10 @@ export default Vue.extend({
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
+}
+
+.buttonLogin:disabled {
+  cursor: not-allowed;
+  opacity: 50%;
 }
 </style>

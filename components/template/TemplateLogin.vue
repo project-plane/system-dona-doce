@@ -21,7 +21,7 @@
           <span @click="recoverPassword">Esqueci a minha senha</span>
         </div>
 
-        <ButtonPirula title="Login" @click="accessLogin" />
+        <ButtonPirula title="Login" :is-disabled="isDisabled" @click.native="accessLogin" />
         <div v-if="statusMessage">
           <h5 style="color: var(--red)">{{ message }}</h5>
         </div>
@@ -42,11 +42,13 @@ export default Vue.extend({
       },
       statusMessage: false,
       message: '',
+      isDisabled: false
     }
   },
 
   methods: {
     async accessLogin() {
+      this.isDisabled = true
       await httpAccess
         .PostLogin(this.dataLogin)
         .then((res) => {
@@ -74,6 +76,8 @@ export default Vue.extend({
             })
             this.$router.push('/dashboard/dashboard')
           }
+
+          
         })
         .catch((error) => {
           if (error.response.data.statusCode === 400) {
@@ -85,6 +89,8 @@ export default Vue.extend({
             this.$toast.error('Dados inválidos!!!')
           }
         })
+
+        this.isDisabled = false
     },
     recoverPassword() {
       this.$router.push('/recoverPassword')

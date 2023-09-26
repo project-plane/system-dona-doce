@@ -1,22 +1,32 @@
 <template>
   <div class="navbar-container">
-    <div>
-      <NuxtLink to="/cadastrar/unidade"
-        ><img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt=""
-      /></NuxtLink>
-    </div>
+      <img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt="" >
+
 
       <NuxtLink v-if="$nuxt.$route.path === '/dashboard/dashboard' || $nuxt.$route.path === '/kanban/producao' || $nuxt.$route.path === '/kanban/entrega'" to="/cadastrar/unidade" class="btn-dashboard"
         >Ir para Cadastros <div class="arrow"></div></NuxtLink>
 
-    <img v-else src="~/assets/icons/menu_hamburge.svg" alt="menu_icon"/>
+    <img v-else class="menu-hamburger" src="~/assets/icons/menu_hamburge.svg" alt="menu_icon" @click="showMenu"/>
     
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-export default Vue.extend({})
+export default Vue.extend({
+  data () {
+    return {
+      menu: false
+    }
+  },
+
+  methods: {
+    showMenu() {
+      this.menu = !this.menu
+      this.$emit('showMenu', this.menu)
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -33,8 +43,7 @@ export default Vue.extend({})
   z-index: 1;
 
   .logo {
-    width: 160px;
-    height: 60px;
+    height: 100%;
   }
 
   span {
@@ -43,9 +52,10 @@ export default Vue.extend({})
     font-weight: 600;
   }
 
-  img {
-    width: 2.1rem;
+  .menu-hamburger {
+    display: none;
   }
+
 
   .btn-dashboard {
     width: 10rem;
@@ -71,6 +81,13 @@ export default Vue.extend({})
 
   .btn-dashboard:hover {
     padding: 1rem 0.1rem 1rem 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .menu-hamburger {
+      display: block;
+      cursor: pointer;
+    }
   }
 }
 </style>
