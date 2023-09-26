@@ -36,9 +36,86 @@
             <span>R$: 00.00</span>
           </div>
         </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="qtdIngredients">
+            <span>50kg de Farinha de trigo</span>
+            <span>R$: 00.00</span>
+          </div>
+        </li>
       </ul>
     </div>
-    <button class="btnExibir" @click="exibirTudo">Exibir tudo</button>
+    <button class="btnExibir" @click="exibirTudo">Gerar PDF de Compras</button>
   </div>
 </template>
 
@@ -61,13 +138,15 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .detailsBuy {
-  height: 100%;
+  height: 40%;
   width: 100%;
   display: flex;
   flex-direction: column;
   padding-top: 2rem;
+  border-bottom: 1px solid var(--border);
 
   .description {
+    height: 100%;
     .headerDetails {
       display: flex;
       justify-content: space-between;
@@ -89,7 +168,7 @@ export default Vue.extend({
     }
 
     ul {
-      height: 250px;
+      height: 100%;
       overflow-y: auto;
 
       .qtdIngredients {
@@ -102,9 +181,13 @@ export default Vue.extend({
 
   .btnExibir {
     width: 100%;
-    background: var(--border);
+    background: var(--red);
+    color: var(--white);
+    font-weight: 600;
     padding: 0.5rem;
     font-size: 1rem;
+    position: relative;
+    bottom: 0;
   }
 }
 </style>
