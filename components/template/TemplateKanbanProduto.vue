@@ -5,8 +5,8 @@
             
             <div class="kanban-selects">
                 <select  v-model="typeProduct">
-                    <option value="programado">Programado</option>
-                    <option value="coffee">Coffee</option>
+                    <option value="programmed">Programado</option>
+                    <option value="coffe">Coffee</option>
                 </select>
 
                 <select  v-model="typeKanban">
@@ -21,13 +21,13 @@
             <div class="kanban-column">
 
                 <div class="column-header">
-                    <span v-if="typeProduct === 'programado'">Lanche 01</span>
+                    <span v-if="typeProduct === 'programmed'">Lanche 01</span>
                     <span v-else>09:00</span>
                     <span>Total: {{ amountQtde(listLanche01) }}</span>
                 </div>
 
                 <draggable v-model="listLanche01" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in listLanche01" :key="index" :data-object="item" :type-card="typeKanban" :id-order="index + 1"/>             
+                    <CardKanban v-for="(item, index) in listLanche01" :key="index" :data-object="item" :type-card="typeKanban" :id-order="index + 1" :hourCard="'10:00'"/>             
                 </draggable>
 
                 <span v-if="listLanche01.length === 0">Não há produção programada...</span>
@@ -35,13 +35,13 @@
 
             <div class="kanban-column">
                 <div class="column-header">
-                    <span v-if="typeProduct === 'programado'">Lanche 02</span>
-                    <span v-else>13:00</span>
+                    <span v-if="typeProduct === 'programmed'">Lanche 02</span>
+                    <span v-else>15:00</span>
                     <span>Total: {{ amountQtde(listLanche02) }}</span>
                 </div>
 
                 <draggable v-model="listLanche02" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in listLanche02" :key="index" :id-order="index + 1" :data-object="item" :type-card="typeKanban"/>
+                    <CardKanban v-for="(item, index) in listLanche02" :key="index" :id-order="index + 1" :data-object="item" :type-card="typeKanban" :hourCard="'15:00'" />
                 </draggable>
 
                 <span v-if="listLanche02.length === 0">Não há produção programada...</span>
@@ -49,13 +49,13 @@
 
             <div class="kanban-column">
                 <div class="column-header">
-                    <span v-if="typeProduct === 'programado'">Desjejum {{ formatDateTomorrow(new Date()) }}</span>
+                    <span v-if="typeProduct === 'programmed'">Desjejum {{ formatDateTomorrow(new Date()) }}</span>
                     <span v-else>15:00</span>
                     <span>Total: {{ amountQtde(listDejejum) }}</span>
                 </div>
 
                 <draggable v-model="listDejejum" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in listDejejum" :key="index" :id-order="index + 1" :data-object="item" :type-card="typeKanban"/>
+                    <CardKanban v-for="(item, index) in listDejejum" :key="index" :id-order="index + 1" :data-object="item" :type-card="typeKanban" :hourCard="'15:00'"/>
                 </draggable>
 
                 <span v-if="listDejejum.length === 0">Não há produção programada...</span>
@@ -74,7 +74,7 @@ export default Vue.extend({
     components: { draggable},
     data () {
         return {
-            typeProduct: 'programado',
+            typeProduct: 'programmed',
             typeKanban: 'product',
             dragging: false,
             enabled: false,
@@ -82,7 +82,8 @@ export default Vue.extend({
             listLanche01: [],
             listLanche02: [],
             listDejejum: [],
-            localList: []
+            localList: [],
+            
         }
     },
 
@@ -97,13 +98,17 @@ export default Vue.extend({
 
         listDejejum () {
             localStorage.setItem('dejejumList', JSON.stringify(this.listDejejum));
+        },
+
+        typeProduct () {
+            this.reqKanban()
         }
 
     },
 
     async mounted () {
         // Verificador de mudanças
-        await httpKanban.GetKanban().then(async (res) => {
+        await httpKanban.GetKanban(this.typeProduct).then(async (res) => {
 
             if(localStorage.getItem('kanbanList') !==  JSON.stringify(res.data)) {
                 await this.reqKanban().then( () => {
@@ -130,9 +135,9 @@ export default Vue.extend({
 
 
     methods: {
-        
+
         async reqKanban () {
-            await httpKanban.GetKanban().then( (res) => {
+            await httpKanban.GetKanban(this.typeProduct).then( (res) => {
                 [this.listLanche01, this.listLanche02, this.listDejejum]= [[], [], []]
                 this.listKanban = res.data
 
