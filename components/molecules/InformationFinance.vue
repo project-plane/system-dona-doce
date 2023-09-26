@@ -186,7 +186,7 @@ export default Vue.extend({
   width: 100%;
   height: 60%;
   // background-color: red;
-  padding:2rem 1rem 1rem 1rem;
+  padding: 2.3rem 1rem 1rem 1rem;
 
 
   .orderClient {

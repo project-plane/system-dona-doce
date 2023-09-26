@@ -1,15 +1,14 @@
 <template>
-    <div class="containerFrame" v-if="route === '/dashboard/dashboard'">
-        <img class="svg" src="@/static/icon/cutEffect.svg" alt="">
+    <div v-if="route === '/dashboard/dashboard'" class="containerFrame">
         <div class="contentSlot">
             <div class="abaItens">
-                <h3 @click="pedidos" :class="{ abaNotActive: !abaNotActive }" class="abaActive">Itens do Pedidos</h3>
-                <h3 @click="entrega" :class="{ abaNotActive: abaNotActive }" class="abaActive">Itens do Entrega</h3>
+                <h3 :class="{ abaNotActive: abaNotActive }" class="abaActive" @click="pedidos">Itens do Pedidos</h3>
+                <h3 :class="{ abaNotActive: !abaNotActive }" class="abaActive" @click="entrega">Itens do Entrega</h3>
             </div>
             <slot />
         </div>
     </div>
-    <div class="containerFrame" v-else>
+    <div v-else class="containerFrame">
         <img class="svg" src="@/static/icon/cutEffect.svg" alt="">
         <div class="contentSlot">
             <slot />
@@ -66,6 +65,7 @@ export default Vue.extend({
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                cursor: pointer;
             }
 
             .abaNotActive {
