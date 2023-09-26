@@ -1,12 +1,8 @@
 <template>
   <div class="informationFinance">
-    <div class="finance">
-      <h2>Financeiro</h2>
-    </div>
-    <!-- {{ orderFindClient }} -->
     <div v-if="orderFindClient" class="orderClient">
       <BeadFrame @pedidos="pedidos" @entrega="entrega">
-        <div class="order" v-if="statusAba">
+        <div v-if="statusAba" class="order">
           <div>
             <h2>{{ orderFindClient.user.Clients.corporate_name }}</h2>
             <span>Coffee</span>
@@ -101,7 +97,8 @@
                   <img v-if="!urlImgComprovante" src="~/assets/icons/download.svg" alt="" />
                   <span v-else>Comprovante anexado com sucesso</span>
                 </label>
-                <input id="inputComprovante" type="file" accept="application/pdf" name="inputComprovante"
+                <input
+id="inputComprovante" type="file" accept="application/pdf" name="inputComprovante"
                   @change="fileComprovante" />
               </div>
             </div>
@@ -119,7 +116,7 @@
         </div>
       </BeadFrame>
     </div>
-    <div class="informationOrder" v-else>
+    <div v-else class="informationOrder">
       <h3>Informações do pedido</h3>
       <span>Clique no card de pedido para visualizar as informações
         secundárias</span>
@@ -187,13 +184,13 @@ export default Vue.extend({
 <style scoped lang="scss">
 .informationFinance {
   width: 100%;
-  height: 100%;
-  padding: 0 1rem;
+  height: 60%;
+  // background-color: red;
+  padding: 2.3rem 1rem 1rem 1rem;
 
-  .finance {}
 
   .orderClient {
-    height: 300px;
+    height: 100%;
     overflow-y: scroll;
 
     .order {

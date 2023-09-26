@@ -1,30 +1,45 @@
 <template>
   <div class="cards-container">
     <div class="inputCheckbox">
-      <input type="checkbox" v-model="selectAll" />
+      <input v-model="selectAll" type="checkbox" />
       <Label>Selecionar Todos</Label>
     </div>
-    {{ this.$store.state.selectedTipo }}
-    {{ this.$store.state.selectedStatus }}
-    <div v-if="this.$store.state.selectedTipo === ''" class="cardDashboard">
-      <div v-for="(pedidos, index) in dataPedidos" :key="index" style="width: 49%">
-        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
-          @click.native="clickOrderFind(pedidos)" />
-      </div>
-    </div>
-    <div v-if="this.$store.state.selectedTipo === 'programmed'" class="cardDashboard">
-      <div v-for="(pedidos, index) in pedidoProgramado" :key="index" style="width: 49%">
-        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
-          @click.native="clickOrderFind(pedidos)" />
-      </div>
+    <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
+
+      <CardDashboard
+        v-for="(pedidos, index) in dataPedidos" 
+        :key="index" :data-pedidos="pedidos"
+        :all-pedidos="dataPedidos" 
+        :index="index" 
+        @click.native="clickOrderFind(pedidos)" 
+      />
+
     </div>
 
-    <div v-if="this.$store.state.selectedTipo === 'coffe'" class="cardDashboard">
-      <div v-for="(pedidos, index) in pedidoCoffee" :key="index" style="width: 49%">
-        <CardDashboard :dataPedidos="pedidos" :allPedidos="dataPedidos" :index="index"
-          @click.native="clickOrderFind(pedidos)" />
-      </div>
+    <div v-if="$store.state.selectedTipo === 'programmed'" class="cardDashboard">
+
+      <CardDashboard
+        v-for="(pedidos, index) in pedidoProgramado" 
+        :key="index" 
+        :data-pedidos="pedidos"
+        :all-pedidos="dataPedidos" 
+        :index="index" 
+      /> 
+    
     </div>
+
+    <div v-if="$store.state.selectedTipo === 'coffe'" class="cardDashboard">
+     
+      <CardDashboard
+        v-for="(pedidos, index) in pedidoCoffee" 
+        :key="index" :data-pedidos="pedidos" 
+        :all-pedidos="dataPedidos" 
+        :index="index"
+        @click.native="clickOrderFind(pedidos)" 
+      />
+     
+    </div>
+    
   </div>
 </template>
 
@@ -102,9 +117,10 @@ export default Vue.extend({
 
   .cardDashboard {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    ;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 1rem;
   }
 }
