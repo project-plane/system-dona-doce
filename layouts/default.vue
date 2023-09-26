@@ -20,7 +20,8 @@ export default Vue.extend({
   data() {
     return {
       route: '',
-      menu: ''
+      menu: true,
+      windowWidth: window.innerWidth
     }
   },
   fetch() {
@@ -29,9 +30,26 @@ export default Vue.extend({
     this.route = router
   },
 
+  watch: {
+    windowWidth(newWidth) {
+      if (newWidth > 900 && !this.menu) {
+        this.menu = true
+      }
+  }
+},
+
+  created() {
+    window.addEventListener("resize", this.handleWindowResize);
+  },
+
   methods: {
     showMenu(e){
       this.menu = e
+    },
+
+    handleWindowResize() {
+      // Atualize a propriedade windowWidth com o novo tamanho da tela
+      this.windowWidth = window.innerWidth;
     }
   }
 })

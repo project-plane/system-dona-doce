@@ -38,6 +38,7 @@ export default Vue.extend({
   flex-direction: column;
   justify-content: space-between;
   overflow: auto;
+  
 
   .footerMenu {
     display: flex;
@@ -56,7 +57,18 @@ export default Vue.extend({
 @media (max-width: 900px) {
   .card_create {
     width: 100%;
-    height: 100%;
+    height: auto;
+    position: absolute;
+    background: var(--bg_heade_table);
+    box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.205);
+    padding-bottom: 1rem;
+
+    .footerMenu {
+      span {
+        display: none;
+      }
+    }
+
   }
 }
 </style>
