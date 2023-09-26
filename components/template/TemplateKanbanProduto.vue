@@ -10,7 +10,7 @@
                 </select>
 
                 <select  v-model="typeKanban">
-                    <option value="client">Produção por cliente</option>
+                    <!-- <option value="client">Produção por cliente</option> -->
                     <option value="product">Produção por produto</option>
                 </select>
             </div>
@@ -130,7 +130,7 @@ export default Vue.extend({
 
 
     methods: {
-
+        
         async reqKanban () {
             await httpKanban.GetKanban().then( (res) => {
                 [this.listLanche01, this.listLanche02, this.listDejejum]= [[], [], []]
