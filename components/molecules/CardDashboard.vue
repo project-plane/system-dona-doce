@@ -5,7 +5,8 @@
   <div v-else>
     <div v-if="modalPedido" class="cardModalPedido">
       <span>Mudar status do pedido</span>
-      <select v-model="selected" style="
+      <select
+v-model="selected" style="
           border: 1px solid var(--border);
           height: 1.6rem;
           margin: 0.4rem 0;
@@ -43,27 +44,25 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="this.$store.state.selectedStatus ===
-        this.dataPedidos.orderStatus.description ||
-        this.$store.state.selectedStatus === ''
+      <div
+v-if="$store.state.selectedStatus ===
+        dataPedidos.orderStatus.description ||
+        $store.state.selectedStatus === ''
         " class="cards">
         <div class="titleCard">
           <div class="titleCompany">
             <p>{{ dataPedidos.numberOrder }}</p>
             <div class="descriptionCompany">
-              <!-- <span v-if="dataPedidos.user.Clients === null"></span> -->
               <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
-              <span v-if="dataPedidos.order_type === 'programmed'" class="programado">Programado</span>
-              <span v-else class="coffee">Coffee</span>
+              <span v-if="dataPedidos.order_type === 'programmed'" class="date-blue">{{ currentDate() }}</span>
+              <span v-if="dataPedidos.order_type === 'coffe'" class="date-red">{{ currentDate() }}</span>
             </div>
           </div>
-          <span>{{ currentDate() }}</span>
+
           <div class="iconsStatus">
             <div class="icons">
-              <img src="~/assets/icons/programado.svg" alt="" v-if="dataPedidos.order_type === 'programmed'" />
-              <img src="~/assets/icons/coffee.svg" alt="" v-else />
-              <img src="~/assets/icons/3dot.svg" alt="" v-if="dataPedidos.orderStatus.description !== 'Entregue'"
-                @click="statusOrder" />
+              <img v-if="dataPedidos.order_type === 'programmed'" src="~/assets/icons/programado.svg" alt="" />
+              <img v-else src="~/assets/icons/coffee.svg" alt="" />
             </div>
           </div>
         </div>
@@ -74,10 +73,16 @@
               <strong>{{ dataPedidos.orderStatus.description }}</strong>
             </span>
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
-            <span>Finalizar as</span>
-            <span>09:30</span>
           </div>
-          <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
+
+          <div class="btn-options">
+            <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
+
+          <img
+v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
+                @click="statusOrder" />
+          </div>
+          
         </div>
       </div>
     </div>
@@ -162,7 +167,7 @@ h2 {
 
 .cardModalPedido {
   width: 100%;
-  height: 30vh;
+  height: 100%;
   border: 1px solid var(--border);
   background: var(--white);
   border-radius: 10px;
@@ -177,14 +182,14 @@ h2 {
     gap: 1rem;
 
     button {
-      width: 50px;
+      width: 6rem;
     }
   }
 }
 
 .cards {
   width: 100%;
-  height: 30vh;
+  height: auto;
   border: 1px solid var(--border);
   background: var(--white);
   border-radius: 10px;
@@ -202,7 +207,9 @@ h2 {
 
   .titleCard {
     display: flex;
+    height: auto;
     justify-content: space-between;
+    padding: 0.3rem;
     gap: 1rem;
     border-bottom: 1px solid var(--border);
 
@@ -212,12 +219,18 @@ h2 {
       gap: 0.7rem;
 
       .descriptionCompany {
-        .programado {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        .date-blue {
           color: var(--blue);
+          font-weight: 600;
         }
 
-        .coffee {
+        .date-red {
           color: var(--red);
+          font-weight: 600;
         }
       }
 
@@ -248,10 +261,14 @@ h2 {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    flex-direction: column;
+    gap: 1rem;
 
     .descriptionOrder {
-      display: flex;
-      flex-direction: column;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+      gap: 1rem;
 
       span:nth-child(1) {
         color: grey;
@@ -259,6 +276,16 @@ h2 {
 
       span:nth-child(3) {
         font-weight: bold;
+      }
+    }
+
+    .btn-options {
+      display: flex;
+      width: 100%;
+      gap: 1rem;
+
+      img {
+        cursor: pointer;
       }
     }
   }
