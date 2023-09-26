@@ -7,21 +7,30 @@
         <span>Medida</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Tipo de Medida</option>
-          <option value="g">KG</option>
-          <option value="ml">Litro</option>
+          <option value="g">Grama</option>
+          <option value="ml">Mililitro</option>
           <option value="u">Unidade</option>
         </select>
       </div>
-      <Input v-model="qtdIngrediente" label="Quantidade" type="number" :placeholder="holder" />
+
+      <div class="medida-input">
+        <Input v-model="qtdIngrediente" label="Quantidade" type="number" :placeholder="holder" />
+
+        <span v-if="selected === 'ml'">{{ qtdIngrediente/1000 }} Litros</span>
+        <span v-if="selected === 'g'">{{ qtdIngrediente/1000 }} KG</span>
+        <span v-if="selected === 'u'">{{ qtdIngrediente }} Unidades</span>
+      </div>
+      
 
       <!-- <Input v-model="priceIngrediente" label="Preço p/ quantidade" type="number"
         placeholder="Digite o preco ingrediente" /> -->
       <div class="input">
         <Label>Preço p/ quantidade </Label>
-        <InputValue style="width: 100%; height: 2.8rem;" v-model="priceIngrediente" placeholder="Digite o novo valor" />
+        <InputValue v-model="priceIngrediente" style="width: 100%; height: 2.8rem;" placeholder="Digite o novo valor" />
       </div>
 
-      <Input block="background: #d6d6d6; cursor: no-drop" v-model="vlPorcaoIngrediente" label="Valor p/ Porção"
+      <Input
+v-model="vlPorcaoIngrediente" block="background: #d6d6d6; cursor: no-drop" label="Valor p/ Porção"
         type="number" placeholder="R$ 0,00" disabled="disabled" />
 
     </ContainerInput>
@@ -70,7 +79,7 @@ export default Vue.extend({
       }
       if (newValue === 'u') {
         this.holder = 'Ex: X'
-        return
+        
       }
     }
   },
@@ -125,6 +134,14 @@ export default Vue.extend({
   select {
     border: 0.06rem solid var(--border);
     border-radius: 0.25rem;
+  }
+}
+
+.medida-input {
+  span {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--red);
   }
 }
 

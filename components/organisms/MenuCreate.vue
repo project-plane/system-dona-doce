@@ -62,6 +62,7 @@ export default Vue.extend({
     background: var(--bg_heade_table);
     box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.205);
     padding-bottom: 1rem;
+    z-index: 10;
 
     .footerMenu {
       span {
