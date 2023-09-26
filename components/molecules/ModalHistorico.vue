@@ -72,9 +72,8 @@
   
       <Button v-if="data.orderStatus.description === 'Solicitado' || data.orderStatus.description === 'Agendado' || data.orderStatus.description === 'Pré-Produção'" title="Cancelar pedido" :is-disabled="isDisabled" @click.native="cancelAnOrder(data.id)"/>
 
-
-      
     </div>
+
   </ModalPreview>
 </template>
 

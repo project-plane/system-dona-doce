@@ -10,6 +10,7 @@
         >Ir para Cadastros <div class="arrow"></div></NuxtLink>
 
     <img v-else src="~/assets/icons/menu_hamburge.svg" alt="menu_icon"/>
+    <input type="text">
     
   </div>
 </template>
