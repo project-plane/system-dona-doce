@@ -1,8 +1,8 @@
 import http from "../config";
 
 export default {
-  GetKanban: async () => {
-    return await http.get(`/control-production/kambam`)
+  GetKanban: async (typeCard) => {
+    return await http.get(`/control-production/kambam?order_type=${typeCard}`)
   },
 
   UpdateKanban: async (id, seq) => {

@@ -14,7 +14,7 @@
             <div class="value">
                 <span>{{ dataObject.description }}</span>
                 <span>{{ dataObject.amount_actual }}</span>
-                <span>09:00</span>
+                <span>{{ hourCard }}</span>
                 <span v-if="typeCard === 'client'">{{ dataObject.idOrdem }}</span>
                 <span v-if="typeCard === 'client'">{{dataObject.cliente}}</span>
             </div>
@@ -43,6 +43,7 @@ export default Vue.extend({
         // eslint-disable-next-line vue/require-default-prop
         dataObject: Object,
         typeCard: String,
+        hourCard: String,
         idOrder: Number
     },
 
