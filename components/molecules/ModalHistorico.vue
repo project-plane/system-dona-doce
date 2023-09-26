@@ -1,5 +1,5 @@
 <template>
-  <ModalPreview titleModal="Detalhes do pedido" @closeModal="closeModal">
+  <ModalPreview title-modal="Detalhes do pedido" @closeModal="closeModal">
     <div class="dataEmpresa">
       <div class="header-order">
         <h3>Data do Pedido: {{ formatDate(data.dateOrder) }}</h3>
@@ -69,9 +69,8 @@
         <tr v-if="lanche02.length === 0">Não possui...</tr>
       </table>
 
-
-
-      <Button v-if="data.orderStatus.description === 'Solicitado' || data.orderStatus.description === 'Agendado' || data.orderStatus.description === 'Pré-Produção'" title="Cancelar pedido"/>
+  
+      <Button v-if="data.orderStatus.description === 'Solicitado' || data.orderStatus.description === 'Agendado' || data.orderStatus.description === 'Pré-Produção'" title="Cancelar pedido" :is-disabled="isDisabled" @click.native="cancelAnOrder(data.id)"/>
 
 
       
@@ -82,6 +81,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import dayjs from 'dayjs'
+import httpOrder from '@/server/pedidos/index'
+
 export default Vue.extend({
   props: {
     data: Object
@@ -92,10 +93,10 @@ export default Vue.extend({
       dejejum: [],
       lanche01: [],
       lanche02: [],
-
       countdejejum: 0,
       countlanche01: 0,
-      countlanche02: 0
+      countlanche02: 0,
+      isDisabled: false
     }
   },
 
@@ -137,6 +138,15 @@ export default Vue.extend({
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')
     },
+
+    async cancelAnOrder(id) {
+      this.isDisabled = true
+      await httpOrder.DeleteOrder(id).then( () => {
+        this.isDisabled = false
+        this.$toast.error('Pedido Cancelado')
+        this.closeModal()
+      })
+    }
   }
 })
 </script>
