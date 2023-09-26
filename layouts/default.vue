@@ -4,9 +4,9 @@
     <Nuxt />
   </div>
   <div v-else>
-    <Navbar />
+    <Navbar @showMenu="showMenu"/>
     <div class="content">
-      <MenuCreate />
+      <MenuCreate v-if="menu"/>
       <div class="scroll_container">
         <Nuxt />
       </div>
@@ -20,6 +20,7 @@ export default Vue.extend({
   data() {
     return {
       route: '',
+      menu: ''
     }
   },
   fetch() {
@@ -27,6 +28,12 @@ export default Vue.extend({
 
     this.route = router
   },
+
+  methods: {
+    showMenu(e){
+      this.menu = e
+    }
+  }
 })
 </script>
 
