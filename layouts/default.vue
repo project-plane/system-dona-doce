@@ -40,4 +40,16 @@ export default Vue.extend({
     overflow-y: scroll;
   }
 }
+
+
+@media (max-width: 900px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    .scroll_container {
+      width: 100%;
+    }
+  }
+}
 </style>

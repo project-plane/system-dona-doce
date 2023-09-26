@@ -52,4 +52,11 @@ export default Vue.extend({
     }
   }
 }
+
+@media (max-width: 900px) {
+  .card_create {
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>

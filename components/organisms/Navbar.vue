@@ -1,10 +1,7 @@
 <template>
   <div class="navbar-container">
-    <div>
-      <NuxtLink to="/cadastrar/unidade"
-        ><img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt=""
-      /></NuxtLink>
-    </div>
+      <img class="logo" src="~/assets/img/logoDonaDoce.jpg" alt="" >
+
 
       <NuxtLink v-if="$nuxt.$route.path === '/dashboard/dashboard' || $nuxt.$route.path === '/kanban/producao' || $nuxt.$route.path === '/kanban/entrega'" to="/cadastrar/unidade" class="btn-dashboard"
         >Ir para Cadastros <div class="arrow"></div></NuxtLink>
@@ -33,8 +30,7 @@ export default Vue.extend({})
   z-index: 1;
 
   .logo {
-    width: 160px;
-    height: 60px;
+    height: 100%;
   }
 
   span {
@@ -43,9 +39,6 @@ export default Vue.extend({})
     font-weight: 600;
   }
 
-  img {
-    width: 2.1rem;
-  }
 
   .btn-dashboard {
     width: 10rem;
