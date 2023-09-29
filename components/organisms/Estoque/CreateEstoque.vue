@@ -6,7 +6,11 @@
         <span>Ingrediente</span>
         <select v-model="selected">
           <option disabled value="">Selecionar Ingrediente</option>
-          <option v-for="ingrediente in listIngrediente" :key="ingrediente.id" :value="ingrediente.id">
+          <option
+            v-for="ingrediente in listIngrediente"
+            :key="ingrediente.id"
+            :value="ingrediente.id"
+          >
             {{ ingrediente.description }}
           </option>
         </select>
@@ -15,7 +19,12 @@
         <span>Unidade Medida</span>
         {{ unidadeMedida }}
       </div>
-      <Input label="Quantidade" type="number" :placeholder="holder" v-model="quantidade" />
+      <Input
+        label="Quantidade"
+        type="number"
+        :placeholder="holder"
+        v-model="quantidade"
+      />
     </div>
     <ContainerInput>
       <div class="radio">
@@ -27,7 +36,6 @@
     <div class="row-button">
       <Button title="Salvar" @functionClick="saveEstoque" />
     </div>
-
   </Container>
 </template>
 
@@ -49,7 +57,7 @@ export default Vue.extend({
       listIngrediente: [],
       unidadeMedida: '',
       exibirMedida: false,
-      holder: 'Inserir Quantidade'
+      holder: 'Inserir Quantidade',
     }
   },
 
@@ -67,7 +75,6 @@ export default Vue.extend({
     selected(newValue) {
       this.exibirMedida = true
       this.listIngrediente.map((e) => {
-
         if (e.id === newValue) {
           this.valorUnitario = Number(e.value).toFixed(2)
           this.amount = Number(e.amount).toFixed(2)
@@ -87,6 +94,9 @@ export default Vue.extend({
           return
         }
       })
+      if (this.selected === '') {
+        this.exibirMedida = false
+      }
     },
   },
   methods: {
@@ -97,15 +107,16 @@ export default Vue.extend({
       }
       const dataEstoque = {
         fk_ingredient: this.selected,
-        amount: Number(this.quantidade * this.amount),
+        amount: Number(this.quantidade),
         unitary_value: Number(this.valorUnitario),
         is_output: this.is_output,
-        unit_of_measurement: 'g'
+        unit_of_measurement: 'g',
       }
 
       await httpEstoque
         .CreateEstoque(dataEstoque)
         .then((res) => {
+          this.exibirMedida = false
           if (res.status === 201) {
             const status = JSON.parse(res.config.data)
             if (!status.is_output) {
@@ -129,6 +140,8 @@ export default Vue.extend({
       this.quantidade = ''
       this.selected = ''
       this.is_output = ''
+      console.log(this.exibirMedida)
+
       this.$nuxt.refresh()
     },
   },
@@ -140,7 +153,6 @@ export default Vue.extend({
   display: flex;
   gap: 1rem;
   align-items: center;
-
 }
 
 .medida {
@@ -156,7 +168,6 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-
 
   span {
     font-size: 1rem;
@@ -174,7 +185,6 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   gap: 1rem;
-
 }
 
 .radio {
