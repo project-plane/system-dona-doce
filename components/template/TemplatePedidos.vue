@@ -25,7 +25,11 @@
       </div>
     </div>
     <div v-else class="listPedidos">
-      <div v-for="pedido in listOrderCoffee" :key="pedido.id">
+      <div v-for="pedido in listOrderCoffee" :key="pedido.id" class="containerListCards" >
+        <CardCoffee :pedido-coffee="pedido" />
+        <CardCoffee :pedido-coffee="pedido" />
+        <CardCoffee :pedido-coffee="pedido" />
+        <CardCoffee :pedido-coffee="pedido" />
         <CardCoffee :pedido-coffee="pedido" />
       </div>
     </div>
@@ -106,10 +110,12 @@ export default Vue.extend({
 <style scoped lang="scss">
 .containerPedidos {
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   padding: 6rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  max-width: 1370px;
 
   .headerPedidos {
     width: 100%;
@@ -172,5 +178,11 @@ export default Vue.extend({
     margin-top: 0.3rem;
     flex-wrap: wrap;
   }
+}
+.containerListCards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
 }
 </style>
