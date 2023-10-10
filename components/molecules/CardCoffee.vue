@@ -27,13 +27,13 @@
   <div class="containerCard">
     <div class="cointainerCard__ImgProduto">
       <img
-        src="https://api.donadoce.gedroid.com/img_revenue/7a190d3b-5fd2-4232-bb2e-82bafb5be7b7.jpeg"
+        :src="`https://api.donadoce.gedroid.com/img_revenue/${infoCoffee.imagem}`"
         alt="Imagem do produto"
       />
     </div>
     <div class="descriptionPedido">
-      <h3>{{ pedidoCoffee.description }}</h3>
-      <h4>R$: {{ pedidoCoffee.value }}</h4>
+      <h3>{{ infoCoffee.description }}</h3>
+      <span>R$: {{ infoCoffee.value }}</span>
     </div>
     <section class="cointainerCard__Inputs">
       <div class="selectPedido">
@@ -41,13 +41,13 @@
         <input
           id="qtdSelecionada"
           type="number"
-          v-model="pedidoCoffee.yield_per_quantity"
+          v-model="pedidoCoffee.amountItem"
         />
       </div>
 
       <div class="selectPedido">
         <label for="tipo">Tipo</label>
-        <select name="cars" id="cars">
+        <select name="cars" id="cars" v-model="pedidoCoffee.method_of_preparation">
           <option value="Congelado">Congelado</option>
           <option value="Assado">Assado</option>
         </select>
@@ -55,10 +55,12 @@
 
       <div class="selectPedido">
         <label for="horario">Horário</label>
-        <input id="horario" v-model="pedidoCoffee.time" type="text" />
+        <input type="date"  v-model="pedidoCoffee.time"/>
+    
       </div>
     </section>
-    <button @click="addPedidos">Adicionar</button>
+    <button @click="adicionarPedido">Adicionar</button>
+
   </div>
 </template>
 
@@ -67,29 +69,61 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    pedidoCoffee: {
+    infoCoffee: {
       type: Object,
       required: true,
     },
   },
-  methods: {
-    addPedidos() {
-      if (!this.tipoLanches.revenues.yield_per_quantity) {
-        this.$toast.info('Campo quantidade vazio')
-        return
+  data(){
+    return{
+      pedidoCoffee:{
+        amountItem: 0,
+        method_of_preparation: "",
+        time:"",
       }
+    }
+  },
+  methods: {
+    adicionarPedido() {
+      if (this.pedidoCoffee.amountItem >= 0) {
+        this.$toast.info('Campo quantidade não está vazio!')
+      }
+      if(this.pedidoCoffee.amountItem >= 1){
+        const novoItem = {
+        fk_revenue: this.infoCoffee.id,
+        amountItem: parseInt(this.pedidoCoffee.amountItem),
+        delivery_date: this.pedidoCoffee.time,
+        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+        infoProduct: this.infoCoffee
+      };
+    
+      this.$store.commit("adicionarPedido", novoItem);
+      }
+     
+      
 
-      // const createOrderItemDto = {
-      //   imgLanche: this.tipoLanches.revenues.imagem,
-      //   descriptionLanche: this.tipoLanches.revenues.description,
-      //   valueLanche: this.tipoLanches.revenues.value,
-      //   qtdLanche: this.tipoLanches.revenues.yield_per_quantity,
+
+      // if (this.pedidoCoffee.amountItem === "") {
+      //   console.log('Campo quantidade vazio');
+      // } else {
+      //   console.log('Campo quantidade não está vazio');
       // }
 
-      // this.$store.commit('SAVE_DADOS_PEDIDOS_PROGRAMADOS', createOrderItemDto)
-
-      this.tipoLanches.yield_per_quantity = ''
-      this.$toast.success('Pedido adicionado com sucesso!!!')
+      // if(this.pedidoCoffee.amountItem >= 1){
+      //   const data = {
+      //     createOrderCoffeItemDto: [
+      //       {
+      //         fk_revenue: this.infoCoffee.id,
+      //         amountItem: this.pedidoCoffee.amountItem,
+      //         delivery_date: this.pedidoCoffee.time,
+      //         method_of_preparation: this.pedidoCoffee.method_of_preparation,
+      //       }
+      //     ],
+        
+      //   };
+      //   console.log(data);
+        
+      // }
     },
   },
 })
@@ -97,7 +131,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .containerCard {
-  border-radius: 19px;
+  border-radius: 0.4rem;
   border: 1px solid rgba(255, 255, 255, 0.27);
   background: #fff;
   width: auto;
@@ -106,8 +140,8 @@ export default Vue.extend({
   .cointainerCard__ImgProduto {
     height: 166px;
     background: rgb(72, 158, 158);
-    border-top-left-radius: 1.2rem;
-    border-top-right-radius: 1.2rem;
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
     overflow: hidden;
     img {
       width: 100%;
@@ -131,7 +165,7 @@ export default Vue.extend({
 
       label {
         color: var(--red);
-        font-size: medium;
+        font-size: 87.5%;
         font-weight: 500;
       }
 
@@ -149,8 +183,8 @@ export default Vue.extend({
     padding: 1rem 0;
     font-size: 1rem;
     width: 100%;
-    border-bottom-left-radius: 1.2rem;
-    border-bottom-right-radius: 1.2rem;
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
     height: 3.48rem;
     display: block;
     font-weight: 600;

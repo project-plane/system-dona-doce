@@ -24,13 +24,13 @@
         <CardPedido :data-pedido="pedido" @click.native="openPedido(pedido)" />
       </div>
     </div>
+    
     <div v-else class="listPedidos">
+ 
+        
       <div v-for="pedido in listOrderCoffee" :key="pedido.id" class="containerListCards" >
-        <CardCoffee :pedido-coffee="pedido" />
-        <CardCoffee :pedido-coffee="pedido" />
-        <CardCoffee :pedido-coffee="pedido" />
-        <CardCoffee :pedido-coffee="pedido" />
-        <CardCoffee :pedido-coffee="pedido" />
+        <MenuPedidosCoffe />
+        <CardCoffee :info-coffee="pedido" />
       </div>
     </div>
   </div>
@@ -38,8 +38,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
-import TemplateFinalizationPedidoVue from './TemplateFinalizationPedido.vue'
 import httpPedidos from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
 import httpMeusDados from '@/server/meusDados'
@@ -183,6 +181,6 @@ export default Vue.extend({
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-
+    width: 88vw;
 }
 </style>

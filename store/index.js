@@ -14,7 +14,8 @@ export const state = () => ({
   selectedTipo: '',
   selectedStatus: '',
   selectedClient: '',
-  listAllOrder: []
+  listAllOrder: [],
+  pedidos: [],
 })
 
 export const mutations = {
@@ -59,5 +60,30 @@ export const mutations = {
   },
   SELECTED_CLIENT(state, payload) {
     state.selectedClient = payload
-  }
+  },
+  adicionarPedido(state, pedido) {
+    state.pedidos.push(pedido); 
+    console.log(state.pedidos);
+  },
+  removerPedido(state, fk_revenue) {
+    const index = state.pedidos.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
+
+    if (index !== -1) {
+      state.pedidos.splice(index, 1);
+    }
+  },
+  atualizarAmountItem(state, { fk_revenue, novoAmountItem }) {
+    const pedido = state.pedidos.find((pedido) => pedido.fk_revenue === fk_revenue);
+
+    if (pedido) {
+      pedido.amountItem = pedido.amountItem + novoAmountItem;
+    }
+  },
+  subtrairQuantidadeDoItem(state, { fk_revenue, novoAmountItem }) {
+    const pedido = state.pedidos.find((pedido) => pedido.fk_revenue === fk_revenue);
+
+    if (pedido) {
+      pedido.amountItem = pedido.amountItem - novoAmountItem;
+    }
+  },
 }

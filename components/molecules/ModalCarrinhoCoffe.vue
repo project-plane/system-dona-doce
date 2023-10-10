@@ -1,0 +1,183 @@
+<template>
+  <ModalPreview titleModal="Carrinho" @closeModal="closeModal">
+    <div class="dataEmpresa" v-if="$fetchState.pending">
+      Carregando dados do carrinho...
+    </div>
+    <div class="dataEmpresa" v-else>
+      <h4>Pedido</h4>
+      <table class="resume-content">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qtde</th>
+            <th>V. Unidade</th>
+            <th>Tipo de Pepraro</th>
+            <th>Total</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tr v-for="(data, index) in listaCompletaReceita" :key="index">
+          <td>{{ data.infoProduct.description }}</td>
+          <td class="tdQtde">
+            <button @click="subtrairQuantidadeDoItem(data.infoProduct.id, -1)">
+              <span>-</span>
+            </button>
+            {{ data.amountItem }}
+            <button @click="atualizarAmountItem(data.infoProduct.id, +1)">
+              <span>+</span>
+            </button>
+          </td>
+
+          <td>R$ {{ data.infoProduct.value }}</td>
+          <td>{{ data.method_of_preparation }}</td>
+          <td>R$ {{ totalValue(data.infoProduct.value, data.amountItem) }}</td>
+          <td>
+            <img
+              src="../../assets/icons/delete.svg"
+              alt=""
+              class="btnDelete"
+              @click="deleteItem(data.infoProduct.id)"
+            />
+          </td>
+        </tr>
+      </table>
+      <div class="finalizar-pedido-content">
+        <span>Total Pedido: R$ {{ totalPedido }}</span>
+        <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
+      </div>
+    </div>
+  </ModalPreview>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  props: {
+    listaCompletaReceita: {
+      type: [Array, Object],
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      disabledBtn: true,
+      dejejum: [],
+      countdejejum: 0,
+      dadosCarrinhoVuex: [],
+    }
+  },
+
+  async fetch() {
+    await this.renderList()
+  },
+  computed: {
+    totalPedido() {
+      let total = 0
+      this.listaCompletaReceita.forEach((data) => {
+        total += data.infoProduct.value * data.amountItem
+      })
+      return total
+    },
+  },
+  methods: {
+    totalValue(unity, qtde) {
+      return Number(unity) * Number(qtde)
+    },
+
+    closeModal() {
+      this.$emit('closeModal')
+    },
+
+    atualizarAmountItem(fk_revenue, novoAmountItem) {
+      this.$store.commit('atualizarAmountItem', { fk_revenue, novoAmountItem })
+    },
+    subtrairQuantidadeDoItem(fk_revenue, novoAmountItem) {
+      this.$store.commit('atualizarAmountItem', { fk_revenue, novoAmountItem })
+    },
+    deleteItem(value) {
+      this.$store.commit('removerPedido', value)
+    },
+
+    finalizarPedido() {
+      this.$emit('finalizarPedido')
+    },
+  },
+})
+</script>
+
+<style scoped lang="scss">
+.dataEmpresa {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  .header-order {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bg_color_modal);
+  }
+
+  .resume-content {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px dotted var(--red);
+    table-layout: fixed;
+
+    tr {
+      width: 100%;
+
+      td {
+        button {
+          width: 30px;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          color: var(--white);
+          background: var(--blue);
+          font-size: 1rem;
+        }
+
+        .btnDisabled {
+          background: gray;
+          cursor: no-drop;
+        }
+      }
+
+      .btnDelete {
+        width: 1.2rem;
+        cursor: pointer;
+      }
+
+      td:nth-child(1),
+      th:nth-child(1) {
+        text-align: left;
+      }
+
+      .tdQtde {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+
+  .finalizar-pedido-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+  }
+}
+</style>

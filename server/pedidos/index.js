@@ -5,6 +5,9 @@ export default {
   CreateNewOrder: async (data) => {
     return await http.post(`order/programmed`, data)
   },
+  CreateNewOrderCoffe: async (data) => {
+    return await http.post(`order/coffe`, data)
+  },
 
   DeleteOrder: async (id) => {
     return await http.patch(`order/disabled/${id}`)
