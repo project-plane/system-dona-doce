@@ -4,14 +4,14 @@ export default {
   CreateReceita: async (data) => {
     return await http.post('/revenue', data)
   },
-  GetReceitas: async () => {
-    return await http.get('/revenue')
+  GetReceitas: async (offset=0, limit=100) => {
+    return await http.get(`/revenue/?offset=${offset}&limit=${limit}`)
   },
-  GetAllReceitas: async () => {
-    return await http.get('/revenue/v2')
+  GetAllReceitas: async (offset=0, limit=100) => {
+    return await http.get(`/revenue/v2/${id}?offset=${offset}&limit=${limit}`)
   },
-  GetFindReceita: async (id) => {
-    return await http.get(`/revenue/ingredients/${id}`)
+  GetFindReceita: async (id, offset=0, limit=100) => {
+    return await http.get(`/revenue/ingredients/${id}?offset=${offset}&limit=${limit}`)
   },
   DeleteReceita: async (id) => {
     return await http.delete(`/revenue/${id}`)
