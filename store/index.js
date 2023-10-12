@@ -16,6 +16,9 @@ export const state = () => ({
   selectedClient: '',
   listAllOrder: [],
   pedidos: [],
+  postCoffe:{
+    createOrderCoffeItemDto:[]
+  },
 })
 
 export const mutations = {
@@ -66,13 +69,26 @@ export const mutations = {
     console.log(state.pedidos);
   },
   removerPedido(state, fk_revenue) {
-    const index = state.pedidos.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
+    const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
 
     if (index !== -1) {
-      state.pedidos.splice(index, 1);
+      
+      state.postCoffe.createOrderCoffeItemDto.splice(index, 1);
+     
+    }
+    const id = state.pedidos.findIndex((data) => data.fk_revenue === fk_revenue);
+
+    if (id !== -1) {
+      state.pedidos.splice(id, 1);
     }
   },
   atualizarAmountItem(state, { fk_revenue, novoAmountItem }) {
+    const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
+
+    if (index !== -1) {
+      state.postCoffe.createOrderCoffeItemDto[index].amountItem += novoAmountItem;
+}
+    
     const pedido = state.pedidos.find((pedido) => pedido.fk_revenue === fk_revenue);
 
     if (pedido) {
@@ -86,4 +102,16 @@ export const mutations = {
       pedido.amountItem = pedido.amountItem - novoAmountItem;
     }
   },
+  addOrder(state, data) {
+    state.postCoffe.createOrderCoffeItemDto.push(data);
+    console.log(state.pedidos);
+    
+  }
+  // removerPedido(state, fk_revenue) {
+  //   const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
+
+  //   if (index !== -1) {
+  //     state.pedidos.splice(index, 1);
+  //   }
+  // }
 }

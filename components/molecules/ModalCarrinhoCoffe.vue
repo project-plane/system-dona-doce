@@ -8,7 +8,7 @@
       <table class="resume-content">
         <thead>
           <tr>
-            <th>Item</th>
+            <th colspan="2">Item</th>
             <th>Qtde</th>
             <th>V. Unidade</th>
             <th>Tipo de Pepraro</th>
@@ -17,7 +17,10 @@
           </tr>
         </thead>
         <tr v-for="(data, index) in listaCompletaReceita" :key="index">
-          <td>{{ data.infoProduct.description }}</td>
+          <td colspan="2"> <span> {{ data.infoProduct.description }}</span> <br>
+          <span style="font-size: 10px; color: var(--red); font-weight: 600; ">  Qtd. min: {{ data.infoProduct.base_min_amount }}</span>
+          <span style="font-size: 10px; color: var(--red); font-weight: 600;" > x Qtd. max: {{ data.infoProduct.base_max_amount }}</span>
+          </td> 
           <td class="tdQtde">
             <button @click="subtrairQuantidadeDoItem(data.infoProduct.id, -1)">
               <span>-</span>
@@ -51,7 +54,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import http from "../../server/pedidos/index.js"
 export default Vue.extend({
   props: {
     listaCompletaReceita: {
@@ -85,11 +88,9 @@ export default Vue.extend({
     totalValue(unity, qtde) {
       return Number(unity) * Number(qtde)
     },
-
     closeModal() {
       this.$emit('closeModal')
     },
-
     atualizarAmountItem(fk_revenue, novoAmountItem) {
       this.$store.commit('atualizarAmountItem', { fk_revenue, novoAmountItem })
     },
@@ -98,12 +99,28 @@ export default Vue.extend({
     },
     deleteItem(value) {
       this.$store.commit('removerPedido', value)
+      
     },
 
-    finalizarPedido() {
-      this.$emit('finalizarPedido')
-    },
+    async finalizarPedido() {
+    
+      await http.CreateNewOrderCoffe(this.$store.state.postCoffe).then(response => {
+      console.log('Resposta da requisição:', response.data);
+      this.$emit('closeModal')
+      this.$toast.info('Pedidos Realizados!')
+      setTimeout(function(){
+          location.reload();
+      }, 4000);
+      
+      })
+      .catch(error => {
+        console.error('Erro na requisição:', error);
+        this.$toast.info('Ops.. Falha em finalizar o pedido!', error)
+      });
+
+      },
   },
+
 })
 </script>
 

@@ -48,14 +48,17 @@
       <div class="selectPedido">
         <label for="tipo">Tipo</label>
         <select name="cars" id="cars" v-model="pedidoCoffee.method_of_preparation">
-          <option value="Congelado">Congelado</option>
-          <option value="Assado">Assado</option>
+          <option value="frozen">Congelado</option>
+          <option value="roast">Assado</option>
         </select>
       </div>
 
       <div class="selectPedido">
         <label for="horario">Horário</label>
-        <input type="date"  v-model="pedidoCoffee.time"/>
+        <select name="cars" id="cars" v-model="pedidoCoffee.time">
+          <option value="09:00">09:00</option>
+          <option value="14:00">14:00</option>
+        </select>
     
       </div>
     </section>
@@ -85,8 +88,16 @@ export default Vue.extend({
   },
   methods: {
     adicionarPedido() {
-      if (this.pedidoCoffee.amountItem >= 0) {
-        this.$toast.info('Campo quantidade não está vazio!')
+      if (!this.pedidoCoffee.amountItem || !this.pedidoCoffee.method_of_preparation) {
+        this.$toast.info('Os Campos não podem ficar vazios!')
+      }
+      const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
+      if (fkRevenueExists) {
+        this.$toast.info('Esse Pedido já foi adcionado!');
+        this.pedidoCoffee.amountItem = '';
+        this.pedidoCoffee.time = '';
+        this.pedidoCoffee.method_of_preparation = '';
+        return; 
       }
       if(this.pedidoCoffee.amountItem >= 1){
         const novoItem = {
@@ -96,34 +107,21 @@ export default Vue.extend({
         method_of_preparation: this.pedidoCoffee.method_of_preparation,
         infoProduct: this.infoCoffee
       };
-    
+      const data = {
+        fk_revenue: this.infoCoffee.id,
+        amountItem: parseInt(this.pedidoCoffee.amountItem),
+        delivery_date: "2023-10-11T01:33:32.640Z",
+        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+      };
+      
       this.$store.commit("adicionarPedido", novoItem);
+      this.$store.commit("addOrder", data);
       }
      
-      
+      this.pedidoCoffee.amountItem = '';
+      this.pedidoCoffee.time = '';
+      this.pedidoCoffee.method_of_preparation = '';
 
-
-      // if (this.pedidoCoffee.amountItem === "") {
-      //   console.log('Campo quantidade vazio');
-      // } else {
-      //   console.log('Campo quantidade não está vazio');
-      // }
-
-      // if(this.pedidoCoffee.amountItem >= 1){
-      //   const data = {
-      //     createOrderCoffeItemDto: [
-      //       {
-      //         fk_revenue: this.infoCoffee.id,
-      //         amountItem: this.pedidoCoffee.amountItem,
-      //         delivery_date: this.pedidoCoffee.time,
-      //         method_of_preparation: this.pedidoCoffee.method_of_preparation,
-      //       }
-      //     ],
-        
-      //   };
-      //   console.log(data);
-        
-      // }
     },
   },
 })

@@ -19,5 +19,11 @@ export default {
 
   UpdateStatusOrder: async (id, data) => {
     return await http.patch(`order/${id}`, data)
+  },
+  UploadCautela: async (id, data) => {
+    return await http.post(`order/caution/${id}`, data)
+  },
+  UploaQtdBandejas: async (id, data) => {
+    return await http.patch(`order/tray/${id}`, data)
   }
 }

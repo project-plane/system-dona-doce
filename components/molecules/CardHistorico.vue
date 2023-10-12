@@ -10,7 +10,7 @@
             <ButtonPirula title="Ver Detalhes" @click.native="() => showModal = true"/>
         </div>
 
-        <ModalHistorico v-if="showModal" :data="data" @closeModal="() => showModal = false" />
+        <ModalHistorico v-if="showModal" :valueTotal="valueorder(data.orderItem)" :data="data" @closeModal="() => showModal = false" />
 
     </div>
 </template>

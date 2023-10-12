@@ -71,6 +71,8 @@ v-if="$store.state.selectedStatus ===
             <span>
               Status:
               <strong>{{ dataPedidos.orderStatus.description }}</strong>
+              <!-- <pre>{{ dataPedidos }}</pre> -->
+   
             </span>
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
           </div>
@@ -117,9 +119,26 @@ export default Vue.extend({
       selectOrder: true,
       loading: false,
       modalPedido: false,
+      downloadUrl: null,
     }
   },
   methods: {
+    // downloadPDF() {
+    //   const pdfData = ""+ this.dataPedidos.file_caution; 
+    //   const blob = new Blob([pdfData], { type: 'application/pdf' });
+
+    //   const url = window.URL.createObjectURL(blob);
+    //   const a = document.createElement('a');
+    //   a.style.display = 'none';
+    //   a.href = url;
+    //   a.download = 'arquivo.pdf';
+    //   document.body.appendChild(a);
+
+    //   a.click();
+
+    //   window.URL.revokeObjectURL(url);
+    //   document.body.removeChild(a);
+    // },
     exibirPedidos(dataPedidos) {
       this.$store.commit('DADOS_PEDIDOS', dataPedidos)
     },

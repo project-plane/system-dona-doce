@@ -19,7 +19,7 @@
     <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponiveis</h3>
 
     <div v-if="$fetchState.pending && statusPedidos === 0">Carregando dados..</div>
-    <div v-if="statusPedidos === 0" class="listPedidos">
+    <div v-if="statusPedidos === 0" class="listPedidos" style="margin-top: 2rem;">
       <div v-for="pedido in listPedidos" :key="pedido.id">
         <CardPedido :data-pedido="pedido" @click.native="openPedido(pedido)" />
       </div>
@@ -27,9 +27,9 @@
     
     <div v-else class="listPedidos">
  
+      <MenuPedidosCoffe />
+      <div v-for="pedido in listOrderCoffee" :key="pedido.id" class="containerListCards"  >
         
-      <div v-for="pedido in listOrderCoffee" :key="pedido.id" class="containerListCards" >
-        <MenuPedidosCoffe />
         <CardCoffee :info-coffee="pedido" />
       </div>
     </div>
@@ -172,6 +172,7 @@ export default Vue.extend({
   .listPedidos {
     width: 100%;
     display: flex;
+    justify-content: center;
     gap: 1rem;
     margin-top: 0.3rem;
     flex-wrap: wrap;
@@ -181,6 +182,7 @@ export default Vue.extend({
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    width: 88vw;
+    
+
 }
 </style>

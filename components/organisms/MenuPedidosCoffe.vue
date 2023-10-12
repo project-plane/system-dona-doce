@@ -49,6 +49,8 @@
     computed: {
     pedidos() {
       return this.$store.state.pedidos; 
+      
+      
     },
   },
     methods: {
