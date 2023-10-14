@@ -16,6 +16,9 @@ export default {
   OrderHistory: async () => {
     return await http.get(`order/all?clientskip=0&limit=10000`)
   },
+  Orderspercustomer: async()=>{
+    return await http.get(`order/client?clientskip=0&limit=10000`)
+  },
 
   UpdateStatusOrder: async (id, data) => {
     return await http.patch(`order/${id}`, data)
@@ -25,5 +28,12 @@ export default {
   },
   UploaQtdBandejas: async (id, data) => {
     return await http.patch(`order/tray/${id}`, data)
-  }
+  },
+    // o cliente adiciona o comprovante de pagamento
+  PostComprovante: async (id, data) => {
+    return await http.patch(`/order/payment_voucher/${id}`, data)
+  },
+  PostNotaFiscal: async (id, data) => {
+    return await http.patch(`/order/invoice/${id}`, data)
+  },
 }

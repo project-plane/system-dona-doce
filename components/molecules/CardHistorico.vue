@@ -1,6 +1,8 @@
 <template>
     <div class="card-historico-container">
+        
         <div class="header-card">
+            
             <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
             <span><strong>Valor:</strong> R$ {{ valueorder(data.orderItem) }}</span>
         </div>

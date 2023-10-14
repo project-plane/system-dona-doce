@@ -14,114 +14,112 @@
       <div class="header-order">
         <h4>Data do Pedido: {{ formatDate(data.dateOrder) }}</h4>
         <h4>Status: {{ data.orderStatus.description }}</h4>
-        <h4 v-if="data.order_type === 'coffe'" >Total: R$ {{ valueTotal }}</h4>
-        <h4 v-else>Total: R${{ countdejejum + countlanche01 + countlanche02 }}</h4>
+        <h4 v-if="data.order_type === 'coffe'">Total: R$ {{ valueTotal }}</h4>
+        <h4 v-else>
+          Total: R${{ countdejejum + countlanche01 + countlanche02 }}
+        </h4>
       </div>
       <section class="sectionCoffe" v-if="data.order_type === 'coffe'">
-
         <table class="listProduts">
           <tr>
-           <th>Id</th>
-           <th>Item</th> 
-           <th>Qtde</th> 
-           <th>Valor Unit.</th> 
+            <th>Id</th>
+            <th>Item</th>
+            <th>Qtde</th>
+            <th>Valor Unit.</th>
           </tr>
 
-          <tr  v-for="(item, index) in data.orderItem " :key="index">
-           <td> {{ index+1 }}</td>
-           <td> {{ item.revenues.description}}</td> 
-           <td> {{data.orderItem[index].amountItem}}</td> 
-           <td> {{data.orderItem[index].valueOrderItem}}</td> 
+          <tr v-for="(item, index) in data.orderItem" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.revenues.description }}</td>
+            <td>{{ data.orderItem[index].amountItem }}</td>
+            <td>{{ data.orderItem[index].valueOrderItem }}</td>
           </tr>
-
         </table>
-
       </section>
 
-     <section v-else>
-     
-      <h4>Desjejum</h4>
-          <table class="resume-content">
-            <tr v-if="dejejum.length !== 0">
-              <th>Item</th>
-              <th>Qtde</th>
-              <th>Imagem</th>
-              <th>V. Unidade</th>
-              <th>V. Total</th>
-            </tr>
+      <section v-else>
+        <h4>Desjejum</h4>
+        <table class="resume-content">
+          <tr v-if="dejejum.length !== 0">
+            <th>Item</th>
+            <th>Qtde</th>
+            <th>Imagem</th>
+            <th>V. Unidade</th>
+            <th>V. Total</th>
+          </tr>
 
-            <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
-              <td>{{ item.revenues.description }}</td>
-              <td>{{ item.amountItem }}</td>
-              <td>
-                <img
-                  :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
-                  alt=""
-                />
-              </td>
-              <td>R$ {{ item.valueOrderItem }}</td>
-              <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            </tr>
-            <tr v-if="dejejum.length === 0">
-              Não possui...
-            </tr>
-          </table>
+          <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
+            <td>{{ item.revenues.description }}</td>
+            <td>{{ item.amountItem }}</td>
+            <td>
+              <img
+                :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
+                alt=""
+              />
+            </td>
+            <td>R$ {{ item.valueOrderItem }}</td>
+            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+          </tr>
+          <tr v-if="dejejum.length === 0">
+            Não possui...
+          </tr>
+        </table>
 
-          <h4>Lanche 01</h4>
-          <table class="resume-content">
-            <tr v-if="lanche01.length !== 0">
-              <th>Item</th>
-              <th>Qtde</th>
-              <th>Imagem</th>
-              <th>V. Unidade</th>
-              <th>V. Total</th>
-            </tr>
+        <h4>Lanche 01</h4>
+        <table class="resume-content">
+          <tr v-if="lanche01.length !== 0">
+            <th>Item</th>
+            <th>Qtde</th>
+            <th>Imagem</th>
+            <th>V. Unidade</th>
+            <th>V. Total</th>
+          </tr>
 
-            <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
-              <td>{{ item.revenues.description }}</td>
-              <td>{{ item.amountItem }}</td>
-              <td>
-                <img
-                  :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
-                  alt=""
-                />
-              </td>
-              <td>R$ {{ item.valueOrderItem }}</td>
-              <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            </tr>
-            <tr v-if="lanche01.length === 0">
-              Não possui...
-            </tr>
-          </table>
+          <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
+            <td>{{ item.revenues.description }}</td>
+            <td>{{ item.amountItem }}</td>
+            <td>
+              <img
+                :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
+                alt=""
+              />
+            </td>
+            <td>R$ {{ item.valueOrderItem }}</td>
+            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+          </tr>
+          <tr v-if="lanche01.length === 0">
+            Não possui...
+          </tr>
+        </table>
 
-          <h4>Lanche 02</h4>
-          <table class="resume-content">
-            <tr v-if="lanche02.length !== 0">
-              <th>Item</th>
-              <th>Qtde</th>
-              <th>Imagem</th>
-              <th>V. Unidade</th>
-              <th>V. Total</th>
-            </tr>
+        <h4>Lanche 02</h4>
+        <table class="resume-content">
+          <tr v-if="lanche02.length !== 0">
+            <th>Item</th>
+            <th>Qtde</th>
+            <th>Imagem</th>
+            <th>V. Unidade</th>
+            <th>V. Total</th>
+          </tr>
 
-            <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
-              <td>{{ item.revenues.description }}</td>
-              <td>{{ item.amountItem }}</td>
-              <td>
-                <img
-                  :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
-                  alt=""
-                />
-              </td>
-              <td>R$ {{ item.valueOrderItem }}</td>
-              <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            </tr>
+          <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
+            <td>{{ item.revenues.description }}</td>
+            <td>{{ item.amountItem }}</td>
+            <td>
+              <img
+                :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
+                alt=""
+              />
+            </td>
+            <td>R$ {{ item.valueOrderItem }}</td>
+            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+          </tr>
 
-            <tr v-if="lanche02.length === 0">
-              Não possui...
-            </tr>
-          </table>
-    </section>
+          <tr v-if="lanche02.length === 0">
+            Não possui...
+          </tr>
+        </table>
+      </section>
 
       <Button
         v-if="
@@ -141,58 +139,115 @@
         <h4>Status: {{ data.orderStatus.description }}</h4>
       </div>
 
-      <div class="resumeItens" >
-       
-        <div>
-            <label for="" class="titleInput">Comprovante de Pagamento</label>
-            <div class="inputContainer">
-           
-            <input type="file" style="width: 85%" @change="onFileChangeComprovante"/>
-              <img  v-if="previewComprovante" 
-              src="../../assets/icons/Icon_uploadConcluido.svg" alt="Icon concluido" style="widows: 20px" 
-              />
-              <img v-else
-                src="../../assets/icons/Icon_upload.svg"
-                alt="Pré-visualização do PDF"
-              />
-            </div>
-
+      <div class="resumeItens">
+        <!-- comprovantes -->
+        <div class="containerComprovantes">
+          <label for="" class="titleInput">Comprovante de Pagamento</label>
+          <div class="inputContainer">
+            <input
+              type="file"
+              style="width: 85%"
+              @change="onFileChangeComprovante"
+            />
+            <img
+              v-if="previewComprovante"
+              src="../../assets/icons/Icon_uploadConcluido.svg"
+              alt="Icon concluido"
+              style="widows: 20px"
+            />
+            <img
+              v-else
+              src="../../assets/icons/Icon_upload.svg"
+              alt="Pré-visualização do PDF"
+            />
+          </div>
         </div>
-       
-        <div>
+        <!-- bandejas -->
+        <div class="containerBandejas">
           <label for="" class="titleInput">Número de Bandejas</label>
-          <input id="bandeja" type="number" v-model="amount_of_tray" class="inputContainer" style="width:12rem"/>
+          <span
+            v-if="data.amount_of_tray === null"
+            class="inputContainer"
+            style="width: 12rem; font-size: 14px"
+          >
+            Qtd. não foi definida</span
+          >
+          <input
+            v-else
+            id="bandeja"
+            type="number"
+            :value="data.amount_of_tray"
+            disabled
+            class="inputContainer"
+            style="width: 12rem"
+          />
+        </div>
+        <!-- nota -->
+        <div class="containerNf">
+          <label for="" class="titleInput">Nota</label>
+         
+          <span v-if="data.file_invoice == null" style="font-size: 12px">
+            Arquivo não anexado</span
+          >
+          <br />
+
+          <a :href="'https://api.donadoce.gedroid.com/caution/' + this.data.file_invoice" style="display: none;" class="dowload-file" />
+
+          <button
+            v-show="data.file_invoice != null"
+            @click="downloadFile()"
+            class="inputContainer"
+            style="
+              width: 10rem;
+              background-color: var(--red);
+              color: white;
+              text-align: center;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            Baixar arquivo
+          </button>
         </div>
 
-       
-
-        <div>
-            <label for="" class="titleInput">Nota</label>
-            <span>Disponivel pra download</span>
-            <br>
-            <button class="inputContainer" style="width: 10rem; background-color: var(--red); color: white; text-align: center; display: flex; justify-content: center; "> 
-              Baixar arquivo 
-            </button>
-            <!-- <input type="file"  accept="image/*,.pdf" class="inputContainer"/> -->
-        </div>
-
+        <!-- cautela -->
         <div class="inputPdf">
           <label for="" class="titleInput">Cautela</label>
-          <br>
-          <span v-if="data.file_caution == null"  style="font-size: 12px;"> Arquivo ainda não anexado</span>
-            <br>
-            <button v-show="data.file_caution != null" class="inputContainer" style="width: 10rem; background-color: var(--red); color: white; text-align: center; display: flex; justify-content: center; "> 
-              Baixar arquivo
-              </button> 
-        </div>
-      <pre>{{ data }}</pre>
-      
+         
+          <span v-if="data.file_caution == null" style="font-size: 12px">
+            Arquivo não anexado</span
+          >
+          <br />
 
-        
-  
-        <Button title="Salvar" type.native="button" :is-disabled="isDisabled" @click.once="adicionarBandejas(data.id)" style="width: 100%; height: 2.8rem;" />
+          <a :href="'https://api.donadoce.gedroid.com/caution/' + this.data.file_caution" style="display: none;" class="dowload-file" />
+
+          <button
+            v-show="data.file_caution != null"
+            @click="downloadFile()"
+            class="inputContainer"
+            style="
+              width: 10rem;
+              background-color: var(--red);
+              color: white;
+              text-align: center;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            Baixar arquivo
+          </button>
+        </div>
+
+        <Button
+          class="save"
+          title="Salvar"
+          type.native="button"
+          :is-disabled="isDisabled"
+          @click="uploadComprovante(data.id)"
+          style="width: 100%; height: 2.8rem"
+        />
+      </div>
     </div>
-  </div>
   </ModalPreview>
 </template>
 
@@ -222,7 +277,6 @@ export default Vue.extend({
       selectedFileComprovante: null,
       previewComprovante: null,
       amount_of_tray: Number,
-      
     }
   },
 
@@ -257,7 +311,7 @@ export default Vue.extend({
 
   methods: {
     closeModal() {
-      this.$emit("closeModal");
+      this.$emit('closeModal')
     },
 
     totalValue(unity, qtde) {
@@ -269,56 +323,68 @@ export default Vue.extend({
     },
     async cancelAnOrder(id) {
       this.isDisabled = true
-      await httpOrder.DeleteOrder(id).then( () => {
+      await httpOrder.DeleteOrder(id).then(() => {
         this.isDisabled = false
         this.$toast.error('Pedido Cancelado')
         this.closeModal()
       })
     },
 
-    onFileChange(event) {
-      this.selectedFile = event.target.files[0]
-      this.previewUrl = URL.createObjectURL(this.selectedFile)
-    },
     onFileChangeComprovante(event) {
       this.selectedFileComprovante = event.target.files[0]
-      this.previewComprovante = URL.createObjectURL(this.selectedFileComprovante)
+      this.previewComprovante = URL.createObjectURL(
+        this.selectedFileComprovante
+      )
     },
 
-    async uploadFile(id) {
-    try{ 
-        if (!this.selectedFile) {
+    async uploadComprovante(id) {
+      try {
+        if (!this.selectedFileComprovante) {
           throw new Error('Selecione um arquivo PDF antes de enviar.')
         }
-
         const formData = new FormData()
-        formData.append('file_caution', this.selectedFile)
-        console.log(formData);
-        
-        const response = await httpOrder.UploadCautela(id, formData)
+        formData.append('file_payment_voucher', this.selectedFileComprovante)
+        console.log(formData)
+
+        const response = await httpOrder.PostComprovante(id, formData)
         console.log('Arquivo enviado com sucesso:', response.data)
       } catch (error) {
-        console.error('Erro ao enviar o arquivo:', error)
-        console.log(error, 'Deu ruim')
+        console.error('Erro ao enviar o arquivo:', error.message)
       }
     },
-    async adicionarBandejas(id) {
-    try{ 
-          const data = {
-            amount_of_tray: parseInt(this.amount_of_tray)
-          }
-          console.log(id, data);
-          
-          const response = await httpOrder.UploaQtdBandejas(id, data);
-          this.isDisabled = false;
-          console.log('Arquivo enviado com sucesso:', response);
-          this.$toast.success('Número de bandejas ok');
-        } catch (error) {
-          console.error('Erro ao enviar o arquivo:', error);
-          this.$toast.error('Houve um erro ao processar a solicitação.');
-        }
+
+    async downloadFile() {
+      try {
+        await fetch('https://api.donadoce.gedroid.com/caution/' + this.data.file_caution)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "cautela"; 
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      } catch (error) {
+        console.error("Erro ao baixar o arquivo:", error);
       }
-  
+    },
+    async downloadN() {
+      try {
+        await fetch('https://api.donadoce.gedroid.com/caution/' + this.data.file_invoice)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "cautela"; 
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      } catch (error) {
+        console.error("Erro ao baixar o arquivo:", error);
+      }
+    },
   },
 })
 </script>
@@ -340,9 +406,9 @@ export default Vue.extend({
     color: var(--red);
   }
 }
-.listProduts{
+.listProduts {
   width: 100%;
-  th{
+  th {
     text-align: left;
   }
 }
@@ -357,34 +423,52 @@ export default Vue.extend({
     justify-content: space-between;
     border-bottom: 1px solid var(--bg_color_modal);
   }
-  .resumeItens{
-    display: flex;
-    width: 90%;
-    overflow: hidden;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin: auto;
+  .resumeItens {
+    display: grid;
+    grid-template-columns: 20rem 14rem;
+    grid-template-rows: 70px 70px 60px;
+    grid-column-gap: 44px;
+    grid-row-gap: 15px;
+    align-items: center;
+    justify-items: start;
+    justify-content:space-between;
+    .containerComprovantes {
+      grid-area: 1 / 1 / 2 / 2;
+    
+    }
+    .containerBandejas { 
+      grid-area: 1 / 2 / 2 / 3;
+     }
+    .containerNf {
+      grid-area: 2 / 1 / 3 / 2;
+    }
+    .inputPdf { 
+      grid-area: 2 / 2 / 3 / 3;
+     } 
+    .save { 
+      grid-area: 3 / 1 / 4 / 3;
+     }
 
     .inputContainer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid var(--red);
-        text-align: center;
-        border-radius: 0.25rem;
-        padding: 0.5rem;
-        width: 22rem;
-        height: 3rem;
-        img {
-          width: 2rem;
-        }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--red);
+      text-align: center;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      width: 22rem;
+      height: 3rem;
+      
+      img {
+        width: 2rem;
       }
+    }
 
-      .titleInput {
-        font-size: 1rem;
-        font-weight: 600;
-      }
+    .titleInput {
+      font-size: 1rem;
+      font-weight: 600;
+    }
   }
   .resume-content {
     width: 100%;
@@ -444,8 +528,6 @@ export default Vue.extend({
       display: flex;
       flex-direction: column;
       width: 17rem;
-
-      
     }
   }
 }
