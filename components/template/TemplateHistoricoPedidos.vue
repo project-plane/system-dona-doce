@@ -33,6 +33,7 @@
 
             <div v-for="(item, index) in listFiltered" :key="index">
                 <CardHistorico :data="item" />
+           
             </div>
 
             <span v-if="listFiltered.length === 0">Não há nada para mostrar aqui</span>
@@ -45,7 +46,6 @@
             </div>
 
             <span v-if="listFiltered.length === 0">Não há nada para mostrar aqui</span>
-
         </div>      
     </div>
 </template>
@@ -68,7 +68,7 @@ export default Vue.extend({
     },
 
     async fetch () {
-        await HttpHistoryClient.OrderHistory().then( (res) => {
+        await HttpHistoryClient.Orderspercustomer().then( (res) => {
             this.historico = res.data
         })
 

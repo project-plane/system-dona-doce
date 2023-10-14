@@ -6,5 +6,7 @@ export default {
   },
   GetAllClients: async () => {
     return await http.get('/clients')
-  }
+  },
+
+
 }
