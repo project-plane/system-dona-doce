@@ -115,7 +115,7 @@ export default Vue.extend({
       })
       .catch(error => {
         console.error('Erro na requisição:', error);
-        this.$toast.info('Ops.. Falha em finalizar o pedido!', error)
+       this.$toast.error('Houve um erro ao processar a solicitação.');
       });
 
       },

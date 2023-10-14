@@ -231,7 +231,6 @@ export default Vue.extend({
           this.$toast.success('Número de bandejas inseridos');
       
         } catch (error) {
-          console.error('Erro ao enviar o arquivo:', error);
           this.$toast.error('Houve um erro ao processar a solicitação.');
         }
     },
@@ -255,8 +254,7 @@ export default Vue.extend({
           location.reload();
       }, 4000);
       } catch (error) {
-        console.error('Erro ao enviar o arquivo:', error)
-        console.log(error, 'Deu ruim')
+        this.$toast.error('Houve um erro ao processar a solicitação.');
       }
     },
     async uploadFileNF(id) {
