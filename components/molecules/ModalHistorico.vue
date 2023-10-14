@@ -143,7 +143,7 @@
         <!-- comprovantes -->
         <div class="containerComprovantes">
           <label for="" class="titleInput">Comprovante de Pagamento</label>
-          <div class="inputContainer">
+          <div class="inputContainer" v-if="data.orderStatus.description ==='Revisão Cliente'">
             <input
               type="file"
               style="width: 85%"
@@ -160,6 +160,9 @@
               src="../../assets/icons/Icon_upload.svg"
               alt="Pré-visualização do PDF"
             />
+          </div>
+          <div class="inputContainer" v-else>
+            <span style=" font-size: 14px" >Não é possivel anexar um arquivo</span>
           </div>
         </div>
         <!-- bandejas -->
@@ -183,7 +186,7 @@
           />
         </div>
         <!-- nota -->
-        <div class="containerNf">
+        <div class="containerNf" >
           <label for="" class="titleInput">Nota</label>
          
           <span v-if="data.file_invoice == null" style="font-size: 12px">
@@ -243,7 +246,7 @@
           title="Salvar"
           type.native="button"
           :is-disabled="isDisabled"
-          @click="uploadComprovante(data.id)"
+          @click.native="uploadComprovante(data.id)"
           style="width: 100%; height: 2.8rem"
         />
       </div>
@@ -338,6 +341,7 @@ export default Vue.extend({
     },
 
     async uploadComprovante(id) {
+
       try {
         if (!this.selectedFileComprovante) {
           throw new Error('Selecione um arquivo PDF antes de enviar.')
@@ -348,6 +352,10 @@ export default Vue.extend({
 
         const response = await httpOrder.PostComprovante(id, formData)
         console.log('Arquivo enviado com sucesso:', response.data)
+          setTimeout(function(){
+            location.reload();
+        }, 4000);
+
       } catch (error) {
         console.error('Erro ao enviar o arquivo:', error.message)
       }
