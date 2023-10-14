@@ -150,7 +150,7 @@
                    Baixar Comprovante 
                    <img  src="../../assets/icons/Icon_uploadConcluido.svg"  style="width: 20px;"  />
                   </span>
-                  <!-- <img v-if="!urlImgNota" src="~/assets/icons/download.svg" alt="" /> -->
+                  
                   <p class="inputComprovante" style="color: rgb(211, 60, 60);" v-else >Comprovante não enviado</p>
                 
                 </label>
@@ -228,16 +228,19 @@ export default Vue.extend({
           const response = await httpOrder.UploaQtdBandejas(id, data);
           this.isDisabled = false;
           console.log('Arquivo enviado com sucesso:', response);
-          this.$toast.success('Número de bandejas ok');
+          this.$toast.success('Número de bandejas inseridos');
+      
         } catch (error) {
-          console.error('Erro ao enviar o arquivo:', error);
           this.$toast.error('Houve um erro ao processar a solicitação.');
         }
     },
     async uploadFile(id) {
     try{ 
+      if (this.amount_of_tray != "") {
+        this.adicionarBandejas(this.orderFindClient.id)
+        }
         if (!this.selectedFile) {
-          throw new Error('Selecione um arquivo PDF antes de enviar.')
+          this.$toast.info('Selecione um arquivo antes de enviar.')
         }
 
         const formData = new FormData()
@@ -245,16 +248,22 @@ export default Vue.extend({
         console.log(formData);
         
         const response = await httpOrder.UploadCautela(id, formData)
-        console.log('Arquivo enviado com sucesso:', response.data)
+        this.$toast.info('Arquivo enviado com sucesso')
+        
+        setTimeout(function(){
+          location.reload();
+      }, 4000);
       } catch (error) {
-        console.error('Erro ao enviar o arquivo:', error)
-        console.log(error, 'Deu ruim')
+        this.$toast.error('Houve um erro ao processar a solicitação.');
       }
     },
     async uploadFileNF(id) {
    try{ 
+        if (this.amount_of_tray != "") {
+          this.adicionarBandejas(this.orderFindClient.id)
+        }
         if (!this.selectedFileNF) {
-          throw new Error('Selecione um arquivo PDF antes de enviar.')
+          this.$toast.info('Selecione um arquivo PDF antes de enviar.')
         }
   
         const formData = new FormData()
@@ -263,10 +272,14 @@ export default Vue.extend({
         console.log(formData);
         
         const response = await httpOrder.PostNotaFiscal(id, formData)
-        console.log('Arquivo enviado com sucesso:', response.data)
+        this.$toast.info('Arquivo enviado com sucesso')
+        
+        setTimeout(function(){
+          location.reload();
+      }, 4000);
+
       } catch (error) {
-        console.error('Erro ao enviar o arquivo:', error)
-        console.log(error, 'Deu ruim')
+        this.$toast.info('Erro ao enviar o arquivo:', error)
       }
 
     }, 
@@ -304,7 +317,7 @@ export default Vue.extend({
       result.forEach((element) => {
         if(!element) {
           teste = false
-          alert("Preencha todos os valores!");
+          this.$toast.info('Preencha todos os valores!')
           return;
         }
         console.log('ok');
@@ -322,8 +335,10 @@ export default Vue.extend({
         await this.uploadFile(this.orderFindClient.id);
         await this.uploadFileNF(this.orderFindClient.id);
         await this.adicionarBandejas(this.orderFindClient.id);
+        this.$toast.info('Requesição feita com sucesso!')
       } catch (error) {
-        console.error('Erro:', error);
+        this.$toast.info('Erro:', error)
+       
   }
     }
   },
