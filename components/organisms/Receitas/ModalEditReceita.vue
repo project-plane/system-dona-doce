@@ -224,6 +224,8 @@ export default Vue.extend({
               .CreateReceitaIngrediente(adicionarIngrediente)
               .then((res) => {
                 this.$toast.success('Ingrediente inserido com sucesso!!!')
+                console.log(res);
+                
               })
               .catch((error) => {
                 console.log(error)

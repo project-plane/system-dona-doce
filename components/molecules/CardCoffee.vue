@@ -1,5 +1,5 @@
 <template>
-  <div class="containerCard">
+  <!-- <div class="containerCard">
     <img :src="`https://api.donadoce.gedroid.com/img_revenue/${pedidoCoffee.imagem}`" alt="" />
     <div class="cardPedido">
       <div class="descriptionPedido">
@@ -9,9 +9,61 @@
       <div class="selectPedido">
         <p>Qtd Selecionada</p>
         <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
+        
+      </div>
+      <div class="selectPedido">
+        <p>Tipo</p>
+        <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
+        
+      </div>
+      <div class="selectPedido">
+        <p>Horário</p>
+        <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
+        
       </div>
     </div>
     <button @click="addPedidos">Adicionar</button>
+  </div> -->
+  <div class="containerCard">
+    <div class="cointainerCard__ImgProduto">
+      <img
+        :src="`https://api.donadoce.gedroid.com/img_revenue/${infoCoffee.imagem}`"
+        alt="Imagem do produto"
+      />
+    </div>
+    <div class="descriptionPedido">
+      <h3>{{ infoCoffee.description }}</h3>
+      <span>R$: {{ infoCoffee.value }}</span>
+    </div>
+    <section class="cointainerCard__Inputs">
+      <div class="selectPedido">
+        <label for="qtdSelecionada">Qtd. Selecionada</label>
+        <input
+          id="qtdSelecionada"
+          type="number"
+          v-model="pedidoCoffee.amountItem"
+        />
+      </div>
+
+      <div class="selectPedido">
+        <label for="tipo">Tipo</label>
+        <select name="cars" id="cars" v-model="pedidoCoffee.method_of_preparation">
+          <option value="frozen">Congelado</option>
+          <option value="roast">Assado</option>
+        </select>
+      </div>
+
+      <div class="selectPedido">
+        <label for="horario">Horário</label>
+        <select name="cars" id="cars" v-model="pedidoCoffee.time">
+          <option value="09:00">09:00</option>
+          <option value="14:00">14:00</option>
+        </select>
+    
+      </div>
+    </section>
+    <button @click="adicionarPedido">Adicionar</button>
+
   </div>
 </template>
 
@@ -20,30 +72,56 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    pedidoCoffee: {
+    infoCoffee: {
       type: Object,
       required: true,
     },
   },
-  methods: {
-    addPedidos() {
-      if (!this.tipoLanches.revenues.yield_per_quantity) {
-        this.$toast.info('Campo quantidade vazio')
-        return
+  data(){
+    return{
+      pedidoCoffee:{
+        amountItem: 0,
+        method_of_preparation: "",
+        time:"",
       }
+    }
+  },
+  methods: {
+    adicionarPedido() {
+      if (!this.pedidoCoffee.amountItem || !this.pedidoCoffee.method_of_preparation) {
+        this.$toast.info('Os Campos não podem ficar vazios!')
+      }
+      const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
+      if (fkRevenueExists) {
+        this.$toast.info('Esse Pedido já foi adcionado!');
+        this.pedidoCoffee.amountItem = '';
+        this.pedidoCoffee.time = '';
+        this.pedidoCoffee.method_of_preparation = '';
+        return; 
+      }
+      if(this.pedidoCoffee.amountItem >= 1){
+        const novoItem = {
+        fk_revenue: this.infoCoffee.id,
+        amountItem: parseInt(this.pedidoCoffee.amountItem),
+        delivery_date: this.pedidoCoffee.time,
+        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+        infoProduct: this.infoCoffee
+      };
+      const data = {
+        fk_revenue: this.infoCoffee.id,
+        amountItem: parseInt(this.pedidoCoffee.amountItem),
+        delivery_date: "2023-10-11T01:33:32.640Z",
+        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+      };
+      
+      this.$store.commit("adicionarPedido", novoItem);
+      this.$store.commit("addOrder", data);
+      }
+     
+      this.pedidoCoffee.amountItem = '';
+      this.pedidoCoffee.time = '';
+      this.pedidoCoffee.method_of_preparation = '';
 
-
-      // const createOrderItemDto = {
-      //   imgLanche: this.tipoLanches.revenues.imagem,
-      //   descriptionLanche: this.tipoLanches.revenues.description,
-      //   valueLanche: this.tipoLanches.revenues.value,
-      //   qtdLanche: this.tipoLanches.revenues.yield_per_quantity,
-      // }
-
-      // this.$store.commit('SAVE_DADOS_PEDIDOS_PROGRAMADOS', createOrderItemDto)
-
-      this.tipoLanches.yield_per_quantity = ''
-      this.$toast.success('Pedido adicionado com sucesso!!!')
     },
   },
 })
@@ -51,46 +129,69 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .containerCard {
-  width: 100%;
-  background: var(--white);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-
-  .cardPedido {
+  border-radius: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.27);
+  background: #fff;
+  width: auto;
+  max-width: 18.4rem;
+  min-height: 25.6rem;
+  .cointainerCard__ImgProduto {
+    height: 166px;
+    background: rgb(72, 158, 158);
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .descriptionPedido {
+    padding: 0rem 0.4rem 0.4rem 0.4rem;
+  }
+  .cointainerCard__Inputs {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
-
+    padding: 0rem 0.4rem 0.4rem 0.4rem;
+    gap: 0.5rem;
     .selectPedido {
       display: flex;
       gap: 1rem;
       align-items: center;
       justify-content: space-between;
 
-      p {
+      label {
         color: var(--red);
+        font-size: 87.5%;
+        font-weight: 500;
       }
 
-      input {
+      input,
+      select {
         border: 1px solid var(--red);
         height: 35px;
-        width: 40%;
+        width: 38%;
+        border-radius: 2rem;
       }
     }
   }
-
-  img {
-    width: 438px;
-    height: 250px;
-  }
-
   button {
     background: var(--bg_heade_table);
     padding: 1rem 0;
     font-size: 1rem;
+    width: 100%;
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
+    height: 3.48rem;
+    display: block;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    &:hover {
+      box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        color: var(--red)
+    }
   }
 }
 </style>

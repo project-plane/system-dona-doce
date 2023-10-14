@@ -19,14 +19,18 @@
     <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponiveis</h3>
 
     <div v-if="$fetchState.pending && statusPedidos === 0">Carregando dados..</div>
-    <div v-if="statusPedidos === 0" class="listPedidos">
+    <div v-if="statusPedidos === 0" class="listPedidos" style="margin-top: 2rem;">
       <div v-for="pedido in listPedidos" :key="pedido.id">
         <CardPedido :data-pedido="pedido" @click.native="openPedido(pedido)" />
       </div>
     </div>
+    
     <div v-else class="listPedidos">
-      <div v-for="pedido in listOrderCoffee" :key="pedido.id">
-        <CardCoffee :pedido-coffee="pedido" />
+ 
+      <MenuPedidosCoffe />
+      <div v-for="pedido in listOrderCoffee" :key="pedido.id" class="containerListCards"  >
+        
+        <CardCoffee :info-coffee="pedido" />
       </div>
     </div>
   </div>
@@ -34,8 +38,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
-import TemplateFinalizationPedidoVue from './TemplateFinalizationPedido.vue'
 import httpPedidos from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
 import httpMeusDados from '@/server/meusDados'
@@ -106,10 +108,12 @@ export default Vue.extend({
 <style scoped lang="scss">
 .containerPedidos {
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   padding: 6rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  max-width: 1370px;
 
   .headerPedidos {
     width: 100%;
@@ -168,9 +172,17 @@ export default Vue.extend({
   .listPedidos {
     width: 100%;
     display: flex;
+    justify-content: center;
     gap: 1rem;
     margin-top: 0.3rem;
     flex-wrap: wrap;
   }
+}
+.containerListCards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+
 }
 </style>

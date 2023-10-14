@@ -94,6 +94,8 @@ export default Vue.extend({
       await httpReceitas
         .GetFindReceita(idReceita)
         .then((res) => {
+          console.log(res);
+          
           this.listFindReceita = res.data
         })
         .catch((error) => {
