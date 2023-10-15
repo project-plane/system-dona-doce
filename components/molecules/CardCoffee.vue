@@ -57,6 +57,7 @@
         <label for="horario">Horário</label>
         <select name="cars" id="cars" v-model="pedidoCoffee.time">
           <option value="09:00">09:00</option>
+          <option value="11:00">11:00</option>
           <option value="14:00">14:00</option>
         </select>
     

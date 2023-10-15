@@ -1,7 +1,9 @@
 <template>
   <div class="calendar-container">
     <HeaderDashboard />
-    <CalendarDashboard />
+    <section v-if="this.$store.state.selectedStatus === 'Pré-Produção'">
+      <CalendarDashboard />
+    </section>
   </div>
 </template>
 

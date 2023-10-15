@@ -56,10 +56,7 @@
   export default Vue.extend({
   
     props: {
-      teste: {
-        type: Number,
-        required: true,
-      },
+  
       title: String,
     },
     data() {

@@ -3,14 +3,15 @@
         <div class="contentSlot">
             <div class="abaItens">
                 <h3 :class="{ abaNotActive: abaNotActive }" class="abaActive" @click="pedidos">Itens do Pedidos</h3>
-                <h3 :class="{ abaNotActive: !abaNotActive }" class="abaActive" @click="entrega">Itens do Entrega</h3>
+        
+                <h3 :class="{ abaNotActive: !abaNotActive }" class="abaActive" @click="entrega">Itens da Entrega</h3>
             </div>
             <slot />
         </div>
     </div>
     <div v-else class="containerFrame">
         <img class="svg" src="@/static/icon/cutEffect.svg" alt="">
-        <div class="contentSlot">
+        <div class="contentSlot" >
             <slot />
         </div>
     </div>

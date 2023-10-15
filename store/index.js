@@ -63,6 +63,7 @@ export const mutations = {
   },
   SELECTED_CLIENT(state, payload) {
     state.selectedClient = payload
+    console.log(state.selectedClient );
   },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido); 
@@ -107,11 +108,5 @@ export const mutations = {
     console.log(state.pedidos);
     
   }
-  // removerPedido(state, fk_revenue) {
-  //   const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
 
-  //   if (index !== -1) {
-  //     state.pedidos.splice(index, 1);
-  //   }
-  // }
 }

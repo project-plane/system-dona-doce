@@ -46,12 +46,12 @@ export default Vue.extend({
   padding: 2rem 0;
   z-index: 1;
   .negativeSpace {
-    width: 70%;
+    width: 58%;
     min-height: 50%;
-    height: 95%;
+    height: 105%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     background: var(--bg_color);
     border-radius: 7px;
     .headerModal {
@@ -68,6 +68,7 @@ export default Vue.extend({
       padding: 1rem;
       overflow-y: auto;
       border-radius: 5px;
+      height: 70vh;
     }
   }
 }

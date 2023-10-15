@@ -5,9 +5,9 @@
       <button v-if="!typeContent" @click="() => (typeContent = true)">
         Itens do Pedido
       </button>
-      <button v-if="!typeContent" class="selected">Itens do Entrega</button>
+      <button v-if="!typeContent" class="selected">Itens da Entrega</button>
       <button v-if="typeContent" @click="() => (typeContent = false)">
-        Itens do Entrega
+        Itens da Entrega
       </button>
     </div>
     <div v-if="typeContent" class="dataEmpresa">
@@ -138,10 +138,12 @@
         <h4>Data do Pedido: {{ formatDate(data.dateOrder) }}</h4>
         <h4>Status: {{ data.orderStatus.description }}</h4>
       </div>
-
-      <div class="resumeItens">
-        <!-- comprovantes -->
+      <div class="container">
         <div class="containerComprovantes">
+          <div class="resumeItens">
+       <div  style="display: flex;justify-content:space-between" >
+         <!-- comprovantes -->
+         <div class="containerComprovantes">
           <label for="" class="titleInput">Comprovante de Pagamento</label>
           <div class="inputContainer" v-if="data.orderStatus.description ==='Revisão Cliente'">
             <input
@@ -171,7 +173,7 @@
           <span
             v-if="data.amount_of_tray === null"
             class="inputContainer"
-            style="width: 12rem; font-size: 14px"
+            style="width: 12rem; font-size: 14px; background: #ffefdb; color: #fa5c4f;"
           >
             Qtd. não foi definida</span
           >
@@ -182,32 +184,26 @@
             :value="data.amount_of_tray"
             disabled
             class="inputContainer"
-            style="width: 12rem"
+            style="width: 10rem"
           />
         </div>
-        <!-- nota -->
-        <div class="containerNf" >
+       </div>
+      <div style="display: flex; gap: 2rem; ">
+          <!-- nota -->
+          <div class="containerNf" >
           <label for="" class="titleInput">Nota</label>
-         
-          <span v-if="data.file_invoice == null" style="font-size: 12px">
+  
+          <span class="inputContainer" v-if="data.file_invoice == null" style="font-size: 12px; width: 10rem; background: #ffefdb;
+    color: #fa5c4f;">
             Arquivo não anexado</span
           >
           <br />
 
-          <a :href="'https://api.donadoce.gedroid.com/caution/' + this.data.file_invoice" style="display: none;" class="dowload-file" />
-
           <button
             v-show="data.file_invoice != null"
             @click="downloadFile()"
-            class="inputContainer"
-            style="
-              width: 10rem;
-              background-color: var(--red);
-              color: white;
-              text-align: center;
-              display: flex;
-              justify-content: center;
-            "
+            class="btnDownload"
+  
           >
             Baixar arquivo
           </button>
@@ -216,29 +212,29 @@
         <!-- cautela -->
         <div class="inputPdf">
           <label for="" class="titleInput">Cautela</label>
-         
-          <span v-if="data.file_caution == null" style="font-size: 12px">
+   
+          <span class="inputContainer"  v-if="data.file_caution == null" style="font-size: 12px; width: 10rem; background: #ffefdb;
+    color: #fa5c4f;">
             Arquivo não anexado</span
           >
-          <br />
+      
 
           <a :href="'https://api.donadoce.gedroid.com/caution/' + this.data.file_caution" style="display: none;" class="dowload-file" />
 
           <button
             v-show="data.file_caution != null"
             @click="downloadFile()"
-            class="inputContainer"
-            style="
-              width: 10rem;
-              background-color: var(--red);
-              color: white;
-              text-align: center;
-              display: flex;
-              justify-content: center;
-            "
+            class="btnDownload"
+          
           >
             Baixar arquivo
           </button>
+        </div>
+      </div>
+        <div class="conatinerMessager">
+          <label for="" class="titleInput">Comentário</label>
+          <textarea name="" id="" cols="30" rows="10" style="width: 100%; padding: 1rem;" placeholder="Por favor, insira seu comentário..."></textarea>
+
         </div>
 
         <Button
@@ -249,6 +245,9 @@
           @click.native="uploadComprovante(data.id)"
           style="width: 100%; height: 2.8rem"
         />
+      </div>
+        </div>
+
       </div>
     </div>
   </ModalPreview>
@@ -433,30 +432,15 @@ export default Vue.extend({
     border-bottom: 1px solid var(--bg_color_modal);
   }
   .resumeItens {
-    display: grid;
-    grid-template-columns: 20rem 14rem;
-    grid-template-rows: 70px 70px 60px;
-    grid-column-gap: 44px;
-    grid-row-gap: 15px;
-    align-items: center;
-    justify-items: start;
-    justify-content:space-between;
-    .containerComprovantes {
-      grid-area: 1 / 1 / 2 / 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     
-    }
-    .containerBandejas { 
-      grid-area: 1 / 2 / 2 / 3;
-     }
-    .containerNf {
-      grid-area: 2 / 1 / 3 / 2;
-    }
-    .inputPdf { 
-      grid-area: 2 / 2 / 3 / 3;
-     } 
-    .save { 
+   
+     .conatinerMessager { 
       grid-area: 3 / 1 / 4 / 3;
      }
+
 
     .inputContainer {
       display: flex;
@@ -467,7 +451,7 @@ export default Vue.extend({
       border-radius: 0.25rem;
       padding: 0.5rem;
       width: 22rem;
-      height: 3rem;
+      height: 2.6rem;
       
       img {
         width: 2rem;
@@ -538,6 +522,29 @@ export default Vue.extend({
       flex-direction: column;
       width: 17rem;
     }
+  }
+}
+.btnDownload{
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--red);
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  height: 2.6rem;
+  width: 8rem;
+  background-color: var(--red);
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  
+  &:hover{
+    transform: scale(1.09);
+    transition: 300ms linear;
+    background: #ffefdb;
+    color: #fa5c4f;
+    margin-left: .5rem;
   }
 }
 </style>
