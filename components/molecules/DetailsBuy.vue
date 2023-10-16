@@ -1,5 +1,5 @@
 <template>
-  <div class="detailsBuy">
+  <div class="detailsBuy" v-if="this.$store.state.selectedStatus === 'Pré-Produção'">
     <div class="description">
       <div class="headerDetails">
         <h2>Compras</h2>

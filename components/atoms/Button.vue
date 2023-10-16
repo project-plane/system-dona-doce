@@ -53,6 +53,8 @@ export default Vue.extend({
   border-radius: 0.25rem;
   font-size: 1rem;
   transition: 0.2s;
+
+  
 }
 
 .btn:disabled {

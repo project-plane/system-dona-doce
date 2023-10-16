@@ -10,7 +10,7 @@
         <span>Qtd. Pedidos</span>
         <span>{{ this.$store.state.qtdPedidos }}</span>
       </div>
-      <ButtonPirula title="Adicionar Pedido" />
+      <ButtonPirula title="Adicionar Pedido" style="font-size: 0.9rem; width: 46%;" />
     </div>
   </div>
 </template>
@@ -20,6 +20,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
+    infoCliente: Object,
     dataPedido: {
       type: [Object, Array],
       required: true,
@@ -36,7 +37,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .containerCard {
-  width: 100%;
+  width: 24rem;
   height: 100%;
   background: var(--white);
   border-radius: 0.3rem;
@@ -61,7 +62,7 @@ export default Vue.extend({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3rem;
+    gap: 1rem;
     padding-top: 2rem;
 
     .qtdPedidos {

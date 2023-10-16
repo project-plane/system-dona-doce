@@ -4,12 +4,13 @@
         <div class="header-card">
             
             <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
-            <span><strong>Valor:</strong> R$ {{ valueorder(data.orderItem) }}</span>
+            <span><strong>Valor total:</strong> {{ valueorder(data.orderItem) }}</span>
+    
         </div>
 
         <div class="footer-card">
             <span><strong>Status: </strong><br/>{{ data.orderStatus.description }}</span>
-            <ButtonPirula title="Ver Detalhes" @click.native="() => showModal = true"/>
+            <ButtonPirula title="Ver Detalhes" @click.native="() => showModal = true" style="width: 50%;"/>
         </div>
 
         <ModalHistorico v-if="showModal" :valueTotal="valueorder(data.orderItem)" :data="data" @closeModal="() => showModal = false" />
@@ -29,8 +30,10 @@ export default Vue.extend({
         return {
             showModal: false,
             totalOrderValue: 0,
+            valorTotal: 0
         }
     },
+   
 
     methods: {
         valueorder(listOrder) {
@@ -38,8 +41,11 @@ export default Vue.extend({
             listOrder.map( (item) => {
                 this.totalOrderValue = this.totalOrderValue + (Number(item.amountItem) * Number(item.valueOrderItem))
             })
-
-            return this.totalOrderValue
+            
+            return this.totalOrderValue.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
         },
 
         formatDate(date) {
