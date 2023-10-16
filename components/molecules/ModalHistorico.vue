@@ -310,9 +310,7 @@
                 placeholder="Por favor, insira seu comentário..."
               ></textarea>
             </div>
-            <!-- 
-        <Button v-if="data.orderStatus.description ==='Revisão Cliente'" class="save" title="Salvar" type.native="button" :is-disabled="isDisabled"  @click.native="uploadComprovante(data.id)"
-          style="width: 100%; height: 2.8rem" /> -->
+
             <Button
               v-if="data.orderStatus.description ==='Revisão Cliente'"
               class="save"
@@ -458,7 +456,7 @@ export default Vue.extend({
             const url = window.URL.createObjectURL(blob)
             const a = document.createElement('a')
             a.href = url
-            a.download = 'cautela'
+            a.download = 'ArquivoCautela'
             a.click()
             window.URL.revokeObjectURL(url)
           })
@@ -476,7 +474,7 @@ export default Vue.extend({
             const url = window.URL.createObjectURL(blob)
             const a = document.createElement('a')
             a.href = url
-            a.download = 'cautela'
+            a.download = 'ArquivoNF'
             a.click()
             window.URL.revokeObjectURL(url)
           })

@@ -46,7 +46,8 @@
             <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
         </select>
         </div>
-        <pre></pre>
+
+        
       </div>
     </div>
     <div class="row-calendar">

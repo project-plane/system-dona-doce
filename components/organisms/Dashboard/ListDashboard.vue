@@ -1,10 +1,10 @@
 <template>
   <div class="cards-container">
-    <div class="inputCheckbox">
+    <!-- <div class="inputCheckbox">
       <input v-model="selectAll" type="checkbox" />
       <Label>Selecionar Todos</Label>
-    </div>
-    <!-- <pre>{{ filteredItems }}</pre> -->
+    </div> -->
+
     <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
       <CardDashboard
         v-for="(pedidos, index) in filteredItems" 
@@ -13,6 +13,9 @@
         :index="index" 
         @click.native="clickOrderFind(pedidos)" 
       />
+      <span v-if="filteredItems.length  <= 0" class="spanFiltro">
+        Nenhum resultado encontrado. <br> Tente ajustar os filtros da sua pesquisa e tente novamente
+      </span>
 
     </div>
 
@@ -104,11 +107,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
 .cards-container {
   height: auto;
   padding: 2rem;
   overflow-y: auto;
-
   .inputCheckbox {
     display: flex;
     align-items: center;
@@ -127,6 +130,13 @@ export default Vue.extend({
     ;
     justify-content: space-between;
     gap: 1rem;
+    .spanFiltro{
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 50vh; 
+}
   }
 }
 </style>
