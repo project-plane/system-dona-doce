@@ -261,9 +261,9 @@ export default Vue.extend({
         const response = await httpOrder.UploadCautela(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
         
-      //   setTimeout(function(){
-      //     location.reload();
-      // }, 4000);
+        setTimeout(function(){
+          location.reload();
+      }, 4000);
       } catch (error) {
         this.$toast.error('Houve um erro ao processar a solicitação');
       }
@@ -282,9 +282,9 @@ export default Vue.extend({
         const response = await httpOrder.PostNotaFiscal(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
         
-      //   setTimeout(function(){
-      //     location.reload();
-      // }, 4000);
+        setTimeout(function(){
+          location.reload();
+      }, 4000);
 
       } catch (error) {
         this.$toast.info('Erro ao enviar o arquivo:', error)

@@ -437,9 +437,9 @@ export default Vue.extend({
 
         await httpOrder.PostComprovante(id, formData)
         this.$toast.info('Arquivo enviado com sucesso!')
-        // setTimeout(function () {
-        //   location.reload()
-        // }, 4000)
+        setTimeout(function () {
+          location.reload()
+        }, 4000)
       } catch (error) {
         this.$toast.error('Houve um erro ao processar a solicitação.')
         console.error('Erro ao enviar o arquivo:', error.message)
