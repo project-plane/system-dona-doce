@@ -58,8 +58,6 @@
       </div>
     </div>
         </section>
-
-
         <div v-for="pedido in itemsToShow" :key="pedido.id">
           <CardPedido
             :data-pedido="pedido"
@@ -69,13 +67,13 @@
       </div>
 
       <div v-else class="listPedidos">
-        <MenuPedidosCoffe />
+        <MenuPedidosCoffe :infoCliente="dataClientes"  />
         <div
           v-for="pedido in listOrderCoffee"
           :key="pedido.id"
           class="containerListCards"
         >
-          <CardCoffee :info-coffee="pedido" />
+          <CardCoffee :info-coffee="pedido" :infoCliente="dataClientes"  />
         </div>
       </div>
     </div>
@@ -87,6 +85,7 @@ import Vue from 'vue'
 import httpPedidos from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
 import httpMeusDados from '@/server/meusDados'
+import httpCompany from '@/server/ClientCompany'
 import dayjs from 'dayjs'
 
 export default Vue.extend({
@@ -99,6 +98,7 @@ export default Vue.extend({
       selected: '',
       statusPedidos: 0,
       listFiltered: [],
+      dataClientes:{},
       range: {
         start: new Date(2023, 8, 1),
         end: new Date(),
@@ -133,7 +133,16 @@ export default Vue.extend({
     await httpMeusDados
       .MeusDados()
       .then((res) => {
-        console.log(res.data)
+        res.data
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      await httpCompany.getUnidades().then((res) => {
+        this.dataClientes =res.data
+        console.log(res.data);
+        
       })
       .catch((error) => {
         console.log(error)

@@ -137,7 +137,7 @@
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
-
+<pre>{{ listaForaEstoque }}</pre>
   </ModalPreview>
 </template>
 

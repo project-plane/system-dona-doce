@@ -17,8 +17,10 @@ export const state = () => ({
   listAllOrder: [],
   pedidos: [],
   postCoffe:{
+    fk_company:"",
     createOrderCoffeItemDto:[]
   },
+  dadosCliente:[],
 })
 
 export const mutations = {
@@ -103,10 +105,14 @@ export const mutations = {
       pedido.amountItem = pedido.amountItem - novoAmountItem;
     }
   },
-  addOrder(state, data) {
-    state.postCoffe.createOrderCoffeItemDto.push(data);
-    console.log(state.pedidos);
+  addOrder(state, { id, data }) {
+    state.postCoffe.fk_company = id;
     
+    if (data !== null) {
+      state.postCoffe.createOrderCoffeItemDto.push(data);
+    }
+  
+    console.log(state.pedidos);
   }
 
 }

@@ -9,5 +9,8 @@ export default {
   },
   CreateClientCompany: async (data) => {
     return await http.post('/clients_company', data)
-  }
+  },
+  getUnidades: async () => {
+    return await http.get(`/company/clientsByToken`)
+  },
 }

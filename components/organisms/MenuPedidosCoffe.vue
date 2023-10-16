@@ -16,6 +16,7 @@
     </div>
 
     <ModalCarrinhoCoffe
+      :infoncliente="infoCliente"
       v-if="showModal"
       :listaCompletaReceita="pedidos"
       @closeModal="() => (showModal = false)"
@@ -29,6 +30,8 @@ import Vue from 'vue'
 export default Vue.extend({
   layout: 'pedidos',
   props: {
+    infoCliente: Object,
+
     dataPedido: {
       type: String,
       required: true,

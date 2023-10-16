@@ -36,4 +36,7 @@ export default {
   PostNotaFiscal: async (id, data) => {
     return await http.patch(`/order/invoice/${id}`, data)
   },
+  PostCommitClient: async (fk_order, data) => {
+    return await http.patch(`/clients/order/${fk_order}`, data)
+  },
 }

@@ -46,7 +46,7 @@ export default Vue.extend({
   padding: 2rem 0;
   z-index: 1;
   .negativeSpace {
-    width: 58%;
+    width: 60%;
     min-height: 50%;
     height: 105%;
     display: flex;

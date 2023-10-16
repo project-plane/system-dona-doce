@@ -1,9 +1,18 @@
 <template>
   <div class="contentCardPedido">
+    <div class="selectUnidades" style="display: grid; width: 100%;justify-content: flex-end;">
+        <label  class="titleInput">Unidade:</label>
+        <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 12rem; height: 2.5rem" v-model="selectedUnit">
+          <option value="" disabled>Selecionar Unidade</option>
+          <option v-for="item in dataClientes" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
+        </select>
+    </div>   
     <div class="header-pedidos">
+
       <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
         @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
-      <div class="qtdPedidos" @click="() => (showModal = true)">
+      
+        <div class="qtdPedidos" @click="showCar">
         <img src="~/assets/icons/shopCar.svg" />
         <span v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0">
           <p>{{ listaCompletaReceita.length + listaForaEstoque.length }}</p>
@@ -38,7 +47,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import httpCompany from '@/server/ClientCompany'
 import httpCardapio from '~/server/cardapio'
 import HttpPedidos from '@/server/pedidos'
 import httpRevenueClient from '@/server/receitas'
@@ -56,7 +65,9 @@ export default Vue.extend({
       dataPedido: '',
       tipoPedido: '491aebc2-1c69-11ee-be56-0242ac120002',
       showModal: false,
+      selectedUnit: null,
       addPedidos: {
+        fk_company: null,
         fk_menu: this.$route.query.id,
         createOrderItemDto: [],
         createOrderNotMenuItemDto: [],
@@ -68,12 +79,19 @@ export default Vue.extend({
       foraEstoque: [],
       listProgramation: [],
       idClient: '',
+      dataClientes:[]
     }
   },
 
   async fetch() {
     const id = this.$route.query.id
     this.dataPedido = this.$route.query.dataPedido
+
+    await httpCompany.getUnidades().then((res) => {
+        this.dataClientes =res.data
+        console.log(res.data);
+        
+      })
 
     await httpCardapio
       .GetFindMenu(id)
@@ -142,6 +160,12 @@ export default Vue.extend({
   },
 
   methods: {
+    handleChange() {
+    // console.log(this.selectedUnit);
+    this.addPedidos.fk_company= this.selectedUnit
+    
+    },
+   
     pedidos(qtdOrder, fk_revenue, index, typeOrder) {
       const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
         return (
@@ -149,11 +173,13 @@ export default Vue.extend({
           item.fk_revenue === fk_revenue
         )
       })
+  
       if (existecategoryOrderItem) {
         this.$toast.error('Receita já adicionada ao pedido!!!')
         return
       }
       this.listaCompletaReceita.push({
+        fk_company: this.selectedUnit,
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
@@ -181,6 +207,7 @@ export default Vue.extend({
         return
       }
       this.listaForaEstoque.push({
+        fk_company: this.selectedUnit,
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
@@ -195,7 +222,15 @@ export default Vue.extend({
         }
       })
     },
-
+    showCar(){
+      if (!this.addPedidos.fk_company || !this.selectedUnit) {
+        this.$toast.error('Selecione uma unidade')
+        return
+      }
+      else{
+        this.showModal = true
+      }
+    },
     async finalizarPedido() {
       if (
         this.listaCompletaReceita.length === 0 &&
@@ -205,6 +240,7 @@ export default Vue.extend({
       } else {
         this.listaCompletaReceita.map((item) => {
           this.addPedidos.createOrderItemDto.push({
+            fk_company: this.selectedUnit,
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,

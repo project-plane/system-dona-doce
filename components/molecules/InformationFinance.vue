@@ -110,7 +110,7 @@
 
         <div v-else>
           <div>
-            <div class="inputs"  v-if="orderFindClient.orderStatus.description =='Em Entrega'||orderFindClient.orderStatus.description =='Entregue'||orderFindClient.orderStatus.description === 'Revisão Admin'" >
+            <div class="inputs"  v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue'||orderFindClient.orderStatus.description =='Em Entrega'"  >
               <!-- <span v-if="orderFindClient.amount_of_boxes != null"> 
                 Já foi cadastrado um dado anteriormente, caso queira editar é só enviar novamente
               </span> -->
@@ -118,7 +118,7 @@
               <Input label="Bandeja" v-model="amount_of_tray" type="text" placeholder="Digita a quantidade de bandeja" />
               <Input label="Caixa"  v-model="amount_of_boxes" type="text" placeholder="Digita a quantidade de caixas" />
                 
-            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'||orderFindClient.orderStatus.description =='Em Entrega'||orderFindClient.orderStatus.description =='Entregue' " class="containerNotaFiscal" >
+            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue' || orderFindClient.orderStatus.description === 'Em Entrega'"  class="containerNotaFiscal" >
               <span class="titleAnexo">Anexar Nota</span>
               <div class="inputAnexo">
                 <input type="file" accept="image/*,.pdf" style="width: 85%" @change="onFileChangeNF"/>
@@ -135,7 +135,7 @@
                   
               </div>
             </div>
-            <div v-if="orderFindClient.orderStatus.description ==='Em Processamento'||orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue'" >
+            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue' || orderFindClient.orderStatus.description === 'Em Entrega'" >
               <span>Anexar cautela</span>
               <div class="inputContainer"> 
                 <input type="file" accept="image/*,.pdf" style="width: 85%" @change="onFileChange"/>
@@ -150,8 +150,9 @@
             <div>
               <span>Comprovante de Pagamento</span>
               <div class="img">
-                <label for="inputComprovante" @click="downloadFile">
-                  <span v-if="orderFindClient.file_payment_voucher !=null" class="inputComprovante">
+                <label for="inputComprovante" >
+             
+                  <span @click="downloadFile" v-if="orderFindClient.file_payment_voucher !=null" class="inputComprovante">
                    Baixar Comprovante 
                    <img  src="../../assets/icons/Icon_uploadConcluido.svg"  style="width: 20px;"  />
                   </span>
@@ -161,7 +162,7 @@
                 </label>
               </div>
             </div>
-
+         
             <!-- <pre>{{ orderFindClient}}</pre> -->
 
             <button class="btn" @click="sendData()"> Salvar</button>
@@ -260,11 +261,11 @@ export default Vue.extend({
         const response = await httpOrder.UploadCautela(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
         
-        setTimeout(function(){
-          location.reload();
-      }, 4000);
+      //   setTimeout(function(){
+      //     location.reload();
+      // }, 4000);
       } catch (error) {
-        this.$toast.error('Houve um erro ao processar a solicitação.');
+        this.$toast.error('Houve um erro ao processar a solicitação');
       }
     },
     async uploadFileNF(id) {
@@ -281,9 +282,9 @@ export default Vue.extend({
         const response = await httpOrder.PostNotaFiscal(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
         
-        setTimeout(function(){
-          location.reload();
-      }, 4000);
+      //   setTimeout(function(){
+      //     location.reload();
+      // }, 4000);
 
       } catch (error) {
         this.$toast.info('Erro ao enviar o arquivo:', error)
@@ -299,7 +300,7 @@ export default Vue.extend({
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "cautela"; 
+          a.download = "Arquivo"; 
           a.click();
           window.URL.revokeObjectURL(url);
         });

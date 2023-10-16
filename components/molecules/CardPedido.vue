@@ -20,6 +20,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
+    infoCliente: Object,
     dataPedido: {
       type: [Object, Array],
       required: true,
