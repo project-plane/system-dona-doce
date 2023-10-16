@@ -109,11 +109,16 @@
         </div>
 
         <div v-else>
-          <div class="inputs">
-            <Input label="Bandeja" v-model="amount_of_tray" type="text" placeholder="Digita a quantidade de bandeja" />
-            <Input label="Caixa"  type="text" placeholder="Digita a quantidade de caixa" />
+          <div>
+            <div class="inputs"  v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue'||orderFindClient.orderStatus.description =='Em Entrega'"  >
+              <!-- <span v-if="orderFindClient.amount_of_boxes != null"> 
+                Já foi cadastrado um dado anteriormente, caso queira editar é só enviar novamente
+              </span> -->
 
-            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin' || orderFindClient.orderStatus.description === 'Entregue'" class="containerNotaFiscal" >
+              <Input label="Bandeja" v-model="amount_of_tray" type="text" placeholder="Digita a quantidade de bandeja" />
+              <Input label="Caixa"  v-model="amount_of_boxes" type="text" placeholder="Digita a quantidade de caixas" />
+                
+            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue' || orderFindClient.orderStatus.description === 'Em Entrega'"  class="containerNotaFiscal" >
               <span class="titleAnexo">Anexar Nota</span>
               <div class="inputAnexo">
                 <input type="file" accept="image/*,.pdf" style="width: 85%" @change="onFileChangeNF"/>
@@ -130,7 +135,7 @@
                   
               </div>
             </div>
-            <div v-if="orderFindClient.orderStatus.description ==='Em Processamento'" >
+            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue' || orderFindClient.orderStatus.description === 'Em Entrega'" >
               <span>Anexar cautela</span>
               <div class="inputContainer"> 
                 <input type="file" accept="image/*,.pdf" style="width: 85%" @change="onFileChange"/>
@@ -145,8 +150,9 @@
             <div>
               <span>Comprovante de Pagamento</span>
               <div class="img">
-                <label for="inputComprovante" @click="downloadFile">
-                  <span v-if="orderFindClient.file_payment_voucher !=null" class="inputComprovante">
+                <label for="inputComprovante" >
+             
+                  <span @click="downloadFile" v-if="orderFindClient.file_payment_voucher !=null" class="inputComprovante">
                    Baixar Comprovante 
                    <img  src="../../assets/icons/Icon_uploadConcluido.svg"  style="width: 20px;"  />
                   </span>
@@ -156,11 +162,16 @@
                 </label>
               </div>
             </div>
+         
+            <!-- <pre>{{ orderFindClient}}</pre> -->
 
-
-            <button class="btn" v-if="orderFindClient.orderStatus.description === 'Revisão Admin' || orderFindClient.orderStatus.description === 'Entregue'" @click="uploadFileNF(orderFindClient.id)" > Enviar Nota </button>
-            <button class="btn" v-if="orderFindClient.orderStatus.description ==='Em Processamento'" @click="uploadFile(orderFindClient.id)"> Enviar Cautela</button>
+            <button class="btn" @click="sendData()"> Salvar</button>
           </div>
+          <div v-else  class="inputs" >
+            <span>O Status atual do pedido não permite acessar o formulário.</span>
+          </div>
+            </div>
+         
         </div>
       </BeadFrame>
     </div>
@@ -183,9 +194,11 @@ export default Vue.extend({
       dadosOrderFindClient: {},
       statusAba: true,
       amount_of_tray: "",
+      amount_of_boxes: "",
       previewCaution: null,
       previewNotaFiscal: null,
-      number_invoice: ""
+      number_invoice: "",
+      saveData: false
     }
   },
   async fetch() {
@@ -221,24 +234,22 @@ export default Vue.extend({
     async adicionarBandejas(id) {
     try{ 
           const data = {
-            amount_of_tray: parseInt(this.amount_of_tray)
+            amount_of_tray: parseInt(this.amount_of_tray),
+            amount_of_boxes:parseInt(this.amount_of_boxes)
           }
           console.log(id, data);
           
-          const response = await httpOrder.UploaQtdBandejas(id, data);
+          await httpOrder.UploaQtdBandejas(id, data);
           this.isDisabled = false;
-          console.log('Arquivo enviado com sucesso:', response);
+          
           this.$toast.success('Número de bandejas inseridos');
-      
+          
         } catch (error) {
           this.$toast.error('Houve um erro ao processar a solicitação.');
         }
     },
     async uploadFile(id) {
     try{ 
-      if (this.amount_of_tray != "") {
-        this.adicionarBandejas(this.orderFindClient.id)
-        }
         if (!this.selectedFile) {
           this.$toast.info('Selecione um arquivo antes de enviar.')
         }
@@ -254,14 +265,11 @@ export default Vue.extend({
           location.reload();
       }, 4000);
       } catch (error) {
-        this.$toast.error('Houve um erro ao processar a solicitação.');
+        this.$toast.error('Houve um erro ao processar a solicitação');
       }
     },
     async uploadFileNF(id) {
    try{ 
-        if (this.amount_of_tray != "") {
-          this.adicionarBandejas(this.orderFindClient.id)
-        }
         if (!this.selectedFileNF) {
           this.$toast.info('Selecione um arquivo PDF antes de enviar.')
         }
@@ -292,7 +300,7 @@ export default Vue.extend({
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "cautela"; 
+          a.download = "Arquivo"; 
           a.click();
           window.URL.revokeObjectURL(url);
         });
@@ -300,46 +308,42 @@ export default Vue.extend({
         console.error("Erro ao baixar o arquivo:", error);
       }
     },
-    saveData(){
-      var teste = true
+      sendData(){
       var values = [
         this.amount_of_tray,
+        this.amount_of_boxes,
         this.previewCaution,
         this.number_invoice,
         this.previewNotaFiscal,
       ];
 
 
-      const result = values.map((element) => {
-        return this.validate(element);
-      });
+      const isValid = values.every((element) => {
+      return this.validate(element);
+  });
 
-      result.forEach((element) => {
-        if(!element) {
-          teste = false
-          this.$toast.info('Preencha todos os valores!')
-          return;
-        }
-        console.log('ok');
-        this.req()
-      });
+      if (isValid) {
+        this.req();
+      } else {
+        this.$toast.info('Preencha todos os valores!');
+      }
+},
 
-    },
-    validate(value) {
-      if(value) return true;
+validate(value) {
+  return !!value; // Verifica se o valor não é nulo ou indefinido
+},
 
-      return false;
-    },
-    async req(){
-      try {
-        await this.uploadFile(this.orderFindClient.id);
-        await this.uploadFileNF(this.orderFindClient.id);
-        await this.adicionarBandejas(this.orderFindClient.id);
-        this.$toast.info('Requesição feita com sucesso!')
-      } catch (error) {
-        this.$toast.info('Erro:', error)
-       
+async req() {
+  try {
+    await this.uploadFile(this.orderFindClient.id);
+    await this.uploadFileNF(this.orderFindClient.id);
+    await this.adicionarBandejas(this.orderFindClient.id);
+
+    this.$toast.info('Requisição feita com sucesso!');
+  } catch (error) {
+    this.$toast.error('Erro: ' + error); // Use this.$toast.error para indicar um erro
   }
+
     }
   },
 })
@@ -371,7 +375,8 @@ export default Vue.extend({
 }
 .informationFinance {
   width: 100%;
-  height: 60%;
+  max-height: 100%;
+  min-height: 60%;
   // background-color: red;
   padding: 2.3rem 1rem 1rem 1rem;
 
@@ -475,7 +480,8 @@ export default Vue.extend({
  
   .informationOrder {
     padding: 0 1rem;
-    height: 300px;
+    min-height: 300px;
+    max-height: 100vh;
     overflow-y: scroll;
 
     h3 {

@@ -28,9 +28,9 @@ v-model="selected" style="
         <option value="1c69c120002-575f34-1c69-be56-0242ac1201c69">
           Entregue
         </option>
-        <option value="016b9c84-4e7f-81ee-be56-0242ac1200022fe2af">
+        <!-- <option value="016b9c84-4e7f-81ee-be56-0242ac1200022fe2af">
           Revisão Admin
-        </option>
+        </option> -->
         <option value="22afa4e4-4e7f-14ee-be56-0222afa2d22afb092">
           Revisão Cliente
         </option>

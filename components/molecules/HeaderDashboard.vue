@@ -42,12 +42,12 @@
           <label>Clientes</label>
           <select v-model="selectedClient">
             <option value="" disabled>Selecionar Cliente</option>
-            <option value="Sodex">Sodex</option>
-            <option value="V&V Refeições">V&V Refeições</option>
-            <option value="Prato Bom">Prato Bom</option>
-            <option value="VA Refeições">VA Refeições</option>
-          </select>
+            <option value="" >Todos</option>
+            <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
+        </select>
         </div>
+
+        
       </div>
     </div>
     <div class="row-calendar">
@@ -56,6 +56,8 @@
         <h2>{{ formatDateDayAndMes(date) }}</h2>
       </div>
     </div>
+
+    
   </div>
 </template>
 
@@ -64,14 +66,12 @@ import Vue from 'vue'
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
+import httpClients from '~/server/cliente'
 
 export default Vue.extend({
 
   props: {
-    teste: {
-      type: Number,
-      required: true,
-    },
+   
   },
   data() {
     return {
@@ -81,10 +81,21 @@ export default Vue.extend({
       visualization: false,
       selectedType: '',
       selectedAgenda: '',
-      selectedClient: ''
+      selectedClient: '',
+      listClient: [],
     }
   },
-
+  async fetch() {
+    await httpClients
+      .GetAllClients()
+      .then((res) => {
+        this.listClient = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    this.loading = false
+  },
   watch: {
     date(newValue) {
       if (

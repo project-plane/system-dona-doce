@@ -4,7 +4,15 @@
       Carregando dados do carrinho...
     </div>
     <div class="dataEmpresa" v-else>
-      <h4>Pedido</h4>
+      <h4>Pedido</h4> 
+         <div class="selectUnidades">
+            <label for="" class="titleInput">Unidade:</label>
+            <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 12rem;" v-model="selectedUnit">
+              <option value="" disabled>Selecionar Unidade</option>
+              <option v-for="item in infoncliente" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
+            </select>
+
+        </div>   
       <table class="resume-content">
         <thead>
           <tr>
@@ -33,6 +41,7 @@
 
           <td>R$ {{ data.infoProduct.value }}</td>
           <td>{{ data.method_of_preparation }}</td>
+          
           <td>R$ {{ totalValue(data.infoProduct.value, data.amountItem) }}</td>
           <td>
             <img
@@ -49,6 +58,7 @@
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
+
   </ModalPreview>
 </template>
 
@@ -57,6 +67,7 @@ import Vue from 'vue'
 import http from "../../server/pedidos/index.js"
 export default Vue.extend({
   props: {
+    infoncliente:Object,
     listaCompletaReceita: {
       type: [Array, Object],
       required: true,
@@ -69,6 +80,8 @@ export default Vue.extend({
       dejejum: [],
       countdejejum: 0,
       dadosCarrinhoVuex: [],
+      selectedUnit:null ,
+      selectedValue: null 
     }
   },
 
@@ -85,6 +98,10 @@ export default Vue.extend({
     },
   },
   methods: {
+    handleChange() {
+    console.log(this.selectedUnit);
+    this.$store.commit("addOrder", { id: this.selectedUnit, data: null });
+    },
     totalValue(unity, qtde) {
       return Number(unity) * Number(qtde)
     },
@@ -101,9 +118,12 @@ export default Vue.extend({
       this.$store.commit('removerPedido', value)
       
     },
-
     async finalizarPedido() {
-    
+     
+     try{
+      if(!this.selectedUnit) {
+        this.$toast.error('Selecione uma unidade.');
+      }
       await http.CreateNewOrderCoffe(this.$store.state.postCoffe).then(response => {
       console.log('Resposta da requisição:', response.data);
       this.$emit('closeModal')
@@ -113,11 +133,10 @@ export default Vue.extend({
       }, 4000);
       
       })
-      .catch(error => {
-        console.error('Erro na requisição:', error);
-       this.$toast.error('Houve um erro ao processar a solicitação.');
-      });
-
+     }
+     catch (error) {
+      this.$toast.error('Houve um erro ao processar a solicitação.');
+      }
       },
   },
 

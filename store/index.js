@@ -17,8 +17,10 @@ export const state = () => ({
   listAllOrder: [],
   pedidos: [],
   postCoffe:{
+    fk_company:"",
     createOrderCoffeItemDto:[]
   },
+  dadosCliente:[],
 })
 
 export const mutations = {
@@ -63,6 +65,7 @@ export const mutations = {
   },
   SELECTED_CLIENT(state, payload) {
     state.selectedClient = payload
+    console.log(state.selectedClient );
   },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido); 
@@ -102,16 +105,14 @@ export const mutations = {
       pedido.amountItem = pedido.amountItem - novoAmountItem;
     }
   },
-  addOrder(state, data) {
-    state.postCoffe.createOrderCoffeItemDto.push(data);
-    console.log(state.pedidos);
+  addOrder(state, { id, data }) {
+    state.postCoffe.fk_company = id;
     
+    if (data !== null) {
+      state.postCoffe.createOrderCoffeItemDto.push(data);
+    }
+  
+    console.log(state.pedidos);
   }
-  // removerPedido(state, fk_revenue) {
-  //   const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
 
-  //   if (index !== -1) {
-  //     state.pedidos.splice(index, 1);
-  //   }
-  // }
 }

@@ -1,29 +1,4 @@
 <template>
-  <!-- <div class="containerCard">
-    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${pedidoCoffee.imagem}`" alt="" />
-    <div class="cardPedido">
-      <div class="descriptionPedido">
-        <h3>{{ pedidoCoffee.description }}</h3>
-        <p>R$ {{ pedidoCoffee.value }}</p>
-      </div>
-      <div class="selectPedido">
-        <p>Qtd Selecionada</p>
-        <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
-        
-      </div>
-      <div class="selectPedido">
-        <p>Tipo</p>
-        <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
-        
-      </div>
-      <div class="selectPedido">
-        <p>Horário</p>
-        <input v-model="pedidoCoffee.yield_per_quantity" type="text" />
-        
-      </div>
-    </div>
-    <button @click="addPedidos">Adicionar</button>
-  </div> -->
   <div class="containerCard">
     <div class="cointainerCard__ImgProduto">
       <img
@@ -57,11 +32,13 @@
         <label for="horario">Horário</label>
         <select name="cars" id="cars" v-model="pedidoCoffee.time">
           <option value="09:00">09:00</option>
+          <option value="11:00">11:00</option>
           <option value="14:00">14:00</option>
         </select>
     
       </div>
     </section>
+   
     <button @click="adicionarPedido">Adicionar</button>
 
   </div>
@@ -72,9 +49,11 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
+    infoCliente: Object,
     infoCoffee: {
       type: Object,
       required: true,
+      
     },
   },
   data(){
@@ -91,6 +70,7 @@ export default Vue.extend({
       if (!this.pedidoCoffee.amountItem || !this.pedidoCoffee.method_of_preparation) {
         this.$toast.info('Os Campos não podem ficar vazios!')
       }
+      
       const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
       if (fkRevenueExists) {
         this.$toast.info('Esse Pedido já foi adcionado!');
@@ -115,7 +95,7 @@ export default Vue.extend({
       };
       
       this.$store.commit("adicionarPedido", novoItem);
-      this.$store.commit("addOrder", data);
+      this.$store.commit("addOrder", { id: "", data: data });
       }
      
       this.pedidoCoffee.amountItem = '';

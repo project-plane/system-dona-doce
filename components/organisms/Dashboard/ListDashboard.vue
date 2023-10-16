@@ -1,18 +1,21 @@
 <template>
   <div class="cards-container">
-    <div class="inputCheckbox">
+    <!-- <div class="inputCheckbox">
       <input v-model="selectAll" type="checkbox" />
       <Label>Selecionar Todos</Label>
-    </div>
-    <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
+    </div> -->
 
+    <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
       <CardDashboard
-        v-for="(pedidos, index) in dataPedidos" 
+        v-for="(pedidos, index) in filteredItems" 
         :key="index" :data-pedidos="pedidos"
         :all-pedidos="dataPedidos" 
         :index="index" 
         @click.native="clickOrderFind(pedidos)" 
       />
+      <span v-if="filteredItems.length  <= 0" class="spanFiltro">
+        Nenhum resultado encontrado. <br> Tente ajustar os filtros da sua pesquisa e tente novamente
+      </span>
 
     </div>
 
@@ -39,7 +42,8 @@
       />
      
     </div>
-    
+
+
   </div>
 </template>
 
@@ -78,32 +82,36 @@ export default Vue.extend({
     })
   },
   watch: {
-    selectAll(newValue, oldValue) {
-      if (newValue) {
-        this.dataPedidos.map((item) => {
-          this.selectOrder.push({
-            clients: item.user.Clients,
-          })
-        })
-        return
-      }
-      this.selectOrder = []
-    },
+   
   },
   methods: {
     clickOrderFind(order) {
       console.log(order)
     },
   },
+  computed: {
+    filteredItems() {
+      if (!this.$store.state.selectedClient) {
+        // Se nenhum valor estiver selecionado, retorne todos os itens
+        return this.dataPedidos;
+      } else {
+        // Filtrar os itens com base no valor selecionado
+        return this.dataPedidos.filter(item =>
+         item.fk_user === this.$store.state.selectedClient);
+  
+      }
+      
+    },
+  }
 })
 </script>
 
 <style lang="scss" scoped>
+
 .cards-container {
   height: auto;
   padding: 2rem;
   overflow-y: auto;
-
   .inputCheckbox {
     display: flex;
     align-items: center;
@@ -122,6 +130,13 @@ export default Vue.extend({
     ;
     justify-content: space-between;
     gap: 1rem;
+    .spanFiltro{
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 50vh; 
+}
   }
 }
 </style>

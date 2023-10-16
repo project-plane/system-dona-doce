@@ -1,5 +1,7 @@
 <template>
-    <div v-if="$fetchState.pending" class="historicoPedidos-container">Carregando histórico...</div>
+    <div v-if="$fetchState.pending" class="historicoPedidos-container">
+      <Loading/>
+    </div>
     <div v-else class="historicoPedidos-container">
         <h3>Histórico por data</h3>
         <div class="input-calendar">
@@ -10,8 +12,6 @@
                     </button>
                 </template>
             </v-date-picker>
-
-
             <div class="label-calendar">
                 <div class="date">
                     <span><strong>Inicial</strong> </span>
