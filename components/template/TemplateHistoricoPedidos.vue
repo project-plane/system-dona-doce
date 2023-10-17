@@ -6,7 +6,7 @@
         <h3>Histórico por data</h3>
         <div class="input-calendar">
             <v-date-picker v-model="range" is-range>
-                <template v-slot="{ inputValue, inputEvents }">
+                <template v-slot="{ inputEvents }">
                     <button v-on="inputEvents.start" class="btn-calendar">
                         <img src="../../assets/icons/calendar.svg" alt="">
                     </button>
@@ -36,17 +36,21 @@
            
             </div>
 
-            <span v-if="listFiltered.length === 0">Não há nada para mostrar aqui</span>
+            <span v-if="listFiltered.length === 0">
+                Nenhum resultado encontrado. 
+                Tente ajustar os filtros da sua pesquisa
+                 e tente novamente.</span>
             
-        </div>
+      </div>
         <div class="list-historic unique" v-else>
 
             <div v-for="(item, index) in listFiltered" :key="index">
                 <CardHistorico :data="item" />
             </div>
 
-            <span v-if="listFiltered.length === 0">Não há nada para mostrar aqui</span>
-        </div>      
+            <span   v-if="listFiltered.length === 0">Nenhum resultado encontrado. 
+                Tente ajustar os filtros da sua pesquisa e tente novamente.</span>
+        </div>
     </div>
 </template>
 
@@ -61,7 +65,7 @@ export default Vue.extend({
             historico: [],
             listFiltered: [],
             range: {
-                start: new Date(2023, 8, 1),
+                start: new Date(),
                 end: new Date()
             }
         }
@@ -96,13 +100,13 @@ export default Vue.extend({
 
         filterByDateRange(startDate, endDate) {
             this.listFiltered = []
-            this.historico.map( (item) => {
-                item.dateOrder = new Date(item.dateOrder).toISOString().split('T')[0]
-                if(new Date(item.dateOrder) >= new Date(startDate) && new Date(item.dateOrder) <= new Date(endDate)) {
-                    this.listFiltered.push(item)
-                }
-            
-            })
+            this.historico.map((item) => {
+            item.dateOrder = new Date(item.dateOrder).toISOString().split('T')[0]
+            const itemDate = new Date(item.dateOrder);
+            if (itemDate >= new Date(startDate) && itemDate <= new Date(endDate)) {
+            this.listFiltered.push(item);
+            }
+            });
         }
     }
 })

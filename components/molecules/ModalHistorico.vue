@@ -314,7 +314,7 @@
             <Button
               v-if="data.orderStatus.description ==='Revisão Cliente'"
               class="save"
-              title="Enviar Comentário"
+              title="Salvar"
               type.native="button"
               :is-disabled="isDisabled"
               @click.native="sendAll()"
@@ -429,20 +429,26 @@ export default Vue.extend({
     async uploadComprovante(id) {
       try {
         if (!this.selectedFileComprovante) {
-        this.$toast.error('Selecione um arquivo PDF antes de enviar.')
+          this.$toast.warning('Selecione um arquivo PDF para enviar o Comprovante.');
+        return; 
         }
     
         const formData = new FormData()
         formData.append('file_payment_voucher', this.selectedFileComprovante)
 
-        await httpOrder.PostComprovante(id, formData)
-        this.$toast.info('Arquivo enviado com sucesso!')
+        const response = await httpOrder.PostComprovante(id, formData);
+        if (response.status === 200) {
+          this.$toast.info('Arquivo enviado com sucesso!');
         setTimeout(function () {
-          location.reload()
-        }, 4000)
+          location.reload();
+        }, 4000);
+        }
+        else {
+        this.$toast.error('Houve um erro ao processar a solicitação.');
+        }
+
       } catch (error) {
-        this.$toast.error('Houve um erro ao processar a solicitação.')
-        console.error('Erro ao enviar o arquivo:', error.message)
+        console.error('Erro ao enviar o arquivo:', error.message);
       }
     },
 
@@ -485,38 +491,34 @@ export default Vue.extend({
     async sendCommit(id) {
       try {
         if (!this.messageClient) {
-        this.$toast.error('Preencha o campo comentário...')          
+          this.$toast.error('Preencha o campo comentário...')   
+        return; 
         }
 
         const fk_order_Status = '016b9c84-4e7f-81ee-be56-0242ac1200022fe2af'
         const data = {
-          fk_order_status: fk_order_Status,
-          comment: this.messageClient,
+        fk_order_status: fk_order_Status,
+        comment: this.messageClient,
+       };
+
+      const response = await httpOrder.PostCommitClient(id, data);
+        if (response.status === 200) {
+          this.$toast.info('Comentário enviado com sucesso!');
+        } else {
+          this.$toast.error('Houve um erro ao processar a solicitação.');
         }
-        await httpOrder.PostCommitClient(id, data)
-          this.$toast.info('Comentário enviado com sucesso!')
-        // setTimeout(function () {
-        //   location.reload()
-        // }, 4000)
-      } catch (error) {
-        this.$toast.error('Houve um erro ao processar a solicitação.')
-        console.error('Erro ao enviar o arquivo:', error.message)
-      }
+
+        } catch (error) {
+        this.$toast.error('Houve um erro ao processar a solicitação.');
+        }
     },
-   async  sendAll(){
-
-    try {
-
-        await this.sendCommit(this.data.id);
+    async sendAll() {
+      try {
         await this.uploadComprovante(this.data.id);
-
-      this.$toast.info('Requisição feita com sucesso!');
-    }   catch (error) {
-       this.$toast.error('Erro: ' + error); // Use this.$toast.error para indicar um erro
-    }
-
-
-  
+        await this.sendCommit(this.data.id);
+      } catch (error) {
+        this.$toast.error('Erro: ' + error);
+      }
     }
   },
 })

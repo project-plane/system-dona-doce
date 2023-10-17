@@ -21,6 +21,7 @@ export const state = () => ({
     createOrderCoffeItemDto:[]
   },
   dadosCliente:[],
+  unidadeCliente:"",
 })
 
 export const mutations = {
@@ -113,6 +114,10 @@ export const mutations = {
     }
   
     console.log(state.pedidos);
-  }
+  },
+  selectUnity(state, id) {
+    state.unidadeCliente = id; 
+    console.log(state.unidadeCliente);
+  },
 
 }
