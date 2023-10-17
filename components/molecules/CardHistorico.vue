@@ -4,12 +4,14 @@
         <div class="header-card">
             
             <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
+            <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
             <span><strong>Valor total:</strong> {{ valueorder(data.orderItem) }}</span>
     
         </div>
 
         <div class="footer-card">
             <span><strong>Status: </strong><br/>{{ data.orderStatus.description }}</span>
+            
             <ButtonPirula title="Ver Detalhes" @click.native="() => showModal = true" style="width: 50%;"/>
         </div>
 
@@ -79,7 +81,7 @@ export default Vue.extend({
 
     .footer-card {
         justify-content: space-between;
-        align-items: end;
+        align-items: flex-end;
         display: flex;
     }
 

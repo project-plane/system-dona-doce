@@ -6,7 +6,7 @@
     <div v-if="modalPedido" class="cardModalPedido">
       <span>Mudar status do pedido</span>
       <select
-v-model="selected" style="
+        v-model="selected" style="
           border: 1px solid var(--border);
           height: 1.6rem;
           margin: 0.4rem 0;
@@ -262,7 +262,7 @@ h2 {
       .icons {
         display: flex;
         align-items: center;
-        justify-content: end;
+        justify-content: flex-end;
         gap: 1rem;
 
         img:nth-child(2) {

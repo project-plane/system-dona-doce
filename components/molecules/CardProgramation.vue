@@ -8,11 +8,15 @@
       </div>
       <div class="selectPedido">
         <p>Qtd Selecionada</p>
-        <input v-model="qtdPedido" type="text" />
+        <input v-model="qtdPedido" type="text" />      
+      </div>
+      <div style="display: flex; width: 100%;  justify-content: flex-end; margin-top: -15px; gap: 0.3rem; color: red; font-size: 14px;">
+        <span>Qtd. Min. {{ base_min_amount }}    <strong> x </strong>  </span>  
+        <span>Qtd. Max. {{ base_max_amount }}</span>
       </div>
       <div class="selectPedido">
         <p>Tipo</p>
-        <select v-model="selected" style="border: 1px solid var(--border); height: 30px">
+        <select v-model="selected" style="border: 1px solid var(--red); height: 35px;" >
           <option value="" disabled>Selecione o tipo de pedido</option>
           <option value="roast">Assado</option>
           <option value="frozen">Congelado</option>
@@ -20,6 +24,7 @@
       </div>
     </div>
     <button @click="addPedidos(tipoLanches)">Adicionar</button>
+
   </div>
 </template>
 
@@ -30,6 +35,14 @@ export default Vue.extend({
   props: {
     tipoLanches: {
       type: Object,
+      required: true,
+    },
+    base_max_amount:{
+      type: String,
+      required: true,
+    },
+    base_min_amount:{
+      type: String,
       required: true,
     },
 
@@ -79,7 +92,7 @@ export default Vue.extend({
   .cardPedido {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.2rem;
     padding: 1rem;
 
     .selectPedido {

@@ -192,7 +192,7 @@
         .icons {
           display: flex;
           align-items: center;
-          justify-content: end;
+          justify-content: flex-end;
           gap: 1rem;
   
           img:nth-child(2) {

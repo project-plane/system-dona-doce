@@ -25,7 +25,7 @@ export default {
   UpdateReceitaPorCliente: async (data) => {
     return await http.put('revenue-per-client', data)
   },
-  GetAllReceitaPorCliente: async (fk_client) => {
-    return await http.get(`revenue-per-client/inter?fk_client=${fk_client}`)
+  GetAllReceitaPorCliente: async (fk_client, offset = 0, limit = 100) => {
+    return await http.get(`revenue-per-client/inter?fk_client=${fk_client}&offset=${offset}&limit=${limit}`);
   }
 }
