@@ -95,7 +95,7 @@ export default Vue.extend({
       width: 100%;
       display: flex;
       justify-content: space-between;
-      align-items: end;
+      align-items: flex-end;
     }
   }
 

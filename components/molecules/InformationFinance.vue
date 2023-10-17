@@ -256,7 +256,7 @@ export default Vue.extend({
 
         const formData = new FormData()
         formData.append('file_caution', this.selectedFile)
-        console.log(formData);
+        // console.log(formData);
         
         const response = await httpOrder.UploadCautela(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
@@ -277,7 +277,7 @@ export default Vue.extend({
         const formData = new FormData()
           formData.append('file_invoice', this.selectedFileNF)
           formData.append('number_invoice', this.number_invoice)
-        console.log(formData);
+        // console.log(formData);
         
         const response = await httpOrder.PostNotaFiscal(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
@@ -436,7 +436,7 @@ async req() {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          align-items: end;
+          align-items: flex-end;
           font-weight: 800;
           font-size: 1.2rem;
           letter-spacing: 3px;

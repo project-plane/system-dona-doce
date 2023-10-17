@@ -22,16 +22,16 @@
             <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
             <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
             
-            <td class="tdQtde">
-              <button @click="subtractValue(item)" v-if="item.qtde !== 1">
+            <td class="tdQtde" style="text-align: center;">
+              <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
                 <span>-</span>
-              </button>
-              <button class="btnDisabled" v-else>
+              </button> -->
+              <!-- <button class="btnDisabled" v-else>
                 <span>-</span>
-              </button>
+              </button> -->
               {{ item.qtde }}
        
-              <button @click="addValue(item)">+</button>
+              <!-- <button @click="addValue(item)">+</button> -->
             </td>
             <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
             <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
@@ -67,14 +67,14 @@
           <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
           <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
           <td class="tdQtde">
-            <button @click="subtractValue(item)" v-if="item.qtde !== 1">
+            <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
             <button class="btnDisabled" v-else>
               <span>-</span>
-            </button>
+            </button> -->
             {{ item.qtde }}
-            <button @click="addValue(item)">+</button>
+            <!-- <button @click="addValue(item)">+</button> -->
           </td>
           <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
           <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
@@ -109,14 +109,14 @@
           <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
           <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
           <td class="tdQtde">
-            <button @click="subtractValue(item)" v-if="item.qtde !== 1">
+            <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
             <button class="btnDisabled" v-else>
               <span>-</span>
-            </button>
+            </button> -->
             {{ item.qtde }}
-            <button @click="addValue(item)">+</button>
+            <!-- <button @click="addValue(item)">+</button> -->
           </td>
           <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
           <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>

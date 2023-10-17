@@ -117,7 +117,7 @@ export const mutations = {
   },
   selectUnity(state, id) {
     state.unidadeCliente = id; 
-    console.log(state.unidadeCliente);
+
   },
 
 }
