@@ -81,7 +81,7 @@ export default Vue.extend({
 
     .footer-card {
         justify-content: space-between;
-        align-items: end;
+        align-items: flex-end;
         display: flex;
     }
 

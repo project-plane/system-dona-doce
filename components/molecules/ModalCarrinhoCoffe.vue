@@ -4,14 +4,15 @@
       Carregando dados do carrinho...
     </div>
     <div class="dataEmpresa" v-else>
-      <h4>Pedido</h4> 
-         <div class="selectUnidades">
-            <label for="" class="titleInput">Unidade:</label>
-            <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 12rem;" v-model="selectedUnit">
-              <option value="" disabled>Selecionar Unidade</option>
+         <div class="selectUnidades" style="display: flex; justify-content: space-between;">
+          <h4>Pedido</h4> 
+          <label style=" display: flex; flex-direction: column; align-items: flex-end;"> 
+            <strong>Unidade</strong>
+            <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 10rem;border: 1px solid var(--red); height: 2.4rem;" v-model="selectedUnit">
+              <option value="Select your option" disabled selected>Select your option</option>
               <option v-for="item in infoncliente" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
             </select>
-
+          </label>
         </div>   
       <table class="resume-content">
         <thead>

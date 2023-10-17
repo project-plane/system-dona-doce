@@ -6,7 +6,6 @@
           <option value="" disabled>Selecionar Unidade</option>
           <option v-for="item in dataClientes" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
         </select>
-        {{ this.$store.state.unidadeCliente }}
     </div>   
     <div class="header-pedidos">
 
@@ -28,14 +27,14 @@
 
     <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
       <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" />
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" :base_max_amount="pedidosProgramation.base_max_amount" :base_min_amount="pedidosProgramation.base_min_amount" />
       </div>
-    </div>
+ 
+      </div>
     <h2>Fora do Cardapio</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
         <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
-        <pre>{{ p }}</pre>
       </div>
     </div>
 
@@ -43,6 +42,7 @@
       <div v-for="p in foraEstoque" :key="p.id">
         <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
       </div>
+ 
     </div>
   </div>
 </template>
@@ -69,7 +69,7 @@ export default Vue.extend({
       showModal: false,
       selectedUnit: null,
       addPedidos: {
-        fk_company: null,
+        fk_company: this.$store.state.unidadeCliente,
         fk_menu: this.$route.query.id,
         createOrderItemDto: [],
         createOrderNotMenuItemDto: [],
@@ -144,9 +144,13 @@ export default Vue.extend({
             descriptionRevenue: revenueClient.description,
             valeuRevenue: revenueClient.sale_value,
             imagem: pedidos.revenues.imagem,
+            base_max_amount: pedidos.revenues.base_max_amount,
+            base_min_amount: pedidos.revenues.base_min_amount,
           })
         }
+        
       })
+    
     })
 
     const foraEstoqueAtualizado = []
@@ -163,9 +167,7 @@ export default Vue.extend({
 
   methods: {
     handleChange() {
-    // console.log(this.selectedUnit);
     this.addPedidos.fk_company= this.selectedUnit
-
     this.$store.commit('selectUnity',this.selectedUnit)
 
   
@@ -184,7 +186,6 @@ export default Vue.extend({
         return
       }
       this.listaCompletaReceita.push({
-        fk_company: this.$store.state.unidadeCliente,
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
@@ -212,7 +213,6 @@ export default Vue.extend({
         return
       }
       this.listaForaEstoque.push({
-        fk_company: this.$store.state.unidadeCliente,
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
@@ -260,19 +260,22 @@ export default Vue.extend({
             method_of_preparation: item.method_of_preparation,
           })
         })
-
+        console.log(this.addPedidos);
+        
         await HttpPedidos.CreateNewOrder(this.addPedidos)
           .then((res) => {
             this.$toast.success('Pedido realizado com sucesso!!!')
+            this.showModal = false
+            this.listaCompletaReceita = []
+            this.listaForaEstoque = []
+            this.$store.commit('selectUnity','')
           })
           .catch((error) => {
             console.log(error)
             this.$toast.info('Ocorreu um erro!')
           })
       }
-      this.showModal = false
-      this.listaCompletaReceita = []
-      this.listaForaEstoque = []
+      
     },
 
     listaAtualizadaDoModal(e) {

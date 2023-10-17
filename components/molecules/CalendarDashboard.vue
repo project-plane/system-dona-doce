@@ -47,7 +47,7 @@ export default Vue.extend({
   async fetch() {
     await httpOrder.OrderHistory().then((res) => {
       this.listOrder = res.data
-      console.log(this.listOrder)
+      // console.log(this.listOrder)
     })
 
     const valorUniqOrder = []
@@ -86,7 +86,7 @@ export default Vue.extend({
     })
 
     this.valorTotal = convertTotal
-    console.log(convertTotal);
+    // console.log(convertTotal);
 
   },
 })
