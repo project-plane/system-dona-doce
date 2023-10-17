@@ -314,7 +314,7 @@
             <Button
               v-if="data.orderStatus.description ==='Revisão Cliente'"
               class="save"
-              title="Enviar Comentário"
+              title="Salvar"
               type.native="button"
               :is-disabled="isDisabled"
               @click.native="sendAll()"
@@ -323,7 +323,7 @@
           </div>
         </div>
       </div>
-      <pre>{{ data.id }}</pre>
+
     </div>
   </ModalPreview>
 </template>
@@ -429,7 +429,7 @@ export default Vue.extend({
     async uploadComprovante(id) {
       try {
         if (!this.selectedFileComprovante) {
-          this.$toast.error('Selecione um arquivo PDF antes de enviar.');
+          this.$toast.warning('Selecione um arquivo PDF para enviar o Comprovante.');
         return; 
         }
     
@@ -491,7 +491,8 @@ export default Vue.extend({
     async sendCommit(id) {
       try {
         if (!this.messageClient) {
-        this.$toast.error('Preencha o campo comentário...')          
+          this.$toast.error('Preencha o campo comentário...')   
+        return; 
         }
 
         const fk_order_Status = '016b9c84-4e7f-81ee-be56-0242ac1200022fe2af'
@@ -515,8 +516,6 @@ export default Vue.extend({
       try {
         await this.uploadComprovante(this.data.id);
         await this.sendCommit(this.data.id);
-
-        this.$toast.info('Requisição feita com sucesso!');
       } catch (error) {
         this.$toast.error('Erro: ' + error);
       }

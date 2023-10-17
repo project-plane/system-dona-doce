@@ -6,6 +6,7 @@
           <option value="" disabled>Selecionar Unidade</option>
           <option v-for="item in dataClientes" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
         </select>
+        {{ this.$store.state.unidadeCliente }}
     </div>   
     <div class="header-pedidos">
 
@@ -34,6 +35,7 @@
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
         <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
+        <pre>{{ p }}</pre>
       </div>
     </div>
 
@@ -163,7 +165,10 @@ export default Vue.extend({
     handleChange() {
     // console.log(this.selectedUnit);
     this.addPedidos.fk_company= this.selectedUnit
-    
+
+    this.$store.commit('selectUnity',this.selectedUnit)
+
+  
     },
    
     pedidos(qtdOrder, fk_revenue, index, typeOrder) {
@@ -179,7 +184,7 @@ export default Vue.extend({
         return
       }
       this.listaCompletaReceita.push({
-        fk_company: this.selectedUnit,
+        fk_company: this.$store.state.unidadeCliente,
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
@@ -207,7 +212,7 @@ export default Vue.extend({
         return
       }
       this.listaForaEstoque.push({
-        fk_company: this.selectedUnit,
+        fk_company: this.$store.state.unidadeCliente,
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(qtdOrder),
         fk_revenue: fk_revenue,
@@ -223,7 +228,7 @@ export default Vue.extend({
       })
     },
     showCar(){
-      if (!this.addPedidos.fk_company || !this.selectedUnit) {
+      if (!this.$store.state.unidadeCliente) {
         this.$toast.error('Selecione uma unidade')
         return
       }
@@ -240,7 +245,6 @@ export default Vue.extend({
       } else {
         this.listaCompletaReceita.map((item) => {
           this.addPedidos.createOrderItemDto.push({
-            fk_company: this.selectedUnit,
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,

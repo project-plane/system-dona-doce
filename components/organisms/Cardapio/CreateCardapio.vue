@@ -7,7 +7,6 @@
         <span>Selecione uma data</span>
         <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red" />
       </div>
-
       <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
         class="calendar-input">
         <span>Dia: {{ formatDate(date) }}</span>
@@ -21,6 +20,7 @@
               </option>
             </select>
           </div>
+   
           <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio">
         </div>
         <button v-if="qtdeCardapio < 4" class="add-option" @click="addOnCardapio">+ Adicionar Opção</button>
@@ -46,7 +46,7 @@ export default Vue.extend({
       days: [],
       optionsReceitas: [],
       optionsProgramation: [],
-      date: '',
+      date: new Date(),
       toEdit: [],
       datesToVerify: [],
       loading: true,
@@ -73,6 +73,7 @@ export default Vue.extend({
     };
   },
 
+
   computed: {
     dates() {
       return this.days.map(day => day.dateMenu);
@@ -88,7 +89,7 @@ export default Vue.extend({
   watch: {
     date(newValue) {
       if (this.days.length === 0) {
-        this.cardapio.dateMenu = newValue
+        this.cardapio.dateMenu = this.formatDate(newValue)
       }
       this.days.map((item) => {
         if (dayjs(item.dateMenu).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
@@ -157,7 +158,8 @@ export default Vue.extend({
       if (hasDuplicatesFkCategory) {
 
         this.$toast.error('Não podem haver receitas duplicadas para o mesmo dia')
-      } else {
+      } 
+       else {
         await httpCardapio.SetNewMenu(this.cardapio).then(async (res) => {
           this.$toast.success('Cardapio Cadastrado com Sucesso!')
           this.$nuxt.refresh()
