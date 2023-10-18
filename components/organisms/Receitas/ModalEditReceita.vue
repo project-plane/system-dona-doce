@@ -82,7 +82,7 @@
 
               <Input
                 label="Valor Ingrediente"
-                v-model="receita.ingredients.value"
+                :value="'R$ ' + receita.ingredients.value.toFixed(2)"
                 type="text"
                 disabled="disabled"
                 block="background: #d6d6d6; cursor: no-drop"
