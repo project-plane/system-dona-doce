@@ -1,5 +1,6 @@
 <template>
   <div class="containerReceita">
+    <!-- <Loading v-if="loading" /> -->
     <BeadFrame>
       <div class="bodyModal">
         <div class="container">
@@ -66,7 +67,10 @@ import Vue from 'vue'
 
 export default Vue.extend({
   data() {
-    return {}
+    return {
+      loading: false,
+
+    }
   },
   props: {
     listFindReceita: {
