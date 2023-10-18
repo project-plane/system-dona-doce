@@ -30,24 +30,26 @@
               <p>{{ receita.ingredients.description }}</p>
             </div>
             <div class="input">
-              <h3>Quantidade</h3>
-              <p>{{ receita.amount_ingredient }}</p>
+              <h3>Quantidade </h3>
+              <p>{{ receita.amount_ingredient }}{{ receita.ingredients.unit_of_measurement }}</p>
+            </div>
+            <div class="input">
+              <h3>Valor / U.M</h3>
+              <p>R$ {{ receita.ingredients.value_per_serving }}/{{ receita.ingredients.unit_of_measurement }}</p>
             </div>
             <div class="input">
               <h3>Valor Unitário</h3>
-              <p>R$ {{ receita.ingredients.value.toFixed(2) }}</p>
-            </div>
-            <div class="input">
-              <h3>Total</h3>
               <p>
                 R$
                 {{
                   (
-                    receita.amount_ingredient * receita.ingredients.value
+                    receita.amount_ingredient * receita.ingredients.value_per_serving
                   ).toFixed(2)
                 }}
               </p>
             </div>
+
+
           </div>
           <!-- <div class="valorTotal">
             <h3>Valor Total</h3>
