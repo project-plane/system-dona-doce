@@ -1,5 +1,6 @@
 <template>
   <div class="containerReceita">
+    <Loading v-if="loading" />
     <BeadFrame>
       <div class="bodyModal">
         <div class="container">
@@ -28,11 +29,17 @@
             </div>
             <div class="medida" v-if="unidadeMedida">
               <label for="qtd">Unidade Medida</label>
-              <span>{{ unidadeMedida }}</span>
+              <span>{{
+              unidadeMedida.toLowerCase() === "u" ? "Unidade" :
+              unidadeMedida.toLowerCase() === "ml"? "ML" :
+              unidadeMedida.toLowerCase() === "g"? "Gramas" :
+              unidadeMedida.toLowerCase() === "l"? "Litros" :
+              "Not Found Unit of Measurement"
+              }}</span>
             </div>
             <div class="input">
               <label for="qtd">Quantidade</label>
-              <input id="qtd" v-model="qtdIngrediente" type="number" :placeholder="holder" />
+              <input id="qtd" v-model="qtdIngrediente" type="number" min="1" :placeholder="holder" />
             </div>
             <div class="btnIngrediente">
               <button @click="inserirIngrediente">Inserir</button>
@@ -93,6 +100,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      loading: false,
       selected: '',
       qtdIngrediente: null,
       valorTotal: '',
@@ -114,6 +122,7 @@ export default Vue.extend({
   },
 
   async fetch() {
+    this.loading = true
     await httpIngredientes
       .ListIngredientes()
       .then((res) => {
@@ -122,6 +131,8 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+    this.loading = false
+
   },
 
   watch: {
@@ -131,7 +142,6 @@ export default Vue.extend({
     selected(newValue) {
 
       this.listIngredients.map((e) => {
-        console.log(e);
 
         if (e.description === newValue) {
           this.unidadeMedida = e.unit_of_measurement
@@ -163,7 +173,6 @@ export default Vue.extend({
       }
 
       this.listIngredients.map((item) => {
-        console.log(item);
 
         if (item.description === this.selected) {
           const ingredienteExiste = this.amountReceitas.find(
@@ -205,6 +214,7 @@ export default Vue.extend({
       this.selected = ''
     },
     async saveReceita() {
+      this.loading = true
       if (!this.valorReceita || !this.qtdMinima || !this.qtdMaxima) {
         this.$toast.error('Preencha todos os campos!!!')
         return
@@ -242,6 +252,7 @@ export default Vue.extend({
         .catch((error) => {
           console.log(error)
         })
+      this.loading = false
       this.$nuxt.refresh()
     },
   },

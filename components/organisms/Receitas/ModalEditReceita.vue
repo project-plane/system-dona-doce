@@ -1,126 +1,139 @@
 <template>
-  <div class="containerReceita">
-    <BeadFrame>
-      <div class="bodyModal">
-        <div class="container">
-          <div class="header">
-            <div class="headerReceita">
-              <div class="img">
-                <label for="editInputFile">
-                  <img
-                    v-if="!editUrlImgPreview"
-                    src="~/assets/icons/imgFile.svg"
-                    alt=""
+  <div>
+    <Loading v-if="loading" />
+    <div class="containerReceita">
+      <BeadFrame>
+        <div class="bodyModal">
+          <div class="container">
+            <div class="header">
+              <div class="headerReceita">
+                <div class="img">
+                  <label for="editInputFile">
+                    <img
+                      v-if="!editUrlImgPreview"
+                      src="~/assets/icons/imgFile.svg"
+                      alt=""
+                    />
+                    <img
+                      v-if="editUrlImgPreview"
+                      class="imgFile"
+                      :src="editUrlImgPreview"
+                      alt=""
+                    />
+                  </label>
+                  <input
+                    id="editInputFile"
+                    type="file"
+                    accept="image/*"
+                    name="editInputFile"
+                    @change="fileMethods"
                   />
-                  <img
-                    v-if="editUrlImgPreview"
-                    class="imgFile"
-                    :src="editUrlImgPreview"
-                    alt=""
-                  />
-                </label>
-                <input
-                  id="editInputFile"
-                  type="file"
-                  accept="image/*"
-                  name="editInputFile"
-                  @change="fileMethods"
+                </div>
+                <div class="textReceita">
+                  <h1>Editar Receita</h1>
+                  <Title :title="title" />
+                </div>
+              </div>
+              <div @click="closeModal">
+                <img
+                  style="cursor: pointer"
+                  src="~/assets/icons/close.svg"
+                  alt=""
                 />
               </div>
-              <div class="textReceita">
-                <h1>Editar Receita</h1>
-                <Title :title="title" />
+            </div>
+            <div class="btnAddIngrediente">
+              <button @click="addIngrediente">Adicionar Ingrediente</button>
+            </div>
+            <div class="body" v-if="statusAddIngrediente">
+              <div class="input">
+                <Label for="ingrediente">Ingrediente</Label>
+                <select name="" id="ingrediente" v-model="selected">
+                  <option disabled value="">Selecionar Ingrediente</option>
+                  <option
+                    v-for="itemIngredient in listIngredients"
+                    :key="itemIngredient.id"
+                  >
+                    {{ itemIngredient.description }}
+                  </option>
+                </select>
+              </div>
+              <div class="input">
+                <label for="qtd">Quantidade</label>
+                <input
+                  type="number"
+                  id="qtd"
+                  placeholder="quantidade"
+                  v-model="qtdIngrediente"
+                />
+              </div>
+              <div class="btnIngrediente">
+                <button @click="inserirIngrediente(idReceita)">Inserir</button>
               </div>
             </div>
-            <div @click="closeModal">
-              <img
-                style="cursor: pointer"
-                src="~/assets/icons/close.svg"
-                alt=""
+            <div class="body" v-for="receita in listReceitas" :key="receita.id">
+              <Input
+                label="Ingrediente"
+                v-model="receita.ingredients.description"
+                type="text"
+                disabled="disabled"
+                block="background: #d6d6d6; cursor: no-drop"
               />
-            </div>
-          </div>
-          <div class="btnAddIngrediente">
-            <button @click="addIngrediente">Adicionar Ingrediente</button>
-          </div>
-          <div class="body" v-if="statusAddIngrediente">
-            <div class="input">
-              <Label for="ingrediente">Ingrediente</Label>
-              <select name="" id="ingrediente" v-model="selected">
-                <option disabled value="">Selecionar Ingrediente</option>
-                <option
-                  v-for="itemIngredient in listIngredients"
-                  :key="itemIngredient.id"
-                >
-                  {{ itemIngredient.description }}
-                </option>
-              </select>
-            </div>
-            <div class="input">
-              <label for="qtd">Quantidade</label>
-              <input
+
+              <Input
+                label="Valor Ingrediente"
+                v-model="receita.ingredients.value"
+                type="text"
+                disabled="disabled"
+                block="background: #d6d6d6; cursor: no-drop"
+              />
+
+              <Input
+                label="Quantidade"
+                v-model="receita.amount_ingredient"
                 type="number"
-                id="qtd"
-                placeholder="quantidade"
-                v-model="qtdIngrediente"
               />
-            </div>
-            <div class="btnIngrediente">
-              <button @click="inserirIngrediente(idReceita)">Inserir</button>
-            </div>
-          </div>
-          <div class="body" v-for="receita in listReceitas" :key="receita.id">
-            <Input
-              label="Ingrediente"
-              v-model="receita.ingredients.description"
-              type="text"
-              disabled="disabled"
-              block="background: #d6d6d6; cursor: no-drop"
-            />
 
-            <Input
-              label="Valor Ingrediente"
-              v-model="receita.ingredients.value"
-              type="text"
-              disabled="disabled"
-              block="background: #d6d6d6; cursor: no-drop"
-            />
-
-            <Input
-              label="Quantidade"
-              v-model="receita.amount_ingredient"
-              type="number"
-            />
-
-            <div class="close">
-              <img
-                src="~/assets/icons/close.svg"
-                alt=""
-                @click="deletarIngrediente(receita)"
+              <Input
+                label="Unidade de Medida"
+                :value="
+                  refactorUnidadeMedida(receita.ingredients.unit_of_measurement)
+                "
+                type="text"
+                disabled="disabled"
+                block="background: #d6d6d6; cursor: no-drop"
               />
+
+              <div class="close">
+                <img
+                  src="~/assets/icons/close.svg"
+                  alt=""
+                  @click="deletarIngrediente(receita)"
+                />
+              </div>
             </div>
+            <div class="valorTotal" v-if="updateIngrediente.length !== 0">
+              <h3>Valor Total</h3>
+              <h3>R$ {{ valorTotal }}</h3>
+            </div>
+            <div class="valorTotal" v-else>
+              <h3>Valor Total</h3>
+              <h3>R$ {{ valorAtual }}</h3>
+            </div>
+            <Button
+              @functionClick="editarIngredienteReceita(listReceitas)"
+              title="Atualizar Dados"
+              v-if="updateIngrediente.length === 0"
+            />
+            <Button
+              v-else
+              @functionClick="editReceita(idReceita)"
+              title="Salvar"
+            />
           </div>
-          <div class="valorTotal" v-if="updateIngrediente.length !== 0">
-            <h3>Valor Total</h3>
-            <h3>R$ {{ valorTotal }}</h3>
-          </div>
-          <div class="valorTotal" v-else>
-            <h3>Valor Total</h3>
-            <h3>R$ {{ valorAtual }}</h3>
-          </div>
-          <Button
-            @functionClick="editarIngredienteReceita(listReceitas)"
-            title="Atualizar Dados"
-            v-if="updateIngrediente.length === 0"
-          />
-          <Button
-            v-else
-            @functionClick="editReceita(idReceita)"
-            title="Salvar"
-          />
         </div>
-      </div>
-    </BeadFrame>
+      </BeadFrame>
+    </div>
   </div>
 </template>
 
@@ -152,6 +165,7 @@ export default Vue.extend({
       updateIngrediente: [],
       selected: '',
       listIngredients: [],
+      loading: false,
     }
   },
   props: {
@@ -162,6 +176,8 @@ export default Vue.extend({
   },
 
   async fetch() {
+    this.loading = true
+
     await httpReceitas
       .GetFindReceita(this.dataReceita)
       .then((res) => {
@@ -184,6 +200,8 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+
+    this.loading = false
   },
   methods: {
     addIngrediente() {
@@ -194,6 +212,18 @@ export default Vue.extend({
       const file = e.target.files[0]
       this.editUrlImgPreview = URL.createObjectURL(file)
       this.editUrlImgFile = e.target.files[0]
+    },
+
+    refactorUnidadeMedida(unidadeMedida) {
+      return unidadeMedida.toLowerCase() === 'u'
+        ? 'Unidade'
+        : unidadeMedida.toLowerCase() === 'ml'
+        ? 'ML'
+        : unidadeMedida.toLowerCase() === 'g'
+        ? 'Gramas'
+        : unidadeMedida.toLowerCase() === 'l'
+        ? 'Litros'
+        : 'Not Found Unit of Measurement'
     },
 
     // Inserir um ingrediente dentro da receita
@@ -224,8 +254,7 @@ export default Vue.extend({
               .CreateReceitaIngrediente(adicionarIngrediente)
               .then((res) => {
                 this.$toast.success('Ingrediente inserido com sucesso!!!')
-                console.log(res);
-                
+                console.log(res)
               })
               .catch((error) => {
                 console.log(error)
@@ -432,6 +461,8 @@ export default Vue.extend({
       .body {
         width: 100%;
         display: grid;
+        display: flex;
+        align-items: center;
         grid-template-columns: minmax(2ch, 30ch) 3fr 3fr 1fr;
         padding-bottom: 1rem;
         gap: 1rem;
@@ -450,6 +481,7 @@ export default Vue.extend({
           width: 100%;
           display: flex;
           align-items: flex-end;
+          padding: 1rem;
 
           button {
             width: 100%;
