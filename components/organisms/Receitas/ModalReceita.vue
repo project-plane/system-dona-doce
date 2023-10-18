@@ -51,13 +51,13 @@
           <div v-else class="footer">
             <div class="footerHeader">
               <h4>Ingrediente</h4>
-              <h4>QTD</h4>
+              <h4>Qtd</h4>
               <h4>Valor Porção</h4>
               <h4>Valor Total</h4>
             </div>
             <div v-for="amountReceita in amountReceitas" :key="amountReceita.id" class="footerBody">
               <span>{{ amountReceita.ingrediente }}</span>
-              <span>{{ amountReceita.qtd }}</span>
+              <span>{{ amountReceita.qtd }} {{ amountReceita.unidadeDeMedida }}</span>
               <span>R$ {{ amountReceita.valorUnitario }}</span>
               <span>R$ {{ amountReceita.valor }}</span>
             </div>
@@ -185,6 +185,7 @@ export default Vue.extend({
               qtd: this.qtdIngrediente,
               ingrediente: this.selected,
               valorUnitario: item.value_per_serving,
+              unidadeDeMedida: item.unit_of_measurement,
               valor: (item.value_per_serving * this.qtdIngrediente).toFixed(2),
             })
             // array que armazena os valores
