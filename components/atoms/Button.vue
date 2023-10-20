@@ -60,6 +60,10 @@ export default Vue.extend({
   transition: 0.2s;
 }
 
+.btn:hover {
+  background-color: var(--red-opacity);
+}
+
 .btn:disabled {
   cursor: not-allowed;
   opacity: 50%;

@@ -5,13 +5,27 @@
         <div v-if="statusAba" class="order">
           <div>
             <h2>{{ orderFindClient.user.Clients.corporate_name }}</h2>
-            <span style="color: var(--red);" v-if="orderFindClient.order_type === 'coffe'">Coffee</span>
-     
-            <span style="color: var(--blue);" v-if="orderFindClient.order_type === 'programmed'">Programado</span>
+            <span
+              style="color: var(--red)"
+              v-if="orderFindClient.order_type === 'coffe'"
+              >Coffee</span
+            >
+
+            <span
+              style="color: var(--blue)"
+              v-if="orderFindClient.order_type === 'programmed'"
+              >Programado</span
+            >
           </div>
- 
-          <div v-for="(dadosPedidos, index) in orderFindClient.orderItem" :key="index" class="order">
-            <div v-if="dadosPedidos.categoryOrderItem.description === 'Dejejum'">
+
+          <div
+            v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+            :key="index"
+            class="order"
+          >
+            <div
+              v-if="dadosPedidos.categoryOrderItem.description === 'Dejejum'"
+            >
               <h3>Desjejum</h3>
               <table>
                 <thead>
@@ -31,7 +45,9 @@
               </table>
             </div>
 
-            <div v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 1'">
+            <div
+              v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 1'"
+            >
               <h3>Lanche 01</h3>
               <table>
                 <thead>
@@ -51,7 +67,9 @@
               </table>
             </div>
 
-            <div v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 2'">
+            <div
+              v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 2'"
+            >
               <h3>Lanche 02</h3>
               <table>
                 <thead>
@@ -78,7 +96,6 @@
             </div>
 
             <div v-if="orderFindClient.order_type === 'coffe'">
-       
               <table>
                 <thead>
                   <tr>
@@ -87,105 +104,208 @@
                     <th>Preço</th>
                   </tr>
                 </thead>
-                  <tr>
-                    <td>{{ dadosPedidos.amountItem }}</td>
-                    <td>{{ dadosPedidos.revenues.description }}</td>
-                    <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
-                  </tr>
-                  <!-- <tr class="totalOrder">
+                <tr>
+                  <td>{{ dadosPedidos.amountItem }}</td>
+                  <td>{{ dadosPedidos.revenues.description }}</td>
+                  <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
+                </tr>
+                <!-- <tr class="totalOrder">
                     <td>Total</td>
                     <td colspan="2" style="text-align: end">
                       R$ {{ orderFindClient.valueOrder.toFixed(2) }}
                     </td>
                   </tr> -->
-  
               </table>
-         
             </div>
-            
           </div>
 
-          <h3 style="text-align: right; padding: 1.2rem;" v-if="orderFindClient.order_type === 'coffe'"> valor  R$ {{ orderFindClient.valueOrder.toFixed(2) }}</h3>
+          <h3
+            style="text-align: right; padding: 1.2rem"
+            v-if="orderFindClient.order_type === 'coffe'"
+          >
+            valor R$ {{ orderFindClient.valueOrder.toFixed(2) }}
+          </h3>
         </div>
 
         <div v-else>
           <div>
-            <div class="inputs"  v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue'||orderFindClient.orderStatus.description =='Em Entrega'"  >
-              <!-- <span v-if="orderFindClient.amount_of_boxes != null"> 
+            <div
+              class="inputs"
+              v-if="
+                orderFindClient.orderStatus.description === 'Revisão Admin' ||
+                orderFindClient.orderStatus.description === 'Entregue' ||
+                orderFindClient.orderStatus.description == 'Em Entrega'
+              "
+            >
+              <!-- <span v-if="orderFindClient.amount_of_boxes != null">
                 Já foi cadastrado um dado anteriormente, caso queira editar é só enviar novamente
               </span> -->
 
-              <Input label="Bandeja" v-model="amount_of_tray" type="text" placeholder="Digita a quantidade de bandeja" />
-              <Input label="Caixa"  v-model="amount_of_boxes" type="text" placeholder="Digita a quantidade de caixas" />
-                
-            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue' || orderFindClient.orderStatus.description === 'Em Entrega'"  class="containerNotaFiscal" >
-              <span class="titleAnexo">Anexar Nota</span>
-              <div class="inputAnexo">
-                <input type="file" accept="image/*,.pdf" style="width: 85%" @change="onFileChangeNF"/>
-                  <img  v-if="previewNotaFiscal" 
-                  src="../../assets/icons/Icon_uploadConcluido.svg" alt="Icon concluido" style="width: 27px;" />
-                  <img v-else
-                    src="../../assets/icons/download.svg"
-                    alt="Pré-visualização do PDF"
-                    style="width: 20px;" />
-              </div>
-              <span class="titleNumber">Nº da NF</span>
-              <div class="inputNumber">
-                <input type="number" v-model="number_invoice" style="width: 100%; height: 100%;" placeholder="000 001 001"/>
-                  
-              </div>
-            </div>
-            <div v-if="orderFindClient.orderStatus.description === 'Revisão Admin'|| orderFindClient.orderStatus.description === 'Entregue' || orderFindClient.orderStatus.description === 'Em Entrega'" >
-              <span>Anexar cautela</span>
-              <div class="inputContainer"> 
-                <input type="file" accept="image/*,.pdf" style="width: 85%" @change="onFileChange"/>
-                  <img  v-if="previewCaution" 
-                  src="../../assets/icons/Icon_uploadConcluido.svg" alt="Icon concluido" style="width: 27px;" />
-                  <img v-else
-                    src="../../assets/icons/download.svg"
-                    alt="Pré-visualização do PDF"
-                    style="width: 20px;" />
-             </div>
-            </div>
-            <div>
-              <span>Comprovante de Pagamento</span>
-              <div class="img">
-                <label for="inputComprovante" >
-             
-                  <span @click="downloadFile" v-if="orderFindClient.file_payment_voucher !=null" class="inputComprovante">
-                   Baixar Comprovante 
-                   <img  src="../../assets/icons/Icon_uploadConcluido.svg"  style="width: 20px;"  />
-                  </span>
-                  
-                  <p class="inputComprovante" style="color: rgb(211, 60, 60);" v-else >Comprovante não enviado</p>
-                
-                </label>
-              </div>
-            </div>
-         
-            <!-- <pre>{{ orderFindClient}}</pre> -->
+              <Input
+                label="Bandeja"
+                v-model="amount_of_tray"
+                type="text"
+                placeholder="Digita a quantidade de bandeja"
+              />
+              <Input
+                label="Caixa"
+                v-model="amount_of_boxes"
+                type="text"
+                placeholder="Digita a quantidade de caixas"
+              />
 
-            <button class="btn" @click="sendData()"> Salvar</button>
-          </div>
-          <div v-else  class="inputs" >
-            <span>O Status atual do pedido não permite acessar o formulário.</span>
-          </div>
+              <div
+                v-if="
+                  orderFindClient.orderStatus.description === 'Revisão Admin' ||
+                  orderFindClient.orderStatus.description === 'Entregue' ||
+                  orderFindClient.orderStatus.description === 'Em Entrega'
+                "
+                class="containerNotaFiscal"
+              >
+                <span class="titleAnexo">Anexar Nota</span>
+                <div class="inputAnexo">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    style="width: 85%"
+                    @change="onFileChangeNF"
+                  />
+                  <img
+                    v-if="previewNotaFiscal"
+                    src="../../assets/icons/Icon_uploadConcluido.svg"
+                    alt="Icon concluido"
+                    style="width: 27px"
+                  />
+                  <img
+                    v-else
+                    src="../../assets/icons/download.svg"
+                    alt="Pré-visualização do PDF"
+                    style="width: 20px"
+                  />
+                </div>
+                <span class="titleNumber">Nº da NF</span>
+                <div class="inputNumber">
+                  <input
+                    type="number"
+                    v-model="number_invoice"
+                    style="width: 100%; height: 100%"
+                    placeholder="000 001 001"
+                  />
+                </div>
+              </div>
+              <div
+                v-if="
+                  orderFindClient.orderStatus.description === 'Revisão Admin' ||
+                  orderFindClient.orderStatus.description === 'Entregue' ||
+                  orderFindClient.orderStatus.description === 'Em Entrega'
+                "
+              >
+                <span>Anexar cautela</span>
+                <div class="inputContainer">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    style="width: 85%"
+                    @change="onFileChange"
+                  />
+                  <img
+                    v-if="previewCaution"
+                    src="../../assets/icons/Icon_uploadConcluido.svg"
+                    alt="Icon concluido"
+                    style="width: 27px"
+                  />
+                  <img
+                    v-else
+                    src="../../assets/icons/download.svg"
+                    alt="Pré-visualização do PDF"
+                    style="width: 20px"
+                  />
+                </div>
+              </div>
+              <div>
+                <span>Comprovante de Pagamento</span>
+                <div class="img">
+                  <label for="inputComprovante">
+                    <span
+                      @click="downloadFile"
+                      v-if="orderFindClient.file_payment_voucher != null"
+                      class="inputComprovante"
+                    >
+                      Baixar Comprovante
+                      <img
+                        src="../../assets/icons/Icon_uploadConcluido.svg"
+                        style="width: 20px"
+                      />
+                    </span>
+
+                    <p
+                      class="inputComprovante"
+                      style="color: rgb(211, 60, 60)"
+                      v-else
+                    >
+                      Comprovante não enviado
+                    </p>
+                  </label>
+                </div>
+              </div>
+
+              <!-- <pre>{{ orderFindClient}}</pre> -->
+
+              <button class="btn" @click="sendData()">Salvar</button>
             </div>
-         
+            <div v-else class="inputs">
+              <span
+                >O Status atual do pedido não permite acessar o
+                formulário.</span
+              >
+            </div>
+          </div>
         </div>
       </BeadFrame>
     </div>
     <div v-else class="informationOrder">
-      <h3>Informações do pedido</h3>
-      <span>Clique no card de pedido para visualizar as informações
-        secundárias</span>
-      <img src="~/assets/icons/cooke.svg" alt="" />
+      <div class="list-buy">
+        <h3
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+          "
+        >
+          <div>Lista de Compras</div>
+          <div>R$: {{ valueListBuy }}</div>
+        </h3>
+        <div v-if="loadingListBuy == true">
+        <LoadingPage />
+
+        </div>
+        <div v-else>
+        <div  v-for="(l, index) in listBuy" :key="index">
+          <div class="line-buy">
+            <div>
+              {{ l.quantity_to_buy }}{{ l.unit_of_measurement }}
+              {{ l.description }}
+            </div>
+            <div>R$: {{ l.value_prediction }}</div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Informações do pedido</h3>
+        <span
+          >Clique no card de pedido para visualizar as informações
+          secundárias</span
+        >
+        <img src="~/assets/icons/cooke.svg" alt="" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import httpOrder from '@/server/pedidos/index'
+import httpDash from '@/server/dashboard/index'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -193,16 +313,35 @@ export default Vue.extend({
     return {
       dadosOrderFindClient: {},
       statusAba: true,
-      amount_of_tray: "",
-      amount_of_boxes: "",
+      amount_of_tray: '',
+      amount_of_boxes: '',
       previewCaution: null,
       previewNotaFiscal: null,
-      number_invoice: "",
-      saveData: false
+      number_invoice: '',
+      saveData: false,
+      listBuy: [],
+      valueListBuy: 0,
+      loadingListBuy: false,
     }
   },
   async fetch() {
+    this.loadingListBuy = true
     this.dadosOrderFindClient = this.$store.state.dadosPedidos
+    const dash = await httpDash.GetListBuy()
+    dash.data.map((item) => {
+      this.listBuy.push({
+        count_rev: item.count_rev,
+        description: item.description,
+        quantity_to_buy: this.valueBuy(item.quantity_to_buy),
+        unit_of_measurement: this.unitOfMeasurementVerify(
+          item.unit_of_measurement,
+          item.quantity_to_buy
+        ),
+        value_prediction: item.value_prediction,
+      })
+      this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
+    })
+    this.loadingListBuy = false
   },
   computed: {
     orderFindClient() {
@@ -216,9 +355,30 @@ export default Vue.extend({
     },
   },
   methods: {
+    unitOfMeasurementVerify(unidade, valor) {
+      if (valor > 1000) {
+        if (unidade == 'g') {
+          return 'Kg'
+        } else if (unidade == 'ml') {
+          return 'L'
+        } else if (unidade == 'u') {
+          return 'Unidade'
+        }
+      } else {
+        return unidade
+      }
+    },
+    valueBuy(valor) {
+      if (valor > 1000) {
+        return valor / 1000
+      } else {
+        return valor
+      }
+    },
     pedidos(e) {
       this.statusAba = e
     },
+
     entrega(e) {
       this.statusAba = e
     },
@@ -232,24 +392,23 @@ export default Vue.extend({
       this.previewCaution = URL.createObjectURL(this.selectedFile)
     },
     async adicionarBandejas(id) {
-    try{ 
-          const data = {
-            amount_of_tray: parseInt(this.amount_of_tray),
-            amount_of_boxes:parseInt(this.amount_of_boxes)
-          }
-          console.log(id, data);
-          
-          await httpOrder.UploaQtdBandejas(id, data);
-          this.isDisabled = false;
-          
-          this.$toast.success('Número de bandejas inseridos');
-          
-        } catch (error) {
-          this.$toast.error('Houve um erro ao processar a solicitação.');
+      try {
+        const data = {
+          amount_of_tray: parseInt(this.amount_of_tray),
+          amount_of_boxes: parseInt(this.amount_of_boxes),
         }
+        console.log(id, data)
+
+        await httpOrder.UploaQtdBandejas(id, data)
+        this.isDisabled = false
+
+        this.$toast.success('Número de bandejas inseridos')
+      } catch (error) {
+        this.$toast.error('Houve um erro ao processar a solicitação.')
+      }
     },
     async uploadFile(id) {
-    try{ 
+      try {
         if (!this.selectedFile) {
           this.$toast.info('Selecione um arquivo antes de enviar.')
         }
@@ -257,116 +416,127 @@ export default Vue.extend({
         const formData = new FormData()
         formData.append('file_caution', this.selectedFile)
         // console.log(formData);
-        
+
         const response = await httpOrder.UploadCautela(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
-        
-        setTimeout(function(){
-          location.reload();
-      }, 4000);
+
+        setTimeout(function () {
+          location.reload()
+        }, 4000)
       } catch (error) {
-        this.$toast.error('Houve um erro ao processar a solicitação');
+        this.$toast.error('Houve um erro ao processar a solicitação')
       }
     },
     async uploadFileNF(id) {
-   try{ 
+      try {
         if (!this.selectedFileNF) {
           this.$toast.info('Selecione um arquivo PDF antes de enviar.')
         }
-  
+
         const formData = new FormData()
-          formData.append('file_invoice', this.selectedFileNF)
-          formData.append('number_invoice', this.number_invoice)
+        formData.append('file_invoice', this.selectedFileNF)
+        formData.append('number_invoice', this.number_invoice)
         // console.log(formData);
-        
+
         const response = await httpOrder.PostNotaFiscal(id, formData)
         this.$toast.info('Arquivo enviado com sucesso')
-        
-        setTimeout(function(){
-          location.reload();
-      }, 4000);
 
+        setTimeout(function () {
+          location.reload()
+        }, 4000)
       } catch (error) {
         this.$toast.info('Erro ao enviar o arquivo:', error)
       }
-
-    }, 
+    },
 
     async downloadFile() {
       try {
-        await fetch('https://api.donadoce.gedroid.com/payment/' + this.orderFindClient.file_payment_voucher)
-        .then((response) => response.blob())
-        .then((blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "Arquivo"; 
-          a.click();
-          window.URL.revokeObjectURL(url);
-        });
+        await fetch(
+          'https://api.donadoce.gedroid.com/payment/' +
+            this.orderFindClient.file_payment_voucher
+        )
+          .then((response) => response.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'Arquivo'
+            a.click()
+            window.URL.revokeObjectURL(url)
+          })
       } catch (error) {
-        console.error("Erro ao baixar o arquivo:", error);
+        console.error('Erro ao baixar o arquivo:', error)
       }
     },
-      sendData(){
+    sendData() {
       var values = [
         this.amount_of_tray,
         this.amount_of_boxes,
         this.previewCaution,
         this.number_invoice,
         this.previewNotaFiscal,
-      ];
-
+      ]
 
       const isValid = values.every((element) => {
-      return this.validate(element);
-  });
+        return this.validate(element)
+      })
 
       if (isValid) {
-        this.req();
+        this.req()
       } else {
-        this.$toast.info('Preencha todos os valores!');
+        this.$toast.info('Preencha todos os valores!')
       }
-},
+    },
 
-validate(value) {
-  return !!value; // Verifica se o valor não é nulo ou indefinido
-},
+    validate(value) {
+      return !!value // Verifica se o valor não é nulo ou indefinido
+    },
 
-async req() {
-  try {
-    await this.uploadFile(this.orderFindClient.id);
-    await this.uploadFileNF(this.orderFindClient.id);
-    await this.adicionarBandejas(this.orderFindClient.id);
+    async req() {
+      try {
+        await this.uploadFile(this.orderFindClient.id)
+        await this.uploadFileNF(this.orderFindClient.id)
+        await this.adicionarBandejas(this.orderFindClient.id)
 
-    this.$toast.info('Requisição feita com sucesso!');
-  } catch (error) {
-    this.$toast.error('Erro: ' + error); // Use this.$toast.error para indicar um erro
-  }
-
-    }
+        this.$toast.info('Requisição feita com sucesso!')
+      } catch (error) {
+        this.$toast.error('Erro: ' + error) // Use this.$toast.error para indicar um erro
+      }
+    },
   },
 })
 </script>
 
 <style scoped lang="scss">
-.containerNotaFiscal{
+.list-buy {
+  min-height: 12rem;
+  overflow: scroll;
+}
+.line-buy {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  justify-content: space-between;
+}
+.containerNotaFiscal {
   display: grid;
   grid-template-columns: 16rem 8rem;
   grid-template-rows: repeat(2, 2.6rem);
   grid-column-gap: 20px;
   grid-row-gap: 0px;
 
-
-  .titleAnexo { grid-area: 1 / 1 / 2 / 2; }
-  .titleNumber { 
+  .titleAnexo {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .titleNumber {
     grid-area: 1 / 2 / 2 / 3;
-    width: 100%; }
-  .inputAnexo { 
-    grid-area: 2 / 1 / 3 / 2; 
+    width: 100%;
+  }
+  .inputAnexo {
+    grid-area: 2 / 1 / 3 / 2;
     @extend .inputContainer;
   }
-  .inputNumber { 
+  .inputNumber {
     grid-area: 2 / 2 / 3 / 3;
     border: 0.06rem solid var(--border);
     border-radius: 0.25rem;
@@ -379,7 +549,6 @@ async req() {
   min-height: 60%;
   // background-color: red;
   padding: 2.3rem 1rem 1rem 1rem;
-
 
   .orderClient {
     height: 100%;
@@ -465,11 +634,10 @@ async req() {
           display: none;
         }
       }
-
     }
   }
 
-  .inputContainer{
+  .inputContainer {
     border: solid 1px #b9b9b9;
     border-radius: 0.2rem;
     padding: 0.4rem;
@@ -477,12 +645,14 @@ async req() {
     align-items: center;
     justify-content: space-between;
   }
- 
+
   .informationOrder {
     padding: 0 1rem;
     min-height: 300px;
     max-height: 100vh;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
 
     h3 {
       font-size: 1.3rem;
@@ -497,7 +667,7 @@ async req() {
       padding: 2rem;
     }
   }
-  .inputComprovante{
+  .inputComprovante {
     width: 100%;
     font-size: 1rem;
     display: flex;
