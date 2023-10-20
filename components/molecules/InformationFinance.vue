@@ -283,11 +283,12 @@
         <div  v-for="(l, index) in listBuy" :key="index">
           <div class="line-buy">
             <div>
-              {{ l.quantity_to_buy }}{{ l.unit_of_measurement }}
+              {{ l.quantity_to_buy }}{{ l.unit_of_measurement }} -
               {{ l.description }}
             </div>
             <div>R$: {{ l.value_prediction }}</div>
           </div>
+          <div style="border: 1.5px dashed rgba(69, 64, 64, 0.968) "></div>
           </div>
         </div>
       </div>
@@ -356,16 +357,17 @@ export default Vue.extend({
   },
   methods: {
     unitOfMeasurementVerify(unidade, valor) {
+      if (unidade == 'u') {
+          return 'Unidades'
+      } else
       if (valor > 1000) {
         if (unidade == 'g') {
-          return 'Kg'
+          return 'KG'
         } else if (unidade == 'ml') {
           return 'L'
-        } else if (unidade == 'u') {
-          return 'Unidade'
         }
       } else {
-        return unidade
+        return unidade.toUpperCase()
       }
     },
     valueBuy(valor) {
@@ -515,7 +517,7 @@ export default Vue.extend({
 .line-buy {
   display: flex;
   flex-direction: row;
-  padding: 1rem;
+  padding: 4px;
   justify-content: space-between;
 }
 .containerNotaFiscal {

@@ -3,7 +3,7 @@
         <div class="contentSlot">
             <div class="abaItens">
                 <h3 :class="{ abaNotActive: abaNotActive }" class="abaActive" @click="pedidos">Itens do Pedidos</h3>
-        
+
                 <h3 :class="{ abaNotActive: !abaNotActive }" class="abaActive" @click="entrega">Itens da Entrega</h3>
             </div>
             <slot />
@@ -64,6 +64,9 @@ export default Vue.extend({
                 width: 100%;
                 height: 2.5rem;
                 display: flex;
+                background-color: var(--red);
+                color: var(--white);
+
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
@@ -75,8 +78,8 @@ export default Vue.extend({
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: var(--txt_color);
-                color: var(--white);
+                background: var(--white);
+                color: var(--red);
             }
         }
     }
