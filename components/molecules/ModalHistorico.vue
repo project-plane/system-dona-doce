@@ -175,7 +175,7 @@
                 </div>
               </div>
 
-           
+
             </div>
             <div
               style="
@@ -392,7 +392,7 @@ export default Vue.extend({
       .then((res) => {
         this.listFindClientCompany = res.data
         // console.log(res.data);
-        
+
       })
       .catch((error) => {
         console.log(error)
@@ -402,7 +402,7 @@ export default Vue.extend({
     closeModal() {
       this.$emit('closeModal')
     },
-   
+
     totalValue(unity, qtde) {
       return Number(unity) * Number(qtde)
     },
@@ -430,9 +430,9 @@ export default Vue.extend({
       try {
         if (!this.selectedFileComprovante) {
           this.$toast.warning('Selecione um arquivo PDF para enviar o Comprovante.');
-        return; 
+        return;
         }
-    
+
         const formData = new FormData()
         formData.append('file_payment_voucher', this.selectedFileComprovante)
 
@@ -491,8 +491,8 @@ export default Vue.extend({
     async sendCommit(id) {
       try {
         if (!this.messageClient) {
-          this.$toast.error('Preencha o campo comentário...')   
-        return; 
+          this.$toast.error('Preencha o campo comentário...')
+        return;
         }
 
         const fk_order_Status = '016b9c84-4e7f-81ee-be56-0242ac1200022fe2af'

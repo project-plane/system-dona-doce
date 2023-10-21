@@ -15,7 +15,8 @@
           <th>ID</th>
           <th>Ingrediente</th>
           <th>Quantidade</th>
-          <th>Preço Unitário</th>
+          <th>Base Calculada</th>
+          <th>Valor / U.M</th>
           <!-- <th>Histórico</th> -->
         </tr>
       </thead>
@@ -23,8 +24,9 @@
         <tr v-for="(estoque, index) in filterItems" :key="estoque.id">
           <td>{{ index + 1 }}</td>
           <td>{{ estoque.description }}</td>
-          <td>{{ estoque.amount_actual }}</td>
-          <td>R$ {{ estoque.value.toFixed(2) }}</td>
+          <td>{{ estoque.amount_actual }}{{ estoque.unit_of_measurement}}</td>
+          <td>{{ estoque.amount }}{{estoque.unit_of_measurement}}/R$ {{ estoque.value.toFixed(2) }}</td>
+          <td>R$ {{ estoque.value_per_serving}}/{{estoque.unit_of_measurement}}</td>
           <!-- <td>
             <button>
               <img

@@ -1,50 +1,62 @@
 <template>
-  <LoadingPage v-if="loading" />
-  <ContainerTable v-else>
-    <ModalEditReceita v-if="$store.state.openModal" :dataReceita="dataReceita" />
-    <PreviewReceita v-if="$store.state.openModalPreviewReceita" :listFindReceita="listFindReceita" />
-    <div class="headerTable">
-      <span>Lista de Receitas</span>
-      <InputSearch v-model="textSearch" />
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Imagem</th>
-          <th>Receita</th>
-          <th>Tipo Pedido</th>
-          <th>Valor Total</th>
-          <th>Opções</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(receita, index) in filterItems" :key="receita.id">
-          <td>{{ index + 1 }}</td>
-          <td class="img">
-            <img :src="`https://api.donadoce.gedroid.com/img_revenue/${receita.imagem}`" alt="" />
-          </td>
-          <td>{{ receita.description }}</td>
-          <td v-if="receita.status === 0">Coffee</td>
-          <td v-else>Programado</td>
-          <td>R$ {{ receita.value.toFixed(2) }}</td>
-          <td>
-            <div class="iconsOptions">
-              <button @click="previewReceita(receita.id)">
-                <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
-              </button>
-              <button @click="editReceita(receita.id)">
-                <img src="~/assets/icons/edit.svg" alt="editReceitas" />
-              </button>
-              <button @click="deleteReceita(receita.id)">
-                <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </ContainerTable>
+  <div>
+    <Loading v-if="loading2" />
+    <LoadingPage v-if="loading" />
+    <ContainerTable v-else>
+      <ModalEditReceita
+        v-if="$store.state.openModal"
+        :dataReceita="dataReceita"
+      />
+      <PreviewReceita
+        v-if="$store.state.openModalPreviewReceita"
+        :listFindReceita="listFindReceita"
+      />
+      <div class="headerTable">
+        <span>Lista de Receitas</span>
+        <InputSearch v-model="textSearch" />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Imagem</th>
+            <th>Receita</th>
+            <th>Tipo Pedido</th>
+            <th>Valor Total</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(receita, index) in filterItems" :key="receita.id">
+            <td>{{ index + 1 }}</td>
+            <td class="img">
+              <img
+                :src="`https://api.donadoce.gedroid.com/img_revenue/${receita.imagem}`"
+                alt=""
+              />
+            </td>
+            <td>{{ receita.description }}</td>
+            <td v-if="receita.status === 0">Coffee</td>
+            <td v-else>Programado</td>
+            <td>R$ {{ receita.value.toFixed(2) }}</td>
+            <td>
+              <div class="iconsOptions">
+                <button @click="previewReceita(receita.id)">
+                  <img src="~/assets/icons/eye.svg" alt="eyeReceitas" />
+                </button>
+                <button @click="editReceita(receita.id)">
+                  <img src="~/assets/icons/edit.svg" alt="editReceitas" />
+                </button>
+                <button @click="deleteReceita(receita.id)">
+                  <img src="~/assets/icons/delete.svg" alt="deleteReceitas" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ContainerTable>
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,7 +71,8 @@ export default Vue.extend({
       textSearch: '',
       dataReceita: [],
       listFindReceita: [],
-      loading: true,
+      loading: false,
+      loading2: false,
     }
   },
   async fetch() {
@@ -90,17 +103,19 @@ export default Vue.extend({
 
   methods: {
     async previewReceita(idReceita) {
-      this.$store.commit('OPEN_MODAL_PREVIEW_RECEITA', true)
+      ;(this.loading2 = true),
+        this.$store.commit('OPEN_MODAL_PREVIEW_RECEITA', true)
       await httpReceitas
         .GetFindReceita(idReceita)
         .then((res) => {
-          console.log(res);
-          
+          console.log(res)
+
           this.listFindReceita = res.data
         })
         .catch((error) => {
           console.log(error)
         })
+      this.loading2 = false
     },
     editReceita(dataReceita) {
       // alert('oi')

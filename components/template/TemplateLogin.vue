@@ -1,31 +1,47 @@
 <template>
-  <div class="sider_bar negativeSpace">
-    <div class="main_login">
-      <div class="title_login">
-        <span class="title"> Dona Doce </span>
-      </div>
-      <form class="form_login" @submit.prevent="accessLogin">
-        <Input
-          v-model="dataLogin.email"
-          label="Email"
-          type="text"
-          placeholder="Digite seu e-mail"
-        />
-        <Input
-          v-model="dataLogin.password"
-          label="Password"
-          type="password"
-          placeholder="Digite sua senha"
-        />
-        <div class="recupera_senha">
-          <span @click="recoverPassword">Esqueci a minha senha</span>
+  <div>
+    <Loading v-if="loading" />
+    <div class="sider_bar negativeSpace">
+      <div class="main_login">
+        <div class="title_login">
+          <span class="title"> Dona Doce </span>
         </div>
+        <form class="form_login" @submit.prevent="accessLogin">
+          <Input
+            style="color: var(--red)"
+            v-model="dataLogin.email"
+            label="Email"
+            type="text"
+            placeholder="Digite seu e-mail"
+          />
+          <Input
+            style="color: var(--red)"
+            v-model="dataLogin.password"
+            label="Password"
+            type="password"
+            placeholder="Digite sua senha"
+          />
+          <!-- <div class="recupera_senha">
+            <span @click="recoverPassword">Esqueci a minha senha</span>
+          </div> -->
 
-        <ButtonPirula title="Login" :is-disabled="isDisabled" @click.native="accessLogin" />
-        <div v-if="statusMessage">
-          <h5 style="color: var(--red)">{{ message }}</h5>
-        </div>
-      </form>
+          <ButtonPirula
+            title="Login"
+            :is-disabled="isDisabled"
+            id="btnlogin"
+            @click.native="accessLogin"
+          />
+          <ButtonPirula
+            id="btnEsqueci"
+            title="Esqueci a minha senha"
+            :is-disabled="isDisabled"
+            @click.native="recoverPassword"
+          />
+          <div v-if="statusMessage">
+            <h5 style="color: var(--red)">{{ message }}</h5>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -42,12 +58,20 @@ export default Vue.extend({
       },
       statusMessage: false,
       message: '',
-      isDisabled: false
+      isDisabled: false,
+      loading: false,
     }
+  },
+
+  async created() {
+    this.loading = true
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    this.loading = false
   },
 
   methods: {
     async accessLogin() {
+      this.loading = true
       this.isDisabled = true
       await httpAccess
         .PostLogin(this.dataLogin)
@@ -57,55 +81,77 @@ export default Vue.extend({
 
             sessionStorage.getItem('token')
             this.$router.push('/pedidos')
-            this.$toast.success('Bem-vindo à área de clientes do sistema Dona Doce!!!', {
-              position: "top-center",
-              timeout: 5000,
-              icon: false,
-              closeButton: false
-            })
-
+            this.$toast.success(
+              'Bem-vindo à área de clientes do sistema Dona Doce!!!',
+              {
+                position: 'top-center',
+                timeout: 5000,
+                icon: false,
+                closeButton: false,
+              }
+            )
           } else {
             sessionStorage.setItem('token', res.data.token)
 
             sessionStorage.getItem('token')
             this.$toast.error('Bem-vindo ao Sistema Dona Doce!!!', {
-              position: "top-center",
+              position: 'top-center',
               timeout: 5000,
               icon: false,
-              closeButton: false
+              closeButton: false,
             })
             this.$router.push('/dashboard/dashboard')
           }
-
-          
         })
         .catch((error) => {
           if (error.response.data.statusCode === 400) {
-            this.$toast.error('Preencha todos os campos!!!')
+            this.$toast.error('Email e senha incorretos')
             return
           }
 
           if (error.response.data.statusCode === 401) {
-            this.$toast.error('Dados inválidos!!!')
+            this.$toast.error('Usuario não autorizado!!!')
           }
         })
-
-        this.isDisabled = false
+      this.loading = false
+      this.isDisabled = false
     },
     recoverPassword() {
+      this.loading = true
       this.$router.push('/recoverPassword')
+      this.loading = false
     },
   },
 })
 </script>
 
 <style lang="scss" scoped>
+
+#btnEsqueci {
+  background-color: #917b79;
+}
+
+#btnlogin:hover {
+  background-color:bisque;
+  border: 2px solid var(--red);
+  color:  var(--red);
+  transition:  background-color 1s ease-in-out;;
+}
+
+#btnEsqueci:hover {
+  background-color: bisque;
+  transition:  background-color 1s ease-in-out;;
+  border: 2px solid #917b79;
+  color:  #917b79;
+}
 .sider_bar {
   position: absolute;
   right: 0;
   height: 100vh;
   width: 50%;
   background: var(--bg_color);
+  animation: slidein 4s, fadeBackground 6s;
+  animation-fill-mode: forwards;
 
   @include screen('mobile') {
     width: 100%;
@@ -117,6 +163,7 @@ export default Vue.extend({
       justify-content: flex-start !important;
     }
   }
+
 
   .main_login {
     width: 100%;
@@ -131,6 +178,8 @@ export default Vue.extend({
       flex-direction: column;
       justify-content: center;
       gap: 1rem;
+      animation: fadeIn 10s;
+
 
       .recupera_senha {
         color: var(--blue);
@@ -140,6 +189,36 @@ export default Vue.extend({
       }
     }
   }
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 0%;
+    overflow: hidden;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 50%;
+    overflow: hidden;
+  }
+}
+
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+@keyframes fadeBackground {
+  from {   background-color: #fa5c4f }
+  to {  background-color: #ffefdb }
 }
 
 .title_login {

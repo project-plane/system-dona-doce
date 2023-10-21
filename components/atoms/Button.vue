@@ -1,5 +1,5 @@
 <template>
-    <button class="btn" @click="$emit('functionClick')" :disabled="isDisabled">{{ title }}</button>
+    <button class="btn " @click="$emit('functionClick')" :disabled="isDisabled">{{ title }}</button>
 </template>
 
 <script lang="ts">
@@ -23,6 +23,9 @@ export default Vue.extend({
     classContainerEditBtn: {
       type: String,
     },
+    classExt:{
+
+    }
   },
 })
 </script>
@@ -51,10 +54,14 @@ export default Vue.extend({
   background-color: var(--red);
   color: var(--white);
   border-radius: 0.25rem;
-  font-size: 1rem;
+  // font-size: 1rem;
+  text-align: center;
+  // padding: 1rem;
   transition: 0.2s;
+}
 
-  
+.btn:hover {
+  background-color: var(--red-opacity);
 }
 
 .btn:disabled {
