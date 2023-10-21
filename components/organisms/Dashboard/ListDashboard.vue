@@ -98,12 +98,7 @@ export default Vue.extend({
   computed: {
     filteredItems() {
       if (!this.$store.state.selectedClient) {
-<<<<<<< HEAD
         return this.dataPedidos;
-=======
-        // Se nenhum valor estiver selecionado, retorne todos os itens
-        return this.dataPedidos
->>>>>>> 797c5dbebbf68597c055516fc8f27ac7493589e6
       } else {
         // Filtrar os itens com base no valor selecionado
         return this.dataPedidos.filter(
