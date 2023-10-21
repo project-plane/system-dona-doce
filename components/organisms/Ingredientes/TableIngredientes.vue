@@ -14,6 +14,8 @@
         <tr>
           <th>ID</th>
           <th>Ingrediente</th>
+          <th>Unidade de Medida</th>
+          <th>Valor / U.M </th>
           <th>Preço Unitário</th>
           <th>Opções</th>
         </tr>
@@ -22,6 +24,14 @@
         <tr v-for="(ingrediente, index) in filterItems" :key="ingrediente.id">
           <td>{{ index + 1 }}</td>
           <td>{{ ingrediente.description }}</td>
+          <td> {{
+              ingrediente.unit_of_measurement.toLowerCase() === "u" ? "Unidade" :
+              ingrediente.unit_of_measurement.toLowerCase() === "ml"? "ML" :
+              ingrediente.unit_of_measurement.toLowerCase() === "g"? "Gramas" :
+              ingrediente.unit_of_measurement.toLowerCase() === "l"? "Litros" :
+              "Not Found Unit of Measurement"
+          }}</td>
+          <td>R$ {{ingrediente.value_per_serving.toFixed(2)}}/{{ingrediente.unit_of_measurement}}</td>
           <td>R$ {{ ingrediente.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">

@@ -1,49 +1,53 @@
 <template>
-  <div class="cards-container">
-    <!-- <div class="inputCheckbox">
+  <div>
+    <div v-if="loading == true">
+      <LoadingPage />
+    </div>
+    <div v-else class="cards-container">
+      <!-- <div class="inputCheckbox">
       <input v-model="selectAll" type="checkbox" />
       <Label>Selecionar Todos</Label>
     </div> -->
 
-    <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
-      <CardDashboard
-        v-for="(pedidos, index) in filteredItems" 
-        :key="index" :data-pedidos="pedidos"
-        :all-pedidos="dataPedidos" 
-        :index="index" 
-        @click.native="clickOrderFind(pedidos)" 
-      />
-      <span v-if="filteredItems.length  <= 0" class="spanFiltro">
-        Nenhum resultado encontrado. <br> Tente ajustar os filtros da sua pesquisa e tente novamente
-      </span>
+      <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
+        <CardDashboard
+          v-for="(pedidos, index) in filteredItems"
+          :key="index"
+          :data-pedidos="pedidos"
+          :all-pedidos="dataPedidos"
+          :index="index"
+          @click.native="clickOrderFind(pedidos)"
+        />
+        <span v-if="filteredItems.length <= 0" class="spanFiltro">
+          Nenhum resultado encontrado. <br />
+          Tente ajustar os filtros da sua pesquisa e tente novamente
+        </span>
+      </div>
 
+      <div
+        v-if="$store.state.selectedTipo === 'programmed'"
+        class="cardDashboard"
+      >
+        <CardDashboard
+          v-for="(pedidos, index) in pedidoProgramado"
+          :key="index"
+          :data-pedidos="pedidos"
+          :all-pedidos="dataPedidos"
+          :index="index"
+        />
+      </div>
+
+      <div v-if="$store.state.selectedTipo === 'coffe'" class="cardDashboard">
+        <CardDashboard
+          v-for="(pedidos, index) in pedidoCoffee"
+          :key="index"
+          :data-pedidos="pedidos"
+          :all-pedidos="dataPedidos"
+          :index="index"
+          @click.native="clickOrderFind(pedidos)"
+        />
+      </div>
     </div>
-
-    <div v-if="$store.state.selectedTipo === 'programmed'" class="cardDashboard">
-
-      <CardDashboard
-        v-for="(pedidos, index) in pedidoProgramado" 
-        :key="index" 
-        :data-pedidos="pedidos"
-        :all-pedidos="dataPedidos" 
-        :index="index" 
-      /> 
-    
-    </div>
-
-    <div v-if="$store.state.selectedTipo === 'coffe'" class="cardDashboard">
-     
-      <CardDashboard
-        v-for="(pedidos, index) in pedidoCoffee" 
-        :key="index" :data-pedidos="pedidos" 
-        :all-pedidos="dataPedidos" 
-        :index="index"
-        @click.native="clickOrderFind(pedidos)" 
-      />
-     
-    </div>
-
-
   </div>
 </template>
 
@@ -60,9 +64,11 @@ export default Vue.extend({
       selectOrder: [],
       pedidoProgramado: [],
       pedidoCoffee: [],
+      loading: false,
     }
   },
   async fetch() {
+    this.loading = true
     await httpOrder
       .OrderHistory()
       .then((res) => {
@@ -80,10 +86,10 @@ export default Vue.extend({
         this.pedidoCoffee.push(e)
       }
     })
+
+    this.loading = false
   },
-  watch: {
-   
-  },
+  watch: {},
   methods: {
     clickOrderFind(order) {
       console.log(order)
@@ -92,21 +98,24 @@ export default Vue.extend({
   computed: {
     filteredItems() {
       if (!this.$store.state.selectedClient) {
+<<<<<<< HEAD
         return this.dataPedidos;
+=======
+        // Se nenhum valor estiver selecionado, retorne todos os itens
+        return this.dataPedidos
+>>>>>>> 797c5dbebbf68597c055516fc8f27ac7493589e6
       } else {
         // Filtrar os itens com base no valor selecionado
-        return this.dataPedidos.filter(item =>
-         item.fk_user === this.$store.state.selectedClient);
-  
+        return this.dataPedidos.filter(
+          (item) => item.fk_user === this.$store.state.selectedClient
+        )
       }
-      
     },
-  }
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-
 .cards-container {
   height: auto;
   padding: 2rem;
@@ -126,16 +135,15 @@ export default Vue.extend({
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    ;
     justify-content: space-between;
     gap: 1rem;
-    .spanFiltro{
+    .spanFiltro {
       display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 50vh; 
-}
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 50vh;
+    }
   }
 }
 </style>
