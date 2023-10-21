@@ -65,7 +65,7 @@
       >
     </div>
 
-    <div class="list-historic unique" v-if="this.filter === false">
+    <div class="list-historic" v-if="this.filter === false">
       <div v-for="(item, index) in filteredItems" :key="index">
         <CardHistorico :data="item" />
       </div>
@@ -85,7 +85,6 @@
 import Vue from 'vue'
 import HttpHistoryClient from '@/server/pedidos'
 import dayjs from 'dayjs'
-import { filter } from 'vue/types/umd'
 export default Vue.extend({
   data() {
     return {
@@ -191,6 +190,9 @@ export default Vue.extend({
     display: flex !important;;
     align-items: center;
     justify-content: center;
+    color: #f9f1e2;
+    letter-spacing: 1px;
+    text-align: center;
 
     }
   .input-calendar {
