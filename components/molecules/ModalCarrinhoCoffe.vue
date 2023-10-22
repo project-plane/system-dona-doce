@@ -63,12 +63,12 @@
   </ModalPreview>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
 import http from "../../server/pedidos/index.js"
 export default Vue.extend({
   props: {
-    infoncliente:Object,
+    infoncliente:Array,
     listaCompletaReceita: {
       type: [Array, Object],
       required: true,
@@ -87,7 +87,7 @@ export default Vue.extend({
   },
 
   async fetch() {
-    await this.renderList()
+    // await this.renderList()
   },
   computed: {
     totalPedido() {
@@ -129,9 +129,9 @@ export default Vue.extend({
       console.log('Resposta da requisição:', response.data);
       this.$emit('closeModal')
       this.$toast.info('Pedidos Realizados!')
-      setTimeout(function(){
-          location.reload();
-      }, 4000);
+      // setTimeout(function(){
+      //     location.reload();
+      // }, 4000);
       
       })
      }

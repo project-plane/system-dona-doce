@@ -21,11 +21,18 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .buttonLogin {
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
+    &:hover{
+      color: #ff0707b3;
+      border: solid 1px #ff0707b3;
+      background-color: white;
+      font-weight: 600;
+      
+    }
 }
 
 .buttonLogin:disabled {

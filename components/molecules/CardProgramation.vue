@@ -10,8 +10,8 @@
         <p>Qtd Selecionada</p>
         <input v-model="qtdPedido" type="text" />      
       </div>
-      <div style="display: flex; width: 100%;  justify-content: flex-end; margin-top: -15px; gap: 0.3rem; color: red; font-size: 14px;">
-        <span>Qtd. Min. {{ base_min_amount }}    <strong> x </strong>  </span>  
+      <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -20px; gap: 0.3rem; color: rgb(115 98 93); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
+        <span>Qtd. Min. {{ base_min_amount }} x </span>  
         <span>Qtd. Max. {{ base_max_amount }}</span>
       </div>
       <div class="selectPedido">

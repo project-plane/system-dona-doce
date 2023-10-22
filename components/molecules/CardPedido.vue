@@ -1,14 +1,20 @@
 <template>
   <div class="containerCard">
     <div class="dataPedido">
-      <span>{{ new Date(dataPedido.dateMenu).getDate() }}/{{
+      <span>Data disponível {{ new Date(dataPedido.dateMenu).getDate() }}/{{
         new Date(dataPedido.dateMenu).getMonth() + 1
       }}/{{ new Date(dataPedido.dateMenu).getFullYear() }}</span>
     </div>
     <div class="pedidos">
       <div class="qtdPedidos">
-        <span>Qtd. Pedidos</span>
-        <span>{{ this.$store.state.qtdPedidos }}</span>
+        <table>
+          <tr>
+            <th style="text-align: start;">Itens</th>
+          </tr>
+          <tr v-for="(item, id) in dataPedido.itemMenu " :key="id">
+            <td >{{item.revenues.description}}</td>
+          </tr>
+        </table>
       </div>
       <ButtonPirula title="Adicionar Pedido" style="font-size: 0.9rem; width: 46%;" />
     </div>
@@ -44,12 +50,20 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  cursor: pointer;
 
+  &:hover{
+    transform: translateY(-6px);
+  }
+  td{
+    font-size: 12px;
+    text-align: start;
+  }
   .dataPedido {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 2rem;
+    padding-bottom: 1.2rem;
 
     span {
       font-weight: 600;
@@ -61,9 +75,8 @@ export default Vue.extend({
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     gap: 1rem;
-    padding-top: 2rem;
 
     .qtdPedidos {
       display: flex;

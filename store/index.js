@@ -22,6 +22,7 @@ export const state = () => ({
   },
   dadosCliente:[],
   unidadeCliente:"",
+  dataPedido:"",
 })
 
 export const mutations = {
@@ -119,5 +120,8 @@ export const mutations = {
     state.unidadeCliente = id; 
 
   },
+  setDataOrder(state, date){
+    state.dataPedido = date; 
+  }
 
 }

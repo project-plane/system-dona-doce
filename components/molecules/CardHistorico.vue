@@ -69,6 +69,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-width: 25rem;
+    width: auto;
   
     .header-card {
       display: flex;

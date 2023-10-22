@@ -47,7 +47,7 @@ export default Vue.extend({
   z-index: 1;
   .negativeSpace {
     width: 60%;
-    min-height: 50%;
+    max-height: 90vh;
     height: 105%;
     display: flex;
     flex-direction: column;
