@@ -21,26 +21,26 @@
                     <span><strong>Final</strong></span>
                 {{ formatDate(range.end) }}
                 </div>
-                
+
             </div>
 
         </div>
-        
-        
+
+
         <div class="list-historic" v-if="listFiltered.length > 3">
-            
+
 
 
             <div v-for="(item, index) in listFiltered" :key="index">
                 <CardHistorico :data="item" />
-           
+
             </div>
 
             <span v-if="listFiltered.length === 0">
-                Nenhum resultado encontrado. 
+                Nenhum resultado encontrado.
                 Tente ajustar os filtros da sua pesquisa
                  e tente novamente.</span>
-            
+
       </div>
         <div class="list-historic unique" v-else>
 
@@ -48,7 +48,7 @@
                 <CardHistorico :data="item" />
             </div>
 
-            <span   v-if="listFiltered.length === 0">Nenhum resultado encontrado. 
+            <span   v-if="listFiltered.length === 0">Nenhum resultado encontrado.
                 Tente ajustar os filtros da sua pesquisa e tente novamente.</span>
         </div>
     </div>
@@ -94,8 +94,8 @@ export default Vue.extend({
             return dayjs(date).format('DD/MM/YYYY')
         },
 
-        removeTimeInfo (date) { 
-            return new Date(date.toISOString().split('T')[0]) 
+        removeTimeInfo (date) {
+            return new Date(date.toISOString().split('T')[0])
         },
 
         filterByDateRange(startDate, endDate) {
@@ -159,10 +159,12 @@ export default Vue.extend({
 
     .list-historic {
         margin-top: 1rem;
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+        display: flex;
         gap: 1rem;
+        flex-wrap: wrap;
+        // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        // gap: 1rem;
     }
 
     .unique {

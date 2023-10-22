@@ -1,89 +1,128 @@
 <template>
+  <div class="card">
+    <img src="/_nuxt/static/icon/cutEffect.svg" alt="" class="svg" />
     <div class="card-historico-container">
-        
-        <div class="header-card">
-            
-            <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
-            <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
-            <span><strong>Valor total:</strong> {{ valueorder(data.orderItem) }}</span>
-    
+      <div class="header-card">
+        <div style="display: flex; justify-content: space-between">
+          <span><strong>Pedido:</strong> {{ data.numberOrder }}</span>
+          <span><strong>Total:</strong> {{ valueorder(data.orderItem) }}</span>
         </div>
 
-        <div class="footer-card">
-            <span><strong>Status: </strong><br/>{{ data.orderStatus.description }}</span>
-            
-            <ButtonPirula title="Ver Detalhes" @click.native="() => showModal = true" style="width: 50%;"/>
+        <span><strong>Data:</strong> {{ formatDate(data.dateOrder) }}</span>
+        <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
+      </div>
+
+      <div class="dcardapio">
+        <div style="display: flex; justify-content: center">
+          <strong>Itens de Pedido</strong>
         </div>
+        <div v-for="(iten, index) in data.orderItem" :key="index">
+          <div class="dpedidos">
+            <div>{{ iten.revenues.description }}</div>
+            <!-- <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div> -->
+          </div>
 
-        <ModalHistorico v-if="showModal" :valueTotal="valueorder(data.orderItem)" :data="data" @closeModal="() => showModal = false" />
+          <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
+        </div>
+      </div>
 
+      <div class="footer-card">
+        <span
+          ><strong>Status: </strong><br />{{
+            data.orderStatus.description
+          }}</span
+        >
+
+        <ButtonPirula
+          title="Ver Detalhes"
+          @click.native="() => (showModal = true)"
+          style="width: 50%"
+        />
+      </div>
+
+      <ModalHistorico
+        v-if="showModal"
+        :valueTotal="valueorder(data.orderItem)"
+        :data="data"
+        @closeModal="() => (showModal = false)"
+      />
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import dayjs from 'dayjs'
 export default Vue.extend({
-    props: {
-        data: Object,
-    },
+  props: {
+    data: Object,
+  },
 
-    data () {
-        return {
-            showModal: false,
-            totalOrderValue: 0,
-            valorTotal: 0
-        }
-    },
-   
-
-    methods: {
-        valueorder(listOrder) {
-            this.totalOrderValue = 0
-            listOrder.map( (item) => {
-                this.totalOrderValue = this.totalOrderValue + (Number(item.amountItem) * Number(item.valueOrderItem))
-            })
-            
-            return this.totalOrderValue.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        });
-        },
-
-        formatDate(date) {
-            return dayjs(date).format('DD/MM/YYYY')
-        },
-
-        openModalHistorico() {
-            this.showModal = true
-            // this.$store.commit('OPEN_MODAL_HISTORICO', true)
-        }
+  data() {
+    return {
+      showModal: false,
+      totalOrderValue: 0,
+      valorTotal: 0,
     }
-    
-    
+  },
+
+  methods: {
+    valueorder(listOrder) {
+      this.totalOrderValue = 0
+      listOrder.map((item) => {
+        this.totalOrderValue =
+          this.totalOrderValue +
+          Number(item.amountItem) * Number(item.valueOrderItem)
+      })
+
+      return this.totalOrderValue.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+    },
+
+    formatDate(date) {
+      return dayjs(date).format('DD/MM/YYYY')
+    },
+
+    openModalHistorico() {
+      this.showModal = true
+      // this.$store.commit('OPEN_MODAL_HISTORICO', true)
+    },
+  },
 })
 </script>
 
 <style lang="scss" scoped>
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.card img {
+  width: 24rem;
+  position: relative;
+  top: 0.2999vw;
+}
 .card-historico-container {
-    background-color: var(--white);
-    border-radius: 0.3rem;
-    padding: 1rem;
-    height: 150px;
+  width: 24rem;
+  background-color: var(--white);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  min-height: auto;
+  height: auto;;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .header-card {
     display: flex;
     flex-direction: column;
+  }
+
+  .footer-card {
     justify-content: space-between;
-
-    .header-card {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .footer-card {
-        justify-content: space-between;
-        align-items: flex-end;
-        display: flex;
-    }
-
+    align-items: flex-end;
+    display: flex;
+  }
 }
 </style>
