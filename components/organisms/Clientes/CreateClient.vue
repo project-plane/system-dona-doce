@@ -36,7 +36,7 @@
       <div class="input">
         <span>Unidade</span>
         <select v-model="selected">
-          <option disabled value="">Selecionar Unidade</option>
+          <option disabled="true" selected="true">Selecione unidade</option>
           <option v-for="empresa in listEmpresa" :key="empresa.id">
             {{ empresa.corporate_name }}
           </option>

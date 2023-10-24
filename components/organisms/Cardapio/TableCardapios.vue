@@ -35,12 +35,12 @@
       </table>
     </ContainerTable>
   </template>
-  
+
   <script lang="ts">
   import Vue from 'vue'
-  import dayjs from 'dayjs'
+  import dayjs from '~/services/dayjs'
   import httpCardapio from '~/server/cardapio'
-  
+
   export default Vue.extend({
     data() {
       return {
@@ -51,7 +51,7 @@
         cardapioModal: {}
       }
     },
-  
+
     async fetch() {
       await httpCardapio.GetMenu().then( (res) => {
         this.listCardapio = res.data
@@ -91,12 +91,17 @@
       },
 
       formatDate(date) {
-      return dayjs(date).format('DD/MM/YYYY')
+      const data = dayjs.formtDateBr(date)
+       console.log(data);
+
+      return data
+
+
     },
     },
   })
   </script>
-  
+
   <style lang="scss" scoped>
   .headerTable {
     width: 100%;
@@ -134,4 +139,3 @@
     }
   }
   </style>
-  
