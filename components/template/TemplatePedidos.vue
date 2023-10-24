@@ -29,11 +29,11 @@
       </div>
     </div>
     <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponiveis</h3>
-    
+
     <div v-if="$fetchState.pending && statusPedidos === 0" class="containerLoad">
       <Loading/>
     </div>
-  
+
     <div v-else>
       <div v-if="statusPedidos === 0" class="listPedidos" style="margin-top: 2rem" >
         <section style="width: 100%;">
@@ -60,6 +60,7 @@
         </section>
         <div v-for="pedido in itemsToShow" :key="pedido.id">
           <CardPedido
+             class="cardpedido"
             :data-pedido="pedido"
             @click.native="openPedido(pedido)"
           />
@@ -93,6 +94,7 @@ export default Vue.extend({
   data() {
     return {
       listPedidos: [],
+      duracao: 1, // t
       listAllReceitas: [],
       listOrderCoffee: [],
       selected: '',
@@ -142,7 +144,7 @@ export default Vue.extend({
       await httpCompany.getUnidades().then((res) => {
         this.dataClientes =res.data
         console.log(res.data);
-        
+
       })
       .catch((error) => {
         console.log(error)
@@ -161,6 +163,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    atualizarDuracao() {
+      this.duracao = this.duracao + 1; // por exemplo, aumenta 1 segundo a cada vez que a função é chamada
+    },
     openPedido(pedido) {
       this.$router.push({
         path: '/pedidos/newPedidos',
@@ -203,6 +208,14 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.cardpedido {
+
+animation: fadeIn 8s;
+animation-fill-mode: forwards;
+
+}
+
 
 .containerLoad{
   width: 100%;
@@ -313,6 +326,15 @@ export default Vue.extend({
     }
   }
 }
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
 .containerListCards {
   display: flex;

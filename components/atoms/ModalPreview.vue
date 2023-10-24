@@ -44,7 +44,7 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  z-index: 1;
+  z-index: 5;
   .negativeSpace {
     width: 60%;
     max-height: 90vh;
