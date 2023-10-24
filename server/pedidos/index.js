@@ -16,6 +16,10 @@ export default {
   OrderHistory: async () => {
     return await http.get(`order/all?clientskip=0&limit=10000`)
   },
+  GetOrderCliente: async (id) => {
+    return await http.get(`order/all?desc_user_or_client=${id}&clientskip=0&limit=10000`)
+
+  },
   Orderspercustomer: async()=>{
     return await http.get(`order/client?clientskip=0&limit=10000`)
   },

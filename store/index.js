@@ -22,6 +22,7 @@ export const state = () => ({
   },
   dadosCliente:[],
   unidadeCliente:"",
+  nomeCliente:"",
 })
 
 export const mutations = {
@@ -67,6 +68,10 @@ export const mutations = {
   SELECTED_CLIENT(state, payload) {
     state.selectedClient = payload
     console.log(state.selectedClient );
+  },
+  SELECTED_NAME_CLIENT(state, payload) {
+    state.nomeCliente = payload
+    console.log(state.nomeCliente );
   },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido); 

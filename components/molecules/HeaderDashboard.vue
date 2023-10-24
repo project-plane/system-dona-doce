@@ -56,7 +56,7 @@
         <h2>{{ formatDateDayAndMes(date) }}</h2>
       </div>
     </div>
-
+    <nuxt-link to="/dashboard/lotes"> Gerar Lotes</nuxt-link>
     
   </div>
 </template>

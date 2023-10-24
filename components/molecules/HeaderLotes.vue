@@ -2,13 +2,16 @@
     <div class="headerBashboard">
       <h1>{{title}}</h1>
       <div class="btns">
-        <div style="display: flex; gap: 1rem; align-items: center; width: 35%;">
-          <p>Data Inicio</p>
-            <input type="date" v-model="startDate" style="background-color: var(--red);" />
-          <p>Data Inicio</p>
-            <input type="date" v-model="endDate" style="background-color: var(--red);"  />
-        </div>
+       
         <div class="selectInput">
+          <div class="input">
+          <label>Clientes</label>
+          <select v-model="selectedClient" @change="searchCliente">
+            <option value="" disabled>Selecionar Cliente</option>
+            <option value="" >Todos</option>
+            <option v-for="item in listClient" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
+        </select>
+        </div>
           <div class="input">
             <label>Tipo Pedido</label>
             <select v-model="selectedType">
@@ -17,30 +20,18 @@
               <option value="coffe">Coffee</option>
             </select>
           </div>
-        
-          <div class="input">
-            <label>Clientes</label>
-            <select v-model="selectedClient">
-              <option value="" disabled>Selecionar Cliente</option>
-              <option value="Sodex">Sodex</option>
-              <option value="V&V Refeições">V&V Refeições</option>
-              <option value="Prato Bom">Prato Bom</option>
-              <option value="VA Refeições">VA Refeições</option>
-            </select>
-          </div>
-    </div>
-<!--       
-        <v-date-picker v-model="date" mode="date">
-          <template #default="{ inputEvents }">
-            <button
-              :class="{ focus: !isToday }"
-              @click="calendarShowOrNot(false)"
-              v-on="inputEvents"
-            >
-              Calendário
-            </button>
-          </template>
-        </v-date-picker> -->
+          <div style="display: flex; gap: 1rem; align-items: center; width: 35%;">
+         <label for="">
+          <p>Data Inicio</p>
+           <input type="date" v-model="startDate" style="background-color: var(--red);" />
+         </label>
+         <label for="">
+          <p>Data Final</p>
+           <input type="date" v-model="endDate" style="background-color: var(--red);" />
+         </label>
+        </div>
+      </div>
+
        
         </div>
       </div>
@@ -49,8 +40,7 @@
   
   <script lang="ts">
   import Vue from 'vue'
-  
-  import dayjs from 'dayjs'
+  import httpClients from '~/server/cliente'
   import 'dayjs/locale/pt-br'
   
   export default Vue.extend({
@@ -67,13 +57,30 @@
         visualization: false,
         selectedType: '',
         selectedAgenda: '',
-        selectedClient: '',
-
+        selectedClient: 'CLIENTE 2',
+        listClient:[],
         startDate: '',
         endDate: '',
+        dataPedidos:[],
+        filteredData: [],
+        range: {
+          start: new Date(),
+          end: new Date(),
+        },
 
       }
     },
+    async fetch() {
+    await httpClients
+      .GetAllClients()
+      .then((res) => {
+        this.listClient = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    this.loading = false
+  },
     computed: {
     filteredData() {
       return this.data.filter(item => {
@@ -81,8 +88,70 @@
       });
     },
   },
+  methods:{
+    searchCliente() {
+      this.$emit('searchCliente', this.selectedClient)
+    },
+    // filterByDateRange(startDate, endDate) {
+    //   this.listFiltered = []
+    //   this.filterData.map((item) => {
+    //     item.dateOrder = new Date(item.dateOrder).toISOString().split('T')[0]
+    //     const itemDate = new Date(item.dateOrder)
+    //     if (itemDate >= new Date(startDate) && itemDate <= new Date(endDate)) {
+    //       this.listFiltered.push(item)
+    //     }
+    //   })
+    // },
+    filterByType() {
+      if (this.selectedType === '' && this.selectedAgenda === '') {
+        this.filter = false ;
+      } else {
+        this.filter = true
+        this.filterData = this.historico.filter((item) => {
+          let typeCondition =
+            this.selectedType === '' || item.order_type === this.selectedType
+          let agendaCondition =
+            this.selectedAgenda === '' ||
+            item.orderStatus.description === this.selectedAgenda
+
+          return typeCondition && agendaCondition
+        })
+      }
+    },
+  },
+  
    
- 
+  watch: {
+    date(newValue) {
+      if (
+        newValue.toISOString().split('T')[0] !==
+        new Date().toISOString().split('T')[0]
+      ) {
+        this.isToday = false
+      } else {
+        this.isToday = true
+      }
+    },
+    selectedType(newValue) {
+      this.$store.commit('SELECTED_TIPO', newValue)
+    },
+    selectedAgenda(newValue) {
+      this.$store.commit('SELECTED_STATUS', newValue)
+    },
+    selectedClient(newValue) {
+      this.$store.commit('SELECTED_NAME_CLIENT', newValue)
+    },
+    range: {
+      handler(newValue) {
+        this.filterByDateRange(
+          new Date(newValue.start).toISOString().split('T')[0],
+          new Date(newValue.end).toISOString().split('T')[0]
+        )
+      },
+      deep: true,
+    },
+    
+  },
   })
   </script>
   
