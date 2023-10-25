@@ -1,6 +1,7 @@
 <template>
   <div class="containerPedidosCoffe">
-    <div style="width: 100%;">   <h2>Pedidos Coffee</h2></div>
+    <div style="width: 100%;"> 
+        <h2>Pedidos Coffee</h2></div>
     <div
       class="headerPedidos"
       style="display: flex; justify-content: space-between; padding-bottom: 0.4rem;"
@@ -15,7 +16,7 @@
       <v-date-picker v-model="selectedDate" 
       :min-date="formattedDate" color="red"/>
     </div>
-      <button class="qtdPedidos" @click="() => (showModal = true)">
+      <button class="qtdPedidos" @click="openModal" >
         <img src="../../assets/icons/shopCar.svg" />
         <span v-if="this.$store.state.pedidos.length > 0">
           <p>{{ this.$store.state.pedidos.length }}</p>
@@ -59,7 +60,7 @@ export default Vue.extend({
   watch: {
     selectedDate(newValue, oldValue) {
       if (newValue !== oldValue) {
-        this.$store.commit('setDataOrder',newValue)
+        this.$store.commit('setDataOrder',this.format(newValue))
         this.showDate = false;
       }
     },
@@ -73,10 +74,8 @@ export default Vue.extend({
     },
     pedidos() {
       return this.$store.state.pedidos
-    },
+    },  
    
-   
-
   },
   methods: {
     formatDate(date) {
@@ -85,9 +84,22 @@ export default Vue.extend({
     formatDateGeral(date) {
       return dayjs(date).format('DD/MM/YYYY')
     },
+    format(date) {
+      return dayjs(date).toISOString()
+    },
     openModalHistorico() {
       this.showModal = true
     },
+    
+    openModal(){
+      if(this.selectedDate === null){
+        alert('Selecione uma data')
+      }
+      if(this.selectedDate != ""){
+        this.showModal = true
+      }
+
+    }
 
     
   },

@@ -59,12 +59,12 @@
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
-
   </ModalPreview>
 </template>
 
 <script lang="js">
 import Vue from 'vue'
+import dayjs from 'dayjs'
 import http from "../../server/pedidos/index.js"
 export default Vue.extend({
   props: {
@@ -97,6 +97,8 @@ export default Vue.extend({
       })
       return total
     },
+
+
   },
   methods: {
     handleChange() {
@@ -119,6 +121,7 @@ export default Vue.extend({
       this.$store.commit('removerPedido', value)
       
     },
+   
     async finalizarPedido() {
      
      try{
@@ -129,9 +132,9 @@ export default Vue.extend({
       console.log('Resposta da requisição:', response.data);
       this.$emit('closeModal')
       this.$toast.info('Pedidos Realizados!')
-      // setTimeout(function(){
-      //     location.reload();
-      // }, 4000);
+      setTimeout(function(){
+          location.reload();
+      }, 4000);
       
       })
      }

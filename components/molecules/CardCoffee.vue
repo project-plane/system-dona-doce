@@ -77,52 +77,61 @@ export default Vue.extend({
         amountItem: 0,
         method_of_preparation: "",
         order_time:"",
-        delivery_date:"",
+        delivery_date:null,
       }
     }
   },
   methods: {
     adicionarPedido() {
-      if (!this.pedidoCoffee.amountItem || !this.pedidoCoffee.method_of_preparation 
-      || !this.pedidoCoffee.order_time ) {
-        this.$toast.info('Os Campos não podem ficar vazios!')
-      }
-      
-      const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
-      if (fkRevenueExists) {
-        this.$toast.info('Esse Pedido já foi adcionado!');
-        this.pedidoCoffee.amountItem = '';
-        this.pedidoCoffee.order_time = '';
-        this.pedidoCoffee.method_of_preparation = '';
-        return; 
-      }
-      if(this.pedidoCoffee.amountItem >= 1){
-        const novoItem = {
+    const { amountItem, method_of_preparation, order_time } = this.pedidoCoffee;
+
+    if (!amountItem || !method_of_preparation || !order_time) {
+      this.$toast.info('Os Campos não podem ficar vazios!');
+      return;
+    }
+
+    if (!this.$store.state.dataPedido) {
+      this.$toast.info('Selecione uma data');
+      return;
+    }
+
+    const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
+    if (fkRevenueExists) {
+      this.$toast.info('Esse Pedido já foi adicionado!');
+      this.limparPedido();
+      return;
+    }
+
+    if (amountItem >= 1) {
+      const novoItem = {
         fk_revenue: this.infoCoffee.id,
-        amountItem: parseInt(this.pedidoCoffee.amountItem),
-        // delivery_date: this.pedidoCoffee.time,
-        order_time: this.pedidoCoffee.order_time,
-        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+        amountItem: parseInt(amountItem),
+        delivery_date: this.$store.state.dataPedido,
+        order_time,
+        method_of_preparation,
         infoProduct: this.infoCoffee
       };
+
       const data = {
         fk_revenue: this.infoCoffee.id,
-        amountItem: parseInt(this.pedidoCoffee.amountItem),
+        amountItem: parseInt(amountItem),
         delivery_date: this.$store.state.dataPedido,
-        order_time: this.pedidoCoffee.order_time,
-        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+        order_time,
+        method_of_preparation,
       };
-      
-      this.$store.commit("adicionarPedido", novoItem);
-      this.$store.commit("addOrder", { id: "", data: data });
-      }
-     
-      this.pedidoCoffee.amountItem = '';
-      this.pedidoCoffee.time = '';
-      this.pedidoCoffee.method_of_preparation = '';
-      this.pedidoCoffee.order_time = '';
 
-    },
+      this.$store.commit("adicionarPedido", novoItem);
+      this.$store.commit("addOrder", { id: "", data });
+    }
+
+  this.limparPedido();
+},
+
+limparPedido() {
+  this.pedidoCoffee.amountItem = '';
+  this.pedidoCoffee.order_time = '';
+  this.pedidoCoffee.method_of_preparation = '';
+}
   },
 })
 </script>

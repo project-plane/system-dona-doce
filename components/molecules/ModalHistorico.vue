@@ -535,10 +535,28 @@ export default Vue.extend({
     font-size: 1.2rem;
     background-color: transparent;
     font-weight: 600;
+    box-shadow: 1px 1px 2px rgba(163, 121, 121, 0.5411764706);
+  
+    &:hover{
+      background: #ce250fb4;
+      transition-duration: 1s;
+      color: white;
+      border-top-left-radius: .2rem;
+      border-top-right-radius: .2rem;
+
+    }
   }
 
   .selected {
-    color: var(--red);
+    color: white;
+    padding: 0.8rem;
+    border-bottom: solid 1px #6e10029f;
+    border-bottom-right-radius: .2rem;
+    border-bottom-left-radius: .2rem;
+    background-color: var(--red);
+    box-shadow: 2px 5px 1px rgba(163, 121, 121, 0.5411764706);
+    
+   
   }
 }
 .listProduts {
@@ -557,6 +575,7 @@ export default Vue.extend({
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid var(--bg_color_modal);
+    padding-bottom: 0.8rem;
   }
   .resumeItens {
     display: flex;
@@ -577,6 +596,7 @@ export default Vue.extend({
       padding: 0.5rem;
       width: 22rem;
       height: 2.6rem;
+      box-shadow: 2px 2px 1px rgba(163, 121, 121, 0.5411764706);
 
       img {
         width: 2rem;
@@ -625,6 +645,7 @@ export default Vue.extend({
         width: 30%;
         text-align: center;
         border: 1px solid var(--red);
+        box-shadow: 2px 2px 1px rgba(163, 121, 121, 0.5411764706);
       }
 
       input[type='file'] {
@@ -646,6 +667,7 @@ export default Vue.extend({
       display: flex;
       flex-direction: column;
       width: 17rem;
+      
     }
   }
 }

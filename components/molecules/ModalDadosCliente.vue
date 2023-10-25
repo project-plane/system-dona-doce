@@ -17,17 +17,20 @@
                  <input type="text" class="inputForm" v-model="infoCliente.Clients.fone" placeholder="(00) 00000-0000">
              </label>
              <label for="" class="containerLabel" style="width: 37%;"> <strong>CEP</strong>
-                 <input type="number" class="inputForm" v-model="infoCliente.Clients.cep" placeholder="69075-771" >
-                </label>
-                <label for="" class="containerLabel" style="width: 60%;"> <strong>Bairro</strong>
-                    <input type="text" class="inputForm" v-model="infoCliente.Clients.district" placeholder="Nome do Bairro..">
-                </label>
+                <input type="number" class="inputForm" v-model="infoCliente.Clients.cep" placeholder="69075-771" >
+            </label>
+            <label for="" class="containerLabel" style="width: 60%;"> <strong>Bairro</strong>
+                <input type="text" class="inputForm" v-model="infoCliente.Clients.district" placeholder="Nome do Bairro..">
+            </label>
+            <label for="" class="containerLabel" style="width: 20%;"> <strong>UF</strong>
+                 <input type="text" class="inputForm" v-model=" this.infoCliente.Clients.uf"  placeholder="Nova Senha"  >
+             </label>
              <label for="" class="containerLabel"> <strong>Cidade</strong>
                  <input type="text" class="inputForm" v-model="infoCliente.Clients.county" placeholder="Cidade...">
              </label>
-             <!-- <label for="" class="containerLabel"> <strong>Email</strong>
-                 <input type="text" class="inputForm" v-model=""  placeholder="empresa@gmail.com"  >
-             </label> -->
+             <label for="" class="containerLabel" style="width: 40%;"> <strong>Senha</strong>
+                 <input type="text" class="inputForm" v-model="password"  placeholder="Nova Senha"  >
+             </label>
 
         </div>
         <div class="containerButton">
@@ -48,7 +51,8 @@
     },
     data(){
         return{
-            loading: false
+            loading: false,
+            password:'',
         }
     },
    
@@ -71,7 +75,7 @@
             accountable: this.infoCliente.Clients.accountable,
             updateUserDto: {
                 email:  this.infoCliente.email,
-                password: this.infoCliente.password,
+                password: this.password,
                 is_enabled: this.infoCliente.is_enabled,
                 is_admin: this.infoCliente.is_admin,
                 is_client: this.infoCliente.is_client,

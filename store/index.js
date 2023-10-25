@@ -71,7 +71,6 @@ export const mutations = {
   },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido); 
-    console.log(state.pedidos);
   },
   removerPedido(state, fk_revenue) {
     const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
@@ -122,6 +121,6 @@ export const mutations = {
   },
   setDataOrder(state, date){
     state.dataPedido = date; 
-  }
-
+  },
+ 
 }
