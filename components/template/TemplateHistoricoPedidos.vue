@@ -229,9 +229,12 @@ export default Vue.extend({
   .list-historic {
     margin-top: 1rem;
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    /* display: grid; */
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+    grid-gap: 1rem;
     gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .unique {
