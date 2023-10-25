@@ -13,9 +13,9 @@
         <p>Quantidade</p>
         <input style="width: 6.5rem;" v-model="qtdPedido" :min="base_min_amount" :max="base_max_amount" type="number" />
       </div>
-      <div style="display: flex; width: 100%;  justify-content: flex-end; color: red; font-size: 9px;">
-        <span>Min: {{ base_min_amount }}    <strong> - </strong>  </span>
-        <span>Max: {{ base_max_amount }}</span>
+      <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -5px; gap: 0.3rem; color: rgb(115 98 93); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
+        <span>Qtd. Min. {{ base_min_amount }} x </span>  
+        <span>Qtd. Max. {{ base_max_amount }}</span>
       </div>
 
     </div>
