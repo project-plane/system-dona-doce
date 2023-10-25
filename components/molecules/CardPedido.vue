@@ -1,18 +1,31 @@
 <template>
+  <div class="card">
+    <img  src="/_nuxt/static/icon/cutEffect.svg" alt="" class="svg">
   <div class="containerCard">
     <div class="dataPedido">
-      <span>{{ new Date(dataPedido.dateMenu).getDate() }}/{{
+      <span>Cardapio - {{ new Date(dataPedido.dateMenu).getDate() }}/{{
         new Date(dataPedido.dateMenu).getMonth() + 1
       }}/{{ new Date(dataPedido.dateMenu).getFullYear() }}</span>
     </div>
+    <div class="dcardapio">
+      <div   v-for="(iten, index) in dataPedido.itemMenu" :key="index">
+     <div class="dpedidos">
+      <div>  {{ iten.revenues.description }} </div>
+      <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div>
+      </div>
+
+      <div style="border: 1px dashed rgba(69, 64, 64, 0.968) "></div>
+      </div>
+    </div>
     <div class="pedidos">
-      <div class="qtdPedidos">
+      <!-- <div class="qtdPedidos">
         <span>Qtd. Pedidos</span>
         <span>{{ this.$store.state.qtdPedidos }}</span>
-      </div>
-      <ButtonPirula title="Adicionar Pedido" style="font-size: 0.9rem; width: 46%;" />
+      </div> -->
+      <ButtonPirula title="Visualizar" style="font-size: 0.9rem; width: 46%;" />
     </div>
   </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -36,6 +49,30 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.card {
+        display: flex;
+        flex-direction: column;
+}
+.card img {
+  width: 24rem;
+    position: relative;
+    top: 0.2999vw;
+
+}
+.dcardapio {
+  display: flex;
+  justify-content: space-between;
+   width: 100%;
+  flex-direction: column;
+}
+
+.dpedidos {
+   display: flex;
+  justify-content: space-between;
+   width: 100%;
+ 
+}
+
 .containerCard {
   width: 24rem;
   height: 100%;
@@ -44,12 +81,20 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  cursor: pointer;
 
+  &:hover{
+    transform: translateY(-6px);
+  }
+  td{
+    font-size: 12px;
+    text-align: start;
+  }
   .dataPedido {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 2rem;
+    padding-bottom: 1.2rem;
 
     span {
       font-weight: 600;
@@ -61,9 +106,9 @@ export default Vue.extend({
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     gap: 1rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
 
     .qtdPedidos {
       display: flex;

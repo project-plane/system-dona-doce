@@ -1,85 +1,128 @@
 <template>
+  <div class="card">
+    <img src="/_nuxt/static/icon/cutEffect.svg" alt="" class="svg" />
     <div class="card-historico-container">
       <div class="header-card">
-       <section style="display: flex; flex-direction: row-reverse; justify-content: space-between;">
-        <span>   <strong>Id:</strong> {{ data.numberOrder }}</span>
-        <span><strong>Data do Pedido:</strong> {{ formatDate(data.dateOrder) }}</span>
-       </section>
-        <span><strong>Valor total:</strong> {{ formatCurrency(valueorder(data.orderItem)) }}</span>
+        <div style="display: flex; justify-content: space-between">
+          <span><strong>Pedido:</strong> {{ data.numberOrder }}</span>
+          <span><strong>Total:</strong> {{ valueorder(data.orderItem) }}</span>
+        </div>
+
+        <span><strong>Data:</strong> {{ formatDate(data.dateOrder) }}</span>
+        <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
       </div>
+
+      <!-- <div class="dcardapio">
+        <div style="display: flex; justify-content: center">
+          <strong>Itens de Pedido</strong>
+        </div>
+        <div v-for="(iten, index) in data.orderItem" :key="index">
+          <div class="dpedidos">
+            <div>{{ iten.revenues.description }}</div>
+            <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div>
+          </div>
+
+          <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
+        </div>
+      </div> -->
+
       <div class="footer-card">
-        <span><strong>Status: </strong><br/>{{ data.orderStatus.description }}</span>
-        <ButtonPirula title="Ver Detalhes" @click.native="openModalHistorico" style="width: 50%;"/>
+        <span
+          ><strong>Status: </strong><br />{{
+            data.orderStatus.description
+          }}</span
+        >
+
+        <ButtonPirula
+          title="Ver Detalhes"
+          @click.native="() => (showModal = true)"
+          style="width: 50%"
+        />
       </div>
-      <ModalHistorico v-if="showModal" :valueTotal="formatCurrency(valueorder(data.orderItem))" :data="data" @closeModal="closeModalHistorico" />
+
+      <ModalHistorico
+        v-if="showModal"
+        :valueTotal="valueorder(data.orderItem)"
+        :data="data"
+        @closeModal="() => (showModal = false)"
+      />
     </div>
-  </template>
-  
-  <script lang="ts">
-  import Vue from 'vue';
-  import dayjs from 'dayjs';
-  
-  export default Vue.extend({
-    props: {
-      data: {
-        type: Object,
-        required: true,
-      },
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import dayjs from 'dayjs'
+export default Vue.extend({
+  props: {
+    data: Object,
+  },
+
+  data() {
+    return {
+      showModal: false,
+      totalOrderValue: 0,
+      valorTotal: 0,
+    }
+  },
+
+  methods: {
+    valueorder(listOrder) {
+      this.totalOrderValue = 0
+      listOrder.map((item) => {
+        this.totalOrderValue =
+          this.totalOrderValue +
+          Number(item.amountItem) * Number(item.valueOrderItem)
+      })
+
+      return this.totalOrderValue.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
     },
-  
-    data() {
-      return {
-        showModal: false,
-      };
+
+    formatDate(date) {
+      return dayjs(date).format('DD/MM/YYYY')
     },
-  
-    methods: {
-      valueorder(listOrder) {
-        return listOrder.reduce((total, item) => total + (Number(item.amountItem) * Number(item.valueOrderItem)), 0);
-      },
-  
-      formatCurrency(value) {
-        return value.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        });
-      },
-  
-      formatDate(date) {
-        return dayjs(date).format('DD/MM/YYYY');
-      },
-  
-      openModalHistorico() {
-        this.showModal = true;
-      },
-  
-      closeModalHistorico() {
-        this.showModal = false;
-      },
+
+    openModalHistorico() {
+      this.showModal = true
+      // this.$store.commit('OPEN_MODAL_HISTORICO', true)
     },
-  });
-  </script>
-  
-  <style lang="scss" scoped>
-  .card-historico-container {
-    background-color: var(--white);
-    border-radius: 0.3rem;
-    padding: 1rem;
-    height: 150px;
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.card img {
+  width: 24rem;
+  position: relative;
+  top: 0.2999vw;
+}
+.card-historico-container {
+  width: 24rem;
+  background-color: var(--white);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  min-height: auto;
+  height: auto;;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .header-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-  
-    .header-card {
-      display: flex;
-      flex-direction: column;
-    }
-  
-    .footer-card {
-      justify-content: space-between;
-      align-items: flex-end;
-      display: flex;
-    }
   }
-  </style>
-  
+
+  .footer-card {
+    justify-content: space-between;
+    align-items: flex-end;
+    display: flex;
+  }
+}
+</style>

@@ -44,10 +44,10 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
-  z-index: 1;
+  z-index: 5;
   .negativeSpace {
-    width: 60%;
-    min-height: 50%;
+    width: 64%;
+    max-height: 90vh;
     height: 105%;
     display: flex;
     flex-direction: column;
@@ -65,7 +65,7 @@ export default Vue.extend({
     .body {
       width: 100%;
       background: var(--white);
-      padding: 1rem;
+      padding: 0 1rem;
       overflow-y: auto;
       border-radius: 5px;
       height: 70vh;

@@ -1,11 +1,12 @@
 <template>
   <LoadingPage v-if="loading" />
   <Container v-else>
+
     <Title title="Novo Cardápio" />
     <div class="calendar-content">
       <div class="calendar">
         <span>Selecione uma data</span>
-        <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date" color="red" />
+        <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date"  color="red" />
       </div>
 
       <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
@@ -37,7 +38,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import dayjs from 'dayjs'
+import dayjs from '~/services/dayjs'
 import httpCardapio from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
 export default Vue.extend({
@@ -80,7 +81,7 @@ export default Vue.extend({
     attributes() {
       return this.dates.map(date => ({
         highlight: true,
-        dates: date,
+        dates: dayjs.formtDateAddHour(date, 5),
       }));
     },
   },
@@ -91,7 +92,7 @@ export default Vue.extend({
         this.cardapio.dateMenu = newValue
       }
       this.days.map((item) => {
-        if (dayjs(item.dateMenu).format('DD/MM/YYYY') === dayjs(newValue).format('DD/MM/YYYY')) {
+        if (this.formatDate(item.dateMenu) === this.formatDate(newValue)) {
           this.existOnList = true
         } else {
           this.existOnList = false
@@ -102,6 +103,7 @@ export default Vue.extend({
       this.existOnList = this.datesToVerify.includes(this.formatDate(this.date))
 
       this.date = new Date(newValue).toISOString()
+
     },
   },
 
@@ -142,7 +144,9 @@ export default Vue.extend({
     },
 
     formatDate(date) {
-      return dayjs(date).format('DD/MM/YYYY')
+      const data = dayjs.formtDateBr(date)
+
+      return data
     },
     hasDuplicates(arr) {
       return new Set(arr).size !== arr.length;

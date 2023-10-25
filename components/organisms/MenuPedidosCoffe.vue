@@ -1,12 +1,22 @@
 <template>
   <div class="containerPedidosCoffe">
+    <div style="width: 100%;"> 
+        <h2>Pedidos Coffee</h2></div>
     <div
       class="headerPedidos"
-      style="display: flex; justify-content: space-between"
+      style="display: flex; justify-content: space-between; padding-bottom: 0.4rem;"
     >
-      <h2>Pedidos Coffee</h2>
-      <section></section>
-      <button class="qtdPedidos" @click="() => (showModal = true)">
+    <button @click="() => (showDate = !showDate)" class="btn-calendar">
+      <span v-if="selectedDate === null"> Selecione uma Data</span>
+      <span v-if="selectedDate !=null"> Data selecionada {{ formatDateGeral(selectedDate) }}</span>
+      <img src="../../assets/icons/calendar.svg" alt="" />
+    </button>
+
+    <div v-if="showDate ===true" style="position: absolute; margin-top: 3rem;">
+      <v-date-picker v-model="selectedDate" 
+      :min-date="formattedDate" color="red"/>
+    </div>
+      <button class="qtdPedidos" @click="openModal" >
         <img src="../../assets/icons/shopCar.svg" />
         <span v-if="this.$store.state.pedidos.length > 0">
           <p>{{ this.$store.state.pedidos.length }}</p>
@@ -25,25 +35,14 @@
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs'
 import Vue from 'vue'
+
 
 export default Vue.extend({
   layout: 'pedidos',
   props: {
-    infoCliente: Object,
-
-    dataPedido: {
-      type: String,
-      required: true,
-    },
-    qtdPedidos: {
-      type: [Array, Object],
-      required: true,
-    },
-    listaCompletaReceita: {
-      type: [Array, Object],
-      required: true,
-    },
+    infoCliente: Array,
   },
   data() {
     return {
@@ -52,21 +51,57 @@ export default Vue.extend({
       lanche01: false,
       lanche02: false,
       showModal: false,
+      show: false,
+      selectedDate: null,
+      today: new Date(),
+      showDate:false
     }
   },
-  computed: {
-    pedidos() {
-      return this.$store.state.pedidos
+  watch: {
+    selectedDate(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$store.commit('setDataOrder',this.format(newValue))
+        this.showDate = false;
+      }
     },
   },
+  computed: {
+    formattedDate() {
+      var time = new Date(this.formatDate(this.today));
+      var outraData = new Date();
+      outraData.setDate(time.getDate() + 4);
+      return new Date(outraData)
+    },
+    pedidos() {
+      return this.$store.state.pedidos
+    },  
+   
+  },
   methods: {
+    formatDate(date) {
+    return dayjs(date).format('YYYY-MM-DD')
+    },
+    formatDateGeral(date) {
+      return dayjs(date).format('DD/MM/YYYY')
+    },
+    format(date) {
+      return dayjs(date).toISOString()
+    },
     openModalHistorico() {
       this.showModal = true
     },
+    
+    openModal(){
+      if(this.selectedDate === null){
+        alert('Selecione uma data')
+      }
+      if(this.selectedDate != ""){
+        this.showModal = true
+      }
 
-    finalizarPedidosProgramados() {
-      this.$emit('finalizarPedido')
-    },
+    }
+
+    
   },
 })
 </script>
@@ -77,7 +112,25 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid white;
+  .btn-calendar {
+    background-color: var(--white);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-items: center;
+    padding: 0.3rem;
+    gap: 0.5rem;
+    width: 10rem;
+    font-size: 0.8rem;
+    border-radius: 0.25rem;
+    color: var(--text_color);
 
+    &:hover{
+      color: var(--red);
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+  }
   .headerPedidos {
     h2 {
       font-size: 1.4rem;
@@ -95,14 +148,14 @@ export default Vue.extend({
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-bottom: 1px solid #e5d7c5;
+    // border-bottom: 1px solid #e5d7c5;
     background: #ea4e42;
     padding: 0.5rem 1rem;
     color: var(--white);
     height: 2.5rem;
     width: 7.5rem;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 4px;
+    
 
     span {
       position: relative;
