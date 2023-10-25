@@ -22,6 +22,7 @@ export const state = () => ({
   },
   dadosCliente:[],
   unidadeCliente:"",
+  dataPedido:"",
 })
 
 export const mutations = {
@@ -70,7 +71,6 @@ export const mutations = {
   },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido); 
-    console.log(state.pedidos);
   },
   removerPedido(state, fk_revenue) {
     const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
@@ -119,5 +119,8 @@ export const mutations = {
     state.unidadeCliente = id; 
 
   },
-
+  setDataOrder(state, date){
+    state.dataPedido = date; 
+  },
+ 
 }

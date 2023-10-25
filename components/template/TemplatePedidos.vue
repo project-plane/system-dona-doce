@@ -340,5 +340,6 @@ animation-fill-mode: forwards;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  box-shadow: 5px 3px 10px #2c272785;
 }
 </style>

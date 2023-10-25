@@ -12,19 +12,19 @@
         <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
       </div>
 
-      <div class="dcardapio">
+      <!-- <div class="dcardapio">
         <div style="display: flex; justify-content: center">
           <strong>Itens de Pedido</strong>
         </div>
         <div v-for="(iten, index) in data.orderItem" :key="index">
           <div class="dpedidos">
             <div>{{ iten.revenues.description }}</div>
-            <!-- <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div> -->
+            <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div>
           </div>
 
           <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
         </div>
-      </div>
+      </div> -->
 
       <div class="footer-card">
         <span

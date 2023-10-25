@@ -21,8 +21,8 @@
           <tr v-for="(item, index) in dejejum" :key="index">
             <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
             <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
-
-            <td class="tdQtde" style="text-align: center;">
+            
+            <td class="tdQtde" style="display: flex; justify-content: center;">
               <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
                 <span>-</span>
               </button> -->
@@ -66,7 +66,7 @@
         <tr v-for="(item, index) in lanche01" :key="index">
           <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
           <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
-          <td class="tdQtde">
+          <td class="tdQtde" style="display: flex; justify-content: center;">
             <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
@@ -108,7 +108,7 @@
         <tr v-for="(item, index) in lanche02" :key="index">
           <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
           <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
-          <td class="tdQtde">
+          <td class="tdQtde" style="display: flex; justify-content: center;">
             <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>

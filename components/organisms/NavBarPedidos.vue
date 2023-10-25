@@ -44,6 +44,7 @@ export default Vue.extend({
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+  z-index: 5;
 
   .logo {
     height: 100%;
