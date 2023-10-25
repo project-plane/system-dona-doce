@@ -336,7 +336,7 @@ import httpClientCompany from '~/server/ClientCompany'
 export default Vue.extend({
   props: {
     data: Object,
-    valueTotal: Number,
+    valueTotal: String,
   },
 
   data() {
@@ -348,7 +348,7 @@ export default Vue.extend({
       countlanche01: 0,
       countlanche02: 0,
       isDisabled: false,
-      typeContent: false,
+      typeContent: true,
       selectedFile: null,
       previewUrl: null,
       selectedFileComprovante: null,
@@ -386,18 +386,14 @@ export default Vue.extend({
         this.countlanche02 + Number(res.amountItem) * Number(res.valueOrderItem)
     })
   },
-  async fetch() {
-    await httpClientCompany
-      .GetFindClientCompany(this.findPreviewClient.id)
-      .then((res) => {
-        this.listFindClientCompany = res.data
-        // console.log(res.data);
-
-      })
-      .catch((error) => {
-        console.log(error)
-      })
- },
+//   async fetch() {
+//     try {
+//       const response = await httpClientCompany.GetFindClientCompany(this.findPreviewClient.id);
+//       this.listFindClientCompany = response.data;
+//     } catch (error) {
+//       console.error(error);
+//     }
+// },
   methods: {
     closeModal() {
       this.$emit('closeModal')
