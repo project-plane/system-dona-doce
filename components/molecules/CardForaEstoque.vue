@@ -1,19 +1,48 @@
 <template>
   <div class="containerCard">
-    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${foraDeEstoque.imagem}`" alt="" />
+    <img
+      :src="`https://api.donadoce.gedroid.com/img_revenue/${foraDeEstoque.imagem}`"
+      alt=""
+    />
     <div class="cardPedido">
       <div class="descriptionPedido">
         <h3>{{ foraDeEstoque.description }}</h3>
-        <p>R$ {{ foraDeEstoque.value }}</p>
+        <p>R$ {{ foraDeEstoque.value.toFixed(2) }}</p>
       </div>
-      <div class="selectPedido">
-        <p>Qtd Selecionada</p>
-        <input v-model="qtdPedido" type="text" />
+      <div>
+        <div class="selectPedido">
+          <p>Quantidade</p>
+          <input
+            style="width: 6.5rem"
+            v-model="qtdPedido"
+            :min="foraDeEstoque.base_min_amount"
+            :max="foraDeEstoque.base_max_amount"
+            type="number"
+          />
+        </div>
+        <div
+          style="
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            color: red;
+            font-size: 9px;
+          "
+        >
+          <span
+            >Min: {{ foraDeEstoque.base_min_amount }} <strong> - </strong>
+          </span>
+          <span>Max: {{ foraDeEstoque.base_max_amount }}</span>
+        </div>
       </div>
+
       <div class="selectPedido">
-        <p>Tipo</p>
-        <select v-model="selected" style="border: 1px solid var(--border); height: 30px">
-          <option value="" disabled>Selecione o tipo de pedido</option>
+        <p>Modo de preparo</p>
+        <select
+          v-model="selected"
+          style="border: 1px solid var(--red); height: 35px"
+        >
+          <option value="" disabled>Selecione</option>
           <option value="roast">Assado</option>
           <option value="frozen">Congelado</option>
         </select>
@@ -68,8 +97,15 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.descriptionPedido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .containerCard {
   width: 100%;
+  max-width: 371px;
   background: var(--white);
   border-radius: 0.4rem;
   display: flex;

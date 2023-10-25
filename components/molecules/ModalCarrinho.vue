@@ -10,7 +10,7 @@
           <tr v-if="dejejum.length !== 0">
             <th>Item</th>
             <th>Qtde</th>
-            <th>V. Unidade</th>
+            <th>V Unidade</th>
             <th>Fora de Estoque</th>
             <th>Tipo de Pepraro</th>
             <th>Total</th>
@@ -30,7 +30,7 @@
                 <span>-</span>
               </button> -->
               {{ item.qtde }}
-       
+
               <!-- <button @click="addValue(item)">+</button> -->
             </td>
             <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
@@ -39,8 +39,8 @@
             <td v-else></td>
             <td v-if="item.method_of_preparation === 'roast'">Assado</td>
             <td v-else>Congelado</td>
-            <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
-            <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}</td>
+            <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde).toFixed(2)  }}</td>
+            <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde).toFixed(2) }}</td>
             <td>
               <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
             </td>

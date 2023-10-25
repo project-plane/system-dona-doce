@@ -4,20 +4,26 @@
     <div class="cardPedido">
       <div class="descriptionPedido">
         <h3>{{ tipoLanches.descriptionRevenue }}</h3>
-        <p>R$ {{ tipoLanches.valeuRevenue }}</p>
+        <p>R$ {{ tipoLanches.valeuRevenue.toFixed(2) }}</p>
       </div>
+     <div>
+
+
       <div class="selectPedido">
-        <p>Qtd Selecionada</p>
-        <input v-model="qtdPedido" type="text" />      
+        <p>Quantidade</p>
+        <input style="width: 6.5rem;" v-model="qtdPedido" :min="base_min_amount" :max="base_max_amount" type="number" />
       </div>
-      <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -20px; gap: 0.3rem; color: rgb(115 98 93); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
-        <span>Qtd. Min. {{ base_min_amount }} x </span>  
-        <span>Qtd. Max. {{ base_max_amount }}</span>
+      <div style="display: flex; width: 100%;  justify-content: flex-end; color: red; font-size: 9px;">
+        <span>Min: {{ base_min_amount }}    <strong> - </strong>  </span>
+        <span>Max: {{ base_max_amount }}</span>
       </div>
+
+    </div>
+
       <div class="selectPedido">
-        <p>Tipo</p>
+        <p>Modo de preparo </p>
         <select v-model="selected" style="border: 1px solid var(--red); height: 35px;" >
-          <option value="" disabled>Selecione o tipo de pedido</option>
+          <option value="" disabled>Selecione</option>
           <option value="roast">Assado</option>
           <option value="frozen">Congelado</option>
         </select>
@@ -81,8 +87,15 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.descriptionPedido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .containerCard {
   width: 100%;
+  max-width: 371px;
   background: var(--white);
   border-radius: 0.4rem;
   display: flex;
