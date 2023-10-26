@@ -280,7 +280,12 @@
 
         </div>
         <div v-else>
-        <button class="btnExibir" >Gerar PDF de Compras</button>
+        <button class="btnExibir" v-if="gerarPdfVariable == true" @click="gerarPDF">Gerar PDF de Compras</button>
+        <div style="display: flex; gap: 3px;" v-else>
+            <button class="btnExibir" @click="voltarNormaly">Voltar</button>
+            <button class="btnExibir" @click="gerarPDF">Gerar PDF</button>
+
+        </div>
 
         <div  v-for="(l, index) in listBuy" :key="index">
           <div class="line-buy">
@@ -313,6 +318,11 @@ import httpDash from '@/server/dashboard/index'
 import Vue from 'vue'
 
 export default Vue.extend({
+  props:{
+    gerarPdfVariable: {
+      default: true,
+    }
+  },
   data() {
     return {
       dadosOrderFindClient: {},
@@ -389,6 +399,15 @@ export default Vue.extend({
        }
   },
   methods: {
+    async gerarPDF(){
+      this.gerarPdfVariable = false
+      this.$emit("setVisibleInFi", false)
+    },
+    async voltarNormaly(){
+      this.gerarPdfVariable = true
+      this.$emit("setVisibleInFi", true)
+
+    },
     async atualizar(){
     this.loadingListBuy = true
     this.valueListBuy = 0
