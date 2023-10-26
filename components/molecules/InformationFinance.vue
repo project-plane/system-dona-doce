@@ -32,7 +32,8 @@
                   <tr>
                     <th>Quantidade</th>
                     <th>Pedido</th>
-                    <th>Preço</th>
+                    <th>Valor Unit.</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,7 @@
                     <td>{{ dadosPedidos.amountItem }}</td>
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
+                    <td>R$ {{ (dadosPedidos.valueOrderItem * dadosPedidos.amountItem).toFixed(2) }}</td>
                   </tr>
                 </tbody>
               </table>

@@ -5,8 +5,8 @@ export default {
     return await http.get(`/control-production/kambam?order_type=${typeCard}`)
   },
 
-  UpdateKanban: async (id, seq) => {
-    return await http.patch(`/control-production/kambam/${id}/${seq}`)
+  UpdateKanban: async (data) => {
+    return await http.patch(`/control-production/kambam/production`, data)
   }
 
 }

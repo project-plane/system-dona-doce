@@ -49,6 +49,7 @@ v-if="$store.state.selectedStatus ===
         dataPedidos.orderStatus.description ||
         $store.state.selectedStatus === ''
         " class="cards">
+
         <div class="titleCard">
           <div class="titleCompany">
             <p>{{ dataPedidos.numberOrder }}</p>
@@ -95,7 +96,7 @@ v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3d
 import Vue from 'vue'
 
 import httpOrder from '@/server/pedidos'
-
+import dayjs from "~/services/dayjs"
 export default Vue.extend({
   props: {
     dataPedidos: {
@@ -146,13 +147,9 @@ export default Vue.extend({
       this.modalPedido = true
     },
     currentDate() {
-      const dateOrder = new Date(this.dataPedidos.dateOrder)
 
-      const dia = dateOrder.getDate().toString()
-      const mes = (dateOrder.getMonth() + 1).toString()
-      const ano = dateOrder.getFullYear()
 
-      const data = `${dia}/${mes}/${ano}`
+      const data = dayjs.formtDateBr(this.dataPedidos.orderItem[0].delivery_date)
       return data
     },
     cancelarStatus() {
