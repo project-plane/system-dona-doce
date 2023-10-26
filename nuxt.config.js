@@ -40,8 +40,15 @@ export default {
     // https://go.nuxtjs.dev/axios
     'vue-toastification/nuxt',
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    // '@nuxtjs/dayjs'
   ],
+  // dayjs: {
+  //   // Opções do Day.js
+  //   // Veja a documentação do Day.js para as opções disponíveis: https://day.js.org/docs/en/parse/string-format
+  //   locales: ['pt-br'], // Se você quiser usar localização em português, por exemplo
+  //   defaultLocale: 'pt-br',
+  // },
   styleResources: {
     // your settings hereJ
     scss: ['@/components/bosons/*.scss']

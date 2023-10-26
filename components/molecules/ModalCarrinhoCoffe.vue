@@ -59,16 +59,16 @@
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
-
   </ModalPreview>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
+import dayjs from 'dayjs'
 import http from "../../server/pedidos/index.js"
 export default Vue.extend({
   props: {
-    infoncliente:Object,
+    infoncliente:Array,
     listaCompletaReceita: {
       type: [Array, Object],
       required: true,
@@ -87,7 +87,7 @@ export default Vue.extend({
   },
 
   async fetch() {
-    await this.renderList()
+    // await this.renderList()
   },
   computed: {
     totalPedido() {
@@ -97,6 +97,8 @@ export default Vue.extend({
       })
       return total
     },
+
+
   },
   methods: {
     handleChange() {
@@ -119,6 +121,7 @@ export default Vue.extend({
       this.$store.commit('removerPedido', value)
       
     },
+   
     async finalizarPedido() {
      
      try{

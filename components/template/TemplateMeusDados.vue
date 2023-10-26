@@ -3,7 +3,7 @@
     <div v-else class="meusDados-container">
         <span>Informações Pessoais</span>
         <div class="inputs-container">
-            <Input class="input-local-style" label="Nome da Empresa" :value="myData.Clients.corporate_name" type="text" placeholder="nome da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="Nome da Empresa" :value="myData.Clients.corporate_name" type="text" placeholder="nome da empresa..." disabled="false"/>
             <Input class="input-local-style" label="CNPJ" :value="myData.Clients.cnpj" type="text" placeholder="cnpj da empresa..." disabled="true"/>
             <Input class="input-local-style" label="CEP" type="text" :value="myData.Clients.cep" placeholder="cep da empresa..." disabled="true"/>
             <Input class="input-local-style" label="Cidade" type="text" :value="myData.Clients.county" placeholder="endereço da empresa..." disabled="true"/>
@@ -11,17 +11,22 @@
             <Input class="input-local-style" label="Telefone" type="text" :value="myData.Clients.fone" placeholder="telefone da empresa..." disabled="true"/>
             <Input class="input-local-style" label="Email" type="text" :value="myData.email" placeholder="email da empresa..." disabled="true"/>
             <Input class="input-local-style" label="Responsável" type="text" :value="myData.Clients.accountable" placeholder="email da empresa..." disabled="true"/>
-        </div>
+        </div>   
+
+        <ModalDadosCliente  :infoCliente="myData"  v-if="showModal"  @closeModal="() => (showModal = false)" />
+        <button class="btnEdit" @click="() => (showModal = true)" >Atualizar dados</button>
     </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
 import HttpMeusDados from '@/server/meusDados/index'
 export default Vue.extend({
     data () {
         return {
             myData: [],
+            showModal:false,
+            
         }
     },
 
@@ -30,6 +35,11 @@ export default Vue.extend({
             this.myData = res.data
         })
     },
+    methods:{
+        openModalHistorico() {
+        this.showModal = true;
+      },
+    }
 })
 </script>
 
@@ -64,6 +74,12 @@ export default Vue.extend({
             color: var(--white);
             font-weight: 500;
         }
+    }
+    .btnEdit{
+    width: 10rem;
+    height: 2.2rem;
+    border-radius: 0.2rem;
+    margin-top: 1rem;
     }
 }
 </style>
