@@ -7,6 +7,8 @@ export default {
   GetAllClients: async () => {
     return await http.get('/clients')
   },
-
+  UpdateCustomerData: async (id,data) => {
+    return await http.put(`/clients/${id}`,data)
+  },
 
 }

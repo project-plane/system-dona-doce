@@ -70,6 +70,7 @@ export default Vue.extend({
    display: flex;
   justify-content: space-between;
    width: 100%;
+ 
 }
 
 .containerCard {
@@ -80,12 +81,20 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  cursor: pointer;
 
+  &:hover{
+    transform: translateY(-6px);
+  }
+  td{
+    font-size: 12px;
+    text-align: start;
+  }
   .dataPedido {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 2rem;
+    padding-bottom: 1.2rem;
 
     span {
       font-weight: 600;
@@ -97,9 +106,9 @@ export default Vue.extend({
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     gap: 1rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
 
     .qtdPedidos {
       display: flex;

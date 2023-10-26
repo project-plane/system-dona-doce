@@ -3,7 +3,7 @@
     <div class="dataEmpresa">
       <div>
         <h4>Nome Empresa</h4>
-        <p>{{ findPreviewClient.corporate_name }}</p>
+        <pre>{{ findPreviewClient }}</pre>
       </div>
       <div>
         <h4>CNPJ</h4>

@@ -12,19 +12,19 @@
         <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
       </div>
 
-      <div class="dcardapio">
+      <!-- <div class="dcardapio">
         <div style="display: flex; justify-content: center">
           <strong>Itens de Pedido</strong>
         </div>
         <div v-for="(iten, index) in data.orderItem" :key="index">
           <div class="dpedidos">
             <div>{{ iten.revenues.description }}</div>
-            <!-- <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div> -->
+            <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div>
           </div>
 
           <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
         </div>
-      </div>
+      </div> -->
 
       <div class="footer-card">
         <span
@@ -55,7 +55,10 @@ import Vue from 'vue'
 import dayjs from 'dayjs'
 export default Vue.extend({
   props: {
-    data: Object,
+    data: {
+      type: [Array, Object],
+      required: true,
+    },
   },
 
   data() {
@@ -68,18 +71,22 @@ export default Vue.extend({
 
   methods: {
     valueorder(listOrder) {
-      this.totalOrderValue = 0
-      listOrder.map((item) => {
-        this.totalOrderValue =
-          this.totalOrderValue +
-          Number(item.amountItem) * Number(item.valueOrderItem)
-      })
+    const totalOrderValue = listOrder.reduce((total, item) => {
+      const amount = Number(item.amountItem);
+      const value = Number(item.valueOrderItem);
+      const itemTotal = amount * value;
+      return total + itemTotal;
+    }, 0);
 
-      return this.totalOrderValue.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      })
-    },
+    // Formatando o valor total como moeda BRL
+    const formattedTotal = totalOrderValue.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    return formattedTotal;
+},
+
 
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')

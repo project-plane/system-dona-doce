@@ -12,28 +12,43 @@
     </div>
     <section class="cointainerCard__Inputs">
       <div class="selectPedido">
-        <label for="qtdSelecionada">Qtd. Selecionada</label>
+        <label>Qtd. Selecionada
+          <div style="width: 100%;">
+          <span style="font-size: 10px; color:  rgb(115 98 93); font-weight: 600; vertical-align: text-top; "> Qtd. min: {{ infoCoffee.base_min_amount}}</span>
+          <span style="font-size: 10px; color:  rgb(115 98 93); font-weight: 600; vertical-align: text-top;" > x max: {{ infoCoffee.base_max_amount }}</span>
+        </div>
+
+   
+
+        </label>
         <input
-          id="qtdSelecionada"
           type="number"
           v-model="pedidoCoffee.amountItem"
         />
+        
       </div>
-
+      
       <div class="selectPedido">
-        <label for="tipo">Tipo</label>
-        <select name="cars" id="cars" v-model="pedidoCoffee.method_of_preparation">
+        <label>Tipo</label>
+        <select name="cars" v-model="pedidoCoffee.method_of_preparation">
           <option value="frozen">Congelado</option>
           <option value="roast">Assado</option>
         </select>
       </div>
 
       <div class="selectPedido">
-        <label for="horario">Horário</label>
-        <select name="cars" id="cars" v-model="pedidoCoffee.time">
-          <option value="09:00">09:00</option>
-          <option value="11:00">11:00</option>
-          <option value="14:00">14:00</option>
+        <label >Horário</label>
+        <select name="cars" v-model="pedidoCoffee.order_time">
+          <option value="2023-10-21T09:00:00.000Z">09:00</option>
+          <option value="2023-10-21T10:00:00.000Z">10:00</option>
+          <option value="2023-10-21T11:00:00.000Z">11:00</option>
+          <option value="2023-10-21T12:00:00.000Z">12:00</option>
+          <option value="2023-10-21T13:00:00.000Z">13:00</option>
+          <option value="2023-10-21T14:00:00.000Z">14:00</option>
+          <option value="2023-10-21T15:00:00.000Z">15:00</option>
+          <option value="2023-10-21T16:00:00.000Z">16:00</option>
+          <option value="2023-10-21T17:00:00.000Z">17:00</option>
+
         </select>
     
       </div>
@@ -49,7 +64,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    infoCliente: Object,
+    infoCliente: Array,
     infoCoffee: {
       type: Object,
       required: true,
@@ -61,48 +76,62 @@ export default Vue.extend({
       pedidoCoffee:{
         amountItem: 0,
         method_of_preparation: "",
-        time:"",
+        order_time:"",
+        delivery_date:null,
       }
     }
   },
   methods: {
     adicionarPedido() {
-      if (!this.pedidoCoffee.amountItem || !this.pedidoCoffee.method_of_preparation) {
-        this.$toast.info('Os Campos não podem ficar vazios!')
-      }
-      
-      const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
-      if (fkRevenueExists) {
-        this.$toast.info('Esse Pedido já foi adcionado!');
-        this.pedidoCoffee.amountItem = '';
-        this.pedidoCoffee.time = '';
-        this.pedidoCoffee.method_of_preparation = '';
-        return; 
-      }
-      if(this.pedidoCoffee.amountItem >= 1){
-        const novoItem = {
+    const { amountItem, method_of_preparation, order_time } = this.pedidoCoffee;
+
+    if (!amountItem || !method_of_preparation || !order_time) {
+      this.$toast.info('Os Campos não podem ficar vazios!');
+      return;
+    }
+
+    if (!this.$store.state.dataPedido) {
+      this.$toast.info('Selecione uma data');
+      return;
+    }
+
+    const fkRevenueExists = this.$store.state.pedidos.some(pedido => pedido.fk_revenue === this.infoCoffee.id);
+    if (fkRevenueExists) {
+      this.$toast.info('Esse Pedido já foi adicionado!');
+      this.limparPedido();
+      return;
+    }
+
+    if (amountItem >= 1) {
+      const novoItem = {
         fk_revenue: this.infoCoffee.id,
-        amountItem: parseInt(this.pedidoCoffee.amountItem),
-        delivery_date: this.pedidoCoffee.time,
-        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+        amountItem: parseInt(amountItem),
+        delivery_date: this.$store.state.dataPedido,
+        order_time,
+        method_of_preparation,
         infoProduct: this.infoCoffee
       };
+
       const data = {
         fk_revenue: this.infoCoffee.id,
-        amountItem: parseInt(this.pedidoCoffee.amountItem),
-        delivery_date: "2023-10-11T01:33:32.640Z",
-        method_of_preparation: this.pedidoCoffee.method_of_preparation,
+        amountItem: parseInt(amountItem),
+        delivery_date: this.$store.state.dataPedido,
+        order_time,
+        method_of_preparation,
       };
-      
-      this.$store.commit("adicionarPedido", novoItem);
-      this.$store.commit("addOrder", { id: "", data: data });
-      }
-     
-      this.pedidoCoffee.amountItem = '';
-      this.pedidoCoffee.time = '';
-      this.pedidoCoffee.method_of_preparation = '';
 
-    },
+      this.$store.commit("adicionarPedido", novoItem);
+      this.$store.commit("addOrder", { id: "", data });
+    }
+
+  this.limparPedido();
+},
+
+limparPedido() {
+  this.pedidoCoffee.amountItem = '';
+  this.pedidoCoffee.order_time = '';
+  this.pedidoCoffee.method_of_preparation = '';
+}
   },
 })
 </script>

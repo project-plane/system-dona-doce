@@ -13,7 +13,6 @@ export default Vue.extend({
   props: {
     titleModal: {
       type: String,
-      required: true,
     },
   },
   methods: {

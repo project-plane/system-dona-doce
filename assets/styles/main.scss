@@ -79,21 +79,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 4px;
   margin-right: 2px;
   opacity: 1;
-  filter: invert(1);
+  // filter: invert(1);
 }
 
 ::-webkit-datetime-edit-day-field,
 ::-webkit-datetime-edit-text,
 ::-webkit-datetime-edit-month-field,
 ::-webkit-datetime-edit-year-field {
-  color: var(--bg_color);
+  color: var(--red);
 }
 
 .showDate::-webkit-datetime-edit-day-field,
 .showDate::-webkit-datetime-edit-text,
 .showDate::-webkit-datetime-edit-month-field,
 .showDate::-webkit-datetime-edit-year-field {
-  color: var(--white);
+  color: var(--red);
 }
 
 input[type="number"]::-webkit-inner-spin-button {
