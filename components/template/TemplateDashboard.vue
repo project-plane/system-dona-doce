@@ -5,7 +5,6 @@
       <ListDashboard />
     </div>
     <div class="informationOrders">
-      <DetailsBuy />
       <InformationFinance />
     </div>
   </div>

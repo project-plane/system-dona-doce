@@ -72,7 +72,7 @@ v-if="$store.state.selectedStatus ===
               Status:
               <strong>{{ dataPedidos.orderStatus.description }}</strong>
               <!-- <pre>{{ dataPedidos }}</pre> -->
-   
+
             </span>
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
           </div>
@@ -84,7 +84,7 @@ v-if="$store.state.selectedStatus ===
 v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
                 @click="statusOrder" />
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -124,7 +124,7 @@ export default Vue.extend({
   },
   methods: {
     // downloadPDF() {
-    //   const pdfData = ""+ this.dataPedidos.file_caution; 
+    //   const pdfData = ""+ this.dataPedidos.file_caution;
     //   const blob = new Blob([pdfData], { type: 'application/pdf' });
 
     //   const url = window.URL.createObjectURL(blob);
@@ -208,6 +208,7 @@ h2 {
 
 .cards {
   width: 100%;
+  max-width: 412.6px;
   height: auto;
   border: 1px solid var(--border);
   background: var(--white);

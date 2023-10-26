@@ -273,13 +273,15 @@
           "
         >
           <div>Lista de Compras</div>
-          <div>R$: {{ valueListBuy }}</div>
+          <div>R$: {{ valueListBuy.toFixed(2) }}</div>
         </h3>
         <div v-if="loadingListBuy == true">
         <LoadingPage />
 
         </div>
         <div v-else>
+        <button class="btnExibir" >Gerar PDF de Compras</button>
+
         <div  v-for="(l, index) in listBuy" :key="index">
           <div class="line-buy">
             <div>
@@ -292,14 +294,15 @@
           </div>
         </div>
       </div>
-      <div>
+      <img class="imgCooke" src="~/assets/icons/cooke.svg" alt="" />
+
+      <!-- <div>
         <h3>Informações do pedido</h3>
         <span
           >Clique no card de pedido para visualizar as informações
           secundárias</span
         >
-        <img src="~/assets/icons/cooke.svg" alt="" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -323,12 +326,17 @@ export default Vue.extend({
       listBuy: [],
       valueListBuy: 0,
       loadingListBuy: false,
+      selectedTipo: this.$store.state.selectedTipo || "",
+      selectedStatus: this.$store.state.selectedStatus || "",
+      selectedClient: this.$store.state.selectedClient || "",
     }
   },
   async fetch() {
     this.loadingListBuy = true
+    this.valueListBuy = 0
+    this.listBuy = []
     this.dadosOrderFindClient = this.$store.state.dadosPedidos
-    const dash = await httpDash.GetListBuy()
+    const dash = await httpDash.GetListBuy(this.selectedClient, this.selectedStatus, this.selectedTipo)
     dash.data.map((item) => {
       this.listBuy.push({
         count_rev: item.count_rev,
@@ -342,20 +350,68 @@ export default Vue.extend({
       })
       this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
     })
+    this.$store.commit('VALUE_COMPRAS', this.valueListBuy)
+
     this.loadingListBuy = false
+  },
+  watch: {
+    async selectedTipoComputed(newValue){
+        this.selectedTipo = newValue
+        await this.atualizar();
+      },
+    async selectedStatusComputed(newValue){
+      this.selectedStatus = newValue
+      await this.atualizar();
+
+    },
+    async selectedClientComputed(newValue){
+      this.selectedClient = newValue
+      await this.atualizar();
+
+    }
   },
   computed: {
     orderFindClient() {
       const objectValeu = this.$store.state.dadosPedidos
       if (Object.keys(objectValeu).length === 0) {
-        console.log('vazio')
       } else {
-        console.log('cheio')
         return objectValeu
       }
     },
+    selectedTipoComputed(){
+        return this.$store.state.selectedTipo
+       },
+    selectedStatusComputed(){
+        return this.$store.state.selectedStatus
+       },
+        selectedClientComputed(){
+        return this.$store.state.selectedClient
+       }
   },
   methods: {
+    async atualizar(){
+    this.loadingListBuy = true
+    this.valueListBuy = 0
+    this.listBuy = []
+    const dash = await httpDash.GetListBuy(this.selectedClient, this.selectedStatus, this.selectedTipo)
+    dash.data.map((item) => {
+      this.listBuy.push({
+        count_rev: item.count_rev,
+        description: item.description,
+        quantity_to_buy: this.valueBuy(item.quantity_to_buy),
+        unit_of_measurement: this.unitOfMeasurementVerify(
+          item.unit_of_measurement,
+          item.quantity_to_buy
+        ),
+        value_prediction: item.value_prediction,
+      })
+      this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
+
+    })
+
+    this.$store.commit('VALUE_COMPRAS', this.valueListBuy)
+    this.loadingListBuy = false
+    },
     unitOfMeasurementVerify(unidade, valor) {
       if (unidade == 'u') {
           return 'Unidades'
@@ -506,13 +562,21 @@ export default Vue.extend({
       }
     },
   },
+
 })
 </script>
 
 <style scoped lang="scss">
+
+.imgCooke{
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+}
 .list-buy {
   min-height: 12rem;
   overflow: scroll;
+  z-index: 9999;
 }
 .line-buy {
   display: flex;
@@ -648,6 +712,16 @@ export default Vue.extend({
     justify-content: space-between;
   }
 
+  .btnExibir {
+    width: 100%;
+    background: var(--red);
+    color: var(--white);
+    font-weight: 600;
+    padding: 0.5rem;
+    font-size: 1rem;
+    position: relative;
+    bottom: 0;
+  }
   .informationOrder {
     padding: 0 1rem;
     min-height: 300px;

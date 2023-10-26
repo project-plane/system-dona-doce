@@ -1,9 +1,9 @@
 <template>
   <div class="calendar-container">
     <HeaderDashboard />
-    <section v-if="this.$store.state.selectedStatus === 'Pré-Produção'">
+    <!-- <section v-if="this.$store.state.selectedStatus === 'Pré-Produção'"> -->
       <CalendarDashboard />
-    </section>
+    <!-- </section> -->
   </div>
 </template>
 
@@ -18,6 +18,40 @@ export default Vue.extend({
       isToday: true,
       calendarStatus: false,
       date: new Date(),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
       visualization: false,
     }
   },
