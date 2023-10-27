@@ -9,8 +9,9 @@
           <select v-model="selectedClient" @change="searchCliente">
             <option value="" disabled>Selecionar Cliente</option>
             <option value="" >Todos</option>
-            <option v-for="item in listClient" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
+            <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
         </select>
+        <!-- <pre>{{ listClient[0].id }}</pre> -->
         </div>
           <div class="input">
             <label>Tipo Pedido</label>

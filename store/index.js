@@ -15,6 +15,7 @@ export const state = () => ({
   selectedStatus: '',
   selectedClient: '',
   listAllOrder: [],
+  value_buy: 0,
   pedidos: [],
   postCoffe:{
     fk_company:"",
@@ -68,22 +69,26 @@ export const mutations = {
   },
   SELECTED_CLIENT(state, payload) {
     state.selectedClient = payload
-    console.log(state.selectedClient );
+  },
+  VALUE_COMPRAS(state, payload) {
+    state.value_buy = payload
   },
   SELECTED_NAME_CLIENT(state, payload) {
     state.nomeCliente = payload
     console.log(state.nomeCliente );
   },
   adicionarPedido(state, pedido) {
-    state.pedidos.push(pedido); 
+    state.pedidos.push(pedido);
+    console.log(state.pedidos);
+    state.pedidos.push(pedido);
   },
   removerPedido(state, fk_revenue) {
     const index = state.postCoffe.createOrderCoffeItemDto.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
 
     if (index !== -1) {
-      
+
       state.postCoffe.createOrderCoffeItemDto.splice(index, 1);
-     
+
     }
     const id = state.pedidos.findIndex((data) => data.fk_revenue === fk_revenue);
 
@@ -97,7 +102,7 @@ export const mutations = {
     if (index !== -1) {
       state.postCoffe.createOrderCoffeItemDto[index].amountItem += novoAmountItem;
 }
-    
+
     const pedido = state.pedidos.find((pedido) => pedido.fk_revenue === fk_revenue);
 
     if (pedido) {
@@ -113,19 +118,18 @@ export const mutations = {
   },
   addOrder(state, { id, data }) {
     state.postCoffe.fk_company = id;
-    
+
     if (data !== null) {
       state.postCoffe.createOrderCoffeItemDto.push(data);
     }
-  
     console.log(state.pedidos);
   },
   selectUnity(state, id) {
-    state.unidadeCliente = id; 
+    state.unidadeCliente = id;
 
   },
   setDataOrder(state, date){
-    state.dataPedido = date; 
+    state.dataPedido = date;
   },
- 
+
 }

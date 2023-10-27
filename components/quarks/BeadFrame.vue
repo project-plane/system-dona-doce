@@ -2,7 +2,7 @@
     <div v-if="route === '/dashboard/dashboard'" class="containerFrame">
         <div class="contentSlot">
             <div class="abaItens">
-                <h3 :class="{ abaNotActive: abaNotActive }" class="abaActive" @click="pedidos">Itens do Pedidos</h3>
+                <h3 :class="{ abaNotActive: abaNotActive }" class="abaActive" @click="pedidos">Itens do Pedido</h3>
 
                 <h3 :class="{ abaNotActive: !abaNotActive }" class="abaActive" @click="entrega">Itens da Entrega</h3>
             </div>

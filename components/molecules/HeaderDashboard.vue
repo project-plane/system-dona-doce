@@ -30,24 +30,23 @@
           <label>Status</label>
           <select v-model="selectedAgenda">
             <option value="">Todos</option>
-            <option value="Solicitado">Solicitado</option>
-            <option value="Agendado">Agendado</option>
-            <option value="Pré-Produção">Pré-Produção</option>
-            <option value="Em Processamento">Em Processamento</option>
-            <option value="Em Entrega">Em Entrega</option>
-            <option value="Entregue">Entregue</option>
+            <option value="022ac120002-1c69-11ee-be56-0242ac120002">Solicitado</option>
+            <option value="11ee6828-1c69-11ee-be56-c691200020241">Agendado</option>
+            <option value="314e2828-1c69-11ee-be56-c691200020241">Pré-Produção</option>
+            <option value="45690813-1c69-11ee-be56-c691200020241">Em Processamento</option>
+            <option value="789850813-1c69-11ee-be56-c691200020241">Em Entrega</option>
+            <option value="1c69c120002-575f34-1c69-be56-0242ac1201c69">Entregue</option>
           </select>
         </div>
         <div class="input">
           <label>Clientes</label>
           <select v-model="selectedClient">
-            <option value="" disabled>Selecionar Cliente</option>
             <option value="" >Todos</option>
             <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
         </select>
         </div>
 
-        
+
       </div>
     </div>
     <div class="row-calendar">
@@ -71,7 +70,7 @@ import httpClients from '~/server/cliente'
 export default Vue.extend({
 
   props: {
-   
+
   },
   data() {
     return {

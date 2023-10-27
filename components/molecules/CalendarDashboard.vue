@@ -23,8 +23,18 @@
         </div>
       </div>
     </div>
-    <img v-if="visualization" @click="visualization = false" src="~/assets/icons/eye.svg" alt="" />
-    <img v-else @click="visualization = true" src="~/assets/icons/eyeClose.svg" alt="" />
+    <img
+      v-if="visualization"
+      @click="visualization = false"
+      src="~/assets/icons/eye.svg"
+      alt=""
+    />
+    <img
+      v-else
+      @click="visualization = true"
+      src="~/assets/icons/eyeClose.svg"
+      alt=""
+    />
   </div>
 </template>
 
@@ -37,58 +47,98 @@ export default Vue.extend({
   data() {
     return {
       visualization: true,
-      valorVendas: null,
-      valorCompras: null,
-      valorTotal: null,
-      listOrder: [],
+      valorVendas: 0,
+      valorCompras: this.$store.state.value_buy,
+      valorComprasUpdate:0,
+      valorTotal: 0,
+      listOrder: this.$store.state.listAllOrder,
     }
   },
+  watch:{
+    async listAllOrderComputed(newValue) {
+      this.listOrder = []
+      this.listOrder = newValue
+      await this.atualizar();
 
-  async fetch() {
-    await httpOrder.OrderHistory().then((res) => {
-      this.listOrder = res.data
+
+    },
+
+    async valueBuyComputed(newValue){
+      this.valorComprasUpdate = newValue
+      await this.atualizar();
+
+
+    }
+  },
+  computed: {
+     listAllOrderComputed() {
+     return this.$store.state.listAllOrder
+    },
+
+    valueBuyComputed(){
+      return this.$store.state.value_buy
+    },
+    async fetch() {
+      // await httpOrder.OrderHistory().then((res) => {
+      // this.listOrder = this.$store.state.listAllOrder
       // console.log(this.listOrder)
-    })
+      // })
 
-    const valorUniqOrder = []
-    this.listOrder.map((e) => {
-      valorUniqOrder.push(e.valueOrder)
-    })
+      await this.atualizar();
 
-    const valorVendas = valorUniqOrder.reduce((soma, i) => {
-      return soma + i
-    })
 
-    // converte o valor de vendas para moeda BRL
-    const convertMoedasVendas = valorVendas.toLocaleString('pt-br', {
-      style: 'currency',
-      currency: 'BRL',
-    })
-    const convertyVendas = convertMoedasVendas.replace('R$', '').replace('.', '').replace(',', '.')
-
-    this.valorVendas = convertMoedasVendas
-    this.valorCompras = 2000
-
-    // converte o valor de compras para moeda BRL
-    const convertMoedasCompras = this.valorCompras.toLocaleString('pt-br', {
-      style: 'currency',
-      currency: 'BRL',
-    })
-    const convertyCompras = convertMoedasCompras.replace('R$', '').replace('.', '').replace(',', '.')
-
-    this.valorCompras = convertMoedasCompras
-
-    this.valorTotal = convertyVendas - convertyCompras
-    // converte o valor total para moeda BRL
-    const convertTotal = this.valorTotal.toLocaleString('pt-br', {
-      style: 'currency',
-      currency: 'BRL',
-    })
-
-    this.valorTotal = convertTotal
-    // console.log(convertTotal);
+      // console.log(convertTotal);
+    },
 
   },
+  methods:{
+    async atualizar(){
+      const valorUniqOrder = []
+      var valorVendasOrder = 0;
+      this.listOrder.map((e) => {
+        valorUniqOrder.push(e.valueOrder)
+        valorVendasOrder += e.valueOrder
+      })
+
+      const valorVendas = valorVendasOrder
+
+      // converte o valor de vendas para moeda BRL
+      const convertMoedasVendas = valorVendas.toLocaleString('pt-br', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+      // const convertyVendas = convertMoedasVendas
+      //   .replace('R$', '')
+      //   .replace('.', '')
+      //   .replace(',', '.')
+
+      this.valorVendas = convertMoedasVendas
+
+      this.valorCompras = this.valorComprasUpdate
+
+      this.valorTotal = valorVendas - this.valorCompras
+
+      // converte o valor de compras para moeda BRL
+      const convertMoedasCompras = this.valorCompras.toLocaleString('pt-br', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+      // const convertyCompras = convertMoedasCompras
+      //   .replace('R$', '')
+      //   .replace('.', '')
+      //   .replace(',', '.')
+
+      this.valorCompras = convertMoedasCompras
+
+      // converte o valor total para moeda BRL
+      const convertTotal = this.valorTotal.toLocaleString('pt-br', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+
+      this.valorTotal = convertTotal
+    }
+  }
 })
 </script>
 

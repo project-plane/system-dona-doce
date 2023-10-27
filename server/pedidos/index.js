@@ -13,14 +13,14 @@ export default {
     return await http.patch(`order/disabled/${id}`)
   },
 
-  OrderHistory: async () => {
-    return await http.get(`order/all?clientskip=0&limit=10000`)
+  OrderHistory: async (client = "", orderType = "", orderStatus = "") => {
+    return await http.get(`order/all?fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
-  GetOrderCliente: async (id) => {
-    return await http.get(`order/all?desc_user_or_client=${id}&clientskip=0&limit=10000`)
-
+  GetOrderCliente: async (client, orderType = "", orderStatus = "") => {
+    return await http.get(`order/all?fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
-  Orderspercustomer: async()=>{
+  
+  Orderspercustomer: async () => {
     return await http.get(`order/client?clientskip=0&limit=10000`)
   },
 
@@ -33,7 +33,7 @@ export default {
   UploaQtdBandejas: async (id, data) => {
     return await http.patch(`order/tray/${id}`, data)
   },
-    // o cliente adiciona o comprovante de pagamento
+  // o cliente adiciona o comprovante de pagamento
   PostComprovante: async (id, data) => {
     return await http.patch(`/order/payment_voucher/${id}`, data)
   },
