@@ -29,7 +29,6 @@ export default Vue.extend({
   methods: {
     async setVisible(payload) {
       this.histOrderVisilble = payload
-      console.log({payload});
 
       await new Promise(() =>
         setTimeout(() => {

@@ -41,13 +41,14 @@ export default Vue.extend({
       selectedTipo: this.$store.state.selectedTipo,
       selectedStatus: this.$store.state.selectedStatus,
       selectedClient: this.$store.state.selectedClient,
+      dataCalendar: new Date()
     }
   },
   async fetch() {
     this.loading = true
     this.dataPedidos = []
     await httpOrder
-      .OrderHistory(this.selectedClient, this.selectedTipo, this.selectedStatus)
+      .OrderHistory(this.dataCalendar,this.selectedClient, this.selectedTipo, this.selectedStatus)
       .then((res) => {
         this.dataPedidos = res.data
         this.$store.commit('LIST_ALL_ORDER', this.dataPedidos)
@@ -70,20 +71,22 @@ export default Vue.extend({
     },
     async selectedClientComputed(newValue){
       this.selectedClient = newValue
-      console.log({client: newValue})
       await this.atualizar();
+    },
+    async selectedCalendarComputed(newValue){
+      this.dataCalendar = newValue
 
+      await this.atualizar();
     }
   },
   methods: {
     clickOrderFind(order) {
-      console.log(order)
     },
 
     async atualizar(){
       this.loading = true
       this.dataPedidos = []
-        await httpOrder.OrderHistory(this.selectedClient, this.selectedTipo, this.selectedStatus)
+        await httpOrder.OrderHistory(this.dataCalendar,this.selectedClient, this.selectedTipo, this.selectedStatus)
         .then((res) => {
           this.dataPedidos = res.data
           this.$store.commit('LIST_ALL_ORDER', this.dataPedidos)
@@ -106,6 +109,9 @@ export default Vue.extend({
        },
         selectedClientComputed(){
         return this.$store.state.selectedClient
+       },
+       selectedCalendarComputed(){
+        return this.$store.state.dateCalendar
        }
   },
 })

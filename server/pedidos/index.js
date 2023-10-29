@@ -13,8 +13,8 @@ export default {
     return await http.patch(`order/disabled/${id}`)
   },
 
-  OrderHistory: async (client = "", orderType = "", orderStatus = "") => {
-    return await http.get(`order/all?fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
+  OrderHistory: async (data = undefined, client = "", orderType = "", orderStatus = "") => {
+    return await http.get(`order/all?data=${data}&fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
   Orderspercustomer: async () => {
     return await http.get(`order/client?clientskip=0&limit=10000`)
