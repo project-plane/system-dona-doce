@@ -317,6 +317,7 @@
 <script lang="ts">
 import httpOrder from '@/server/pedidos/index'
 import httpDash from '@/server/dashboard/index'
+import dayjs from '~/services/dayjs'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -341,6 +342,7 @@ export default Vue.extend({
       selectedTipo: this.$store.state.selectedTipo || "",
       selectedStatus: this.$store.state.selectedStatus || "",
       selectedClient: this.$store.state.selectedClient || "",
+      dataCalendar: dayjs.formtDateUSA(new Date()) || this.$store.state.dateCalendar
     }
   },
   async fetch() {
@@ -348,7 +350,7 @@ export default Vue.extend({
     this.valueListBuy = 0
     this.listBuy = []
     this.dadosOrderFindClient = this.$store.state.dadosPedidos
-    const dash = await httpDash.GetListBuy(this.selectedClient, this.selectedStatus, this.selectedTipo)
+    const dash = await httpDash.GetListBuy(this.dataCalendar,this.selectedClient, this.selectedStatus, this.selectedTipo)
     dash.data.map((item) => {
       this.listBuy.push({
         count_rev: item.count_rev,
@@ -380,6 +382,10 @@ export default Vue.extend({
       this.selectedClient = newValue
       await this.atualizar();
 
+    },
+    async selectedCalendarComputed(newValue){
+      this.dataCalendar = dayjs.formtDateUSA(newValue)
+      await this.atualizar();
     }
   },
   computed: {
@@ -398,9 +404,13 @@ export default Vue.extend({
        },
         selectedClientComputed(){
         return this.$store.state.selectedClient
+       },
+       selectedCalendarComputed(){
+        return this.$store.state.dateCalendar
        }
   },
   methods: {
+
     async gerarPDF(){
       this.gerarPdfVariable = false
       this.$emit("setVisibleInFi", false)
@@ -414,7 +424,7 @@ export default Vue.extend({
     this.loadingListBuy = true
     this.valueListBuy = 0
     this.listBuy = []
-    const dash = await httpDash.GetListBuy(this.selectedClient, this.selectedStatus, this.selectedTipo)
+    const dash = await httpDash.GetListBuy(this.dataCalendar,this.selectedClient, this.selectedStatus, this.selectedTipo)
     dash.data.map((item) => {
       this.listBuy.push({
         count_rev: item.count_rev,

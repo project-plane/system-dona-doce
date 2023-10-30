@@ -12,6 +12,11 @@ export default {
     return dayjs(date).utc(false).format('DD/MM/YYYY')
   },
 
+  formtDateUSA: (date) => {
+
+    return dayjs(date).utc(false).format('YYYY-MM-DD')
+  },
+
   formtDateAddHour: (date, hour) => {
     return dayjs(date).add(hour, 'h').utc(false).toDate()
   },
