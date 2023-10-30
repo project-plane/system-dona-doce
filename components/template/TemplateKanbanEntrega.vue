@@ -11,9 +11,8 @@
                 <div class="column-header">
                     <span>Ordem de Rota</span>
                 </div>
-
                 <draggable v-model="list" class="kanban-list" ghost-class="ghost">
-                    <CardKanban v-for="(item, index) in list" :key="index" :data-object="item" type-card="entrega"/>
+                    <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" type-card="entrega"/>
                 </draggable>
             </div>
 
@@ -24,6 +23,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import draggable from 'vuedraggable';
+import httpRotas from "@/server/kanban/index.js"
 import dayjs from 'dayjs'
 export default Vue.extend({
     components: { draggable},
@@ -35,7 +35,8 @@ export default Vue.extend({
                 {id: 1, unidade: 'EcoGreen Unidade 01', endereco: 'Avenida das Árvores, 456', bairro: 'Armando Mendes'},
                 {id: 2, unidade: 'EcoGreen Unidade 02', endereco: 'Avenida das Árvores, 456', bairro: 'Armando Mendes'},
                 {id: 3, unidade: 'EcoGreen Unidade 03', endereco: 'Avenida das Árvores, 456', bairro: 'Armando Mendes'}
-            ]
+            ],
+            listRotas:{},
         }
     },
 
@@ -46,7 +47,17 @@ export default Vue.extend({
         formatDateTomorrow(date) {
             return dayjs(date).add(1, 'day').format('DD/MM')
         }
-    }
+    },
+    async fetch(){
+    httpRotas.GetOrderRouteCompany().then((res) => {
+      this.listRotas = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    
+  }
+
 })
 </script>
 
