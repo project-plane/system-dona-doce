@@ -39,4 +39,8 @@ export default {
   PostCommitClient: async (fk_order, data) => {
     return await http.patch(`/clients/order/${fk_order}`, data)
   },
+  UpdateOrderItem: async (data) => {
+    return await http.patch(`/orderitem/programmed`, data)
+  },
+
 }

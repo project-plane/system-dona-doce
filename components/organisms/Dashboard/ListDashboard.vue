@@ -15,6 +15,7 @@
           :index="index"
           @click.native="clickOrderFind(pedidos)"
         />
+        
         <span v-if="dataPedidos.length <= 0" class="spanFiltro">
           Nenhum resultado encontrado. <br />
           Tente ajustar os filtros da sua pesquisa e tente novamente
