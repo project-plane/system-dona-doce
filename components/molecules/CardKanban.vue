@@ -64,7 +64,7 @@ export default Vue.extend({
     display: flex;
     border-radius: 0.25rem;
     padding: 0.5rem;
-    cursor: grab;
+    // cursor: grab;
 
     .cardKanban-number {
         width: 15%;
