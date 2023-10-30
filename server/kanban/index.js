@@ -7,6 +7,15 @@ export default {
 
   UpdateKanban: async (id, seq) => {
     return await http.patch(`/control-production/kambam/${id}/${seq}`)
-  }
+  },
+  GetOrderRoute: async ()=> {
+     return await http.get(`/order/kambamRoute`)
+ 
+  },
+  GetOrderRouteCompany: async ()=> {
+    return await http.get(`/company/priority`)
+
+ },
+  
 
 }

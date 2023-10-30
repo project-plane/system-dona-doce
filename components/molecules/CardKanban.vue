@@ -27,9 +27,9 @@
                 <span>Bairro</span>
             </div>
             <div class="value">
-                <span>{{ dataObject.unidade }}</span>
-                <span>{{ dataObject.endereco }}</span>
-                <span>{{ dataObject.bairro }}</span>
+                <span>{{ dataObject.corporate_name }}</span>
+                <span>{{ dataObject.address }} <strong>CEP -</strong> {{ dataObject.cep }}</span>
+                <span>{{ dataObject.district }}</span>
             </div>
         </div>
     </div>

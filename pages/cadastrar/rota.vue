@@ -33,13 +33,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import httpRotas from "@/server/kanban/index.js"
 export default Vue.extend({
   data() {
     return {
       textSearch: ''
     }
   },
+  
+  async fetch(){
+    httpRotas.GetOrderRouteCompany().then((res) => {
+      console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+   
+    
+  }
 
 })
 </script>
