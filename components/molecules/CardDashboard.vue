@@ -55,6 +55,7 @@ v-if="$store.state.selectedStatus ===
             <p>{{ dataPedidos.numberOrder }}</p>
             <div class="descriptionCompany">
               <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
+
               <span v-if="dataPedidos.order_type === 'programmed'" class="date-blue">{{ currentDate() }}</span>
               <span v-if="dataPedidos.order_type === 'coffe'" class="date-red">{{ currentDate() }}</span>
             </div>

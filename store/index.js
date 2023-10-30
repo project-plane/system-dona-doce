@@ -25,9 +25,14 @@ export const state = () => ({
   unidadeCliente:"",
   nomeCliente:"",
   dataPedido:"",
+  dateCalendar: null
 })
 
 export const mutations = {
+  NEWDATECALENDAR(state, payload){
+    state.dateCalendar = payload
+
+  },
   LIST_ALL_ORDER(state, payload) {
     state.listAllOrder = payload
   },

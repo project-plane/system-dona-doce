@@ -1,11 +1,12 @@
 import http from "../config";
 
 export default {
-  GetListBuy: async (client = "", orderStatus = "", orderType = "") => {
+  GetListBuy: async (data= undefined,client = "", orderStatus = "", orderType = "") => {
     return await http.patch(`/dashboard/shoppingList`, {
       orderStatus,
       orderType,
-      client
+      client,
+      data
     })
   },
 

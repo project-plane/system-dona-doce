@@ -8,23 +8,30 @@
           <span><strong>Total:</strong> {{ valueorder(data.orderItem) }}</span>
         </div>
 
-        <span><strong>Data:</strong> {{ formatDate(data.dateOrder) }}</span>
+        <span><strong>Data de Solicitação:</strong> {{ formatDate(data.dateOrder) }}</span>
+        <span><strong>Data de Entrega:</strong> {{ formatDate(data.orderItem[0].delivery_date) }}</span>
         <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
       </div>
 
-      <!-- <div class="dcardapio">
-        <div style="display: flex; justify-content: center">
+      <div class="dcardapio">
+        <div style="display: flex; justify-content: center; flex-direction: column;  ">
+          <div style="width: 100%; text-align: center;">
           <strong>Itens de Pedido</strong>
+        </div>
+        <div  class="dpedidos"  >
+          <div>Descrição</div>
+            <div> Valor Total</div>
+        </div>
         </div>
         <div v-for="(iten, index) in data.orderItem" :key="index">
           <div class="dpedidos">
             <div>{{ iten.revenues.description }}</div>
-            <div> R$: {{ iten.revenue_value_on_the_day.toFixed(2) }} </div>
+            <div> R$: {{ iten.amountItem * iten.valueOrderItem.toFixed(2) }} </div>
           </div>
 
           <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
         </div>
-      </div> -->
+      </div>
 
       <div class="footer-card">
         <span
@@ -52,7 +59,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import dayjs from 'dayjs'
+import dayjs from '~/services/dayjs'
 export default Vue.extend({
   props: {
     data: {
@@ -89,7 +96,7 @@ export default Vue.extend({
 
 
     formatDate(date) {
-      return dayjs(date).format('DD/MM/YYYY')
+      return dayjs.formtDateBr(date)
     },
 
     openModalHistorico() {
@@ -109,6 +116,11 @@ export default Vue.extend({
   width: 24rem;
   position: relative;
   top: 0.2999vw;
+}
+
+.dpedidos{
+  display: flex;
+  justify-content: space-between;
 }
 .card-historico-container {
   width: 24rem;

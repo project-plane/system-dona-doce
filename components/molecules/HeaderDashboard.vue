@@ -97,6 +97,9 @@ export default Vue.extend({
   },
   watch: {
     date(newValue) {
+
+      this.$store.commit('NEWDATECALENDAR', newValue)
+
       if (
         newValue.toISOString().split('T')[0] !==
         new Date().toISOString().split('T')[0]
