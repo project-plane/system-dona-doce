@@ -49,6 +49,7 @@ v-if="$store.state.selectedStatus ===
         dataPedidos.orderStatus.description ||
         $store.state.selectedStatus === ''
         " class="cards">
+
         <div class="titleCard">
           <div class="titleCompany">
             <p>{{ dataPedidos.numberOrder }}</p>
@@ -72,7 +73,7 @@ v-if="$store.state.selectedStatus ===
               Status:
               <strong>{{ dataPedidos.orderStatus.description }}</strong>
               <!-- <pre>{{ dataPedidos }}</pre> -->
-   
+
             </span>
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
           </div>
@@ -84,7 +85,7 @@ v-if="$store.state.selectedStatus ===
 v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
                 @click="statusOrder" />
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -95,7 +96,7 @@ v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3d
 import Vue from 'vue'
 
 import httpOrder from '@/server/pedidos'
-
+import dayjs from "~/services/dayjs"
 export default Vue.extend({
   props: {
     dataPedidos: {
@@ -124,7 +125,7 @@ export default Vue.extend({
   },
   methods: {
     // downloadPDF() {
-    //   const pdfData = ""+ this.dataPedidos.file_caution; 
+    //   const pdfData = ""+ this.dataPedidos.file_caution;
     //   const blob = new Blob([pdfData], { type: 'application/pdf' });
 
     //   const url = window.URL.createObjectURL(blob);
@@ -146,13 +147,9 @@ export default Vue.extend({
       this.modalPedido = true
     },
     currentDate() {
-      const dateOrder = new Date(this.dataPedidos.dateOrder)
 
-      const dia = dateOrder.getDate().toString()
-      const mes = (dateOrder.getMonth() + 1).toString()
-      const ano = dateOrder.getFullYear()
 
-      const data = `${dia}/${mes}/${ano}`
+      const data = dayjs.formtDateBr(this.dataPedidos.orderItem[0].delivery_date)
       return data
     },
     cancelarStatus() {
@@ -208,6 +205,7 @@ h2 {
 
 .cards {
   width: 100%;
+  max-width: 412.6px;
   height: auto;
   border: 1px solid var(--border);
   background: var(--white);

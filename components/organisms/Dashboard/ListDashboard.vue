@@ -4,48 +4,21 @@
       <LoadingPage />
     </div>
     <div v-else class="cards-container">
-      <!-- <div class="inputCheckbox">
-      <input v-model="selectAll" type="checkbox" />
-      <Label>Selecionar Todos</Label>
-    </div> -->
 
-      <div v-if="$store.state.selectedTipo === ''" class="cardDashboard">
+
+      <div class="cardDashboard">
         <CardDashboard
-          v-for="(pedidos, index) in filteredItems"
+          v-for="(pedidos, index) in dataPedidos"
           :key="index"
           :data-pedidos="pedidos"
           :all-pedidos="dataPedidos"
           :index="index"
           @click.native="clickOrderFind(pedidos)"
         />
-        <span v-if="filteredItems.length <= 0" class="spanFiltro">
+        <span v-if="dataPedidos.length <= 0" class="spanFiltro">
           Nenhum resultado encontrado. <br />
           Tente ajustar os filtros da sua pesquisa e tente novamente
         </span>
-      </div>
-
-      <div
-        v-if="$store.state.selectedTipo === 'programmed'"
-        class="cardDashboard"
-      >
-        <CardDashboard
-          v-for="(pedidos, index) in pedidoProgramado"
-          :key="index"
-          :data-pedidos="pedidos"
-          :all-pedidos="dataPedidos"
-          :index="index"
-        />
-      </div>
-
-      <div v-if="$store.state.selectedTipo === 'coffe'" class="cardDashboard">
-        <CardDashboard
-          v-for="(pedidos, index) in pedidoCoffee"
-          :key="index"
-          :data-pedidos="pedidos"
-          :all-pedidos="dataPedidos"
-          :index="index"
-          @click.native="clickOrderFind(pedidos)"
-        />
       </div>
     </div>
   </div>
@@ -65,12 +38,17 @@ export default Vue.extend({
       pedidoProgramado: [],
       pedidoCoffee: [],
       loading: false,
+      selectedTipo: this.$store.state.selectedTipo,
+      selectedStatus: this.$store.state.selectedStatus,
+      selectedClient: this.$store.state.selectedClient,
+      dataCalendar: new Date()
     }
   },
   async fetch() {
     this.loading = true
+    this.dataPedidos = []
     await httpOrder
-      .OrderHistory()
+      .OrderHistory(this.dataCalendar,this.selectedClient, this.selectedTipo, this.selectedStatus)
       .then((res) => {
         this.dataPedidos = res.data
         this.$store.commit('LIST_ALL_ORDER', this.dataPedidos)
@@ -79,33 +57,62 @@ export default Vue.extend({
         console.log(error)
       })
 
-    this.dataPedidos.map((e) => {
-      if (e.order_type === 'programmed') {
-        this.pedidoProgramado.push(e)
-      } else {
-        this.pedidoCoffee.push(e)
-      }
-    })
-
     this.loading = false
   },
-  watch: {},
+  watch: {
+    async selectedTipoComputed(newValue){
+        this.selectedTipo = newValue
+        await this.atualizar();
+      },
+    async selectedStatusComputed(newValue){
+      this.selectedStatus = newValue
+      await this.atualizar();
+
+    },
+    async selectedClientComputed(newValue){
+      this.selectedClient = newValue
+      await this.atualizar();
+    },
+    async selectedCalendarComputed(newValue){
+      this.dataCalendar = newValue
+
+      await this.atualizar();
+    }
+  },
   methods: {
     clickOrderFind(order) {
-      console.log(order)
     },
+
+    async atualizar(){
+      this.loading = true
+      this.dataPedidos = []
+        await httpOrder.OrderHistory(this.dataCalendar,this.selectedClient, this.selectedTipo, this.selectedStatus)
+        .then((res) => {
+          this.dataPedidos = res.data
+          this.$store.commit('LIST_ALL_ORDER', this.dataPedidos)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      this.loading = false
+
+    }
+
   },
   computed: {
-    filteredItems() {
-      if (!this.$store.state.selectedClient) {
-        return this.dataPedidos;
-      } else {
-        // Filtrar os itens com base no valor selecionado
-        return this.dataPedidos.filter(
-          (item) => item.fk_user === this.$store.state.selectedClient
-        )
-      }
-    },
+    selectedTipoComputed(){
+        return this.$store.state.selectedTipo
+       },
+    selectedStatusComputed(){
+        return this.$store.state.selectedStatus
+       },
+        selectedClientComputed(){
+        return this.$store.state.selectedClient
+       },
+       selectedCalendarComputed(){
+        return this.$store.state.dateCalendar
+       }
   },
 })
 </script>

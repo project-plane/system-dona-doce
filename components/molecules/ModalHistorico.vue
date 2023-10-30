@@ -532,7 +532,7 @@ export default Vue.extend({
     background-color: transparent;
     font-weight: 600;
     box-shadow: 1px 1px 2px rgba(163, 121, 121, 0.5411764706);
-  
+
     &:hover{
       background: #ce250fb4;
       transition-duration: 1s;
@@ -551,8 +551,8 @@ export default Vue.extend({
     border-bottom-left-radius: .2rem;
     background-color: var(--red);
     box-shadow: 2px 5px 1px rgba(163, 121, 121, 0.5411764706);
-    
-   
+
+
   }
 }
 .listProduts {
@@ -663,7 +663,7 @@ export default Vue.extend({
       display: flex;
       flex-direction: column;
       width: 17rem;
-      
+
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="cardKanban-container">
         <div class="cardKanban-number">
-            {{ idOrder }}
+            {{ dataObject.priority }}
         </div>
         <div v-if="typeCard !== 'entrega'" class="cardKanban-infos">
             <div class="legend">
@@ -20,18 +20,21 @@
             </div>
         </div>
 
-        <div v-else class="cardKanban-infos">
+        <table v-else class="cardKanban-infos">
             <div class="legend">
-                <span>Unidade</span>
-                <span>Endereço</span>
+                <span>Unidade:</span>
+                <span>Endereço:</span>
                 <span>Bairro</span>
+                <span>CEP:</span>
             </div>
             <div class="value">
-                <span>{{ dataObject.unidade }}</span>
-                <span>{{ dataObject.endereco }}</span>
-                <span>{{ dataObject.bairro }}</span>
+                <span>{{ dataObject.corporate_name }}</span>
+                <span>{{ dataObject.address }} </span>
+                <span>{{ dataObject.district }}</span>
+                <span>{{ dataObject.cep }}</span>
+        
             </div>
-        </div>
+        </table>
     </div>
 </template>
 
@@ -61,7 +64,7 @@ export default Vue.extend({
     display: flex;
     border-radius: 0.25rem;
     padding: 0.5rem;
-    cursor: grab;
+    // cursor: grab;
 
     .cardKanban-number {
         width: 15%;
@@ -93,6 +96,10 @@ export default Vue.extend({
         .value > span:first-child {
             font-weight: 600;
             color: var(--red);
+            max-width: 18ch;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 }
