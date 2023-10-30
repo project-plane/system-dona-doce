@@ -13,6 +13,7 @@
           <th>Rotas</th>
           <th>Unidade</th>
           <th>Endereço</th>
+          <th>Data</th>
           <th>Opções</th>
         </tr>
       </thead>
@@ -22,6 +23,7 @@
           <td>  <input style="width: 4.6rem; text-align: center;" type="number"  v-model="item.priority" ></td>
           <td >{{ item.corporate_name }}</td>
           <td>{{ item.address }}, {{ item.district }}</td>
+          <td>{{ formatDate(item.createdAt) }}</td>
           <td>
             <Button title="Salvar" type="submit" @click.native="saveData(item.id, item.priority)" />
           </td>
@@ -35,6 +37,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import http from "@/server/kanban/index.js"
+import dayjs from 'dayjs'
 export default Vue.extend({
   data() {
     return {
@@ -84,7 +87,10 @@ export default Vue.extend({
               this.load = false
           }
 
-      }
+      },
+      formatDate(date) {
+      return dayjs(date).format('DD/MM/YYYY')
+    },
     },
 })
 </script>
