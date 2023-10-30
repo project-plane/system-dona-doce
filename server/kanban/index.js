@@ -1,4 +1,6 @@
 import http from "../config";
+import { async } from './../../.nuxt/utils';
+
 
 export default {
   GetKanban: async (typeCard) => {
@@ -16,6 +18,9 @@ export default {
     return await http.get(`/company/priority`)
 
  },
+  UpdateOrder: async(id, data)=>{
+      return await http.patch(`/company/priority/${id}`, data)
+  }
   
 
 }

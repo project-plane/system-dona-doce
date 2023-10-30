@@ -7,27 +7,25 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Ingrediente</th>
-          <th>Preço Unitário</th>
-          <th>Prioridade de Rota</th>
+          <th>Rotas</th>
+          <th>Unidade</th>
+          <th>Endereço</th>
           <th>Opções</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>teste</td>
-          <td>dfdsfdsfds</td>
-          <td>Rsdfsdfdsfds</td>
+        <tr v-for="(item, index) in listRoutes" :key="index">
+          <td style="width: 6rem; text-align: center;">  <input type="number"  v-model="item.priority" ></td>
+          <td >{{ item.corporate_name }}</td>
+          <td>{{ item.address }}, {{ item.district }}</td>
           <td>
-            <input type="number" placeholder="Digitar prioridade de rota">
-          </td>
-          <td>
-            <Button title="Salvar" />
+            <Button title="Salvar" type="submit" @click.native="saveData(item.id, item.priority)" />
           </td>
         </tr>
       </tbody>
     </table>
+
+  
   </ContainerTable>
 </template>
 
@@ -37,19 +35,36 @@ import httpRotas from "@/server/kanban/index.js"
 export default Vue.extend({
   data() {
     return {
-      textSearch: ''
+      textSearch: '',
+      listRoutes:[],
+      message: 'Digitar prioridade de rota',
+      novaOrdem: null
+      
     }
   },
   
-  async fetch(){
+  fetch(){
     httpRotas.GetOrderRouteCompany().then((res) => {
-      console.log(res.data);
-      })
+      this.listRoutes = res.data
+    })
       .catch((error) => {
         console.log(error)
       })
-
-   
+    
+  },
+  methods:{
+    saveData(index, item){      
+      const data ={
+        "priority": parseInt(item)
+      }
+      httpRotas.UpdateOrder(index, data).then((res) => {
+        this.$toast.info('Prioridade de Rotas atualizadas');
+        this.$nuxt.refresh()
+    })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     
   }
 
