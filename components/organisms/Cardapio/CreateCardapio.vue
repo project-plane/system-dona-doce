@@ -6,7 +6,7 @@
     <div class="calendar-content">
       <div class="calendar">
         <span>Selecione uma data</span>
-        <v-date-picker v-model="date" :attributes="attributes" is-expanded mode="date"  color="red" />
+        <v-date-picker v-model="date" :attributes="attributes"  is-expanded mode="date"  color="red" />
       </div>
 
       <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
@@ -44,6 +44,7 @@ import httpReceitas from '~/server/receitas'
 export default Vue.extend({
   data() {
     return {
+      minDate: new Date(),
       days: [],
       optionsReceitas: [],
       optionsProgramation: [],
@@ -88,6 +89,12 @@ export default Vue.extend({
 
   watch: {
     date(newValue) {
+      if(newValue <= new Date()){
+        this.$toast.info('Data tem que ser maior que a atual')
+        this.existOnList = true
+
+         return;
+      }
       if (this.days.length === 0) {
         this.cardapio.dateMenu = newValue
       }

@@ -39,4 +39,9 @@ export default {
   PostCommitClient: async (fk_order, data) => {
     return await http.patch(`/clients/order/${fk_order}`, data)
   },
+  PatchCancelOrderByClient: async (fk_order) => {
+    return await http.patch(`/clients/order/${fk_order}`, {
+      fk_order_status: "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4"
+    })
+  },
 }

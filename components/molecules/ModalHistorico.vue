@@ -408,7 +408,7 @@ export default Vue.extend({
     },
     async cancelAnOrder(id) {
       this.isDisabled = true
-      await httpOrder.DeleteOrder(id).then(() => {
+      await httpOrder.PatchCancelOrderByClient(id).then(() => {
         this.isDisabled = false
         this.$toast.error('Pedido Cancelado')
         this.closeModal()

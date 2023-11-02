@@ -14,7 +14,7 @@ export default {
 
   formtDateUSA: (date) => {
 
-    return dayjs(date).utc(false).format('YYYY-MM-DD')
+    return dayjs(date).utc(true).format('YYYY-MM-DD')
   },
 
   formtDateAddHour: (date, hour) => {

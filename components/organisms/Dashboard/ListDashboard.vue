@@ -84,6 +84,8 @@ export default Vue.extend({
     },
 
     async atualizar(){
+      console.log({teste: this.dataCalendar});
+
       this.loading = true
       this.dataPedidos = []
         await httpOrder.OrderHistory(this.dataCalendar,this.selectedClient, this.selectedTipo, this.selectedStatus)
