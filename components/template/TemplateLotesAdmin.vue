@@ -21,6 +21,7 @@ grid-column-gap: 0px;">
           </div>
        
       </div>
+      
       <div class="containerSidebar">
         <h4> Resumo </h4>
         <!-- <label for=""> Data Inicial</label>
@@ -38,7 +39,7 @@ grid-column-gap: 0px;">
               <th>Qtd.</th>
               <th> Valor </th>
             </tr>
-               
+             
             <tr  v-for="(item, id) in selectedCards" :key="id" class="containerTr">
               <td>{{item.numberOrder}}</td>
               <td>
@@ -51,11 +52,12 @@ grid-column-gap: 0px;">
               <td>
                 <span v-for="(data, index) in item.orderItem" :key="index" style="width: 100%;display: flex; flex-direction: column;" >
                 {{ data.valueOrderItem }}</span>
-              </td>
               
+              </td>
 
             </tr>
  
+
 
           </table>
         </div>
@@ -81,9 +83,11 @@ export default Vue.extend({
   },
   methods:{
     async searchCliente(selectedClient){
-      await httpOrder.GetOrderCliente(selectedClient)
+      await httpOrder.GetOrderCliente2(selectedClient)
       .then((res) => {
         this.dataPedidos = res.data
+        console.log( this.dataPedidos);
+        
     
       })
       .catch((error) => {
@@ -92,6 +96,8 @@ export default Vue.extend({
     },
     updateSelectedCards(selectedCard) {
       if (selectedCard.selected) {
+        console.log(this.selectedCards);
+        
         this.$set(this.selectedCards, selectedCard.numberOrder, selectedCard);
       } else {
         this.$delete(this.selectedCards, selectedCard.numberOrder);
@@ -137,6 +143,7 @@ export default Vue.extend({
     flex-wrap: wrap;
     gap: 1.2rem;
     padding: 1rem;
+    
 }
 table{
   width: 100%;

@@ -16,8 +16,11 @@ export default {
   OrderHistory: async (data = undefined, client = "undefined", orderType = "undefined", orderStatus = "undefined") => {
     return await http.get(`order/all?data=${data}&fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
-  GetOrderCliente: async (client, orderType = "", orderStatus = "") => {
+  GetOrderCliente: async (data , client, orderType = "undefined", orderStatus = "undefined") => {
     return await http.get(`order/all?fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
+  },
+   GetOrderCliente2: async (client, orderType = "undefined", orderStatus = "undefined") => {
+    return await http.get(`/order/all2?fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
   
   Orderspercustomer: async () => {

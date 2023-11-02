@@ -53,14 +53,13 @@
           </div>
         </div>
       </div>
+      
     </label>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-
-import httpOrder from '@/server/pedidos'
 import dayjs from 'dayjs'
 
 export default Vue.extend({

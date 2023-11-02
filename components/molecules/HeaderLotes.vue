@@ -58,7 +58,7 @@
         visualization: false,
         selectedType: '',
         selectedAgenda: '',
-        selectedClient: 'CLIENTE 2',
+        selectedClient: '',
         listClient:[],
         startDate: '',
         endDate: '',
