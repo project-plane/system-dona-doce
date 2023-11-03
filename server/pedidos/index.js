@@ -13,7 +13,7 @@ export default {
     return await http.patch(`order/disabled/${id}`)
   },
 
-  OrderHistory: async (data = undefined, client = "", orderType = "", orderStatus = "") => {
+  OrderHistory: async (data = undefined, client = "undefined", orderType = "undefined", orderStatus = "undefined") => {
     return await http.get(`order/all?data=${data}&fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
   Orderspercustomer: async () => {
@@ -43,4 +43,9 @@ export default {
     return await http.patch(`/orderitem/programmed`, data)
   },
 
+  PatchCancelOrderByClient: async (fk_order) => {
+    return await http.patch(`/clients/order/${fk_order}`, {
+      fk_order_status: "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4"
+    })
+  },
 }

@@ -26,13 +26,24 @@
             <th>Item</th>
             <th>Qtde</th>
             <th>Valor Unit.</th>
+            <th>Opções</th>
           </tr>
-
+          <td><pre> {{data}}</pre></td>
           <tr v-for="(item, index) in data.orderItem" :key="index">
             <td>{{ index + 1 }}</td>
             <td>{{ item.revenues.description }}</td>
-            <td>{{ data.orderItem[index].amountItem }}</td>
+            <td> 
+              <input type="number" v-model="data.orderItem[index].amountItem" :disabled="editValue">
+            </td>
             <td>{{ data.orderItem[index].valueOrderItem }}</td>
+        
+            <td> 
+              <button @click="editItem(data.orderItem[index])" style="background-color: transparent;">
+                <img src="../../assets/icons/edit-Table.svg" style="width: 2rem;" alt="" srcset="">
+              </button> 
+            </td>
+     
+           
           </tr>
         </table>
       </section>
@@ -132,6 +143,10 @@
         @click.native="cancelAnOrder(data.id)"
       />
     </div>
+
+
+
+
 
     <div v-else class="dataEmpresa">
       <div class="header-order">
@@ -355,6 +370,9 @@ export default Vue.extend({
       previewComprovante: null,
       amount_of_tray: Number,
       messageClient: '',
+      editValue: false,
+      editObject: {},
+      orderItem: [],
     }
   },
 
@@ -408,7 +426,7 @@ export default Vue.extend({
     },
     async cancelAnOrder(id) {
       this.isDisabled = true
-      await httpOrder.DeleteOrder(id).then(() => {
+      await httpOrder.PatchCancelOrderByClient(id).then(() => {
         this.isDisabled = false
         this.$toast.error('Pedido Cancelado')
         this.closeModal()
@@ -515,6 +533,26 @@ export default Vue.extend({
       } catch (error) {
         this.$toast.error('Erro: ' + error);
       }
+    },
+    updateQtd(){
+      this.editObject = {
+        "fk_order": "string",
+        "fk_revenue": "string",
+        "fk_categoryOrderItem": "string",
+        "amountItem": 0
+      }
+    },
+    editItem(index) {
+      this.editValue != this.editValue
+      console.log(index);
+      this.editObject = {
+        "fk_order": this.numberOrder,
+        "fk_revenue": "string",
+        "fk_categoryOrderItem": index.categoryOrderItem.description,
+        "amountItem": index.amountItem
+      }
+      console.log(this.editObject, 'yes');
+      
     }
   },
 })

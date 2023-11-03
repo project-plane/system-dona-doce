@@ -7,6 +7,7 @@
       />
     </div>
     <div class="descriptionPedido">
+      <pre>{{ infoCoffee }}</pre>
       <h3>{{ infoCoffee.description }}</h3>
       <span>R$: {{ infoCoffee.value }}</span>
     </div>

@@ -3,11 +3,17 @@
     <img  src="/_nuxt/static/icon/cutEffect.svg" alt="" class="svg">
   <div class="containerCard">
     <div class="dataPedido">
-      <span>Cardapio - {{ new Date(dataPedido.dateMenu).getDate() }}/{{
-        new Date(dataPedido.dateMenu).getMonth() + 1
-      }}/{{ new Date(dataPedido.dateMenu).getFullYear() }}</span>
+      <span>Cardapio - {{ convertData(dataPedido.dateMenu) }}</span>
+
     </div>
+
+
     <div class="dcardapio">
+
+      <div class="titlecardapio">
+      <div>Descrição</div>
+      <div>Valor</div>
+    </div>
       <div   v-for="(iten, index) in dataPedido.itemMenu" :key="index">
      <div class="dpedidos">
       <div>  {{ iten.revenues.description }} </div>
@@ -30,6 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import dayjs from "~/services/dayjs"
 
 export default Vue.extend({
   props: {
@@ -44,7 +51,11 @@ export default Vue.extend({
       qtdPedido: 0,
     }
   },
-  methods: {},
+  methods: {
+     convertData(data){
+      return dayjs.formtDateBr(data)
+    }
+  },
 })
 </script>
 
@@ -52,6 +63,14 @@ export default Vue.extend({
 .card {
         display: flex;
         flex-direction: column;
+}
+
+.titlecardapio {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  font-weight: 100;
 }
 .card img {
   width: 24rem;
@@ -70,7 +89,7 @@ export default Vue.extend({
    display: flex;
   justify-content: space-between;
    width: 100%;
- 
+
 }
 
 .containerCard {
@@ -93,7 +112,6 @@ export default Vue.extend({
   .dataPedido {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid var(--border);
     padding-bottom: 1.2rem;
 
     span {
