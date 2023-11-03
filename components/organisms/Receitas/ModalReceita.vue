@@ -22,7 +22,7 @@
               <Label for="ingrediente">Ingrediente</Label>
               <select id="ingrediente" v-model="selected" name="">
                 <option disabled value="">Selecionar Ingrediente</option>
-                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id">
+                <option v-for="itemIngredient in listIngredients" :key="itemIngredient.id" :value="itemIngredient.id">
                   {{ itemIngredient.description }}
                 </option>
               </select>
@@ -30,11 +30,7 @@
             <div class="medida" v-if="unidadeMedida">
               <label for="qtd">Unidade Medida</label>
               <span>{{
-              unidadeMedida.toLowerCase() === "u" ? "Unidade" :
-              unidadeMedida.toLowerCase() === "ml"? "ML" :
-              unidadeMedida.toLowerCase() === "g"? "Gramas" :
-              unidadeMedida.toLowerCase() === "l"? "Litros" :
-              "Not Found Unit of Measurement"
+              unidadeMedida
               }}</span>
             </div>
             <div class="input">
@@ -143,7 +139,8 @@ export default Vue.extend({
 
       this.listIngredients.map((e) => {
 
-        if (e.description === newValue) {
+
+        if (e.id === newValue) {
           this.unidadeMedida = e.unit_of_measurement
         }
         if (e.unit_of_measurement === 'g') {
@@ -171,10 +168,11 @@ export default Vue.extend({
         this.$toast.error('Preencha todos os campos!!!')
         return
       }
+      var verify = true;
 
       this.listIngredients.map((item) => {
 
-        if (item.description === this.selected) {
+        if (item.id === this.selected) {
           const ingredienteExiste = this.amountReceitas.find(
             (amountReceita) => {
               return amountReceita.ingrediente == this.selected
@@ -183,11 +181,12 @@ export default Vue.extend({
           if (!ingredienteExiste) {
             this.amountReceitas.push({
               qtd: this.qtdIngrediente,
-              ingrediente: this.selected,
+              ingrediente: item.description,
               valorUnitario: item.value_per_serving,
               unidadeDeMedida: item.unit_of_measurement,
               valor: (item.value_per_serving * this.qtdIngrediente).toFixed(2),
             })
+
             // array que armazena os valores
             this.amountValue.push(item.value_per_serving * this.qtdIngrediente)
             this.ingredients.push({
@@ -196,17 +195,21 @@ export default Vue.extend({
             })
           } else {
             this.$toast.error('Ingrediente já inserido!!!')
+            verify = false
           }
         }
       })
 
       // soma os valores dentro do array
-      const valorTotal = this.amountValue.reduce((soma, i) => {
+
+      if(verify == true){
+        const valorTotal = this.amountValue.reduce((soma, i) => {
         return soma + i
       })
+      this.valorTotal = valorTotal.toFixed(2)
+      }
 
       // valor total de soma dos ingredientes
-      this.valorTotal = valorTotal.toFixed(2)
 
       this.qtdIngrediente = ''
       this.qtdMinima = ''
