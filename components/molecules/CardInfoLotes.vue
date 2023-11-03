@@ -106,8 +106,10 @@ h2 {
   height: 100%;
   width: 340px;
   min-height: 10rem;
+  max-height: 12rem;
   border: 1px solid var(--border);
   background: var(--white);
+  
   border-radius: 10px;
   padding: 1rem;
   display: flex;

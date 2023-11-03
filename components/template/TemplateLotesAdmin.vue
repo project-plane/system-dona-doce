@@ -7,12 +7,6 @@ grid-template-columns: 70% 30%;
 grid-template-rows: 1fr;
 grid-column-gap: 0px;">
       <div class="listCards">
-          <!-- <section class="filter" style="width: 100%;">
-              <label for="checkAll" style="cursor: pointer; display: flex; gap: .4rem;"> <h3>Selecionar Todos</h3>
-              <input type="checkbox" name="" id="checkAll"  >
-            </label >
-          </section> -->
-          
           <CardInfoLotes v-for="(item, id) in dataPedidos" :key="id" :infoPedidos="item" @update-selection="updateSelectedCards" />
           
           <!-- <pre>{{ selectedCards }}</pre> -->
@@ -23,16 +17,16 @@ grid-column-gap: 0px;">
       </div>
       
       <div class="containerSidebar">
-        <h4> Resumo </h4>
-        <!-- <label for=""> Data Inicial</label>
-        <input type="date" style="border: solid 1px black;">
-        <br>
-        <label for=""> Data Final</label>
-        <input type="date" style="border: solid 1px black;"> -->
+        <section style="display: flex; align-items: center; justify-content: space-evenly;">
+         <p @click="aba = true" style="background-color: transparent; height: 2rem;"> Resumo do Lote </p>
+         <p @click="aba = false" style="background-color: transparent; height: 2rem;"> Finalizar Lote </p>
+        </section>
 
+        <h3>{{ cliente}} </h3>
+        
         <div>
-          <table>
-          
+          <table v-if="aba === true">
+           
             <tr>
               <th>Id</th>
               <th>Itens </th>
@@ -60,6 +54,22 @@ grid-column-gap: 0px;">
 
 
           </table>
+
+          <div v-else>
+              <label for="">
+                Resumo de bandejas
+              </label>
+              <br>
+              <label for="">
+                Resumo de Caixas
+                <input type="number">
+              </label>
+              <br>
+              <label for="">
+                Anexar NF
+                <input type="number">
+              </label>
+          </div>
         </div>
       </div>
 
@@ -79,6 +89,8 @@ export default Vue.extend({
       dataPedidos:[],
       listClient:[],
       selectedCards: {},
+      cliente: "",
+      aba: false,
     }
   },
   methods:{
@@ -96,20 +108,26 @@ export default Vue.extend({
     },
     updateSelectedCards(selectedCard) {
       if (selectedCard.selected) {
+        this.cliente = selectedCard.user.Clients.corporate_name
         console.log(this.selectedCards);
         
-        this.$set(this.selectedCards, selectedCard.numberOrder, selectedCard);
+        this.$set(this.selectedCards, `numberOrder${selectedCard.numberOrder}`,  selectedCard);
       } else {
-        this.$delete(this.selectedCards, selectedCard.numberOrder);
+        this.$delete(this.selectedCards, `numberOrder${selectedCard.numberOrder}`);
       }
     },
+    
     getRevenuesDescription(orderItem) {
       return orderItem.map(item => item.revenues.description).join(', ');
     },
     getvalueOrderItem(orderItem) {
       return orderItem.map(item => item.valueOrderItem).join(', ');
-    }
-  
+    },
+
+    sendLotes(){
+      
+    },
+      
   },
 })
 </script>
@@ -133,8 +151,10 @@ export default Vue.extend({
 
 .containerSidebar{
   padding: 1rem;
-  border-radius: 0.5rem;
+  // border-radius: 0.5rem;
   background: white;
+  max-height: 80vh;
+  overflow-y: scroll;
 }
 .listCards{
     margin: 0 auto;
