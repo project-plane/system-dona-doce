@@ -14,7 +14,7 @@
       <div class="header-order">
         <h4>Data do Pedido: {{ formatDate(data.dateOrder) }}</h4>
         <h4>Status: {{ data.orderStatus.description }}</h4>
-        <h4 v-if="data.order_type === 'coffe'">Total: R$ {{ valueTotal }}</h4>
+        <h4 v-if="data.order_type === 'coffe'">Total: {{ valueTotal }}</h4>
         <h4 v-else>
           Total: R${{ countdejejum + countlanche01 + countlanche02 }}
         </h4>
@@ -26,21 +26,22 @@
             <th>Item</th>
             <th>Qtde</th>
             <th>Valor Unit.</th>
-            <th>Opções</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
-          <td><pre> {{data}}</pre></td>
+          
           <tr v-for="(item, index) in data.orderItem" :key="index">
             <td>{{ index + 1 }}</td>
             <td>{{ item.revenues.description }}</td>
-            <td> 
-              <input type="number" v-model="data.orderItem[index].amountItem" :disabled="editValue">
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
             </td>
-            <td>{{ data.orderItem[index].valueOrderItem }}</td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="data.orderItem[index].amountItem">
+            </td>
+            <td> R$ {{ data.orderItem[index].valueOrderItem }}</td>
         
             <td> 
-              <button @click="editItem(data.orderItem[index])" style="background-color: transparent;">
-                <img src="../../assets/icons/edit-Table.svg" style="width: 2rem;" alt="" srcset="">
-              </button> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
      
            
@@ -57,11 +58,18 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
+     
             <td>{{ item.revenues.description }}</td>
-            <td>{{ item.amountItem }}</td>
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -70,6 +78,11 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+            
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
+
           </tr>
           <tr v-if="dejejum.length === 0">
             Não possui...
@@ -84,11 +97,18 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
             <td>{{ item.revenues.description }}</td>
-            <td>{{ item.amountItem }}</td>
+          
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -97,6 +117,9 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
           </tr>
           <tr v-if="lanche01.length === 0">
             Não possui...
@@ -111,11 +134,17 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
             <td>{{ item.revenues.description }}</td>
-            <td>{{ item.amountItem }}</td>
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -124,6 +153,9 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
           </tr>
 
           <tr v-if="lanche02.length === 0">
@@ -347,7 +379,6 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
 import httpOrder from '@/server/pedidos/index'
-import httpClientCompany from '~/server/ClientCompany'
 export default Vue.extend({
   props: {
     data: Object,
@@ -370,7 +401,7 @@ export default Vue.extend({
       previewComprovante: null,
       amount_of_tray: Number,
       messageClient: '',
-      editValue: false,
+      isModified: false,
       editObject: {},
       orderItem: [],
     }
@@ -404,14 +435,6 @@ export default Vue.extend({
         this.countlanche02 + Number(res.amountItem) * Number(res.valueOrderItem)
     })
   },
-//   async fetch() {
-//     try {
-//       const response = await httpClientCompany.GetFindClientCompany(this.findPreviewClient.id);
-//       this.listFindClientCompany = response.data;
-//     } catch (error) {
-//       console.error(error);
-//     }
-// },
   methods: {
     closeModal() {
       this.$emit('closeModal')
@@ -534,31 +557,39 @@ export default Vue.extend({
         this.$toast.error('Erro: ' + error);
       }
     },
-    updateQtd(){
-      this.editObject = {
-        "fk_order": "string",
-        "fk_revenue": "string",
-        "fk_categoryOrderItem": "string",
-        "amountItem": 0
+    async updateQtd() {
+      try {
+        await httpOrder.UpdateOrderItem(this.editObject);
+        console.log('A atualização foi bem-sucedida.');
+
+      } catch (error) {
+        this.$toast.error('Erro, falha na atualização');
+
       }
-    },
+},
     editItem(index) {
-      this.editValue != this.editValue
-      console.log(index);
+   
       this.editObject = {
-        "fk_order": this.numberOrder,
-        "fk_revenue": "string",
-        "fk_categoryOrderItem": index.categoryOrderItem.description,
-        "amountItem": index.amountItem
-      }
-      console.log(this.editObject, 'yes');
-      
+      fk_order: this.data.id,
+      fk_revenue: index.fk_revenue,
+      fk_categoryOrderItem: "314e2828-1c69-11ee-be56-c691200020241",
+      amountItem: parseInt(index.amountItem)
+    };
+    this.updateQtd()
     }
   },
 })
 </script>
 
 <style scoped lang="scss">
+input:focus {
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+  font-weight: 400;
+}
+input{
+  text-align: center;
+    font-weight: 700;
+}
 .menu-modal {
   display: flex;
   justify-content: center;
@@ -647,6 +678,7 @@ export default Vue.extend({
     text-align: center;
     border-bottom: 1px dotted var(--red);
     table-layout: fixed;
+    padding: 0.8rem;
 
     tr {
       width: 100%;

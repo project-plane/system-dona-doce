@@ -68,7 +68,7 @@
     <div class="list-historic" v-if="this.filter === false">
       <div v-for="(item, index) in filteredItems" :key="index">
         <CardHistorico :data="item" />
-        <pre>{{ item }}</pre>
+        <!-- <pre>{{ item }}</pre> -->
       </div>
      
 
