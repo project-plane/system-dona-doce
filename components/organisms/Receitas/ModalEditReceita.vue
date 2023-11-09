@@ -42,6 +42,21 @@
                 />
               </div>
             </div>
+
+            <div style="display: flex; justify-content: space-around;gap: 30px;">
+              <Input
+                label="Maximo"
+                type="number"
+                v-model="maximo"
+              />
+              <Input
+                label="Minimo"
+                type="number"
+                v-model="minimo"
+
+              />
+            </div>
+
             <div class="btnAddIngrediente">
               <button @click="addIngrediente">Adicionar Ingrediente</button>
             </div>
@@ -82,7 +97,9 @@
 
               <Input
                 label="Valor Ingrediente"
-                :value="'R$ ' + receita.ingredients.value.toFixed(2)"
+                :value="
+                  'R$ ' + receita.ingredients.value_per_serving.toFixed(2)
+                "
                 type="text"
                 disabled="disabled"
                 block="background: #d6d6d6; cursor: no-drop"
@@ -112,14 +129,22 @@
                 />
               </div>
             </div>
-            <div class="valorTotal" v-if="updateIngrediente.length !== 0">
-              <h3>Valor Total</h3>
-              <h3>R$ {{ valorTotal }}</h3>
+
+
+            <div style="align-items: center; display: flex; gap: 10px;justify-content: space-around;">
+              <div >
+              <h3 style="color: var(--red)">Gastos da Receita</h3>
+              <h3>R$ {{  this.listDeCompras }}</h3>
+             </div>  <div>
+              <h3 style="color: yellowgreen;">Novo Valor</h3>
+              <Input
+                style="max-width: 150px; height: auto;"
+                v-model="valorTotal"
+                type="number"
+              />
             </div>
-            <div class="valorTotal" v-else>
-              <h3>Valor Total</h3>
-              <h3>R$ {{ valorAtual }}</h3>
             </div>
+
             <Button
               @functionClick="editarIngredienteReceita(listReceitas)"
               title="Atualizar Dados"
@@ -159,6 +184,8 @@ export default Vue.extend({
       listFindReceita: [],
       listReceitas: [],
       idReceita: '',
+      maximo: 0,
+      minimo: 0,
       editUrlImgFile: null,
       editUrlImgPreview: null,
       title: '',
@@ -166,6 +193,9 @@ export default Vue.extend({
       selected: '',
       listIngredients: [],
       loading: false,
+      status: null,
+      listDeCompras: 0,
+
     }
   },
   props: {
@@ -174,14 +204,36 @@ export default Vue.extend({
       required: true,
     },
   },
+  watch: {
+    listReceitas: {
+      deep: true,
+      immediate: true,
+      handler(newValue) {
+        var soma = 0
+        console.log(newValue);
 
+        newValue.map((receita) => {
+          soma = (receita.ingredients.value_per_serving *  receita.amount_ingredient) + soma
+        })
+
+        this.valorTotal = soma
+        this.valorAtual = soma
+        this.listDeCompras = soma
+
+      },
+    },
+  },
   async fetch() {
     this.loading = true
 
     await httpReceitas
       .GetFindReceita(this.dataReceita)
       .then((res) => {
+
         this.listFindReceita = res.data
+        this.maximo = this.listFindReceita.base_max_amount
+        this.minimo = this.listFindReceita.base_min_amount
+        this.status = this.listFindReceita.status
         this.idReceita = this.listFindReceita.id
         this.title = this.listFindReceita.description
         this.listReceitas = this.listFindReceita.ingredients_Revenues
@@ -296,11 +348,7 @@ export default Vue.extend({
       })
       this.$toast.success('Valor Atualizado com sucesso!!!')
 
-      // valor total de soma dos ingredientes
-      const valorTotal = this.amountValue.reduce((soma, i) => {
-        return soma + i
-      })
-      this.valorTotal = valorTotal.toFixed(2)
+
     },
 
     // Deleta um ingrediente da receita
@@ -346,6 +394,9 @@ export default Vue.extend({
         )
         formData.append('old_imagem', this.listFindReceita.imagem)
         formData.append('imagem', this.editUrlImgFile)
+        formData.append('base_max_amount', this.maximo)
+        formData.append('base_min_amount', this.minimo)
+        formData.append('status', this.status)
         formData.append('yield_per_quantity', this.yield_per_quantity)
         formData.append('time_in_hours', this.time_in_hours)
         formData.append('presumed_profit', this.presumed_profit)
