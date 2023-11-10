@@ -568,13 +568,11 @@ export default Vue.extend({
       }
 },
 editItem(index) {
-  const { fk_revenue, amountItem } = index;
-
   this.editObject = [{
-    fk_order: this.data.id,
-    fk_revenue,
-    fk_categoryOrderItem: "314e2828-1c69-11ee-be56-c691200020241",
-    amountItem: parseInt(amountItem)
+      fk_order: this.data.id,
+      fk_revenue: index.fk_revenue,
+      fk_categoryOrderItem: "314e2828-1c69-11ee-be56-c691200020241",
+      amountItem: parseInt(index.amountItem)
   }];
     this.updateQtd()
     }
