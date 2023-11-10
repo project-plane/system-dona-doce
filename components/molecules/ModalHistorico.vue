@@ -163,7 +163,7 @@
           </tr>
         </table>
       </section>
-
+<pre>{{ this.editObject }}</pre>
       <Button
         v-if="
           data.orderStatus.description === 'Solicitado' ||
@@ -402,7 +402,7 @@ export default Vue.extend({
       amount_of_tray: Number,
       messageClient: '',
       isModified: false,
-      editObject: {},
+      editObject: [],
       orderItem: [],
     }
   },
@@ -567,14 +567,15 @@ export default Vue.extend({
 
       }
 },
-    editItem(index) {
-   
-      this.editObject = {
-      fk_order: this.data.id,
-      fk_revenue: index.fk_revenue,
-      fk_categoryOrderItem: "314e2828-1c69-11ee-be56-c691200020241",
-      amountItem: parseInt(index.amountItem)
-    };
+editItem(index) {
+  const { fk_revenue, amountItem } = index;
+
+  this.editObject = [{
+    fk_order: this.data.id,
+    fk_revenue,
+    fk_categoryOrderItem: "314e2828-1c69-11ee-be56-c691200020241",
+    amountItem: parseInt(amountItem)
+  }];
     this.updateQtd()
     }
   },
