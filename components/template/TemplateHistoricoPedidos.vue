@@ -58,6 +58,7 @@
     <div class="list-historic" v-if="this.filter === true">
       <div v-for="(item, index) in filterData" :key="index">
         <CardHistorico :data="item" />
+        
       </div>
       <span v-if="filterData.length === 0" class="spanError">
         Nenhum resultado encontrado. Tente ajustar os filtros da sua pesquisa e

@@ -39,11 +39,11 @@
               <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="data.orderItem[index].amountItem">
             </td>
             <td> R$ {{ data.orderItem[index].valueOrderItem }}</td>
-        
+            
+            
             <td> 
               <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
-     
            
           </tr>
         </table>
@@ -78,7 +78,7 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            
+            <!-- <pre>{{ item }}</pre> -->
             <td> 
               <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
@@ -163,7 +163,6 @@
           </tr>
         </table>
       </section>
-<pre>{{ this.editObject }}</pre>
       <Button
         v-if="
           data.orderStatus.description === 'Solicitado' ||
@@ -404,6 +403,7 @@ export default Vue.extend({
       isModified: false,
       editObject: [],
       orderItem: [],
+      id_categoryOrderItem:""
     }
   },
 
@@ -568,12 +568,12 @@ export default Vue.extend({
       }
 },
 editItem(index) {
-  this.editObject = [{
+  this.editObject = {
       fk_order: this.data.id,
       fk_revenue: index.fk_revenue,
-      fk_categoryOrderItem: "314e2828-1c69-11ee-be56-c691200020241",
+      fk_categoryOrderItem: "491aebc2-1c69-11ee-be56-0242ac120002",
       amountItem: parseInt(index.amountItem)
-  }];
+  };
     this.updateQtd()
     }
   },

@@ -40,7 +40,7 @@ export default {
     return await http.patch(`/clients/order/${fk_order}`, data)
   },
   UpdateOrderItem: async (data) => {
-    return await http.patch(`/orderitem/programmed`, data)
+    return await http.patch(`/orderitem/updateQuantity`, data)
   },
 
   PatchCancelOrderByClient: async (fk_order) => {
