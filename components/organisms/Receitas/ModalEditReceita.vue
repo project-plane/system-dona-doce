@@ -63,16 +63,17 @@
             <div class="body" v-if="statusAddIngrediente">
               <div class="input">
                 <Label for="ingrediente">Ingrediente</Label>
+
                 <select name="" id="ingrediente" v-model="selected">
                   <option disabled value="">Selecionar Ingrediente</option>
-                  <option
-                    v-for="itemIngredient in listIngredients"
-                    :key="itemIngredient.id"
+                  <option  :value="itemIngredient.id"  v-for="itemIngredient in listIngredients"  :key="itemIngredient.id"
                   >
-                    {{ itemIngredient.description }}
+                    {{ itemIngredient.description}} - {{ refactorUnidadeMedida(itemIngredient.unit_of_measurement) }}
                   </option>
+
                 </select>
               </div>
+
               <div class="input">
                 <label for="qtd">Quantidade</label>
                 <input
@@ -80,6 +81,15 @@
                   id="qtd"
                   placeholder="quantidade"
                   v-model="qtdIngrediente"
+                />
+              </div>
+              <div class="input">
+                <Label for="ingrediente">Custo R$</Label>
+                <input
+                  type="text"
+                  placeholder="Valor Custo"
+                  v-model="valorApro"
+                  disabled
                 />
               </div>
               <div class="btnIngrediente">
@@ -147,14 +157,9 @@
 
             <Button
               @functionClick="editarIngredienteReceita(listReceitas)"
-              title="Atualizar Dados"
-              v-if="updateIngrediente.length === 0"
-            />
-            <Button
-              v-else
-              @functionClick="editReceita(idReceita)"
               title="Salvar"
             />
+
           </div>
         </div>
       </BeadFrame>
@@ -173,7 +178,7 @@ export default Vue.extend({
   data() {
     return {
       statusAddIngrediente: false,
-      qtdIngrediente: '',
+      qtdIngrediente: 0,
       valorTotal: '',
       valorAtual: '',
       yield_per_quantity: 0,
@@ -186,6 +191,7 @@ export default Vue.extend({
       idReceita: '',
       maximo: 0,
       minimo: 0,
+      valorApro: 0,
       editUrlImgFile: null,
       editUrlImgPreview: null,
       title: '',
@@ -195,6 +201,7 @@ export default Vue.extend({
       loading: false,
       status: null,
       listDeCompras: 0,
+      ingredienteSel: null
 
     }
   },
@@ -205,6 +212,19 @@ export default Vue.extend({
     },
   },
   watch: {
+    selected(newId){
+      this.ingredienteSel = this.listIngredients.find((item) => newId == item.id);
+      if(this.ingredienteSel){
+      this.valorApro = this.ingredienteSel.value_per_serving * this.qtdIngrediente;
+      }
+    },
+    qtdIngrediente(newQuantity){
+      if(this.ingredienteSel!= null)
+      {
+        this.valorApro = this.ingredienteSel.value_per_serving * newQuantity;
+
+      }
+    },
     listReceitas: {
       deep: true,
       immediate: true,
@@ -281,7 +301,7 @@ export default Vue.extend({
     // Inserir um ingrediente dentro da receita
     inserirIngrediente(id) {
       this.listIngredients.map(async (e) => {
-        if (e.description === this.selected) {
+        if (e.id === this.selected) {
           const dado = this.listReceitas.find((item) => {
             return item.ingredients.description === this.selected
           })
@@ -323,7 +343,7 @@ export default Vue.extend({
     },
 
     // Edita um ingrediente dentro da receita
-    editarIngredienteReceita(data) {
+    async editarIngredienteReceita(data) {
       data.map((e) => {
         const dataUpdate = {
           fk_ingredient: e.fk_ingredient,
@@ -346,6 +366,7 @@ export default Vue.extend({
             console.log(error)
           })
       })
+      await this.editReceita(this.idReceita);
       this.$toast.success('Valor Atualizado com sucesso!!!')
 
 
@@ -404,15 +425,15 @@ export default Vue.extend({
         await httpReceitas
           .UpdateReceita(id, formData)
           .then((res) => {
-            if (res.status === 200) {
               this.$toast.success('Receita atualizada com sucesso!!!')
               this.$store.commit('OPEN_MODAL', false)
               this.$nuxt.refresh()
               return
-            }
+
           })
           .catch((error) => {
-            console.log(error)
+            this.$toast.error('Erro ao salvar receita.')
+            console.log(error.response)
           })
         return
       }

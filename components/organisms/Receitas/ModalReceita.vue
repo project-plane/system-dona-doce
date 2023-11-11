@@ -248,13 +248,15 @@ export default Vue.extend({
       await httpReceitas
         .CreateReceita(formData)
         .then((res) => {
-          if (res.status === 201) {
+
             this.$toast.success('Receita criada com sucesso!!!')
             this.$store.commit('OPEN_MODAL_RECEITA', false)
-          }
+
         })
         .catch((error) => {
           console.log(error)
+
+          this.$toast.error(JSON.stringify(error.response.message))
         })
       this.loading = false
       this.$nuxt.refresh()
