@@ -8,7 +8,6 @@
           <label>Clientes</label>
           <select v-model="selectedClient" @change="searchCliente">
             <option value="" disabled>Selecionar Cliente</option>
-            <option value="" >Todos</option>
             <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
         </select>
         <!-- <pre>{{ listClient[0].id }}</pre> -->
@@ -92,6 +91,7 @@
   methods:{
     searchCliente() {
       this.$emit('searchCliente', this.selectedClient)
+     
     },
     // filterByDateRange(startDate, endDate) {
     //   this.listFiltered = []
@@ -103,22 +103,22 @@
     //     }
     //   })
     // },
-    filterByType() {
-      if (this.selectedType === '' && this.selectedAgenda === '') {
-        this.filter = false ;
-      } else {
-        this.filter = true
-        this.filterData = this.historico.filter((item) => {
-          let typeCondition =
-            this.selectedType === '' || item.order_type === this.selectedType
-          let agendaCondition =
-            this.selectedAgenda === '' ||
-            item.orderStatus.description === this.selectedAgenda
+    // filterByType() {
+    //   if (this.selectedType === '' && this.selectedAgenda === '') {
+    //     this.filter = false ;
+    //   } else {
+    //     this.filter = true
+    //     this.filterData = this.historico.filter((item) => {
+    //       let typeCondition =
+    //         this.selectedType === '' || item.order_type === this.selectedType
+    //       let agendaCondition =
+    //         this.selectedAgenda === '' ||
+    //         item.orderStatus.description === this.selectedAgenda
 
-          return typeCondition && agendaCondition
-        })
-      }
-    },
+    //       return typeCondition && agendaCondition
+    //     })
+    //   }
+    // },
   },
   
    
@@ -161,7 +161,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
+    padding: 1rem;
     border-bottom: 1px solid var(--border);
   
     .btns {

@@ -46,4 +46,7 @@ export default {
   PostCommitClient: async (fk_order, data) => {
     return await http.patch(`/clients/order/${fk_order}`, data)
   },
+  PostLotes: async (data) => {
+    return await http.post(`/order_batch`, data)
+  },
 }

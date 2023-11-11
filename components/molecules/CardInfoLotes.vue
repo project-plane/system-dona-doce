@@ -41,17 +41,13 @@
                  {{ infoPedidos.valueOrder.toFixed(2) }}
                 </span>
             </div>
-               
-               
-          
-
-           
-          
+              
             <input type="checkbox" :id="infoPedidos.numberOrder" :value="infoPedidos.numberOrder" v-model="infoPedidos.selected" @change="updateSelection" />
 
 
           </div>
         </div>
+
       </div>
       
     </label>
@@ -73,6 +69,7 @@ export default Vue.extend({
     return {
       checkboxSelections: [],
       selectedCards: {},
+      
     }
   },
   methods: {
@@ -81,7 +78,18 @@ export default Vue.extend({
       return dayjs(date).format('DD/MM/YYYY')
     },
     updateSelection() {
-      this.$emit('update-selection', this.infoPedidos);
+      const key = this.infoPedidos;
+      var pedidos = {
+        fk_pedido: key.id,
+        numberOrder: key.numberOrder,
+        order_type: key.order_type,
+        user: key.user.Clients.corporate_name,
+        orderItem: key.orderItem,
+        selected: this.infoPedidos.selected || false,
+      }
+      this.$emit('update-selection', pedidos);
+      
+      
     }
     
    
