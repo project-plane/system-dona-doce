@@ -4,6 +4,7 @@
   </div> -->
   <div >
     <label class="cardModalPedido">
+      
       <div class="titleCard">
         <div class="titleCompany">
           <div
@@ -18,8 +19,8 @@
               <h4 class="containerDate" v-if="infoPedidos.order_type === 'coffe'" style="color: var(--red) ;">
                 {{ formatDate(infoPedidos.dateOrder) }}
               </h4>
-      
             </div>
+  
 
             <h2>{{ infoPedidos.user.Clients.corporate_name }}</h2>
 
