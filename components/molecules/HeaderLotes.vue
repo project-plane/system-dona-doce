@@ -1,5 +1,6 @@
 <template>
-    <div class="headerBashboard">
+   <Loading v-if="loading"  />
+    <div v-else class="headerBashboard">
       <h1>{{title}}</h1>
       <div class="btns">
        
@@ -14,13 +15,13 @@
         </div>
           <div class="input">
             <label>Tipo Pedido</label>
-            <select v-model="selectedType">
+            <select v-model="selectedType"  @change="searchCliente">
               <option value="">Todos</option>
               <option value="programmed">Programado</option>
               <option value="coffe">Coffee</option>
             </select>
           </div>
-          <div style="display: flex; gap: 1rem; align-items: center; width: 35%;">
+          <!-- <div style="display: flex; gap: 1rem; align-items: center; width: 35%;">
          <label for="">
           <p>Data Inicio</p>
            <input type="date" v-model="startDate" style="background-color: var(--red);" />
@@ -29,7 +30,7 @@
           <p>Data Final</p>
            <input type="date" v-model="endDate" style="background-color: var(--red);" />
          </label>
-        </div>
+        </div> -->
       </div>
 
        
@@ -67,10 +68,12 @@
           start: new Date(),
           end: new Date(),
         },
+        loading: false,
 
       }
     },
     async fetch() {
+    this.loading = true
     await httpClients
       .GetAllClients()
       .then((res) => {
@@ -90,8 +93,7 @@
   },
   methods:{
     searchCliente() {
-      this.$emit('searchCliente', this.selectedClient)
-     
+      this.$emit('searchCliente', this.selectedClient, this.selectedType )
     },
     // filterByDateRange(startDate, endDate) {
     //   this.listFiltered = []
