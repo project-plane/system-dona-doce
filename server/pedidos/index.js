@@ -36,7 +36,6 @@ export default {
   UploaQtdBandejas: async (id, data) => {
     return await http.patch(`order/tray/${id}`, data)
   },
-  // o cliente adiciona o comprovante de pagamento
   PostComprovante: async (id, data) => {
     return await http.patch(`/order/payment_voucher/${id}`, data)
   },
@@ -48,5 +47,8 @@ export default {
   },
   PostLotes: async (data) => {
     return await http.post(`/order_batch`, data)
+  },
+  ListLotes: async (id) => {
+    return await http.get(`/order_batch?fk_client=${id}&skip=0&limit=100`);
   },
 }

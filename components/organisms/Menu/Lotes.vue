@@ -20,7 +20,7 @@
           </li>
 
           <li>
-            <NuxtLink to="/">Listagem de Lotes</NuxtLink>
+            <NuxtLink to="/lotes/listagem">Listagem de Lotes</NuxtLink>
           </li>
         </ul>
       </nav>
