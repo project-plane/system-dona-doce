@@ -55,7 +55,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import dayjs from 'dayjs'
+import dayjs from '~/services/dayjs'
 import httpCardapio from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
 
@@ -94,7 +94,7 @@ export default Vue.extend({
 
   methods: {
     formatDate(date) {
-      return dayjs(date).format('DD/MM/YYYY')
+      return dayjs.formtDateBr(date)
     },
     hasDuplicates(arr) {
       return new Set(arr).size !== arr.length;

@@ -1,5 +1,8 @@
 <template>
   <Container>
+  <div v-if="loading">
+   <Loading/>
+  </div>
     <Title title="Estoque" />
     <div class="inputs">
       <div class="input">
@@ -27,10 +30,10 @@
       />
     </div>
     <ContainerInput>
-      <div class="radio">
+      <!-- <div class="radio">
         <input type="radio" v-model="is_output" name="status" :value="false" />
         <Label>Entrada</Label>
-      </div>
+      </div> -->
     </ContainerInput>
     <div class="input_create"></div>
     <div class="row-button">
@@ -48,12 +51,13 @@ import httpIngredientes from '~/server/ingredientes'
 export default Vue.extend({
   data() {
     return {
+      loading: false,
       valorUnitario: '',
       amount: '',
       medida: '',
       quantidade: '',
       selected: '',
-      is_output: '',
+      is_output: false,
       listIngrediente: [],
       unidadeMedida: '',
       exibirMedida: false,
@@ -62,6 +66,7 @@ export default Vue.extend({
   },
 
   async fetch() {
+
     await httpIngredientes
       .ListIngredientes()
       .then((res) => {
@@ -109,9 +114,10 @@ export default Vue.extend({
         fk_ingredient: this.selected,
         amount: Number(this.quantidade),
         unitary_value: Number(this.valorUnitario),
-        is_output: this.is_output,
+        is_output: false,
         unit_of_measurement: 'g',
       }
+      this.loading = true
 
       await httpEstoque
         .CreateEstoque(dataEstoque)
@@ -136,11 +142,12 @@ export default Vue.extend({
           this.$toast.error(error.response.data.message)
           return
         })
+      this.loading = false
+
       this.valorUnitario = ''
       this.quantidade = ''
       this.selected = ''
       this.is_output = ''
-      console.log(this.exibirMedida)
 
       this.$nuxt.refresh()
     },

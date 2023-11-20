@@ -1,17 +1,21 @@
 <template>
-  <div class="contentCardPedido">
+  <div v-if="loading">
+    <Loading/>
+
+  </div>
+  <div v-else class="contentCardPedido">
     <div class="selectUnidades" style="display: grid; width: 100%;justify-content: flex-end;">
         <label  class="titleInput">Unidade:</label>
         <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 12rem; height: 2.5rem" v-model="selectedUnit">
           <option value="" disabled>Selecionar Unidade</option>
           <option v-for="item in dataClientes" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
         </select>
-    </div>   
+    </div>
     <div class="header-pedidos">
 
       <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
         @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
-      
+
         <div class="qtdPedidos" @click="showCar">
         <img src="~/assets/icons/shopCar.svg" />
         <span v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0">
@@ -29,7 +33,7 @@
       <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
         <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" :base_max_amount="pedidosProgramation.base_max_amount" :base_min_amount="pedidosProgramation.base_min_amount" />
       </div>
- 
+
       </div>
     <h2>Fora do Cardapio</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
@@ -42,7 +46,7 @@
       <div v-for="p in foraEstoque" :key="p.id">
         <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
       </div>
- 
+
     </div>
   </div>
 </template>
@@ -67,6 +71,7 @@ export default Vue.extend({
       dataPedido: '',
       tipoPedido: '491aebc2-1c69-11ee-be56-0242ac120002',
       showModal: false,
+      loading: false,
       selectedUnit: null,
       addPedidos: {
         fk_company: this.$store.state.unidadeCliente,
@@ -88,11 +93,10 @@ export default Vue.extend({
   async fetch() {
     const id = this.$route.query.id
     this.dataPedido = this.$route.query.dataPedido
-
+   this.loading = true;
     await httpCompany.getUnidades().then((res) => {
         this.dataClientes =res.data
-        console.log(res.data);
-        
+
       })
 
     await httpCardapio
@@ -123,7 +127,7 @@ export default Vue.extend({
       })
 
     await httpRevenueClient
-      .GetReceitas()
+      .GetReceitasForaDoMenu(id)
       .then((res) => {
         this.listReceita = res.data
         this.listReceita.map((item) => {
@@ -148,9 +152,9 @@ export default Vue.extend({
             base_min_amount: pedidos.revenues.base_min_amount,
           })
         }
-        
+
       })
-    
+
     })
 
     const foraEstoqueAtualizado = []
@@ -163,6 +167,8 @@ export default Vue.extend({
       }
     })
     this.foraEstoque = foraEstoqueAtualizado
+    this.loading = false;
+
   },
 
   methods: {
@@ -170,9 +176,9 @@ export default Vue.extend({
     this.addPedidos.fk_company= this.selectedUnit
     this.$store.commit('selectUnity',this.selectedUnit)
 
-  
+
     },
-   
+
     pedidos(qtdOrder, fk_revenue, index, typeOrder) {
       const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
         return (
@@ -180,7 +186,7 @@ export default Vue.extend({
           item.fk_revenue === fk_revenue
         )
       })
-  
+
       if (existecategoryOrderItem) {
         this.$toast.error('Receita já adicionada ao pedido!!!')
         return
@@ -261,7 +267,7 @@ export default Vue.extend({
           })
         })
         console.log(this.addPedidos);
-        
+
         await HttpPedidos.CreateNewOrder(this.addPedidos)
           .then((res) => {
             this.$toast.success('Pedido realizado com sucesso!!!')
@@ -275,7 +281,7 @@ export default Vue.extend({
             this.$toast.info('Ocorreu um erro!')
           })
       }
-      
+
     },
 
     listaAtualizadaDoModal(e) {

@@ -4,7 +4,7 @@ import { async } from './../../.nuxt/utils';
 
 export default {
   GetKanban: async (typeCard) => {
-    return await http.get(`/control-production/kambam?order_type=${typeCard}`)
+    return await http.get(`/control-production/kambam?mode_kambam=${typeCard}`)
   },
 
   UpdateKanban: async (data) => {
@@ -12,7 +12,7 @@ export default {
   },
   GetOrderRoute: async ()=> {
      return await http.get(`/order/kambamRoute`)
- 
+
   },
   GetOrderRouteCompany: async ()=> {
     return await http.get(`/company/priority`)
@@ -21,6 +21,6 @@ export default {
   UpdateOrder: async(id, data)=>{
       return await http.patch(`/company/priority/${id}`, data)
   }
-  
+
 
 }

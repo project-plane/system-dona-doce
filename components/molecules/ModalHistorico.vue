@@ -386,14 +386,6 @@ export default Vue.extend({
         this.countlanche02 + Number(res.amountItem) * Number(res.valueOrderItem)
     })
   },
-//   async fetch() {
-//     try {
-//       const response = await httpClientCompany.GetFindClientCompany(this.findPreviewClient.id);
-//       this.listFindClientCompany = response.data;
-//     } catch (error) {
-//       console.error(error);
-//     }
-// },
   methods: {
     closeModal() {
       this.$emit('closeModal')
@@ -408,7 +400,7 @@ export default Vue.extend({
     },
     async cancelAnOrder(id) {
       this.isDisabled = true
-      await httpOrder.DeleteOrder(id).then(() => {
+      await httpOrder.PatchCancelOrderByClient(id).then(() => {
         this.isDisabled = false
         this.$toast.error('Pedido Cancelado')
         this.closeModal()

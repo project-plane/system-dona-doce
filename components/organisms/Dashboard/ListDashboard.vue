@@ -28,6 +28,7 @@
 import Vue from 'vue'
 
 import httpOrder from '~/server/pedidos'
+import dayjs from '~/services/dayjs'
 
 export default Vue.extend({
   data() {
@@ -38,10 +39,10 @@ export default Vue.extend({
       pedidoProgramado: [],
       pedidoCoffee: [],
       loading: false,
-      selectedTipo: this.$store.state.selectedTipo,
-      selectedStatus: this.$store.state.selectedStatus,
-      selectedClient: this.$store.state.selectedClient,
-      dataCalendar: new Date()
+      selectedTipo: this.$store.state.selectedTipo || "undefined",
+      selectedStatus: this.$store.state.selectedStatus || "undefined",
+      selectedClient: this.$store.state.selectedClient || "undefined",
+      dataCalendar: dayjs.formtDateUSA(new Date())
     }
   },
   async fetch() {
@@ -74,8 +75,7 @@ export default Vue.extend({
       await this.atualizar();
     },
     async selectedCalendarComputed(newValue){
-      this.dataCalendar = newValue
-
+      this.dataCalendar =  dayjs.formtDateUSA(newValue);
       await this.atualizar();
     }
   },

@@ -6,11 +6,11 @@
       <div class="kanban-selects">
         <select v-model="typeProduct">
           <option value="programmed">Programado</option>
-          <option value="coffe">Coffee</option>
+          <!-- <option value="coffe">Coffee</option> -->
         </select>
 
         <select v-model="typeKanban">
-          <!-- <option value="client">Produção por cliente</option> -->
+          <option value="client">Produção por cliente</option>
           <option value="product">Produção por produto</option>
         </select>
       </div>
@@ -166,9 +166,10 @@ export default Vue.extend({
       }
     },
 
-    typeProduct() {
+    typeKanban(newValue){
       this.reqKanban()
-    },
+
+    }
   },
 
   async fetch() {
@@ -184,7 +185,7 @@ export default Vue.extend({
   methods: {
     async reqKanban() {
       this.loadingDejejum = true
-      await httpKanban.GetKanban(this.typeProduct).then((res) => {
+      await httpKanban.GetKanban(this.typeKanban).then((res) => {
         ;[this.listLanche01, this.listLanche02, this.listDejejum] = [[], [], []]
         this.listKanban = res.data
 
