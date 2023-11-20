@@ -55,8 +55,8 @@
         <h2>{{ formatDateDayAndMes(date) }}</h2>
       </div>
     </div>
-
-
+    
+    
   </div>
 </template>
 

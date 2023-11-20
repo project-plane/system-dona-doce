@@ -1,46 +1,43 @@
 <template>
-    <div class="headerBashboard">
+   <Loading v-if="loading"  />
+    <div v-else class="headerBashboard">
       <h1>{{title}}</h1>
       <div class="btns">
-        <div style="display: flex; gap: 1rem; align-items: center; width: 35%;">
-          <p>Data Inicio</p>
-            <input type="date" v-model="startDate" style="background-color: var(--red);" />
-          <p>Data Inicio</p>
-            <input type="date" v-model="endDate" style="background-color: var(--red);"  />
-        </div>
+       
         <div class="selectInput">
           <div class="input">
+          <label>Clientes</label>
+          <select v-model="selectedClient" @change="searchCliente">
+            <option value="" disabled>Selecionar Cliente</option>
+            <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
+        </select>
+        <!-- <pre>{{ listClient[0].id }}</pre> -->
+        </div>
+          <div class="input" v-if="typeOrder === true">
             <label>Tipo Pedido</label>
-            <select v-model="selectedType">
+            <select v-model="selectedType"  @change="searchCliente">
               <option value="">Todos</option>
               <option value="programmed">Programado</option>
               <option value="coffe">Coffee</option>
             </select>
           </div>
-        
-          <div class="input">
-            <label>Clientes</label>
-            <select v-model="selectedClient">
-              <option value="" disabled>Selecionar Cliente</option>
-              <option value="Sodex">Sodex</option>
-              <option value="V&V Refeições">V&V Refeições</option>
-              <option value="Prato Bom">Prato Bom</option>
-              <option value="VA Refeições">VA Refeições</option>
-            </select>
+      
+          <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
+         <label for="">
+          <p>Data Inicio</p>
+           <input type="date" id="startDate" style="background-color: white;" v-model="startDate"  @change="emitDateRange" />
+         </label>
+         <label for="">
+          <p>Data Final</p>
+           <input type="date" id="endDate"   style="background-color: white;"  v-model="endDate" @change="emitDateRange" />
+         </label>
+        </div>
+        <div class="searchId" v-if="filterSearch === true">
+             <label :for="label">{{ label }}</label>
+              <input  placeholder="Pesquisar por Id" type="text" :id="label" :value="value" @input="$emit('input', $event.target.value)">
           </div>
-    </div>
-<!--       
-        <v-date-picker v-model="date" mode="date">
-          <template #default="{ inputEvents }">
-            <button
-              :class="{ focus: !isToday }"
-              @click="calendarShowOrNot(false)"
-              v-on="inputEvents"
-            >
-              Calendário
-            </button>
-          </template>
-        </v-date-picker> -->
+      </div>
+
        
         </div>
       </div>
@@ -49,31 +46,45 @@
   
   <script lang="ts">
   import Vue from 'vue'
-  
-  import dayjs from 'dayjs'
+  import httpClients from '~/server/cliente'
   import 'dayjs/locale/pt-br'
   
   export default Vue.extend({
   
     props: {
-  
+      label: String,
+      value: String,
       title: String,
+      typeOrder: Boolean,
+      filterData: Boolean,
+      filterSearch:Boolean,
     },
     data() {
       return {
-        isToday: true,
-        calendarStatus: false,
-        date: new Date(),
-        visualization: false,
+        textSearch:'',
+        
         selectedType: '',
         selectedAgenda: '',
         selectedClient: '',
-
+        listClient:[],
         startDate: '',
         endDate: '',
+        loading: false,
 
       }
     },
+    async fetch() {
+    this.loading = true
+    await httpClients
+      .GetAllClients()
+      .then((res) => {
+        this.listClient = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    this.loading = false
+  },
     computed: {
     filteredData() {
       return this.data.filter(item => {
@@ -81,8 +92,32 @@
       });
     },
   },
+  methods:{
+    searchCliente() {
+      this.$emit('searchCliente', this.selectedClient, this.selectedType )
+    },
+    emitDateRange() {
+      this.$emit('dateRangeSelected', {
+        startDate: this.startDate,
+        endDate: this.endDate,
+      });
+    }
+  },
+  
    
+  watch: {
+    selectedType(newValue) {
+      this.$store.commit('SELECTED_TIPO', newValue)
+    },
+    selectedAgenda(newValue) {
+      this.$store.commit('SELECTED_STATUS', newValue)
+    },
+    selectedClient(newValue) {
+      this.$store.commit('SELECTED_NAME_CLIENT', newValue)
+    },
  
+    
+  },
   })
   </script>
   
@@ -91,7 +126,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
+    padding: 1rem;
     border-bottom: 1px solid var(--border);
   
     .btns {
@@ -117,7 +152,6 @@
       }
   
       .selectInput {
-        width: 40%;
         display: flex;
   
         gap: 1rem;
@@ -129,6 +163,23 @@
         }
       }
     }
+  }
+  .searchId{
+    @extend .input;
+    right: auto;
+    input {
+    width: 100%;
+    border: 0.03rem solid var(--border);
+    border-radius: 0.25rem;
+    background-image: url('../../assets/icons/search.svg');
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-size: 22px;
+    
+  }
+    
+
   }
   </style>
   

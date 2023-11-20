@@ -127,7 +127,7 @@ export default Vue.extend({
       })
 
     await httpRevenueClient
-      .GetReceitas()
+      .GetReceitasForaDoMenu(id)
       .then((res) => {
         this.listReceita = res.data
         this.listReceita.map((item) => {

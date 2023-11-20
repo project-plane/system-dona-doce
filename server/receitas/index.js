@@ -7,6 +7,9 @@ export default {
   GetReceitas: async (offset=0, limit=100) => {
     return await http.get(`/revenue/?offset=${offset}&limit=${limit}`)
   },
+   GetReceitasForaDoMenu: async (fk_menu) => {
+    return await http.get(`/revenue/notMenu/${fk_menu}`)
+  },
   GetAllReceitas: async (offset=0, limit=100) => {
     return await http.get(`/revenue/v2/${id}?offset=${offset}&limit=${limit}`)
   },

@@ -6,25 +6,6 @@
     <h2>Histórico de Pedidos</h2>
     <section style="display: flex; width: 100%; justify-content: space-between;margin-top: 1rem;">
       <section style="display: flex; gap: 1rem; align-items: flex-end;">
-        <!-- <div class="input-calendar">
-        <v-date-picker v-model="range" is-range>
-          <template v-slot="{ inputEvents }">
-            <button v-on="inputEvents.start" class="btn-calendar">
-              <img src="../../assets/icons/calendar.svg" alt="" />
-            </button>
-          </template>
-        </v-date-picker>
-        <div class="label-calendar">
-          <div class="date">
-            <span><strong>Inicial</strong> </span>
-            {{ formatDate(range.start) }}
-          </div>
-          <div class="date">
-            <span><strong>Final</strong></span>
-            {{ formatDate(range.end) }}
-          </div>
-        </div>
-      </div> -->
       <div class="input">
         <label style="display: flex; width: 100%">Tipo Pedido</label>
         <select v-model="selectedType" @change="filterByType" style="width: 10rem;">

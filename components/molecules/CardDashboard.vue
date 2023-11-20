@@ -44,11 +44,7 @@
       </div>
     </div>
     <div v-else>
-      <div
-v-if="$store.state.selectedStatus ===
-        dataPedidos.orderStatus.description ||
-        $store.state.selectedStatus === ''
-        " class="cards">
+      <div class="cards">
 
         <div class="titleCard">
           <div class="titleCompany">
@@ -82,8 +78,7 @@ v-if="$store.state.selectedStatus ===
           <div class="btn-options">
             <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
 
-          <img
-v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
+          <img v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
                 @click="statusOrder" />
           </div>
 

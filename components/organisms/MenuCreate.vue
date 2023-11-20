@@ -4,6 +4,7 @@
       <Dashboard />
       <Cadastro />
       <Kanban />
+      <Lotes />
     </div>
 
     <div class="footerMenu">
