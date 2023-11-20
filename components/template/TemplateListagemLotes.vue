@@ -72,7 +72,7 @@
             </tr>
           </table>
 
-          <div  v-else style="display: flex; flex-wrap: wrap; flex-direction: column">
+          <div  v-else style="display: flex; flex-wrap: wrap; flex-direction: column; margin-top: 2rem;">
             <div>
               <span>Download NF</span>
               <br />
@@ -126,6 +126,9 @@ export default Vue.extend({
       filesCaution: 0,
       textSearch: "",
     }
+  },
+  async fetch(){
+    this.request()
   },
   methods: {
      async request(searchCliente){ 
