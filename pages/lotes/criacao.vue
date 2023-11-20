@@ -1,5 +1,5 @@
 <template>
-  <TemplateListagemLotes />
+  <TemplateLotesAdmin />
 </template>
 
 <script lang="ts">

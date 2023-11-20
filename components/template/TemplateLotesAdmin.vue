@@ -1,161 +1,179 @@
 <template>
- 
-    <div class="lotesPage">
-      <div class="historicOrders">
-        <HeaderLotes title="Gerar Lotes" @searchCliente="searchCliente" />
+  <div class="lotesPage">
+    <div class="historicOrders">
+      <HeaderLotes
+        title="Gerar Lotes"
+        :typeOrder="true"
+        @searchCliente="searchCliente"
+        :filterData="true"
+        @dateRangeSelected="handleDateRangeSelected"
+      />
+    </div>
+    <Loading v-if="loading" />
+    <main v-else>
+      <div
+        class="listCards"
+        v-if="!datasFiltradas || datasFiltradas.length === 0"
+      >
+        <CardInfoLotes
+          v-for="(item, id) in dataPedidos"
+          :key="id"
+          :infoPedidos="item"
+          @update-selection="updateSelectedCards"
+        />
+
+        <span v-show="dataPedidos.length === 0" class="no-results-message">
+          Não encontramos resultados, Escolha um cliente...
+        </span>
       </div>
-      <Loading v-if="loading"  />
-      <main v-else>
-        <div class="listCards">
-          <CardInfoLotes
-            v-for="(item, id) in dataPedidos"
-            :key="id"
-            :infoPedidos="item"
-            @update-selection="updateSelectedCards"
-          />
 
-          <!-- <pre>{{ selectedCards }}</pre> -->
-          <span v-show="dataPedidos.length === 0" 
-          style="height: 60vh;  display: flex;
-            align-items: center;  justify-content: center; width: 100%;">
-           Não encontramos resultados, Escolha um cliente...
-          </span>
-        </div>
-      </main>
-      <div class="containerSidebar">
-        <section
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-evenly;
-          "
+      <div class="listCards" v-else>
+        <CardInfoLotes
+          v-for="(item, id) in datasFiltradas"
+          :key="id"
+          :infoPedidos="item"
+          @update-selection="updateSelectedCards"
+        />
+
+        <span v-show="datasFiltradas.length === 0" class="no-results-message">
+          Não encontramos resultados nesse intervalo de tempo.
+        </span>
+      </div>
+    </main>
+    <div class="containerSidebar">
+      <section
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+        "
+      >
+        <h3
+          :class="{ abaNotActive: abaNotActive }"
+          class="abaActive"
+          @click="pedidos"
         >
-          <h3
-            :class="{ abaNotActive: abaNotActive }"
-            class="abaActive"
-            @click="pedidos"
-          >
-            Itens do Pedido
-          </h3>
-          <h3
-            :class="{ abaNotActive: !abaNotActive }"
-            class="abaActive"
-            @click="entrega"
-          >
-            Finalizar
-          </h3>
-        </section>
+          Itens do Pedido
+        </h3>
+        <h3
+          :class="{ abaNotActive: !abaNotActive }"
+          class="abaActive"
+          @click="entrega"
+        >
+          Finalizar
+        </h3>
+      </section>
 
-        <div style="height: 75vh; overflow: scroll">
-          <!-- <h3 style="margin-top: .4rem;"> {{ selectedCards[0].user }}</h3> -->
-          <table v-if="abaNotActive === true">
-            <tr v-if="selectedCards.length > 0">
-              <th>Id</th>
-              <th>Itens</th>
-              <th>Qtd.</th>
-              <th>Valor</th>
-            </tr>
-            <div v-else style="display: flex; align-items: center">
-              <span style="text-align: center">
-                Escolha os pedidos a serem incluídos na criação dos lotes.
-                <AnimationLotes/>
-              </span>
-            </div>
-            <tr v-for="(item, id) in selectedCards" :key="id">
-              <td>{{ item.numberOrder }}</td>
-              <td>
-                <span
-                  v-for="(receita, id) in item.orderItem"
-                  :key="id"
-                  style="width: 100%; display: flex; flex-direction: column"
-                >
-                  {{ receita.revenues.description }}</span
-                >
-              </td>
-              <td>
-                <span
-                  v-for="(receita, id) in item.orderItem"
-                  :key="id"
-                  style="width: 100%; display: flex; flex-direction: column"
-                >
-                  {{ receita.amountItem }}</span
-                >
-              </td>
-              <td>
-                <span
-                  v-for="(receita, id) in item.orderItem"
-                  :key="id"
-                  style="width: 100%; display: flex; flex-direction: column"
-                >
-                  R$ {{ receita.valueOrderItem }}</span
-                >
-              </td>
-            </tr>
-          </table>
-
-          <div  v-else style="display: flex; flex-wrap: wrap; flex-direction: column">
-            <span>Anexar NF</span>
-            <div class="inputContainer">
-              <input
-                type="file"
-                accept="image/*,.pdf"
-                style="width: 85%"
-                @change="onFileChangeNF"
-              />
-              <img
-                v-if="previewNotaFiscal"
-                src="../../assets/icons/Icon_uploadConcluido.svg"
-                alt="Icon concluido"
-                style="width: 27px"
-              />
-              <img
-                v-else
-                src="../../assets/icons/download.svg"
-                alt="Pré-visualização do PDF"
-                style="width: 20px"
-              />
-            </div>
-            <span>Nº da NF</span>
-            <div class="inputContainer">
-              <input
-                type="text"
-                v-model="invoice_number"
-                style="width: 100%; height: 100%"
-                placeholder="000 001 001"
-              />
-            </div>
-            <span>Data inicial</span>
-            <div class="inputContainer">
-              <span v-if="selectedCards.length < 1">
-                Selecione um pedido
-              </span>
-              <input
-              v-else
-                type="text"
-                v-model="formattedInitialDate"
-                style="width: 100%; height: 100%"
-            
-              /> 
-            </div>
-            <span>Data final</span>
-            <div class="inputContainer">
-              <span v-if="selectedCards.length < 1">
-                Selecione um pedido
-              </span>
-              <input
-              v-else
-                type="text"
-                v-model="formattedEndDate"
-                style="width: 100%; height: 100%"
-              />
-            </div>
-
-            <Button  @click.native="lotes()"   title="Gerar Lote"
-              style="margin-left: auto; margin-top: 2rem"  />
+      <div style="height: 75vh; overflow: scroll">
+        <table v-if="abaNotActive === true">
+          <tr v-if="selectedCards.length > 0">
+            <th>Id</th>
+            <th>Itens</th>
+            <th>Qtd.</th>
+            <th>Valor</th>
+          </tr>
+          <div v-else style="display: flex; align-items: center">
+            <span style="text-align: center">
+              Escolha os pedidos a serem incluídos na criação dos lotes.
+              <AnimationLotes />
+            </span>
           </div>
+          <tr v-for="(item, id) in selectedCards" :key="id">
+            <td>{{ item.numberOrder }}</td>
+            <td>
+              <span
+                v-for="(receita, id) in item.orderItem"
+                :key="id"
+                style="width: 100%; display: flex; flex-direction: column"
+              >
+                {{ receita.revenues.description }}</span
+              >
+            </td>
+            <td>
+              <span
+                v-for="(receita, id) in item.orderItem"
+                :key="id"
+                style="width: 100%; display: flex; flex-direction: column"
+              >
+                {{ receita.amountItem }}</span
+              >
+            </td>
+            <td>
+              <span
+                v-for="(receita, id) in item.orderItem"
+                :key="id"
+                style="width: 100%; display: flex; flex-direction: column"
+              >
+                R$ {{ receita.valueOrderItem }}</span
+              >
+            </td>
+          </tr>
+        </table>
+
+        <div
+          v-else
+          style="display: flex; flex-wrap: wrap; flex-direction: column"
+        >
+          <span>Anexar NF</span>
+          <div class="inputContainer">
+            <input
+              type="file"
+              accept="image/*,.pdf"
+              style="width: 85%"
+              @change="onFileChangeNF"
+            />
+            <img
+              v-if="previewNotaFiscal"
+              src="../../assets/icons/Icon_uploadConcluido.svg"
+              alt="Icon concluido"
+              style="width: 27px"
+            />
+            <img
+              v-else
+              src="../../assets/icons/download.svg"
+              alt="Pré-visualização do PDF"
+              style="width: 20px"
+            />
+          </div>
+          <span>Nº da NF</span>
+          <div class="inputContainer">
+            <input
+              type="text"
+              v-model="invoice_number"
+              style="width: 100%; height: 100%"
+              placeholder="000 001 001"
+            />
+          </div>
+          <span>Data inicial</span>
+          <div class="inputContainer">
+            <span v-if="selectedCards.length < 1"> Selecione um pedido </span>
+            <input
+              v-else
+              type="text"
+              v-model="formattedInitialDate"
+              style="width: 100%; height: 100%"
+            />
+          </div>
+          <span>Data final</span>
+          <div class="inputContainer">
+            <span v-if="selectedCards.length < 1"> Selecione um pedido </span>
+            <input
+              v-else
+              type="text"
+              v-model="formattedEndDate"
+              style="width: 100%; height: 100%"
+            />
+          </div>
+
+          <Button
+            @click.native="lotes()"
+            title="Gerar Lote"
+            style="margin-left: auto; margin-top: 2rem"
+          />
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -173,43 +191,52 @@ export default Vue.extend({
       previewNotaFiscal: null,
       aba: false,
       invoice_number: '',
-      initial_date:  null,
-      end_date:  null,
+      initial_date: null,
+      end_date: null,
       OrderBatchItem: [],
       loading: false,
+      datasFiltradas: [],
     }
   },
   computed: {
     formattedInitialDate() {
-      return dayjs(this.initial_date).format('DD/MM/YYYY');
+      return dayjs(this.initial_date).format('DD/MM/YYYY')
     },
     formattedEndDate() {
-      return  dayjs(this.end_date).format('DD/MM/YYYY');
+      return dayjs(this.end_date).format('DD/MM/YYYY')
     },
+
   },
   methods: {
-    onFileChangeNF(event) {
-      this.selectedFileNF = event.target.files[0]
-      this.previewNotaFiscal = URL.createObjectURL(this.selectedFileNF)
-    },
-    pedidos() {
-      this.abaNotActive = true
-    },
-    entrega() {
-      this.abaNotActive = false
-    },
+   
     async searchCliente(selectedClient, selectedType) {
       try {
         this.loading = true;
-        const state = selectedType;
-        const res = await httpOrder.GetOrderCliente2(selectedClient, state);
-        console.log(res);
-        this.dataPedidos = res.data;
+
+        const typeLotes = 1;
+        const fkOrderStatus1 = "789850813-1c69-11ee-be56-c691200020241";
+        const fkOrderStatus2 = "1c69c120002-575f34-1c69-be56-0242ac1201c69";
+
+        const res = await this.fetchOrderData(typeLotes, selectedClient, selectedType);
+        
+        this.dataPedidos = res.data.filter(item =>
+          item.fk_orderstatus === fkOrderStatus1 || item.fk_orderstatus === fkOrderStatus2
+        );
+
         this.cliente = selectedClient;
       } catch (error) {
         console.error(error);
       } finally {
         this.loading = false;
+      }
+    },
+
+    async fetchOrderData(typeLotes, selectedClient, selectedType) {
+      try {
+        return await httpOrder.GetOrderCliente2(typeLotes, selectedClient, selectedType);
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
     },
     updateSelectedCards(selectedCard) {
@@ -242,55 +269,90 @@ export default Vue.extend({
       }
     },
     lotes() {
-      const formData = new FormData();
-      formData.append('fk_client', this.cliente);
-      formData.append('file_invoice', this.selectedFileNF);
-      formData.append('invoice_number', this.invoice_number);
-      formData.append('initial_date', this.initial_date);
-      formData.append('end_date', this.end_date);
+      const formData = new FormData()
+      formData.append('fk_client', this.cliente)
+      formData.append('file_invoice', this.selectedFileNF)
+      formData.append('invoice_number', this.invoice_number)
+      formData.append('initial_date', this.initial_date)
+      formData.append('end_date', this.end_date)
 
-      const orderBatchItemArray = this.selectedCards.map(element => ({ fk_order: element.fk_pedido }));
-      formData.append('createOrderBatchItem', JSON.stringify(orderBatchItemArray));
+      const orderBatchItemArray = this.selectedCards.map((element) => ({
+        fk_order: element.fk_pedido,
+      }))
+      formData.append(
+        'createOrderBatchItem',
+        JSON.stringify(orderBatchItemArray)
+      )
 
       this.postOrderLotes(formData)
     },
     formatDate(date: Date) {
-      return dayjs(date).format("YYYY/MM/DD");
+      return dayjs(date).format('YYYY/MM/DD')
     },
     async postOrderLotes(data) {
       await httpOrder
         .PostLotes(data)
         .then((res) => {
-          console.log(res)
         })
         .catch((error) => {
           console.log(error)
         })
     },
     encontrarDatas() {
-    this.initial_date = null;
-    this.end_date = null;
+      this.initial_date = null
+      this.end_date = null
 
-    this.selectedCards.forEach((pedido) => {
-      pedido.orderItem.forEach((item) => {
-        const dataPedidoItem = new Date(item.dateOrderItem);
+      this.selectedCards.forEach((item) => {
+        const dataPedidoItem = new Date(item.dateOrderPedido)
 
         if (!isNaN(dataPedidoItem.getTime())) {
-          if ( this.initial_date === null || dataPedidoItem <  this.initial_date) {
-             this.initial_date = dataPedidoItem;
+          if (
+            this.initial_date === null ||
+            dataPedidoItem < this.initial_date
+          ) {
+            this.initial_date = dataPedidoItem
           }
 
           if (this.end_date === null || dataPedidoItem > this.end_date) {
-            this.end_date = dataPedidoItem;
+            this.end_date = dataPedidoItem
           }
         }
-      });
-    });
+      })
+    },
 
+    handleDateRangeSelected({ startDate, endDate }) {
+      const dataInicialObj = new Date(startDate)
+      const dataFinalObj = new Date(endDate)
 
+      this.datasFiltradas = this.dataPedidos.filter((data) => {
+        const dataAtual = new Date(data.dateOrder);
+        dataAtual.setDate(dataAtual.getDate() - 1);
+        
+        return dataAtual >= dataInicialObj && dataAtual <= dataFinalObj
+      })
+    },
+    onFileChangeNF(event) {
+      const [selectedFile] = event.target.files;
+
+      if (selectedFile) {
+        this.selectedFileNF = selectedFile;
+        this.previewNotaFiscal = URL.createObjectURL(this.selectedFileNF);
+      }
+    },
+
+    pedidos() {
+      this.toggleAbaNotActive(true);
+    },
+
+    entrega() {
+      this.toggleAbaNotActive(false);
+    },
+
+    toggleAbaNotActive(isPedidos) {
+      this.abaNotActive = isPedidos;
+    }
   },
-  },
-   watch: {
+  watch: {
     selectedCards: {
       handler: 'encontrarDatas',
       deep: true,
@@ -305,11 +367,6 @@ label {
   flex-direction: column;
   width: 9rem;
 }
-// input{
-//   border: solid 1px lavender;
-//     height: 2.4rem;
-//     width: 8rem;
-// }
 .inputContainer {
   border: solid 1px #b9b9b9;
   border-radius: 0.2rem;
@@ -343,10 +400,7 @@ label {
 
 .lotesPage {
   margin: 0 auto;
-  // max-width: 1380px;
   width: 98%;
-  // height: 100vh;
-  // display: flex;
   display: grid;
   grid-template-columns: 1fr 25rem;
   grid-template-rows: repeat(2, 10rem 19vh);
@@ -367,12 +421,6 @@ main {
   margin-top: 1rem;
 }
 
-// .historicOrders {
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   flex-direction: column;
-// }
 
 .containerSidebar {
   padding: 1rem;

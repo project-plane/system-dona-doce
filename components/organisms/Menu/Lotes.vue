@@ -3,7 +3,7 @@
       <div class="title_create" @click="spaceMenu">
         
         <div class="cadastrar">
-          <img src="~/assets/icons/kanban.svg" alt="user_create" />
+          <img src="~/assets/icons/lotes.svg" style="width: 2.4rem;" alt="user_create" />
           <h4>Lotes</h4>
         </div>
         <img
@@ -16,7 +16,7 @@
       <nav v-show="isDropdown" class="menu_navigation">
         <ul>
           <li>
-            <nuxt-link to="/dashboard/lotes"> Gerar Lotes</nuxt-link>
+            <nuxt-link to="/lotes/criacao"> Gerar Lotes</nuxt-link>
           </li>
 
           <li>

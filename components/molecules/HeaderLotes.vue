@@ -13,7 +13,7 @@
         </select>
         <!-- <pre>{{ listClient[0].id }}</pre> -->
         </div>
-          <div class="input">
+          <div class="input" v-if="typeOrder === true">
             <label>Tipo Pedido</label>
             <select v-model="selectedType"  @change="searchCliente">
               <option value="">Todos</option>
@@ -21,16 +21,21 @@
               <option value="coffe">Coffee</option>
             </select>
           </div>
-          <!-- <div style="display: flex; gap: 1rem; align-items: center; width: 35%;">
+      
+          <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
          <label for="">
           <p>Data Inicio</p>
-           <input type="date" v-model="startDate" style="background-color: var(--red);" />
+           <input type="date" id="startDate" style="background-color: white;" v-model="startDate"  @change="emitDateRange" />
          </label>
          <label for="">
           <p>Data Final</p>
-           <input type="date" v-model="endDate" style="background-color: var(--red);" />
+           <input type="date" id="endDate"   style="background-color: white;"  v-model="endDate" @change="emitDateRange" />
          </label>
-        </div> -->
+        </div>
+        <div class="searchId" v-if="filterSearch === true">
+             <label :for="label">{{ label }}</label>
+              <input  placeholder="Pesquisar por Id" type="text" :id="label" :value="value" @input="$emit('input', $event.target.value)">
+          </div>
       </div>
 
        
@@ -47,27 +52,23 @@
   export default Vue.extend({
   
     props: {
-  
+      label: String,
+      value: String,
       title: String,
+      typeOrder: Boolean,
+      filterData: Boolean,
+      filterSearch:Boolean,
     },
     data() {
       return {
-        isToday: true,
-        calendarStatus: false,
-        date: new Date(),
-        visualization: false,
+        textSearch:'',
+        
         selectedType: '',
         selectedAgenda: '',
         selectedClient: '',
         listClient:[],
         startDate: '',
         endDate: '',
-        dataPedidos:[],
-        filteredData: [],
-        range: {
-          start: new Date(),
-          end: new Date(),
-        },
         loading: false,
 
       }
@@ -95,46 +96,16 @@
     searchCliente() {
       this.$emit('searchCliente', this.selectedClient, this.selectedType )
     },
-    // filterByDateRange(startDate, endDate) {
-    //   this.listFiltered = []
-    //   this.filterData.map((item) => {
-    //     item.dateOrder = new Date(item.dateOrder).toISOString().split('T')[0]
-    //     const itemDate = new Date(item.dateOrder)
-    //     if (itemDate >= new Date(startDate) && itemDate <= new Date(endDate)) {
-    //       this.listFiltered.push(item)
-    //     }
-    //   })
-    // },
-    // filterByType() {
-    //   if (this.selectedType === '' && this.selectedAgenda === '') {
-    //     this.filter = false ;
-    //   } else {
-    //     this.filter = true
-    //     this.filterData = this.historico.filter((item) => {
-    //       let typeCondition =
-    //         this.selectedType === '' || item.order_type === this.selectedType
-    //       let agendaCondition =
-    //         this.selectedAgenda === '' ||
-    //         item.orderStatus.description === this.selectedAgenda
-
-    //       return typeCondition && agendaCondition
-    //     })
-    //   }
-    // },
+    emitDateRange() {
+      this.$emit('dateRangeSelected', {
+        startDate: this.startDate,
+        endDate: this.endDate,
+      });
+    }
   },
   
    
   watch: {
-    date(newValue) {
-      if (
-        newValue.toISOString().split('T')[0] !==
-        new Date().toISOString().split('T')[0]
-      ) {
-        this.isToday = false
-      } else {
-        this.isToday = true
-      }
-    },
     selectedType(newValue) {
       this.$store.commit('SELECTED_TIPO', newValue)
     },
@@ -144,15 +115,7 @@
     selectedClient(newValue) {
       this.$store.commit('SELECTED_NAME_CLIENT', newValue)
     },
-    range: {
-      handler(newValue) {
-        this.filterByDateRange(
-          new Date(newValue.start).toISOString().split('T')[0],
-          new Date(newValue.end).toISOString().split('T')[0]
-        )
-      },
-      deep: true,
-    },
+ 
     
   },
   })
@@ -189,7 +152,6 @@
       }
   
       .selectInput {
-        width: 40%;
         display: flex;
   
         gap: 1rem;
@@ -201,6 +163,23 @@
         }
       }
     }
+  }
+  .searchId{
+    @extend .input;
+    right: auto;
+    input {
+    width: 100%;
+    border: 0.03rem solid var(--border);
+    border-radius: 0.25rem;
+    background-image: url('../../assets/icons/search.svg');
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-size: 22px;
+    
+  }
+    
+
   }
   </style>
   

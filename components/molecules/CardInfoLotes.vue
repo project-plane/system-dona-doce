@@ -17,6 +17,7 @@
                 {{ formatDate(infoPedidos.dateOrder) }}
               </h4>
               <h4 class="containerDate" v-if="infoPedidos.order_type === 'coffe'" style="color: var(--red) ;">
+               <!-- <pre> {{ infoPedidos }}</pre> -->
                 {{ formatDate(infoPedidos.dateOrder) }}
               </h4>
             </div>
@@ -87,6 +88,7 @@ export default Vue.extend({
         user: key.user.Clients.corporate_name,
         orderItem: key.orderItem,
         selected: this.infoPedidos.selected || false,
+        dateOrderPedido: key.dateOrder
       }
       this.$emit('update-selection', pedidos);
       

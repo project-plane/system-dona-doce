@@ -22,7 +22,8 @@
 
                   <!-- <pre>{{ infoPedidos }}</pre> -->
             </div>
-            <input type="checkbox" :id="infoPedidos.infoPedidos" :value="infoPedidos" v-model="infoPedidos.selected" @change="updateSelection" />
+            <ButtonPirula title="Visualizar" style="font-size: 0.9rem; width: 46%;" :id="infoPedidos.infoPedidos" :value="infoPedidos" v-model="infoPedidos.selected" @click.native="updateSelection" />
+            <!-- <input type="checkbox"  /> -->
             </div>
           </div>
   
@@ -42,7 +43,7 @@
         type: [Array, Object],
         required: false,
       },
-        idLote: String,
+        idLote: Number,
         valueOrder:[Array, Object],
     },
     data() {
@@ -59,7 +60,7 @@
       },
       updateSelection() {
         this.$emit('update-selection', this.infoPedidos);
-        
+        this.$emit('aba-Lotes',  true);
         
       },
       valueLote() {

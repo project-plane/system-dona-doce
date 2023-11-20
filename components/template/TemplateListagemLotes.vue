@@ -1,36 +1,33 @@
 <template>
- 
     <div class="lotesPage">
       <div class="historicOrders">
-        <HeaderLotes title="Gerar Lotes" @searchCliente="request" />
+        <HeaderLotes title="Consulta de Lotes" @searchCliente="request" :filterSearch="true" label="Pesquisar.." v-model="textSearch"  />
+      
       </div>
-      <Loading v-if="loading"  />
+      <LoadingPage v-if="loading" style="width: ;" />
       <main v-else>
         <div class="listCards">
- 
-           <!-- <pre> {{ listAllLotes[0].user }}</pre> -->
           <CardLotes
-            v-for="(item, id) in listAllLotes"
+            v-for="(item, id) in filteredItems"
             :key="id"
             :infoPedidos="item"
             :idLote="item.numberOrderBatch"
             :valueOrder="item.OrderBatchItem"
             @update-selection="updateSelectedCards"
+            @aba-Lotes="pedidos"
           />
-          <span v-show="listAllLotes.length === 0" style="height: 60vh;  display: flex;
+          
+          <span v-show="filteredItems.length === 0" style="height: 60vh;  display: flex;
             align-items: center;  justify-content: center; width: 100%;">
            Não encontramos resultados, Escolha um cliente...
           </span>
         </div>
       </main>
       
-      <div class="containerSidebar">
+      <div class="containerSidebar" >
         <section
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-evenly;
-          "
+          style=" display: flex;      align-items: center;
+            justify-content: space-evenly; "
         >
           <h3
             :class="{ abaNotActive: abaNotActive }"
@@ -51,10 +48,10 @@
         <div style="height: 75vh; overflow: scroll">
           <table v-if="abaNotActive === true">
             <tr v-if="listPedidos != null">
-              <th>Id</th>
-              <th>Itens</th>
-              <th>Qtd.</th>
+              <th>Pedido</th>
               <th>Valor</th>
+    
+              <th>Cautela</th>
             </tr>
             <div v-else style="display: flex; align-items: center" >
               <span style="text-align: center">
@@ -62,25 +59,49 @@
                 <AnimationLotes/>
               </span>
             </div>
-            <tr v-for="(item, id) in listPedidos" :key="id">
-              <pre>{{ item }}</pre>
-         
-            
+            <tr v-for="(item, id) in listPedidos.OrderBatchItem" :key="id">
+                <td> Nº {{ item.order.numberOrder }}</td>
+                <td> R$ {{ item.order.valueOrder }}</td>
+                <td v-if="item.order.file_caution != null ">
+                  Anexado
+                </td>
+                  <td v-else>
+                  Não Anexado
+                  </td>
+                
             </tr>
           </table>
 
           <div  v-else style="display: flex; flex-wrap: wrap; flex-direction: column">
-            <span>Download NF</span>
-            <div class="inputContainer">
-         
+            <div>
+              <span>Download NF</span>
+              <br />
+               <span class="spanButton" v-if="listPedidos.file_invoice == null">
+                  Arquivo não anexado
+                </span>
+                <button v-show="listPedidos.file_invoice != null" @click="downloadNF(listPedidos.file_invoice)"
+                  class="btnDownload">
+                  Baixar arquivo
+                </button>
+                
             </div>
-            <span>Download Cautela</span>
-            <div class="inputContainer">
-             
+           
+            <div>
+              <span>Download Cautela</span>
+        
+                <button class="btnDownload" @click="downloadCaution">
+                  Baixar Arquivo 
+                </button>
             </div>
             <span>Comprovante</span>
-            <div class="inputContainer">
-             
+            <div>
+              {{ listPedidos.file_payment_voucher }}
+                <span v-if="listPedidos.file_payment_voucher == null" class="spanButton" >
+                    Arquivo não anexado
+                </span >
+                <button @click="downloadFile" v-if="listPedidos.file_payment_voucher != null" class="btnDownload">
+                  Baixar Comprovante
+                </button>
             </div>
 
           </div>
@@ -96,25 +117,24 @@ export default Vue.extend({
   data() {
     return {
       abaNotActive: true,
-      dataPedidos: [],
-      listClient: [],
       selectedCards: [],
       cliente: '',
       previewNotaFiscal: null,
-      aba: false,
-      OrderBatchItem: [],
       loading: false,
       listAllLotes:[],
       listPedidos: [],
+      filesCaution: 0,
+      textSearch: "",
     }
   },
-  computed: {},
   methods: {
      async request(searchCliente){ 
-    await httpOrder.ListLotes(searchCliente).then((res) => {
-      this.listAllLotes = res.data
-      console.log(res)
-      })
+       this.loading = true;
+        await httpOrder.ListLotes(searchCliente).then((res) => {
+          this.listAllLotes = res.data
+          
+          this.loading = false;
+        })
 
     },
     pedidos() {
@@ -123,21 +143,117 @@ export default Vue.extend({
     entrega() {
       this.abaNotActive = false
     },
-    onFileChangeNF(event) {
-      this.selectedFileNF = event.target.files[0]
-      this.previewNotaFiscal = URL.createObjectURL(this.selectedFileNF)
-    },
-
-
     updateSelectedCards(selectedCard) {
+     this.listPedidos =[]
      this.listPedidos = selectedCard
+     
     },
- 
+    async downloadNF(url) {
+      try {
+        await fetch(
+          'https://api.donadoce.gedroid.com/invoice/' + url
+        )
+          .then((response) => response.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'ArquivoNF'
+            a.click()
+            window.URL.revokeObjectURL(url)
+          })
+      } catch (error) {
+        console.error('Erro ao baixar o arquivo:', error)
+      }
+    },
+    async downloadCaution() {
+    
+      const filesToDownload = this.listPedidos.OrderBatchItem
+      .map(item => item.order.file_caution)
+      .filter(file => file !== null);
+        this.filesCaution = filesToDownload
+        console.log(filesToDownload.length);
+        
+        if (filesToDownload.length === 0) {
+        this.$toast.error('Não há arquivos disponíveis')
+      } else {
+      await Promise.all(filesToDownload.map(this.downloadFile));
+    }
+},
+    async downloadFile(item) {
+      try {
+        await fetch(
+          'https://api.donadoce.gedroid.com/caution/' + item
+        )
+          .then((response) => response.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            const fileName = url.split('/').pop();
+            a.download = fileName;
+            a.setAttribute('download', '');
+            document.body.appendChild(a);
+            a.click()
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url)
+          })
+      } catch (error) {
+        console.error('Erro ao baixar o arquivo:', error)
+      }
+    },
+
+
   },
+  computed: {
+    filteredItems() {
+      if (Array.isArray(this.listAllLotes)) {
+      return this.listAllLotes.filter(
+        (item) =>
+          item.numberOrderBatch.toString().includes(this.textSearch.toLowerCase())
+      );
+    } else {
+      return [];
+    }
+  },
+}
 })
 </script>
 
 <style scoped lang="scss">
+.spanButton{
+  font-size: 12px;
+  width: 100%;
+  background: #ffefdb;
+  color: #fa5c4f;
+  border: none;
+  @extend .inputContainer
+                  
+}
+.btnDownload {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--red);
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  height: 2.6rem;
+  width: 8rem;
+  background-color: var(--red);
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.09);
+    transition: 300ms linear;
+    background: #ffefdb;
+    color: #fa5c4f;
+    margin-left: 0.5rem;
+  }
+}
+
 label {
   display: flex;
   flex-direction: column;
