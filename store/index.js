@@ -23,6 +23,7 @@ export const state = () => ({
   },
   dadosCliente:[],
   unidadeCliente:"",
+  nomeCliente:"",
   dataPedido:"",
   dateCalendar: null
 })
@@ -76,6 +77,10 @@ export const mutations = {
   },
   VALUE_COMPRAS(state, payload) {
     state.value_buy = payload
+  },
+  SELECTED_NAME_CLIENT(state, payload) {
+    state.nomeCliente = payload
+    console.log(state.nomeCliente );
   },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido);
