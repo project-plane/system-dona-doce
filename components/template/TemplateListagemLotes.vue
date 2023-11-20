@@ -97,7 +97,7 @@
             </div>
             <div>
               <span>Comprovante</span>
-              {{ listPedidos.file_payment_voucher }}
+              <!-- <pre>{{ listPedidos }}</pre> -->
                 <span v-if="listPedidos.file_payment_voucher == null" class="spanButton" >
                     Arquivo não anexado
                 </span >
