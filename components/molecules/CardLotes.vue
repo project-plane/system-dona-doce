@@ -60,6 +60,7 @@
       },
       updateSelection() {
         this.$emit('update-selection', this.infoPedidos);
+        
         this.$emit('aba-Lotes',  true);
         
       },

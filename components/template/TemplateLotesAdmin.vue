@@ -4,6 +4,7 @@
       <HeaderLotes
         title="Gerar Lotes"
         :typeOrder="true"
+        :select="true"
         @searchCliente="searchCliente"
         :filterData="true"
         @dateRangeSelected="handleDateRangeSelected"
@@ -425,6 +426,7 @@ main {
 .containerSidebar {
   grid-area: 1 / 2 / 3 / 3;
   margin-top: 1rem;
+  animation: slideInFromRight 1s ease-out;
 }
 
 
@@ -434,6 +436,18 @@ main {
   background: white;
   height: 85vh;
   // overflow-y: scroll;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+   
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 .listCards {
   margin: 0 auto;

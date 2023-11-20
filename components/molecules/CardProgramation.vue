@@ -8,7 +8,6 @@
       </div>
      <div>
 
-
       <div class="selectPedido">
         <p>Quantidade</p>
         <input style="width: 6.5rem;" v-model="qtdPedido" :min="base_min_amount" :max="base_max_amount" type="number" />
