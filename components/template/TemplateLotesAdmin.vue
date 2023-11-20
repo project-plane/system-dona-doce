@@ -290,13 +290,19 @@ export default Vue.extend({
       return dayjs(date).format('YYYY/MM/DD')
     },
     async postOrderLotes(data) {
+      this.loading = true
       await httpOrder
-        .PostLotes(data)
-        .then((res) => {
+      .PostLotes(data)
+      .then((res) => {
+          this.$toast.success('Lote criado com sucesso')
         })
         .catch((error) => {
           console.log(error)
+          this.$toast.error('Houve um erro ao processar a solicitação.');
+          this.$toast.warning('Preencha Todos os campos.');
         })
+        this.loading = false
+        this.$nuxt.refresh()
     },
     encontrarDatas() {
       this.initial_date = null
