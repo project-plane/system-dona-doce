@@ -5,6 +5,7 @@
 
       <nuxt-link to="/pedidos">Realizar Pedidos</nuxt-link>
       <nuxt-link to="/pedidos/historico-pedidos">Histórico de Pedidos</nuxt-link>
+      <nuxt-link to="/lotes/listagemCliente">Lotes de Pedidos</nuxt-link>
       <nuxt-link to="/pedidos/meus-dados">Meus Dados</nuxt-link>
 
       <button class="logout" @click="logout">

@@ -61,4 +61,7 @@ export default {
     })
 
   },
+  comprovanteLotes:async (id,data) => {
+    return await http.patch(`/order_batch/${id}`, data)
+  },
 }

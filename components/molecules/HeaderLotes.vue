@@ -4,8 +4,8 @@
       <h1>{{title}}</h1>
       <div class="btns">
        
-        <div class="selectInput">
-          <div class="input">
+        <div class="selectInput" >
+          <div class="input" v-if="select === true">
           <label>Clientes</label>
           <select v-model="selectedClient" @change="searchCliente">
             <option value="" disabled>Selecionar Cliente</option>
@@ -58,6 +58,7 @@
       typeOrder: Boolean,
       filterData: Boolean,
       filterSearch:Boolean,
+      select: Boolean
     },
     data() {
       return {
