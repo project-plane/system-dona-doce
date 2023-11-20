@@ -14,7 +14,7 @@
       <div class="header-order">
         <h4>Data do Pedido: {{ formatDate(data.dateOrder) }}</h4>
         <h4>Status: {{ data.orderStatus.description }}</h4>
-        <h4 v-if="data.order_type === 'coffe'">Total: R$ {{ valueTotal }}</h4>
+        <h4 v-if="data.order_type === 'coffe'">Total: {{ valueTotal }}</h4>
         <h4 v-else>
           Total: R${{ countdejejum + countlanche01 + countlanche02 }}
         </h4>
@@ -26,13 +26,25 @@
             <th>Item</th>
             <th>Qtde</th>
             <th>Valor Unit.</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
-
+          
           <tr v-for="(item, index) in data.orderItem" :key="index">
             <td>{{ index + 1 }}</td>
             <td>{{ item.revenues.description }}</td>
-            <td>{{ data.orderItem[index].amountItem }}</td>
-            <td>{{ data.orderItem[index].valueOrderItem }}</td>
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="data.orderItem[index].amountItem">
+            </td>
+            <td> R$ {{ data.orderItem[index].valueOrderItem }}</td>
+            
+            
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
+           
           </tr>
         </table>
       </section>
@@ -46,11 +58,18 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
+     
             <td>{{ item.revenues.description }}</td>
-            <td>{{ item.amountItem }}</td>
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -59,6 +78,11 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+            <!-- <pre>{{ item }}</pre> -->
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
+
           </tr>
           <tr v-if="dejejum.length === 0">
             Não possui...
@@ -73,11 +97,18 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
             <td>{{ item.revenues.description }}</td>
-            <td>{{ item.amountItem }}</td>
+          
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -86,6 +117,9 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
           </tr>
           <tr v-if="lanche01.length === 0">
             Não possui...
@@ -100,11 +134,17 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
+            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
             <td>{{ item.revenues.description }}</td>
-            <td>{{ item.amountItem }}</td>
+            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
+              {{ item.amountItem }}
+            </td>
+            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
+              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -113,6 +153,9 @@
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
             <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
+            <td> 
+              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            </td>
           </tr>
 
           <tr v-if="lanche02.length === 0">
@@ -120,7 +163,6 @@
           </tr>
         </table>
       </section>
-
       <Button
         v-if="
           data.orderStatus.description === 'Solicitado' ||
@@ -132,6 +174,10 @@
         @click.native="cancelAnOrder(data.id)"
       />
     </div>
+
+
+
+
 
     <div v-else class="dataEmpresa">
       <div class="header-order">
@@ -332,7 +378,6 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
 import httpOrder from '@/server/pedidos/index'
-import httpClientCompany from '~/server/ClientCompany'
 export default Vue.extend({
   props: {
     data: Object,
@@ -355,6 +400,10 @@ export default Vue.extend({
       previewComprovante: null,
       amount_of_tray: Number,
       messageClient: '',
+      isModified: false,
+      editObject: [],
+      orderItem: [],
+      id_categoryOrderItem:""
     }
   },
 
@@ -507,12 +556,39 @@ export default Vue.extend({
       } catch (error) {
         this.$toast.error('Erro: ' + error);
       }
+    },
+    async updateQtd() {
+      try {
+        await httpOrder.UpdateOrderItem(this.editObject);
+        console.log('A atualização foi bem-sucedida.');
+
+      } catch (error) {
+        this.$toast.error('Erro, falha na atualização');
+
+      }
+},
+editItem(index) {
+  this.editObject = {
+      fk_order: this.data.id,
+      fk_revenue: index.fk_revenue,
+      fk_categoryOrderItem: "491aebc2-1c69-11ee-be56-0242ac120002",
+      amountItem: parseInt(index.amountItem)
+  };
+    this.updateQtd()
     }
   },
 })
 </script>
 
 <style scoped lang="scss">
+input:focus {
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+  font-weight: 400;
+}
+input{
+  text-align: center;
+    font-weight: 700;
+}
 .menu-modal {
   display: flex;
   justify-content: center;
@@ -601,6 +677,7 @@ export default Vue.extend({
     text-align: center;
     border-bottom: 1px dotted var(--red);
     table-layout: fixed;
+    padding: 0.8rem;
 
     tr {
       width: 100%;

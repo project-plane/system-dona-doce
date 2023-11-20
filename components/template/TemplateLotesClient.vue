@@ -1,10 +1,10 @@
 <template>
     <div class="lotesPage">
       <div class="historicOrders">
-        <HeaderLotes title="Consulta de Lotes" :select="true" @searchCliente="request" :filterSearch="true" label="Pesquisar.." v-model="textSearch"  />
+        <HeaderLotes title="Consulta de Lotes" @searchCliente="request" :filterSearch="true"  label="Pesquisar.." v-model="textSearch" style="border: none" />
       
       </div>
-      <LoadingPage v-if="loading" style="width: ;" />
+      <Loading v-if="loading" style="width: ;" />
       <main v-else>
         <div class="listCards">
           <CardLotes
@@ -47,18 +47,19 @@
 
         <div style="height: 75vh; overflow: scroll">
           <table v-if="abaNotActive === true">
-            <tr v-if="listPedidos != null">
+            <tr v-if="listPedidos.OrderBatchItem != null">
               <th>Pedido</th>
               <th>Valor</th>
               <th>Cautela</th>
             </tr>
             <div v-else style="display: flex; align-items: center" >
-              <span style="text-align: center">
-                Escolha os pedidos a serem incluídos na criação dos lotes.
-                <AnimationLotes/>
+              <span style="text-align: center;    margin: 2rem;">
+                Para visualizar os itens dos lotes, clique em um card.
+                <AnimationLotesClient/>
               </span>
             </div>
             <tr v-for="(item, id) in listPedidos.OrderBatchItem" :key="id">
+
                 <td> Nº {{ item.order.numberOrder }}</td>
                 <td> R$ {{ item.order.valueOrder }}</td>
                 <td v-if="item.order.file_caution != null ">
@@ -71,7 +72,7 @@
             </tr>
           </table>
 
-          <div   v-else style="display: flex; flex-wrap: wrap; margin-top: 2rem; gap: 1rem; ">
+          <div  v-else style="display: flex; flex-wrap: wrap; margin:.51rem; gap: 1rem; ">
             <div>
               <span>Download NF</span>
               <br />
@@ -88,21 +89,39 @@
             <div>
               <span>Download Cautela</span>
         
-                <button v-if="this.listPedidos.OrderBatchItem != null" class="btnDownload" @click="downloadCaution">
+              <button v-if="this.listPedidos.OrderBatchItem != null" class="btnDownload" @click="downloadCaution">
                   Baixar Arquivo 
                 </button>
                 <span v-else class="spanButton" >
                     Arquivo não anexado
                 </span >
             </div>
-            <div>
-              <span>Comprovante</span>
-              {{ listPedidos.file_payment_voucher }}
-                <span v-if="listPedidos.file_payment_voucher == null" class="spanButton" >
-                    Arquivo não anexado
-                </span >
-                <button @click="downloadFile" v-if="listPedidos.file_payment_voucher != null" class="btnDownload">
-                  Baixar Comprovante
+            <div class="sectionComprovante">
+              
+                <span>Anexar Comprovante</span>
+              
+              <div class="inputContainer">
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  style="width: 85%"
+                  @change="onFileChangeNF"
+                />
+                <img
+                  v-if="previewNotaFiscal"
+                  src="../../assets/icons/Icon_uploadConcluido.svg"
+                  alt="Icon concluido"
+                  style="width: 27px"
+                />
+                <img
+                  v-else
+                  src="../../assets/icons/download.svg"
+                  alt="Pré-visualização do PDF"
+                  style="width: 20px"
+                />
+              </div>
+              <button @click="sendInformacoes" class="btnDownload">
+                  Enviar Comprovante
                 </button>
             </div>
 
@@ -110,11 +129,13 @@
         </div>
       </div>
     </div>
+
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import httpOrder from '~/server/pedidos'
+import HttpMeusDados from '@/server/meusDados/index'
 export default Vue.extend({
   data() {
     return {
@@ -127,20 +148,34 @@ export default Vue.extend({
       listPedidos: [],
       filesCaution: 0,
       textSearch: "",
+      myData: [],
+      idPedido: ""
     }
   },
-  async fetch(){
-    this.request
+  async created(){    
+    this.loading = true;
+    try {
+      const res = await HttpMeusDados.MeusDados();
+        await this.request(res.data.id);
+   } catch (error) {
+      console.error(error);
+      this.$toast.error('Houve um erro ao processar a solicitação.')
+   }
+   finally {
+         this.loading = false;
+      }
   },
   methods: {
-     async request(searchCliente){ 
-       this.loading = true;
-        await httpOrder.ListLotes(searchCliente).then((res) => {
-          this.listAllLotes = res.data
-          
-          this.loading = false;
-        })
-
+     async request(id){ 
+      try {
+         const res = await httpOrder.ListLotes(id);
+         this.listAllLotes = res.data;
+      }
+      catch (error) {
+        console.error(error);
+        this.$toast.error('Houve um erro ao processar a solicitação.')
+    }
+   
     },
     pedidos() {
       this.abaNotActive = true
@@ -148,11 +183,14 @@ export default Vue.extend({
     entrega() {
       this.abaNotActive = false
     },
-    updateSelectedCards(selectedCard) {
+    updateSelectedCards(selectedCard ) {
      this.listPedidos =[]
      this.listPedidos = selectedCard
+     this.idPedido =selectedCard.id 
+     console.log(selectedCard.id );
      
     },
+   
     async downloadNF(url) {
       try {
         await fetch(
@@ -207,6 +245,35 @@ export default Vue.extend({
         console.error('Erro ao baixar o arquivo:', error)
       }
     },
+    onFileChangeNF(event) {
+      const [selectedFile] = event.target.files;
+
+      if (selectedFile) {
+        this.selectedFileNF = selectedFile;
+        this.previewNotaFiscal = URL.createObjectURL(this.selectedFileNF);
+      }
+    },
+    sendInformacoes(){
+      const formData = new FormData()
+      formData.append('file_payment_voucher', this.selectedFileNF)
+      this.postComprovanteLotes(formData)
+    },
+    async postComprovanteLotes(data) {
+      this.loading = true
+      console.log(this.idPedido, );
+
+      await httpOrder.comprovanteLotes(this.idPedido, data).then((res) => {
+          this.$toast.success('enviado sucesso')
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$toast.error('Houve um erro ao processar a solicitação.');
+        })
+        this.loading = false
+        this.previewNotaFiscal = null
+        this.$nuxt.refresh()
+    },
+
 
 
   },
@@ -260,6 +327,18 @@ export default Vue.extend({
   }
 }
 
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+   
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 label {
   display: flex;
   flex-direction: column;
@@ -273,7 +352,13 @@ label {
   align-items: center;
   justify-content: space-between;
 }
-
+.sectionComprovante{
+  border-top: solid 1px;
+  padding-top: .5rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-direction: column;
+}
 .abaActive {
   width: 100%;
   height: 2.5rem;
@@ -298,10 +383,8 @@ label {
 
 .lotesPage {
   margin: 0 auto;
-  // max-width: 1380px;
+  padding-top: 4rem;
   width: 98%;
-  // height: 100vh;
-  // display: flex;
   display: grid;
   grid-template-columns: 1fr 25rem;
   grid-template-rows: repeat(2, 10rem 19vh);
@@ -314,13 +397,13 @@ label {
 }
 main {
   grid-area: 2 / 1 / 3 / 2;
-  height: 60vh;
+  height: 65vh;
   overflow-y: scroll;
 }
 .containerSidebar {
+   animation: slideInFromRight 1s ease-out;
   grid-area: 1 / 2 / 3 / 3;
   margin-top: 1rem;
-  animation: slideInFromRight 1s ease-out;
 }
 
 
@@ -332,21 +415,9 @@ main {
   height: 85vh;
   // overflow-y: scroll;
 }
-
-@keyframes slideInFromRight {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  100% {
-   
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 .listCards {
   margin: 0 auto;
-  width: 95%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1.2rem;
