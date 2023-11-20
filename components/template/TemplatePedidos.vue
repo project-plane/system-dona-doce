@@ -164,7 +164,7 @@ export default Vue.extend({
   },
   methods: {
     atualizarDuracao() {
-      this.duracao = this.duracao + 1; // por exemplo, aumenta 1 segundo a cada vez que a função é chamada
+      this.duracao = this.duracao + 1; 
     },
     openPedido(pedido) {
       this.$router.push({
@@ -193,7 +193,6 @@ export default Vue.extend({
         ) {
           this.listFiltered.push(item)
         }
-        // console.log(this.listFiltered);
       })
     },
   },

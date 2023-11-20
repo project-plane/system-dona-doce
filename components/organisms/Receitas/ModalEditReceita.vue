@@ -42,22 +42,38 @@
                 />
               </div>
             </div>
+
+            <div style="display: flex; justify-content: space-around;gap: 30px;">
+              <Input
+                label="Maximo"
+                type="number"
+                v-model="maximo"
+              />
+              <Input
+                label="Minimo"
+                type="number"
+                v-model="minimo"
+
+              />
+            </div>
+
             <div class="btnAddIngrediente">
               <button @click="addIngrediente">Adicionar Ingrediente</button>
             </div>
             <div class="body" v-if="statusAddIngrediente">
               <div class="input">
                 <Label for="ingrediente">Ingrediente</Label>
+
                 <select name="" id="ingrediente" v-model="selected">
                   <option disabled value="">Selecionar Ingrediente</option>
-                  <option
-                    v-for="itemIngredient in listIngredients"
-                    :key="itemIngredient.id"
+                  <option  :value="itemIngredient.id"  v-for="itemIngredient in listIngredients"  :key="itemIngredient.id"
                   >
-                    {{ itemIngredient.description }}
+                    {{ itemIngredient.description}} - {{ refactorUnidadeMedida(itemIngredient.unit_of_measurement) }}
                   </option>
+
                 </select>
               </div>
+
               <div class="input">
                 <label for="qtd">Quantidade</label>
                 <input
@@ -65,6 +81,15 @@
                   id="qtd"
                   placeholder="quantidade"
                   v-model="qtdIngrediente"
+                />
+              </div>
+              <div class="input">
+                <Label for="ingrediente">Custo R$</Label>
+                <input
+                  type="text"
+                  placeholder="Valor Custo"
+                  v-model="valorApro"
+                  disabled
                 />
               </div>
               <div class="btnIngrediente">
@@ -82,7 +107,9 @@
 
               <Input
                 label="Valor Ingrediente"
-                :value="'R$ ' + receita.ingredients.value.toFixed(2)"
+                :value="
+                  'R$ ' + receita.ingredients.value_per_serving.toFixed(2)
+                "
                 type="text"
                 disabled="disabled"
                 block="background: #d6d6d6; cursor: no-drop"
@@ -112,24 +139,27 @@
                 />
               </div>
             </div>
-            <div class="valorTotal" v-if="updateIngrediente.length !== 0">
-              <h3>Valor Total</h3>
-              <h3>R$ {{ valorTotal }}</h3>
+
+
+            <div style="align-items: center; display: flex; gap: 10px;justify-content: space-around;">
+              <div >
+              <h3 style="color: var(--red)">Gastos da Receita</h3>
+              <h3>R$ {{  this.listDeCompras }}</h3>
+             </div>  <div>
+              <h3 style="color: yellowgreen;">Novo Valor</h3>
+              <Input
+                style="max-width: 150px; height: auto;"
+                v-model="valorTotal"
+                type="number"
+              />
             </div>
-            <div class="valorTotal" v-else>
-              <h3>Valor Total</h3>
-              <h3>R$ {{ valorAtual }}</h3>
             </div>
+
             <Button
               @functionClick="editarIngredienteReceita(listReceitas)"
-              title="Atualizar Dados"
-              v-if="updateIngrediente.length === 0"
-            />
-            <Button
-              v-else
-              @functionClick="editReceita(idReceita)"
               title="Salvar"
             />
+
           </div>
         </div>
       </BeadFrame>
@@ -148,7 +178,7 @@ export default Vue.extend({
   data() {
     return {
       statusAddIngrediente: false,
-      qtdIngrediente: '',
+      qtdIngrediente: 0,
       valorTotal: '',
       valorAtual: '',
       yield_per_quantity: 0,
@@ -159,6 +189,9 @@ export default Vue.extend({
       listFindReceita: [],
       listReceitas: [],
       idReceita: '',
+      maximo: 0,
+      minimo: 0,
+      valorApro: 0,
       editUrlImgFile: null,
       editUrlImgPreview: null,
       title: '',
@@ -166,6 +199,10 @@ export default Vue.extend({
       selected: '',
       listIngredients: [],
       loading: false,
+      status: null,
+      listDeCompras: 0,
+      ingredienteSel: null
+
     }
   },
   props: {
@@ -174,14 +211,49 @@ export default Vue.extend({
       required: true,
     },
   },
+  watch: {
+    selected(newId){
+      this.ingredienteSel = this.listIngredients.find((item) => newId == item.id);
+      if(this.ingredienteSel){
+      this.valorApro = this.ingredienteSel.value_per_serving * this.qtdIngrediente;
+      }
+    },
+    qtdIngrediente(newQuantity){
+      if(this.ingredienteSel!= null)
+      {
+        this.valorApro = this.ingredienteSel.value_per_serving * newQuantity;
 
+      }
+    },
+    listReceitas: {
+      deep: true,
+      immediate: true,
+      handler(newValue) {
+        var soma = 0
+        console.log(newValue);
+
+        newValue.map((receita) => {
+          soma = (receita.ingredients.value_per_serving *  receita.amount_ingredient) + soma
+        })
+
+        this.valorTotal = soma
+        this.valorAtual = soma
+        this.listDeCompras = soma
+
+      },
+    },
+  },
   async fetch() {
     this.loading = true
 
     await httpReceitas
       .GetFindReceita(this.dataReceita)
       .then((res) => {
+
         this.listFindReceita = res.data
+        this.maximo = this.listFindReceita.base_max_amount
+        this.minimo = this.listFindReceita.base_min_amount
+        this.status = this.listFindReceita.status
         this.idReceita = this.listFindReceita.id
         this.title = this.listFindReceita.description
         this.listReceitas = this.listFindReceita.ingredients_Revenues
@@ -229,7 +301,7 @@ export default Vue.extend({
     // Inserir um ingrediente dentro da receita
     inserirIngrediente(id) {
       this.listIngredients.map(async (e) => {
-        if (e.description === this.selected) {
+        if (e.id === this.selected) {
           const dado = this.listReceitas.find((item) => {
             return item.ingredients.description === this.selected
           })
@@ -271,7 +343,7 @@ export default Vue.extend({
     },
 
     // Edita um ingrediente dentro da receita
-    editarIngredienteReceita(data) {
+    async editarIngredienteReceita(data) {
       data.map((e) => {
         const dataUpdate = {
           fk_ingredient: e.fk_ingredient,
@@ -294,13 +366,10 @@ export default Vue.extend({
             console.log(error)
           })
       })
+      await this.editReceita(this.idReceita);
       this.$toast.success('Valor Atualizado com sucesso!!!')
 
-      // valor total de soma dos ingredientes
-      const valorTotal = this.amountValue.reduce((soma, i) => {
-        return soma + i
-      })
-      this.valorTotal = valorTotal.toFixed(2)
+
     },
 
     // Deleta um ingrediente da receita
@@ -346,6 +415,9 @@ export default Vue.extend({
         )
         formData.append('old_imagem', this.listFindReceita.imagem)
         formData.append('imagem', this.editUrlImgFile)
+        formData.append('base_max_amount', this.maximo)
+        formData.append('base_min_amount', this.minimo)
+        formData.append('status', this.status)
         formData.append('yield_per_quantity', this.yield_per_quantity)
         formData.append('time_in_hours', this.time_in_hours)
         formData.append('presumed_profit', this.presumed_profit)
@@ -353,15 +425,15 @@ export default Vue.extend({
         await httpReceitas
           .UpdateReceita(id, formData)
           .then((res) => {
-            if (res.status === 200) {
               this.$toast.success('Receita atualizada com sucesso!!!')
               this.$store.commit('OPEN_MODAL', false)
               this.$nuxt.refresh()
               return
-            }
+
           })
           .catch((error) => {
-            console.log(error)
+            this.$toast.error('Erro ao salvar receita.')
+            console.log(error.response)
           })
         return
       }
