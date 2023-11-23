@@ -560,22 +560,25 @@ export default Vue.extend({
     async updateQtd() {
       try {
         await httpOrder.UpdateOrderItem(this.editObject);
-        console.log('A atualização foi bem-sucedida.');
+        this.$toast.info('A atualização foi bem-sucedida.');
 
       } catch (error) {
-        this.$toast.error('Erro, falha na atualização');
-
+        this.$toast.error('Erro, falha na atualização: ' + error);
       }
+      this.$nuxt.refresh()
 },
 editItem(index) {
   this.editObject = {
       fk_order: this.data.id,
       fk_revenue: index.fk_revenue,
-      fk_categoryOrderItem: "491aebc2-1c69-11ee-be56-0242ac120002",
+      fk_categoryOrderItem: index.categoryOrderItem.id,
       amountItem: parseInt(index.amountItem)
   };
+  console.log(this.editObject)
+  
     this.updateQtd()
-    }
+    
+  }
   },
 })
 </script>

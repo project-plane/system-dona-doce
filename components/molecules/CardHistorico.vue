@@ -6,6 +6,7 @@
         <div style="display: flex; justify-content: space-between">
           <span><strong>Pedido:</strong> {{ data.numberOrder }}</span>
           <span><strong>Total:</strong> {{ valueorder(data.orderItem) }}</span>
+        <!-- <pre>{{ data.orderItem }}</pre> -->
         </div>
 
         <span><strong>Data de Solicitação:</strong> {{ formatDate(data.dateOrder) }}</span>
@@ -81,7 +82,10 @@ export default Vue.extend({
     const totalOrderValue = listOrder.reduce((total, item) => {
       const amount = Number(item.amountItem);
       const value = Number(item.valueOrderItem);
+
+      
       const itemTotal = amount * value;
+      console.log(itemTotal);
       return total + itemTotal;
     }, 0);
 

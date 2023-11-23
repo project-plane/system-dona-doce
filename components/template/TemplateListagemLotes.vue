@@ -46,7 +46,9 @@
         </section>
 
         <div style="height: 75vh; overflow: scroll">
+  
           <table v-if="abaNotActive === true">
+            
             <tr v-if="listPedidos != null">
               <th>Pedido</th>
               <th>Valor</th>
@@ -71,7 +73,8 @@
             </tr>
           </table>
 
-          <div   v-else style="display: flex; flex-wrap: wrap; margin-top: 2rem; gap: 1rem; ">
+          <div   v-else style="display: flex; flex-wrap: wrap; margin-top: 1rem; gap: 1rem; ">
+        
             <div>
               <span>Download NF</span>
               <br />
@@ -105,8 +108,14 @@
                   Baixar Comprovante
                 </button>
             </div>
-
+            
+            <div style="width: 100%; display: flex;  margin-right: 1rem;">
+              <buuton class="btnDelete"> Deletar Lote 
+            <img src="../../assets/icons/delete.svg" alt="" srcset="">
+          </buuton>
+            </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -235,6 +244,23 @@ export default Vue.extend({
   border: none;
   @extend .inputContainer
                   
+}
+.btnDelete{
+    border: 1px solid var(--red);
+    border-radius: 0.25rem;
+    height: 2.4rem;
+    display: flex;
+    width: 10rem;
+    align-items: center;
+    justify-content: space-around;
+    cursor: pointer;
+    &:hover {
+    transform: scale(1.09);
+    transition: 300ms linear;
+    background: #ffefdb;
+    color: #fa5c4f;
+    margin-left: 0.5rem;
+  }
 }
 .btnDownload {
   display: flex;
