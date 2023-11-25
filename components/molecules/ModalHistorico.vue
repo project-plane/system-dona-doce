@@ -565,7 +565,6 @@ export default Vue.extend({
       } catch (error) {
         this.$toast.error('Erro, falha na atualização: ' + error);
       }
-      this.$nuxt.refresh()
 },
 editItem(index) {
   this.editObject = {

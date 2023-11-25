@@ -13,11 +13,11 @@
           >
             <div style="display: flex; flex-direction: column">
               <h3 class="containerId">Id :{{ infoPedidos.numberOrder }}</h3>
+              <!-- <pre> {{ infoPedidos }}</pre> -->
               <h4 class="containerDate" v-if="infoPedidos.order_type === 'programmed'" style="color: var(--blue) ;">
                 {{ formatDate(infoPedidos.dateOrder) }}
               </h4>
               <h4 class="containerDate" v-if="infoPedidos.order_type === 'coffe'" style="color: var(--red) ;">
-               <!-- <pre> {{ infoPedidos }}</pre> -->
                 {{ formatDate(infoPedidos.dateOrder) }}
               </h4>
             </div>

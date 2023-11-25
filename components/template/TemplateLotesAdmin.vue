@@ -16,6 +16,7 @@
         class="listCards"
         v-if="!datasFiltradas || datasFiltradas.length === 0"
       >
+
         <CardInfoLotes
           v-for="(item, id) in dataPedidos"
           :key="id"
