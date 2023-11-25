@@ -19,7 +19,7 @@
           
           <span v-show="filteredItems.length === 0" style="height: 60vh;  display: flex;
             align-items: center;  justify-content: center; width: 100%;">
-           Não encontramos resultados, Escolha um cliente...
+           Nenhum lote foi encontrado...
           </span>
         </div>
       </main>

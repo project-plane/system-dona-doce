@@ -1,18 +1,26 @@
 <template>
     <div >
-      <label class="cardModalPedido">
+      <div class="cardModalPedido">
       <!-- <pre>{{ infoPedidos.user.Clients}}</pre> -->
         <div class="titleCard">
           <div class="titleCompany">
             <div
               class="descriptionCompany"
               style="display: flex; flex-direction: row; justify-content: space-between;" >
+              
               <section>
+                <h4 class="containerId" style="color: gray;" >Id :{{idLote}} </h4>  
                 <h4 style="color: gray;"> Empresa</h4>
                 <h2>{{ infoPedidos.user.Clients.corporate_name}}</h2>
+ 
               </section>
-              <h4 class="containerId" style="color: gray;" >Id :{{idLote}} </h4>
+           
+          
+          <button class="btnDelete" style="background-color: transparent; " @click="deleteLotes(idDelete)">
+            <img src="../../assets/icons/delete.svg" alt="" srcset="" style="height: 20px;">
+          </button>
             </div>
+
             <div class="bottomCard">
       
               
@@ -29,13 +37,14 @@
   
         </div>
         
-      </label>
+      </div>
     </div>
   </template>
   
   <script lang="ts">
   import Vue from 'vue'
   import dayjs from 'dayjs'
+  import httpOrder from '~/server/pedidos'
   
   export default Vue.extend({
     props: {
@@ -43,6 +52,7 @@
         type: [Array, Object],
         required: false,
       },
+        idDelete: String,
         idLote: Number,
         valueOrder:[Array, Object],
     },
@@ -75,6 +85,20 @@
         return total.toFixed(2) 
         
       },
+      async deleteLotes(id) {
+        await httpOrder.DeleteLote(id)
+        .then((res) => {
+          this.$toast.success('Lote Deletado!!')
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$toast.error('Error ao deletar')
+        })
+        
+        this.$nuxt.refresh()
+      
+    },
     },
   })
   </script>

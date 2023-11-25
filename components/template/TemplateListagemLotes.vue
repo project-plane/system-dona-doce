@@ -12,6 +12,7 @@
             :key="id"
             :infoPedidos="item"
             :idLote="item.numberOrderBatch"
+            :idDelete="item.id"
             :valueOrder="item.OrderBatchItem"
             @update-selection="updateSelectedCards"
             @aba-Lotes="pedidos"
@@ -109,11 +110,7 @@
                 </button>
             </div>
             
-            <div style="width: 100%; display: flex;  margin-right: 1rem;">
-              <buuton class="btnDelete"> Deletar Lote 
-            <img src="../../assets/icons/delete.svg" alt="" srcset="">
-          </buuton>
-            </div>
+      
           </div>
           
         </div>
@@ -216,6 +213,17 @@ export default Vue.extend({
         console.error('Erro ao baixar o arquivo:', error)
       }
     },
+    async deleteLotes(id) {
+      try {
+        const res = await httpOrder.DeleteLote(id);
+        this.$toast.success('Lote Deletado');
+        this.$nuxt.refresh();
+      } catch (error) {
+        console.error(error);
+        this.$toast.error('Erro ao deletar...');
+        throw error;
+      }
+ },
 
 
   },
