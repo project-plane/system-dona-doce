@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <div class="imgBg"></div>
     <div class="mascara">
       <Nuxt />
     </div>
@@ -15,15 +16,22 @@ export default Vue.extend({})
 .login {
   width: 100%;
   height: 100vh;
-  background-image: url('~/assets/img/bg_login.png');
+  display: flex;
   animation: fadeIn 5s, slidein 3s;
-  // background-size: cover;
   opacity: 1;
   overflow: hidden;
   background-position: bottom center;
-
+  .imgBg{
+    background-repeat: no-repeat;
+    background-image: url('~/assets/img/bgTemplate.jpeg');
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    width: 50%;
+ 
+}
   .mascara {
-    width: 100%;
+    width: 50%;
     height: 100vh;
     background: var(--bg_opacity);
   }
