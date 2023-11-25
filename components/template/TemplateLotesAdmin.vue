@@ -215,13 +215,13 @@ export default Vue.extend({
         this.loading = true;
 
         const typeLotes = 1;
-        const fkOrderStatus1 = "789850813-1c69-11ee-be56-c691200020241";
+        // const fkOrderStatus1 = "789850813-1c69-11ee-be56-c691200020241";
         const fkOrderStatus2 = "1c69c120002-575f34-1c69-be56-0242ac1201c69";
 
         const res = await this.fetchOrderData(typeLotes, selectedClient, selectedType);
         
         this.dataPedidos = res.data.filter(item =>
-          item.fk_orderstatus === fkOrderStatus1 || item.fk_orderstatus === fkOrderStatus2
+          item.fk_orderstatus === fkOrderStatus2
         );
 
         this.cliente = selectedClient;
@@ -303,7 +303,7 @@ export default Vue.extend({
           this.$toast.warning('Preencha Todos os campos.');
         })
         this.loading = false
-        this.$nuxt.refresh()
+        window.location.reload();
     },
     encontrarDatas() {
       this.initial_date = null
@@ -357,7 +357,8 @@ export default Vue.extend({
 
     toggleAbaNotActive(isPedidos) {
       this.abaNotActive = isPedidos;
-    }
+    },
+ 
   },
   watch: {
     selectedCards: {

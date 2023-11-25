@@ -85,18 +85,18 @@
         } 
         this.loading = true
         try{
-            await http.UpdateCustomerData(this.infoCliente.id, dadoCliente ).then(response => {
-                this.loading = false
-                this.$emit('closeModal')
-                this.$toast.info('Dados Atualizados!')
-            })
+        await http.UpdateCustomerData(this.infoCliente.id, dadoCliente ).then(response => {
+            this.loading = false
+            this.$emit('closeModal')
+            this.$toast.info('Dados Atualizados!')
+        })  
      }
         catch (error) {
-                this.$toast.error('Houve um erro ao processar a solicitação.');
-                console.log(error);
-                
-                }
-                this.$nuxt.refresh()
+            this.$toast.error('Houve um erro ao processar a solicitação.');
+            console.log(error);
+            
+            }
+            this.$nuxt.refresh()
         }
     },
   })

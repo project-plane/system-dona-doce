@@ -64,4 +64,7 @@ export default {
   comprovanteLotes:async (id,data) => {
     return await http.patch(`/order_batch/${id}`, data)
   },
+  DeleteLote:async (id) => {
+    return await http.delete(`/order_batch/${id}`)
+  },
 }
