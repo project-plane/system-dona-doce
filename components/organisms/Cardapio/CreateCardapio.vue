@@ -7,7 +7,7 @@
       <div class="calendar">
         <span>Selecione uma data</span>
         <v-date-picker v-model="date" :attributes="attributes"  is-expanded mode="date"  color="red" />
-        <pre>{{ cardapio }}</pre>
+        <!-- <pre>{{ cardapio }}</pre> -->
       </div>
 
       <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
@@ -154,14 +154,9 @@ export default Vue.extend({
 
     removeOnCardapio(id) {
       this.qtdeCardapio--
-
-      // Verifique se a posição está dentro dos limites do array
       if (id >= 0 && id < this.cardapio.createItensMenu.length) {
-        // Use o método splice para remover o item na posição especificada
         this.cardapio.createItensMenu.splice(id, 1);
 
-        // Se quiser imprimir o array atualizado
-        // console.log(cardapio.createItensMenu);
       } else {
         console.log("Posição inválida. Certifique-se de que a posição está dentro dos limites do array.");
       }

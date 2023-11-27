@@ -202,7 +202,7 @@
                   orderFindClient.orderStatus.description === 'Em Entrega'
                 "
               >
-                <span>Anexar cautela</span>
+                <!-- <span>Anexar cautela</span>
                 <div class="inputContainer">
                   <input
                     type="file"
@@ -222,7 +222,7 @@
                     alt="Pré-visualização do PDF"
                     style="width: 20px"
                   />
-                </div>
+                </div> -->
               </div>
               <div>
                 <span>Comprovante de Pagamento</span>
@@ -303,6 +303,7 @@
       </div>
       <img class="imgCooke" src="~/assets/icons/cooke.svg" alt="" />
 
+     
       <!-- <div>
         <h3>Informações do pedido</h3>
         <span
@@ -311,6 +312,7 @@
         >
       </div> -->
     </div>
+    
   </div>
 </template>
 
@@ -496,26 +498,26 @@ export default Vue.extend({
         this.$toast.error('Houve um erro ao processar a solicitação.')
       }
     },
-    async uploadFile(id) {
-      try {
-        if (!this.selectedFile) {
-          this.$toast.info('Selecione um arquivo antes de enviar.')
-        }
+    // async uploadFile(id) {
+    //   try {
+    //     if (!this.selectedFile) {
+    //       this.$toast.info('Selecione um arquivo antes de enviar.')
+    //     }
 
-        const formData = new FormData()
-        formData.append('file_caution', this.selectedFile)
-        // console.log(formData);
+    //     const formData = new FormData()
+    //     formData.append('file_caution', this.selectedFile)
+    //     // console.log(formData);
 
-        const response = await httpOrder.UploadCautela(id, formData)
-        this.$toast.info('Arquivo enviado com sucesso')
+    //     const response = await httpOrder.UploadCautela(id, formData)
+    //     this.$toast.info('Arquivo enviado com sucesso')
 
-        setTimeout(function () {
-          location.reload()
-        }, 4000)
-      } catch (error) {
-        this.$toast.error('Houve um erro ao processar a solicitação')
-      }
-    },
+    //     setTimeout(function () {
+    //       location.reload()
+    //     }, 4000)
+    //   } catch (error) {
+    //     this.$toast.error('Houve um erro ao processar a solicitação')
+    //   }
+    // },
     async uploadFileNF(id) {
       try {
         if (!this.selectedFileNF) {
@@ -583,7 +585,7 @@ export default Vue.extend({
 
     async req() {
       try {
-        await this.uploadFile(this.orderFindClient.id)
+        // await this.uploadFile(this.orderFindClient.id)
         await this.uploadFileNF(this.orderFindClient.id)
         await this.adicionarBandejas(this.orderFindClient.id)
 

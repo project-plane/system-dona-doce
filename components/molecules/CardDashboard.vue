@@ -3,6 +3,7 @@
     <span class="loader"></span>
   </div>
   <div v-else>
+    <!-- <pre>{{ this.dataPedidos.id }}</pre> -->
     <div v-if="modalPedido" class="cardModalPedido">
       <span>Mudar status do pedido</span>
       <select
@@ -15,7 +16,8 @@
         <option value="022ac120002-1c69-11ee-be56-0242ac120002">
           Solicitado
         </option>
-        <option value="11ee6828-1c69-11ee-be56-c691200020241">Agendado</option>
+        <option value="11ee6828-1c69-11ee-be56-c691200020241">
+          Agendado</option>
         <option value="314e2828-1c69-11ee-be56-c691200020241">
           Pré-Produção
         </option>
@@ -39,13 +41,38 @@
         </option>
       </select>
       <div class="btnConfirm">
-        <ButtonPirula title="Cancelar" @click.native="cancelarStatus" />
-        <ButtonPirula title="Salvar" @click.native="saveStatus" />
+        
+        <section v-show="selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69'|| selected === '789850813-1c69-11ee-be56-c691200020241' ">
+          <span>Anexar cautela</span>
+        <div class="inputContainer">
+            <input
+              type="file"
+              accept="image/*,.pdf"
+              style="width: 85%"
+              @change="onFileChange"
+            />
+            <img
+              v-if="previewCaution"
+              src="../../assets/icons/Icon_uploadConcluido.svg"
+              alt="Icon concluido"
+              style="width: 27px"
+            />
+            <img
+              v-else
+              src="../../assets/icons/download.svg"
+              alt="Pré-visualização do PDF"
+              style="width: 20px"
+            />
+        </div>
+        </section>
+        <section style="display: flex;     justify-content: flex-end; gap: 1rem;">     
+          <ButtonPirula title="Cancelar" @click.native="cancelarStatus" />
+          <ButtonPirula  title="Salvar" @click.native="statusPedido" />
+        </section>
       </div>
     </div>
     <div v-else>
       <div class="cards">
-
         <div class="titleCard">
           <div class="titleCompany">
             <p>{{ dataPedidos.numberOrder }}</p>
@@ -69,8 +96,6 @@
             <span>
               Status:
               <strong>{{ dataPedidos.orderStatus.description }}</strong>
-              <!-- <pre>{{ dataPedidos }}</pre> -->
-
             </span>
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
           </div>
@@ -107,6 +132,7 @@ export default Vue.extend({
       type: Number,
       required: true,
     },
+    
   },
   data() {
     return {
@@ -116,7 +142,8 @@ export default Vue.extend({
       selectOrder: true,
       loading: false,
       modalPedido: false,
-      downloadUrl: null,
+      previewCaution: null,
+      selectedFile: null
     }
   },
   methods: {
@@ -143,15 +170,34 @@ export default Vue.extend({
       this.modalPedido = true
     },
     currentDate() {
-
-
       const data = dayjs.formtDateBr(this.dataPedidos.orderItem[0].delivery_date)
       return data
     },
     cancelarStatus() {
       this.modalPedido = false
     },
+    onFileChange(event) {
+      this.selectedFile = event.target.files[0]
+      this.previewCaution = URL.createObjectURL(this.selectedFile)
+    },
+    statusPedido(){
+      if (
+        (this.selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' && this.selectedFile === null) ||
+        (this.selected === '789850813-1c69-11ee-be56-c691200020241' && this.selectedFile === null)
+      ) {
+        this.$toast.warning('anexar cautela');
+      } else if (
+        this.selected !== '1c69c120002-575f34-1c69-be56-0242ac1201c69' &&
+        this.selected !== '789850813-1c69-11ee-be56-c691200020241'
+      ) {
+        this.saveStatus()
+      }else{
+        this.uploadFile(this.dataPedidos.id)
+        this.saveStatus()
+      }
+    },
     async saveStatus() {
+     
       const statuOrder = {
         fk_orderstatus: this.selected,
       }
@@ -167,6 +213,24 @@ export default Vue.extend({
         })
       this.modalPedido = false
       this.$nuxt.refresh()
+    },
+    async uploadFile(id) {
+      try {
+        if (!this.selectedFile) {
+          this.$toast.info('Selecione um arquivo antes de enviar.')
+        }
+        const formData = new FormData()
+        formData.append('file_caution', this.selectedFile)
+        // console.log(formData);
+        const response = await httpOrder.UploadCautela(id, formData)
+        this.$toast.info('Arquivo enviado com sucesso')
+
+        setTimeout(function () {
+          location.reload()
+        }, 4000)
+      } catch (error) {
+        this.$toast.error('Houve um erro ao processar a solicitação')
+      }
     },
   },
 })
@@ -192,7 +256,15 @@ h2 {
     width: 100%;
     display: flex;
     gap: 1rem;
-
+    flex-direction: column;
+    .inputContainer {
+    border: solid 1px #b9b9b9;
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
     button {
       width: 6rem;
     }
