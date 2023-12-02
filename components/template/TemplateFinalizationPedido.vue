@@ -140,7 +140,7 @@ export default Vue.extend({
         console.log(error)
       })
 
-    this.listPedidos.itemMenu.map((pedidos) => {
+    this.listPedidos.itemMenu.map((pedidos) => {      
       this.listAllRevenueClient.map((revenueClient) => {
         if (pedidos.revenues.description === revenueClient.description) {
           this.revenueClient.push({
@@ -150,6 +150,7 @@ export default Vue.extend({
             imagem: pedidos.revenues.imagem,
             base_max_amount: pedidos.revenues.base_max_amount,
             base_min_amount: pedidos.revenues.base_min_amount,
+          
           })
         }
 
@@ -179,7 +180,8 @@ export default Vue.extend({
 
     },
 
-    pedidos(qtdOrder, fk_revenue, index, typeOrder) {
+    pedidos(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
+      
       const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
         return (
           item.fk_categoryOrderItem === this.tipoPedido &&
@@ -197,6 +199,7 @@ export default Vue.extend({
         fk_revenue: fk_revenue,
         listReceita: index,
         method_of_preparation: typeOrder,
+        observacoesDoPedido: pedidos
       })
       this.listPedidos.itemMenu.map((item) => {
         if (fk_revenue === item.revenues.id) {
@@ -207,7 +210,7 @@ export default Vue.extend({
       })
     },
 
-    pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder) {
+    pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
       const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
         return (
           item.fk_categoryOrderItem === this.tipoPedido &&
@@ -224,6 +227,7 @@ export default Vue.extend({
         fk_revenue: fk_revenue,
         listReceita: index,
         method_of_preparation: typeOrder,
+        observacoesDoPedido: pedidos
       })
       this.foraEstoque.map((item) => {
         if (fk_revenue === item.id) {
@@ -242,7 +246,7 @@ export default Vue.extend({
         this.showModal = true
       }
     },
-    async finalizarPedido() {
+    async finalizarPedido(e) {
       if (
         this.listaCompletaReceita.length === 0 &&
         this.listaForaEstoque.length === 0
@@ -255,6 +259,7 @@ export default Vue.extend({
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
             method_of_preparation: item.method_of_preparation,
+            comment: item.observacoesDoPedido
           })
         })
 
@@ -264,6 +269,7 @@ export default Vue.extend({
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
             method_of_preparation: item.method_of_preparation,
+            comment: item.observacoesDoPedido
           })
         })
         console.log(this.addPedidos);
@@ -286,10 +292,14 @@ export default Vue.extend({
 
     listaAtualizadaDoModal(e) {
       this.listaCompletaReceita = e
+      console.log(e);
+      
     },
 
     listaAtualizadaForaEstoque(e) {
       this.listaForaEstoque = e
+      console.log(e);
+      
     },
 
     lancheDesjejum() {

@@ -53,6 +53,8 @@
         </select>
     
       </div>
+      <input type="text" placeholder="Digite suas observações aqui..." v-model="comentario" style="border-bottom: solid 1px #b9b9b9a1; border-radius: 0px;">
+
     </section>
    
     <button @click="adicionarPedido">Adicionar</button>
@@ -70,6 +72,7 @@ export default Vue.extend({
       type: Object,
       required: true,
       
+      
     },
   },
   data(){
@@ -79,6 +82,7 @@ export default Vue.extend({
         method_of_preparation: "",
         order_time:"",
         delivery_date:null,
+        comentario: ""
       }
     }
   },
@@ -110,7 +114,8 @@ export default Vue.extend({
         delivery_date: this.$store.state.dataPedido,
         order_time,
         method_of_preparation,
-        infoProduct: this.infoCoffee
+        infoProduct: this.infoCoffee,
+        comment: this.comentario
       };
 
       const data = {
@@ -119,6 +124,7 @@ export default Vue.extend({
         delivery_date: this.$store.state.dataPedido,
         order_time,
         method_of_preparation,
+        comment: this.comentario
       };
 
       this.$store.commit("adicionarPedido", novoItem);
@@ -140,10 +146,10 @@ limparPedido() {
 <style scoped lang="scss">
 .containerCard {
   border-radius: 0.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.27);
+  // border: 1px solid rgba(255, 255, 255, 0.27);
   background: #fff;
   width: auto;
-  max-width: 18.4rem;
+  max-width: 19.4rem;
   min-height: 25.6rem;
   .cointainerCard__ImgProduto {
     height: 166px;
@@ -159,6 +165,8 @@ limparPedido() {
   }
   .descriptionPedido {
     padding: 0rem 0.4rem 0.4rem 0.4rem;
+    display: flex;
+    justify-content: space-between;
   }
   .cointainerCard__Inputs {
     display: flex;
@@ -182,7 +190,7 @@ limparPedido() {
         border: 1px solid var(--red);
         height: 35px;
         width: 38%;
-        border-radius: 2rem;
+        border-radius: 0.3rem;
       }
     }
   }

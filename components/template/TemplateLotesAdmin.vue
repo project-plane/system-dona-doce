@@ -1,6 +1,6 @@
 <template>
   <div class="lotesPage">
-    <div class="historicOrders">
+    <header class="grid_Header">
       <HeaderLotes
         title="Gerar Lotes"
         :typeOrder="true"
@@ -9,13 +9,10 @@
         :filterData="true"
         @dateRangeSelected="handleDateRangeSelected"
       />
-    </div>
+    </header>
     <Loading v-if="loading" />
     <main v-else>
-      <div
-        class="listCards"
-        v-if="!datasFiltradas || datasFiltradas.length === 0"
-      >
+      <div class="listCards" v-if="!datasFiltradas || datasFiltradas.length === 0">
 
         <CardInfoLotes
           v-for="(item, id) in dataPedidos"
@@ -35,6 +32,7 @@
           :key="id"
           :infoPedidos="item"
           @update-selection="updateSelectedCards"
+          
         />
 
         <span v-show="datasFiltradas.length === 0" class="no-results-message">
@@ -42,14 +40,8 @@
         </span>
       </div>
     </main>
-    <div class="containerSidebar">
-      <section
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: space-evenly;
-        "
-      >
+    <div class="containerSidebar" v-if="sideBar">
+      <section class="sectionSideBar">
         <h3
           :class="{ abaNotActive: abaNotActive }"
           class="abaActive"
@@ -198,6 +190,7 @@ export default Vue.extend({
       OrderBatchItem: [],
       loading: false,
       datasFiltradas: [],
+      sideBar: false,
     }
   },
   computed: {
@@ -242,6 +235,7 @@ export default Vue.extend({
       }
     },
     updateSelectedCards(selectedCard) {
+      this.shoeSideBar()
       if (selectedCard.selected) {
         const client = this.selectedCards.some(
           (item) => item.user != selectedCard.user
@@ -359,6 +353,9 @@ export default Vue.extend({
     toggleAbaNotActive(isPedidos) {
       this.abaNotActive = isPedidos;
     },
+    shoeSideBar(){
+      this.sideBar = true
+    }
  
   },
   watch: {
@@ -417,8 +414,9 @@ label {
   grid-row-gap: 0px;
 }
 
-.historicOrders {
+.grid_Header {
   grid-area: 1 / 1 / 2 / 2;
+
 }
 main {
   grid-area: 2 / 1 / 3 / 2;
@@ -429,6 +427,12 @@ main {
   grid-area: 1 / 2 / 3 / 3;
   margin-top: 1rem;
   animation: slideInFromRight 1s ease-out;
+
+  .sectionSideBar{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 }
 
 
@@ -453,7 +457,7 @@ main {
 }
 .listCards {
   margin: 0 auto;
-  width: 95%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1.2rem;

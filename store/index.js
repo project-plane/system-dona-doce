@@ -50,6 +50,7 @@ export const mutations = {
   },
   CREATE_NEW_ORDER(state, payload) {
     state.dataNewOrder.createOrderItemDto.push(payload)
+    console.log(payload);
   },
   BARRA_PEDIDOS_NAV(state, payload) {
     state.barraRoute = payload

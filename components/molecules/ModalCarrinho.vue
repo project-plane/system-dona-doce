@@ -1,5 +1,5 @@
 <template>
-  <ModalPreview titleModal="Carrinho" @closeModal="closeModal">
+  <ModalPreview titleModal="Carrinho" @closeModal="closeModal" >
     <div class="dataEmpresa" v-if="$fetchState.pending">
       Carregando dados do carrinho...
     </div>
@@ -41,9 +41,12 @@
             <td v-else>Congelado</td>
             <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde).toFixed(2)  }}</td>
             <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde).toFixed(2) }}</td>
+            
             <td>
               <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
             </td>
+    
+            
           </tr>
           <tr v-if="dejejum.length === 0">
             Não possui...
@@ -134,6 +137,8 @@
           Não possui...
         </tr>
       </table>
+     
+      <!-- <textarea name="" id="" cols="30" rows="6" style="border: solid 1px #fa5c4f; border-radius: 4px; padding: 1rem;" ></textarea> -->
       <div class="finalizar-pedido-content">
         <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02 }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
@@ -252,7 +257,8 @@ export default Vue.extend({
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            method_of_preparation: item.method_of_preparation
+            method_of_preparation: item.method_of_preparation,
+            // comentario: item.observacoesDoPedido
           })
         }
 

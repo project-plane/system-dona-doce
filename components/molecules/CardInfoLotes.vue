@@ -28,7 +28,7 @@
             <img v-if="infoPedidos.order_type === 'programmed'" src="../../assets/icons/programado.svg" />
             <img v-else src="../../assets/icons/coffee.svg" alt="" />
           </div>
-          <pre>   </pre>
+    
           <div class="bottomCard">
         
             

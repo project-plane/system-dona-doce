@@ -128,7 +128,7 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    border-bottom: 1px solid var(--border);
+    // border-bottom: 1px solid var(--border);
   
     .btns {
       display: flex;

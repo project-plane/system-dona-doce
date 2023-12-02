@@ -14,6 +14,7 @@
             </select>
           </label>
         </div>   
+        <!-- <pre>{{ listaCompletaReceita }}</pre> -->
       <table class="resume-content">
         <thead>
           <tr>

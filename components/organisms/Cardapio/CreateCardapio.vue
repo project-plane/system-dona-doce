@@ -7,12 +7,13 @@
       <div class="calendar">
         <span>Selecione uma data</span>
         <v-date-picker v-model="date" :attributes="attributes"  is-expanded mode="date"  color="red" />
+        <!-- <pre>{{ cardapio }}</pre> -->
       </div>
 
       <div v-if="formatDate(date) !== 'Invalid Date' && formatDate(date) !== '31/12/1969' && !existOnList"
         class="calendar-input">
         <span>Dia: {{ formatDate(date) }}</span>
-        <div v-for="index in qtdeCardapio" :key="index" class="input-select">
+        <div v-for="(index, id ) in qtdeCardapio" :key="id" class="input-select">
           <div class="input-internal">
             <span>Opção {{ index }}</span>
             <select v-model="cardapio.createItensMenu[index - 1].fk_revenues">
@@ -22,7 +23,7 @@
               </option>
             </select>
           </div>
-          <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio">
+          <img src="../../../assets/icons/delete.svg" alt="" class="button-delete" @click="removeOnCardapio(id)">
         </div>
         <button v-if="qtdeCardapio < 4" class="add-option" @click="addOnCardapio">+ Adicionar Opção</button>
       </div>
@@ -144,10 +145,22 @@ export default Vue.extend({
 
     addOnCardapio() {
       this.qtdeCardapio++
+      this.cardapio.createItensMenu.push(
+        { 
+          "fk_revenues": ""
+        }
+      )
     },
 
-    removeOnCardapio() {
+    removeOnCardapio(id) {
       this.qtdeCardapio--
+      if (id >= 0 && id < this.cardapio.createItensMenu.length) {
+        this.cardapio.createItensMenu.splice(id, 1);
+
+      } else {
+        console.log("Posição inválida. Certifique-se de que a posição está dentro dos limites do array.");
+      }
+
     },
 
     formatDate(date) {
