@@ -48,6 +48,7 @@
         </select>
       </div>
     </div>
+    <input type="text" placeholder="Observacoes sobre o pedido..." v-model="comentario" style="border-bottom: solid 1px #b9b9b9a1; border-radius: 0px;">
     <button @click="addPedidos(foraDeEstoque)">Adicionar</button>
   </div>
 </template>
@@ -72,6 +73,7 @@ export default Vue.extend({
     return {
       qtdPedido: '',
       selected: '',
+      comentario:""
     }
   },
 
@@ -87,10 +89,12 @@ export default Vue.extend({
         this.qtdPedido,
         lanche.id,
         this.foraDeEstoque,
-        this.selected
+        this.selected,
+        this.comentario
       )
       this.qtdPedido = ''
       this.selected = ''
+      this.comentario = ""
     },
   },
 })

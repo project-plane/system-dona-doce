@@ -45,6 +45,9 @@
             <td>
               <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
             </td>
+            <td>
+              <input type="text" v-model="item.comentario">
+            </td>
             
           </tr>
           <tr v-if="dejejum.length === 0">
@@ -136,8 +139,8 @@
           Não possui...
         </tr>
       </table>
-      <h4>Observações</h4>
-      <textarea name="" id="" cols="30" rows="6" style="border: solid 1px #fa5c4f; border-radius: 4px; padding: 1rem;" ></textarea>
+     
+      <!-- <textarea name="" id="" cols="30" rows="6" style="border: solid 1px #fa5c4f; border-radius: 4px; padding: 1rem;" ></textarea> -->
       <div class="finalizar-pedido-content">
         <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02 }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
@@ -256,7 +259,8 @@ export default Vue.extend({
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            method_of_preparation: item.method_of_preparation
+            method_of_preparation: item.method_of_preparation,
+            // comentario: item.observacoesDoPedido
           })
         }
 
