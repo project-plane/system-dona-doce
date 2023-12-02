@@ -42,6 +42,11 @@
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
                     <td>R$ {{ (dadosPedidos.valueOrderItem * dadosPedidos.amountItem).toFixed(2) }}</td>
+                    
+                  </tr>
+                  <tr >
+                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
+                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -65,6 +70,10 @@
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
                   </tr>
+                  <tr >
+                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
+                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -87,6 +96,11 @@
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
                   </tr>
+                  <tr >
+                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
+                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
+                  </tr>
+                  
                   <tr class="totalOrder">
                     <td>Total</td>
                     <td colspan="2" style="text-align: end">
@@ -111,6 +125,10 @@
                   <td>{{ dadosPedidos.revenues.description }}</td>
                   <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
                 </tr>
+                <tr >
+                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
+                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
+                  </tr>
                 <!-- <tr class="totalOrder">
                     <td>Total</td>
                     <td colspan="2" style="text-align: end">

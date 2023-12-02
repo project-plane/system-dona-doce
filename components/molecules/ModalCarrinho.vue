@@ -45,9 +45,7 @@
             <td>
               <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
             </td>
-            <td>
-              <input type="text" v-model="item.comentario">
-            </td>
+    
             
           </tr>
           <tr v-if="dejejum.length === 0">
