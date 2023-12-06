@@ -44,7 +44,7 @@
         type="password"
         placeholder="Digitar senha"
         v-model="createUser.password"
-        @input="validatePassword"
+       
       />
    
 
@@ -91,11 +91,11 @@ export default Vue.extend({
   },
 
   methods: {
-    validatePassword() {
-        if (this.password.length >= 5) {
-          this.$toast.info('Senha válida');
-        }
-    },
+    // validatePassword() {
+    //     if (this.password.length >= 5) {
+    //       this.$toast.info('Senha válida');
+    //     }
+    // },
     async addUser() {
       if (this.selected === 'Administrador') {
         this.createUser.is_admin = true
