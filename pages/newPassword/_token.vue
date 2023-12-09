@@ -11,6 +11,7 @@ export default Vue.extend({
   head: {
       title: "Nova Senha - Dona Doce"
   },
+  layout: 'login',
 })
 </script>
 

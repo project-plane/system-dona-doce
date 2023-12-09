@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <TemplateRecover />
 </template>
 
@@ -13,4 +13,4 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-</style>
+</style> -->
