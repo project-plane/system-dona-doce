@@ -31,16 +31,16 @@
     </ContainerInput>
     <ContainerInput>
       <Input
+      label="Bairro"
+      type="text"
+      placeholder="ex: Bairro Santos Augusto"
+      v-model="dataEmpresa.district"
+      />
+      <Input
         label="Cidade"
         type="text"
         placeholder="ex: Manaus"
         v-model="dataEmpresa.county"
-      />
-      <Input
-        label="Bairro"
-        type="text"
-        placeholder="ex: Bairro Santos Augusto"
-        v-model="dataEmpresa.district"
       />
     </ContainerInput>
     <ContainerInput>
@@ -50,21 +50,21 @@
         placeholder="ex: AM"
         v-model="dataEmpresa.uf"
       />
-      <Input
+      <!-- <Input
         label="Fone"
         type="number"
         placeholder="ex: xxxxxxxx"
         v-model="dataEmpresa.fone"
-      />
+      /> -->
     </ContainerInput>
-    <ContainerInput>
+    <!-- <ContainerInput>
       <Input
         v-model="dataEmpresa.email"
         label="E-mail"
         type="email"
         placeholder="ex: email@email.com.br"
       />
-    </ContainerInput>
+    </ContainerInput> -->
     <div class="row-button">
       <Button title="Salvar" @functionClick="saveClient" :isDisabled="isDisabled"/>
     </div>
@@ -102,9 +102,7 @@ export default Vue.extend({
         !this.dataEmpresa.cep ||
         !this.dataEmpresa.county ||
         !this.dataEmpresa.district ||
-        !this.dataEmpresa.uf ||
-        !this.dataEmpresa.fone ||
-        !this.dataEmpresa.email
+        !this.dataEmpresa.uf 
       ) {
         this.$toast.error('Preencha todos os campos!!!')
       } else {
@@ -122,8 +120,6 @@ export default Vue.extend({
             this.dataEmpresa.county = ''
             this.dataEmpresa.district = ''
             this.dataEmpresa.uf = ''
-            this.dataEmpresa.fone = ''
-            this.dataEmpresa.email = ''
 
             this.$nuxt.refresh()
           })

@@ -33,7 +33,7 @@ export default Vue.extend({})
   .mascara {
     width: 50%;
     height: 100vh;
-    background: var(--bg_opacity);
+    background: #fa5c4f21;
   }
 
   @keyframes slidein {
