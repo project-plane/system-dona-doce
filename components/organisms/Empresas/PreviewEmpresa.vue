@@ -18,18 +18,30 @@
         <p>{{ findPreviewEmpresa.cep }}</p>
       </div>
       <div>
+        <h4>Bairro</h4>
+        <p>{{ findPreviewEmpresa.district }}</p>
+      </div>
+      
+      <div>
+        <h4>Última Atualização</h4>
+        <p>   {{ formatDate(findPreviewEmpresa.updateAt ) }}</p>
+     
+      </div>
+      <!-- <div>
         <h4>E-mail</h4>
         <p>{{ findPreviewEmpresa.email }}</p>
       </div>
       <div>
         <h4>Fone</h4>
-        <p>{{ findPreviewEmpresa.fone }}</p>
-      </div>
+        <p>{{ findPreviewEmpresa }}</p>
+      </div> -->
+      <!-- <pre>{{ findPreviewEmpresa  }}</pre> -->
     </div>
   </ModalPreview>
 </template>
 
 <script lang="ts">
+import dayjs from '~/services/dayjs'
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -43,6 +55,9 @@ export default Vue.extend({
     closeModal() {
       this.$store.commit('OPEN_MODAL_PREVIEW_EMPRESA', false)
     },
+    formatDate(date) {
+      return dayjs.formtDateBr(date)
+    },
   },
 })
 </script>
@@ -53,6 +68,7 @@ export default Vue.extend({
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  padding: 2rem;
   p {
     height: 45px;
     padding: 0.5rem 0;

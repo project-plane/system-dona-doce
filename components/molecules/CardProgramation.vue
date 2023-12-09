@@ -12,7 +12,7 @@
         <p>Quantidade</p>
         <input style="width: 6.5rem;" v-model="qtdPedido" :min="base_min_amount" :max="base_max_amount" type="number" />
       </div>
-      <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -5px; gap: 0.3rem; color: rgb(115 98 93); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
+      <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -5px; gap: 0.3rem; color: rgb(161, 143, 137); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
         <span>Qtd. Min. {{ base_min_amount }} x </span>  
         <span>Qtd. Max. {{ base_max_amount }}</span>
       </div>
@@ -27,6 +27,8 @@
           <option value="frozen">Congelado</option>
         </select>
       </div>
+
+    <input type="text" placeholder="Observacoes sobre o pedido..." v-model="comentario" style="border-bottom: solid 1px #b9b9b9a1; border-radius: 0px;">
     </div>
     <button @click="addPedidos(tipoLanches)">Adicionar</button>
 
@@ -61,6 +63,8 @@ export default Vue.extend({
     return {
       qtdPedido: '',
       selected: '',
+      comentario:"",
+
     }
   },
 
@@ -76,10 +80,14 @@ export default Vue.extend({
         this.qtdPedido,
         lanche.fk_revenues,
         this.tipoLanches,
-        this.selected
+        this.selected,
+        this.comentario
+
+        
       )
       this.qtdPedido = ''
       this.selected = ''
+      this.comentario = ''
     },
   },
 })

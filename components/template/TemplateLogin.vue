@@ -6,7 +6,7 @@
         <div class="title_login">
           <span class="title"> Dona Doce </span>
         </div>
-        <form class="form_login" @submit.prevent="accessLogin">
+        <form class="form_login" @submit.prevent="accessLogin" v-if="login">
           <Input
             style="color: var(--red)"
             v-model="dataLogin.email"
@@ -41,14 +41,29 @@
             <h5 style="color: var(--red)">{{ message }}</h5>
           </div>
         </form>
+        <div class="resetSenha" v-else>
+      <Input
+            style="color: var(--red)"
+            v-model="email"
+            label="Email"
+            type="text"
+            placeholder="Digite seu e-mail "
+          />
+        
+      <ButtonPirula @click.native="recoverEmail" title="Resgatar senha" style="border-radius: 0.25rem;"/>
+      <ButtonPirula  @click.native="backToLogin" title="Login" style="border-radius: 0.25rem; background: transparent; color: #fa5c4f;"/>
+    
+    </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import httpAccess from '@/server/auth'
+import httpRecover from '@/server/auth'
 export default Vue.extend({
   data() {
     return {
@@ -56,10 +71,12 @@ export default Vue.extend({
         email: '',
         password: '',
       },
+      email:"",
       statusMessage: false,
       message: '',
       isDisabled: false,
       loading: false,
+      login: true
     }
   },
 
@@ -117,10 +134,28 @@ export default Vue.extend({
       this.isDisabled = false
     },
     recoverPassword() {
-      this.loading = true
-      this.$router.push('/recoverPassword')
-      this.loading = false
+      this.login = false
+
     },
+    async recoverEmail() {
+      await httpRecover
+        .PostRecoverEmail({ email: this.email })
+        .then((res) => {
+          this.$toast.success('E-mail de recuperação de senha enviado')
+          this.login = true
+          this.$router.push('/login')
+        })
+        .catch((error) => {
+          const msg: string[] = error.response.data.message
+          msg.map((item) => {
+            this.$toast.warning(item)
+          })
+        })
+    },
+    backToLogin(){
+      // this.$router.push('/login')
+      this.login = true
+    }
   },
 })
 </script>
@@ -143,6 +178,13 @@ export default Vue.extend({
   transition:  background-color 1s ease-in-out;;
   border: 2px solid #917b79;
   color:  #917b79;
+}
+.resetSenha{
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  justify-content: center;
+  gap: 2rem;
 }
 .sider_bar {
   position: absolute;

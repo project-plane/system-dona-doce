@@ -6,14 +6,14 @@
             <div class="legend">
                 <span>Receita</span>
                 <span>Qtde</span>
-                <span>Horário</span>
+                <!-- <span>Horário</span> -->
                 <!-- <span v-if="typeCard === 'client'">ID</span> -->
                 <span v-if="typeCard === 'client'">Cliente</span>
             </div>
             <div class="value">
                 <span>{{ dataObject.description }}</span>
                 <span>{{ dataObject.amount_actual }}</span>
-                <span>{{ hourCard }}</span>
+                <!-- <span>{{ hourCard }}</span> -->
                 <!-- <span v-if="typeCard === 'client'">{{ dataObject.seq + 1 }}</span> -->
                 <span v-if="typeCard === 'client'">{{dataObject.corporate_name}}</span>
             </div>

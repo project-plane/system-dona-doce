@@ -64,6 +64,7 @@
             <tr v-for="(item, id) in listPedidos.OrderBatchItem" :key="id">
                 <td> Nº {{ item.order.numberOrder }}</td>
                 <td> R$ {{ item.order.valueOrder }}</td>
+                
                 <td v-if="item.order.file_caution != null ">
                   Anexado
                 </td>

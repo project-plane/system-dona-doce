@@ -1,5 +1,6 @@
 <template>
   <Container>
+
     <Title title="Cadastrar Cliente" />
     <ContainerInput>
       <Input label="Empresa" type="text" placeholder="Ex: Moto Honda da Amazonia LTDA" v-model="corporate_name" />
@@ -20,16 +21,30 @@
       <Input label="Bairro" type="text" placeholder="Ex: Centro" v-model="district" />
     </ContainerInput>
     <ContainerInput>
-      <Input label="UF" type="text" placeholder="Ex: AM" v-model="uf" v-mask="['AA']" />
       <Input label="Cidade" type="text" placeholder="Digitar cidade" v-model="county" />
+      <Input label="UF" type="text" placeholder="Ex: AM" v-model="uf" v-mask="['AA']" />
     </ContainerInput>
     <ContainerInput>
       <Input label="Responsável" type="text" placeholder="Digitar responsável" v-model="accountable" />
       <Input label="E-mail" type="text" placeholder="Digitar e-mail" v-model="createUser.email" />
     </ContainerInput>
     <ContainerInput>
-      <Input label="Senha" type="password" placeholder="Digitar senha" v-model="createUser.password" />
+
+      <Input
+      v-model="createUser.password"
+        label="Digitar nova senha"
+        type="password"
+        placeholder="Digitar nova senha"
+        @input="validacaoCaracteres"
+      />
     </ContainerInput>
+    <section style="display: grid;">
+
+      <span style="font-size: 11px; text-align: start;  margin-top: -2rem;">{{ createUser.password }}</span>
+      <span v-if="quantidade <= 5 " style="font-size: 11px; text-align: start; color: red; margin-top: -1rem;">
+            Escolha uma senha com pelo menos seis caracteres</span
+          >
+    </section>
 
     <h3>Associar unidade - cliente</h3>
     <div class="associarEmpresa">
@@ -105,6 +120,7 @@ export default Vue.extend({
       accountableCompany: '',
       foneCompany: '',
       listEmpresa: [],
+      quantidade: 0
     }
   },
 
@@ -119,6 +135,9 @@ export default Vue.extend({
       })
   },
   methods: {
+    validacaoCaracteres() {
+      this.quantidade = this.createUser.password.length;
+    },
     addClient() {
 
       let idEmpresa
@@ -168,6 +187,9 @@ export default Vue.extend({
     },
 
     async saveClient() {
+      if(this.quantidade <5){
+        this.$toast.info(' Escolha uma senha com pelo menos seis caracteres')
+      }
       if (
         !this.corporate_name ||
         !this.cnpj ||
@@ -185,6 +207,7 @@ export default Vue.extend({
         this.$toast.error('Preencha todos os campos!!!')
         return
       }
+
 
       const dataClient = {
         corporate_name: this.corporate_name,
@@ -225,7 +248,13 @@ export default Vue.extend({
       this.address = ''
       this.cep = ''
       this.accountable = ''
-      this.createUser = ''
+      this.createUser = {
+        email: '',
+        password: '',
+        is_enabled: true,
+        is_admin: true,
+        is_client: true,
+      }
       this.createCompany = []
 
       this.$nuxt.refresh()

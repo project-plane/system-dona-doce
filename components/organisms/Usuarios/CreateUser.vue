@@ -37,13 +37,17 @@
         placeholder="Digitar telefone"
         v-model="fone"
       />
-
+      
+      
       <Input
         label="Senha"
         type="password"
         placeholder="Digitar senha"
         v-model="createUser.password"
+       
       />
+   
+
     </ContainerInput>
     <ContainerInput>
       <div class="input">
@@ -59,6 +63,7 @@
     <div class="btnSalve">
       <Button @functionClick="addUser" title="Salvar" />
     </div>
+
   </Container>
 </template>
 
@@ -86,6 +91,11 @@ export default Vue.extend({
   },
 
   methods: {
+    // validatePassword() {
+    //     if (this.password.length >= 5) {
+    //       this.$toast.info('Senha válida');
+    //     }
+    // },
     async addUser() {
       if (this.selected === 'Administrador') {
         this.createUser.is_admin = true

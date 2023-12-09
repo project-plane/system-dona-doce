@@ -19,7 +19,7 @@
         <input
           id="inputFile"
           type="file"
-          accept="image/*"
+          accept=".png, .jpg, .jpeg" 
           name="inputFile"
           @change="fileMethods"
         />

@@ -1,5 +1,9 @@
 <template>
-  <ModalEdit titleModal="Editar Empresa" @save="updateEmpresa">
+  
+  <ModalEdit titleModal="Atualizar dados da empresa" @save="updateEmpresa">
+    <div v-if="loading" >
+      <Loading  />
+  </div>
     <Input
       label="Empresa"
       type="text"
@@ -42,7 +46,7 @@
       placeholder="ex: AM"
       v-model="findEmpresa.uf"
     />
-    <Input
+    <!-- <Input
       label="Fone"
       type="text"
       placeholder="Digitar fone"
@@ -53,7 +57,7 @@
       type="text"
       placeholder="Digitar e-mail"
       v-model="findEmpresa.email"
-    />
+    /> -->
   </ModalEdit>
 </template>
 
@@ -69,6 +73,11 @@ export default Vue.extend({
       required: true,
     },
   },
+  data(){
+    return {
+      loading: false,
+    }
+  },
   methods: {
     async updateEmpresa() {
       const dataEmpresa = {
@@ -83,19 +92,7 @@ export default Vue.extend({
         uf: this.findEmpresa.uf,
       }
 
-      if (
-        !this.findEmpresa.corporate_name ||
-        !this.findEmpresa.cnpj ||
-        !this.findEmpresa.email ||
-        !this.findEmpresa.fone ||
-        !this.findEmpresa.address ||
-        !this.findEmpresa.cep ||
-        !this.findEmpresa.county ||
-        !this.findEmpresa.district ||
-        !this.findEmpresa.uf
-      ) {
-        this.$toast.error('Preencha todos os campos!!!')
-      }
+    this.loading = true
 
       await httpEmpresa
         .UpdateEmpresa(this.findEmpresa.id, dataEmpresa)
@@ -113,4 +110,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
 </style>
