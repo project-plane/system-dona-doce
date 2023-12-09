@@ -306,7 +306,9 @@ export default Vue.extend({
           gap: 1rem;
 
           img {
-            width: 30%;
+            width: 40%;
+            background-size: cover;
+            
           }
         }
 
@@ -320,6 +322,7 @@ export default Vue.extend({
 
         img {
           cursor: pointer;
+          
         }
       }
 

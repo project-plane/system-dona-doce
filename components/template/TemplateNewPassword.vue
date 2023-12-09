@@ -9,7 +9,7 @@
         label="Digitar nova senha"
         type="password"
         placeholder="Digitar nova senha"
-        @input="contarCaractere"
+        @input="validacaoCaracteres"
       />
       <section style="width: 100%">
         <Input
@@ -94,7 +94,7 @@ export default Vue.extend({
       console.log(dataPassword)
     },
     
-   contarCaractere() {
+   validacaoCaracteres() {
       this.quantidade = this.newPassword.length;
     }
   },
