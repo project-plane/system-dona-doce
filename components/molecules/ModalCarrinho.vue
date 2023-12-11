@@ -183,14 +183,14 @@ export default Vue.extend({
   watch: {
     listaCompletaReceita: {
       handler(newValue) {
-        console.log(newValue)
+        // console.log(newValue)
         this.$emit('listaAtualizadaDoModal', newValue)
       },
       deep: true
     },
     listaForaEstoque: {
       handler(newValue) {
-        console.log(newValue)
+        // console.log(newValue)
         this.$emit('listaAtualizadaForaEstoque', newValue)
       },
       deep: true
@@ -362,7 +362,7 @@ export default Vue.extend({
       listaTemporaria.map((item) => {
         if (item.listReceita.descriptionRevenue === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
           const indice = listaTemporaria.indexOf(item);
-          console.log(indice);
+          // console.log(indice);
 
           // eslint-disable-next-line vue/no-mutating-props
           this.listaCompletaReceita.splice(indice, 1)

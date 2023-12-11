@@ -85,7 +85,7 @@ export default Vue.extend({
 
       
       const itemTotal = amount * value;
-      console.log(itemTotal);
+      // console.log(itemTotal);
       return total + itemTotal;
     }, 0);
 

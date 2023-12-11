@@ -121,7 +121,7 @@ export default Vue.extend({
       this.$store.commit('OPEN_MODAL', false)
     },
     async deleteEmpresa(empresa) {
-      console.log(empresa)
+      // console.log(empresa)
       const deleteClientCompany = {
         fk_client: empresa.fk_client,
         fk_company: empresa.fk_company,
