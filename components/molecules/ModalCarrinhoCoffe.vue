@@ -130,7 +130,7 @@ export default Vue.extend({
         this.$toast.error('Selecione uma unidade.');
       }
       await http.CreateNewOrderCoffe(this.$store.state.postCoffe).then(response => {
-      console.log('Resposta da requisição:', response.data);
+      // console.log('Resposta da requisição:', response.data);
       this.$emit('closeModal')
       this.$toast.info('Pedidos Realizados!')
       setTimeout(function(){

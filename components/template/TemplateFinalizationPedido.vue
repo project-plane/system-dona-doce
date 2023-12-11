@@ -280,6 +280,7 @@ export default Vue.extend({
             this.showModal = false
             this.listaCompletaReceita = []
             this.listaForaEstoque = []
+            this.$router.push('/pedidos/historico-pedidos')
             this.$store.commit('selectUnity','')
           })
           .catch((error) => {

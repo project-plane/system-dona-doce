@@ -92,7 +92,7 @@
 
       formatDate(date) {
       const data = dayjs.formtDateBr(date)
-       console.log(data);
+      //  console.log(data);
 
       return data
 

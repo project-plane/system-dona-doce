@@ -138,7 +138,7 @@ export default Vue.extend({
     calendarShowOrNot(foo) {
       this.isToday = foo
       if (!this.isToday) {
-        console.log('show modal, bro')
+        // console.log('show modal, bro')
       } else {
         this.date = new Date()
       }

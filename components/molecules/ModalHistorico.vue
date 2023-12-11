@@ -573,7 +573,7 @@ editItem(index) {
       fk_categoryOrderItem: index.categoryOrderItem.id,
       amountItem: parseInt(index.amountItem)
   };
-  console.log(this.editObject)
+  // console.log(this.editObject)
   
     this.updateQtd()
     
