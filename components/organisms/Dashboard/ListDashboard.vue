@@ -49,6 +49,7 @@ export default Vue.extend({
   async fetch() {
     this.loading = true
     this.dataPedidos = []
+
     await httpOrder
       .OrderHistory(this.dataCalendar,this.selectedClient, this.selectedTipo, this.selectedStatus)
       .then((res) => {
@@ -91,6 +92,15 @@ export default Vue.extend({
         .then((res) => {
           this.dataPedidos = res.data
           this.$store.commit('LIST_ALL_ORDER', this.dataPedidos)
+          res.data.map((item)=>{
+            item.orderItem.map((id)=>{
+              this.pedidoForaEstoque = id.of_menu;
+              
+
+            })
+            
+          })
+          
         })
         .catch((error) => {
           console.log(error)

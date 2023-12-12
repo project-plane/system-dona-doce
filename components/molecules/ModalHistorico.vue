@@ -26,23 +26,26 @@
             <th>Item</th>
             <th>Qtde</th>
             <th>Valor Unit.</th>
-            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
+            <th v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)"> Opções</th>
           </tr>
           
           <tr v-for="(item, index) in data.orderItem" :key="index">
             <td>{{ index + 1 }}</td>
             <td>{{ item.revenues.description }}</td>
-            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
-              {{ item.amountItem }}
+        
+            <td v-if="['Pré-Produção','Cancelado', 'Em Processamento', 'Em Entrega', 'Entregue', 'Revisão Cliente', 'Cancelado', ].includes(data.orderStatus.description)">
+                {{ item.amountItem }}
+              </td>
+              <td v-else>
+                <input type="number"  style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="data.orderItem[index].amountItem">
             </td>
-            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
-              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="data.orderItem[index].amountItem">
-            </td>
+        
+
             <td> R$ {{ data.orderItem[index].valueOrderItem }}</td>
             
             
             <td> 
-              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+              <Button v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
            
           </tr>
@@ -58,18 +61,21 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
-            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
+            <th v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)" > Opções</th>
           </tr>
 
           <tr v-for="(item, index) in dejejum" :key="index" class="order-line">
      
             <td>{{ item.revenues.description }}</td>
-            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
-              {{ item.amountItem }}
-            </td>
-            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
-              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
-            </td>
+       
+            
+            <!-- {{ data.orderStatus.description }} -->
+            <td v-if="['Pré-Produção','Cancelado', 'Em Processamento', 'Em Entrega', 'Entregue', 'Revisão Cliente', 'Cancelado', ].includes(data.orderStatus.description)">
+                {{ item.amountItem }}
+              </td>
+              <td v-else>
+                <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+              </td>
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -77,10 +83,10 @@
               />
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
-            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            <!-- <pre>{{ item }}</pre> -->
-            <td> 
-              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem).toFixed(2) }}</td>
+
+            <td v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)"> 
+              <Button  title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
 
           </tr>
@@ -97,17 +103,17 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
-            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
+            <th v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in lanche01" :key="index" class="order-line">
             <td>{{ item.revenues.description }}</td>
           
-            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
-              {{ item.amountItem }}
-            </td>
-            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
-              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
+            <td v-if="['Pré-Produção','Cancelado', 'Em Processamento', 'Em Entrega', 'Entregue', 'Revisão Cliente', 'Cancelado', ].includes(data.orderStatus.description)">
+                {{ item.amountItem }}
+              </td>
+              <td v-else>
+                <input type="number"  style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
             </td>
             <td>
               <img
@@ -116,9 +122,10 @@
               />
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
-            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            <td> 
-              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem).toFixed(2) }}</td>
+            <td v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)" > 
+              <!-- <pre>{{ data.orderStatus.description }}</pre> -->
+              <Button title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
           </tr>
           <tr v-if="lanche01.length === 0">
@@ -134,17 +141,19 @@
             <th>Imagem</th>
             <th>V. Unidade</th>
             <th>V. Total</th>
-            <th v-if="data.orderStatus.description === 'Pré-Produção'"> Opções</th>
+            <th v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)"> Opções</th>
           </tr>
 
           <tr v-for="(item, index) in lanche02" :key="index" class="order-line">
             <td>{{ item.revenues.description }}</td>
-            <td v-if="data.orderStatus.description != 'Pré-Produção'"> 
-              {{ item.amountItem }}
+           
+            <td v-if="['Pré-Produção','Cancelado', 'Em Processamento', 'Em Entrega', 'Entregue', 'Revisão Cliente', 'Cancelado', ].includes(data.orderStatus.description)">
+                {{ item.amountItem }}
+              </td>
+              <td v-else>
+                <input type="number"  style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
             </td>
-            <td v-if="data.orderStatus.description === 'Pré-Produção'"> 
-              <input type="number" style="border-bottom: solid 1px #fa5c4fbf; width: 6rem; border-radius: 0rem;" v-model="item.amountItem">
-            </td>
+        
             <td>
               <img
                 :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
@@ -152,9 +161,9 @@
               />
             </td>
             <td>R$ {{ item.valueOrderItem }}</td>
-            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem) }}</td>
-            <td> 
-              <Button v-if="data.orderStatus.description === 'Pré-Produção'" title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
+            <td>R$ {{ totalValue(item.valueOrderItem, item.amountItem).toFixed(2) }}</td>
+            <td  v-if="['Solicitado', 'Agendado'].includes(data.orderStatus.description)"> 
+              <Button title="Atualizar"  @click.native="editItem(data.orderItem[index])" style="width: 6rem; height: 2.2rem;" />
             </td>
           </tr>
 

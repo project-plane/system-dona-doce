@@ -17,21 +17,20 @@
       <div class="dcardapio">
         <div style="display: flex; justify-content: center; flex-direction: column;  ">
           <div style="width: 100%; text-align: center;">
-          <strong>Itens de Pedido</strong>
+          <!-- <strong>Itens de Pedido</strong> -->
         </div>
         <div  class="dpedidos"  >
-          <div>Descrição</div>
-            <div> Valor Total</div>
+
         </div>
         </div>
-        <div v-for="(iten, index) in data.orderItem" :key="index">
+        <!-- <div v-for="(iten, index) in data.orderItem" :key="index">
           <div class="dpedidos">
             <div>{{ iten.revenues.description }}</div>
             <div> R$: {{ iten.amountItem * iten.valueOrderItem.toFixed(2) }} </div>
           </div>
 
           <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
-        </div>
+        </div> -->
       </div>
 
       <div class="footer-card">
