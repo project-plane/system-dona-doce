@@ -129,10 +129,11 @@ export default Vue.extend({
       if(!this.selectedUnit) {
         this.$toast.error('Selecione uma unidade.');
       }
+      
       await http.CreateNewOrderCoffe(this.$store.state.postCoffe).then(response => {
       // console.log('Resposta da requisição:', response.data);
-      this.$emit('closeModal')
       this.$toast.info('Pedidos Realizados!')
+      this.$emit('closeModal')
       setTimeout(function(){
           location.reload();
       }, 4000);
@@ -140,7 +141,8 @@ export default Vue.extend({
       })
      }
      catch (error) {
-      this.$toast.error('Houve um erro ao processar a solicitação.');
+      const message = error.response.data.message;
+      this.$toast.warning('Revise,' + message);
       }
       },
   },

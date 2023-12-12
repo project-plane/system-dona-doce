@@ -3,9 +3,10 @@
     <div class="headerPedidos">
       <h2>Pedidos Programados</h2>
       <h3>
-        {{ new Date(dataPedido).getDate() }}/{{
+        {{ formatDate(dataPedido) }}
+        <!-- {{ new Date(dataPedido).getDate() }}/{{
           new Date(dataPedido).getMonth() + 1
-        }}/{{ new Date(dataPedido).getFullYear() }}
+        }}/{{ new Date(dataPedido).getFullYear() }} -->
       </h3>
     </div>
     <div class="menu">
@@ -25,6 +26,7 @@
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -55,6 +57,12 @@ export default Vue.extend({
   methods: {
     openModalHistorico() {
       this.showModal = true
+    },
+    formatDate(date) {
+      const novaData = dayjs(date).add(1, 'day');
+      const dataFormatada = novaData.format('DD/MM/YYYY');
+
+      return dataFormatada;
     },
     desjejum() {
       this.lancheDesjejum = true
