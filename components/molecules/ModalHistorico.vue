@@ -31,7 +31,8 @@
           
           <tr v-for="(item, index) in data.orderItem" :key="index">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.revenues.description }}</td>
+            <td>{{ item.revenues.description }}
+            </td>
         
             <td v-if="['Pré-Produção','Cancelado', 'Em Processamento', 'Em Entrega', 'Entregue', 'Revisão Cliente', 'Cancelado', ].includes(data.orderStatus.description)">
                 {{ item.amountItem }}

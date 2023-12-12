@@ -65,7 +65,7 @@ export default Vue.extend({
     .body {
       width: 100%;
       background: var(--white);
-      padding: 0 1rem;
+      padding: 2rem 1rem;
       overflow-y: auto;
       border-radius: 5px;
       height: 70vh;
