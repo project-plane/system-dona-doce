@@ -23,11 +23,11 @@
     flex-direction: column;
     cursor: pointer;
 }
-#mostrar {
+/* #mostrar {
   display: none;
-}
+} */
 
-#passar_mouse:hover #mostrar {
+#mostrar {
   display: block;
   font-size: 10px;
   position: sticky;
