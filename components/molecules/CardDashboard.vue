@@ -3,7 +3,7 @@
     <span class="loader"></span>
   </div>
   <div v-else>
-    <!-- <pre>{{ this.dataPedidos.id }}</pre> -->
+    <!-- <pre>{{ this.dataPedidos.orderItem[0].of_menu }}</pre> -->
     <div v-if="modalPedido" class="cardModalPedido">
       <span>Mudar status do pedido</span>
       <select
@@ -86,6 +86,7 @@
 
           <div class="iconsStatus">
             <div class="icons">
+              <IconAlert v-if="dataPedidos.orderItem[0].of_menu === false"/>
               <img v-if="dataPedidos.order_type === 'programmed'" src="~/assets/icons/programado.svg" alt="" />
               <img v-else src="~/assets/icons/coffee.svg" alt="" />
             </div>
@@ -143,28 +144,17 @@ export default Vue.extend({
       loading: false,
       modalPedido: false,
       previewCaution: null,
-      selectedFile: null
+      selectedFile: null,
+      pedidoForaEstoque: true,
     }
   },
   methods: {
-    // downloadPDF() {
-    //   const pdfData = ""+ this.dataPedidos.file_caution;
-    //   const blob = new Blob([pdfData], { type: 'application/pdf' });
 
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement('a');
-    //   a.style.display = 'none';
-    //   a.href = url;
-    //   a.download = 'arquivo.pdf';
-    //   document.body.appendChild(a);
-
-    //   a.click();
-
-    //   window.URL.revokeObjectURL(url);
-    //   document.body.removeChild(a);
-    // },
     exibirPedidos(dataPedidos) {
       this.$store.commit('DADOS_PEDIDOS', dataPedidos)
+      this.pedidoForaEstoque = this.dataPedidos.orderItem[0].of_menu
+      console.log(this.dataPedidos.orderItem[0].of_menu);
+      
     },
     statusOrder() {
       this.modalPedido = true

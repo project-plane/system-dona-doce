@@ -28,8 +28,10 @@
             >
               <h3>Desjejum</h3>
               <table>
+               
                 <thead>
                   <tr>
+                    <th v-if="dadosPedidos.of_menu === false"><IconAlert/></th>
                     <th>Quantidade</th>
                     <th>Pedido</th>
                     <th>Valor Unit.</th>
@@ -38,6 +40,7 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td></td>
                     <td>{{ dadosPedidos.amountItem }}</td>
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
@@ -45,6 +48,7 @@
                     
                   </tr>
                   <tr >
+                    
                     <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
                     <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
                   </tr>
@@ -59,6 +63,7 @@
               <table>
                 <thead>
                   <tr>
+                    <th v-if="dadosPedidos.of_menu === false"><IconAlert/></th>
                     <th>Quantidade</th>
                     <th>Pedido</th>
                     <th>Preço</th>
@@ -66,13 +71,15 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td></td>
                     <td>{{ dadosPedidos.amountItem }}</td>
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
                   </tr>
                   <tr >
-                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
-                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
+                    <td style="font-size: 15px; color: gray;"> <strong>Observações:</strong></td>
+                   
+                    <td colspan="2" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -85,6 +92,7 @@
               <table>
                 <thead>
                   <tr>
+                    <th v-if="dadosPedidos.of_menu === false"><IconAlert/></th>
                     <th>Quantidade</th>
                     <th>Pedido</th>
                     <th>Preço</th>
@@ -92,6 +100,7 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td></td>
                     <td>{{ dadosPedidos.amountItem }}</td>
                     <td>{{ dadosPedidos.revenues.description }}</td>
                     <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>

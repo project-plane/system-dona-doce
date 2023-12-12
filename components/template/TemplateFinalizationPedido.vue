@@ -284,8 +284,8 @@ export default Vue.extend({
             this.$store.commit('selectUnity','')
           })
           .catch((error) => {
-            console.log(error)
-            this.$toast.info('Ocorreu um erro!')
+            const message = error.response.data.message;
+             this.$toast.warning('Revise,' + message);
           })
       }
 
