@@ -86,7 +86,10 @@
 
           <div class="iconsStatus">
             <div class="icons">
-              <IconAlert v-if="dataPedidos.orderItem[0].of_menu === false"/>
+              <span v-if="shouldDisplayIcon">
+            
+                <IconAlert />
+              </span>
               <img v-if="dataPedidos.order_type === 'programmed'" src="~/assets/icons/programado.svg" alt="" />
               <img v-else src="~/assets/icons/coffee.svg" alt="" />
             </div>
@@ -146,6 +149,12 @@ export default Vue.extend({
       previewCaution: null,
       selectedFile: null,
       pedidoForaEstoque: true,
+      iconDisplayed: false
+    }
+  },
+  computed: {
+    shouldDisplayIcon() {
+        return !this.iconDisplayed && this.dataPedidos.orderItem.some(item => item.of_menu === false);
     }
   },
   methods: {

@@ -44,7 +44,7 @@
           <td>R$ {{ data.infoProduct.value }}</td>
           <td>{{ data.method_of_preparation }}</td>
           
-          <td>R$ {{ totalValue(data.infoProduct.value, data.amountItem) }}</td>
+          <td>R$ {{ totalValue(data.infoProduct.value, data.amountItem).toFixed(2) }}</td>
           <td>
             <img
               src="../../assets/icons/delete.svg"
@@ -56,7 +56,7 @@
         </tr>
       </table>
       <div class="finalizar-pedido-content">
-        <span>Total Pedido: R$ {{ totalPedido }}</span>
+        <span>Total Pedido: R$ {{ totalPedido.toFixed(2) }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
