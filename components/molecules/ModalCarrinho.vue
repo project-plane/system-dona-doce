@@ -140,7 +140,7 @@
      
       <!-- <textarea name="" id="" cols="30" rows="6" style="border: solid 1px #fa5c4f; border-radius: 4px; padding: 1rem;" ></textarea> -->
       <div class="finalizar-pedido-content">
-        <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02 }}</span>
+        <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02.toFixed(2) }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>

@@ -590,7 +590,6 @@ export default Vue.extend({
       var values = [
         this.amount_of_tray,
         this.amount_of_boxes,
-        this.previewCaution,
         this.number_invoice,
         this.previewNotaFiscal,
       ]
