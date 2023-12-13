@@ -182,7 +182,7 @@
                 type="text"
                 placeholder="Digita a quantidade de caixas"
               />
-
+              <button class="btn" @click="sendData()">Salvar</button>
               <div
                 v-if="
                   orderFindClient.orderStatus.description === 'Revisão Admin' ||
@@ -220,7 +220,9 @@
                     style="width: 100%; height: 100%"
                     placeholder="000 001 001"
                   />
+                  
                 </div>
+                <button style="margin-top: 1rem;" class="btn" @click="sendNF()">Enviar Nota</button>
               </div>
               <div
                 v-if="
@@ -280,7 +282,7 @@
 
               <!-- <pre>{{ orderFindClient}}</pre> -->
 
-              <button class="btn" @click="sendData()">Salvar</button>
+             
             </div>
             <div v-else class="inputs">
               <span
@@ -525,26 +527,7 @@ export default Vue.extend({
         this.$toast.error('Houve um erro ao processar a solicitação.')
       }
     },
-    // async uploadFile(id) {
-    //   try {
-    //     if (!this.selectedFile) {
-    //       this.$toast.info('Selecione um arquivo antes de enviar.')
-    //     }
-
-    //     const formData = new FormData()
-    //     formData.append('file_caution', this.selectedFile)
-    //     // console.log(formData);
-
-    //     const response = await httpOrder.UploadCautela(id, formData)
-    //     this.$toast.info('Arquivo enviado com sucesso')
-
-    //     setTimeout(function () {
-    //       location.reload()
-    //     }, 4000)
-    //   } catch (error) {
-    //     this.$toast.error('Houve um erro ao processar a solicitação')
-    //   }
-    // },
+  
     async uploadFileNF(id) {
       try {
         if (!this.selectedFileNF) {
@@ -590,8 +573,8 @@ export default Vue.extend({
       var values = [
         this.amount_of_tray,
         this.amount_of_boxes,
-        this.number_invoice,
-        this.previewNotaFiscal,
+        // this.number_invoice,
+        // this.previewNotaFiscal,
       ]
 
       const isValid = values.every((element) => {
@@ -604,20 +587,28 @@ export default Vue.extend({
         this.$toast.info('Preencha todos os valores!')
       }
     },
+    async sendNF(){
+      try {
 
+      await this.uploadFileNF(this.orderFindClient.id)
+      this.$toast.info('Nota Fiscal enviada')
+      } catch (error) {
+      this.$toast.error('Erro: ' + error) 
+      }
+    },
     validate(value) {
-      return !!value // Verifica se o valor não é nulo ou indefinido
+      return !!value 
     },
 
     async req() {
       try {
-        // await this.uploadFile(this.orderFindClient.id)
-        await this.uploadFileNF(this.orderFindClient.id)
+
+        // await this.uploadFileNF(this.orderFindClient.id)
         await this.adicionarBandejas(this.orderFindClient.id)
 
         this.$toast.info('Requisição feita com sucesso!')
       } catch (error) {
-        this.$toast.error('Erro: ' + error) // Use this.$toast.error para indicar um erro
+        this.$toast.error('Erro: ' + error) 
       }
     },
   },
