@@ -42,7 +42,7 @@
       </select>
       <div class="btnConfirm">
         
-        <section v-show="selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69'|| selected === '789850813-1c69-11ee-be56-c691200020241' ">
+        <section v-show="selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' ">
           <span>Anexar cautela</span>
         <div class="inputContainer">
             <input
@@ -181,13 +181,11 @@ export default Vue.extend({
     },
     statusPedido(){
       if (
-        (this.selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' && this.selectedFile === null) ||
-        (this.selected === '789850813-1c69-11ee-be56-c691200020241' && this.selectedFile === null)
+        (this.selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' && this.selectedFile === null) 
       ) {
         this.$toast.warning('anexar cautela');
       } else if (
-        this.selected !== '1c69c120002-575f34-1c69-be56-0242ac1201c69' &&
-        this.selected !== '789850813-1c69-11ee-be56-c691200020241'
+        this.selected !== '1c69c120002-575f34-1c69-be56-0242ac1201c69' 
       ) {
         this.saveStatus()
       }else{
