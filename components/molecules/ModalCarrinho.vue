@@ -1,5 +1,5 @@
 <template>
-  <ModalPreview titleModal="Carrinho" @closeModal="closeModal" >
+  <ModalPreview titleModal="Carrinho" @closeModal="closeModal">
     <div class="dataEmpresa" v-if="$fetchState.pending">
       Carregando dados do carrinho...
     </div>
@@ -21,8 +21,8 @@
           <tr v-for="(item, index) in dejejum" :key="index">
             <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
             <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
-            
-            <td class="tdQtde" style="display: flex; justify-content: center;">
+
+            <td class="tdQtde" style="display: flex; justify-content: center">
               <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
                 <span>-</span>
               </button> -->
@@ -35,18 +35,28 @@
             </td>
             <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
             <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
-            <td v-if="item.type_preparation === 'Fora de Estoque'">Fora de Estoque</td>
+            <td v-if="item.type_preparation === 'Fora de Estoque'">
+              Fora de Estoque
+            </td>
             <td v-else></td>
             <td v-if="item.method_of_preparation === 'roast'">Assado</td>
             <td v-else>Congelado</td>
-            <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde).toFixed(2)  }}</td>
-            <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde).toFixed(2) }}</td>
-            
-            <td>
-              <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
+            <td v-if="item.v_unidade">
+              R$ {{ totalValue(item.v_unidade, item.qtde).toFixed(2) }}
             </td>
-    
-            
+            <td v-else>
+              R$
+              {{ totalValue(item.v_unidade_foraEstoque, item.qtde).toFixed(2) }}
+            </td>
+
+            <td>
+              <img
+                src="../../assets/icons/delete.svg"
+                alt=""
+                class="btnDelete"
+                @click="deleteItem(item)"
+              />
+            </td>
           </tr>
           <tr v-if="dejejum.length === 0">
             Não possui...
@@ -69,7 +79,7 @@
         <tr v-for="(item, index) in lanche01" :key="index">
           <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
           <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
-          <td class="tdQtde" style="display: flex; justify-content: center;">
+          <td class="tdQtde" style="display: flex; justify-content: center">
             <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
@@ -81,14 +91,25 @@
           </td>
           <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
           <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
-          <td v-if="item.type_preparation === 'Fora de Estoque'">Fora de Estoque</td>
+          <td v-if="item.type_preparation === 'Fora de Estoque'">
+            Fora de Estoque
+          </td>
           <td v-else></td>
           <td v-if="item.method_of_preparation === 'roast'">Assado</td>
           <td v-else>Congelado</td>
-          <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
-          <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}</td>
+          <td v-if="item.v_unidade">
+            R$ {{ totalValue(item.v_unidade, item.qtde) }}
+          </td>
+          <td v-else>
+            R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}
+          </td>
           <td>
-            <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
+            <img
+              src="../../assets/icons/delete.svg"
+              alt=""
+              class="btnDelete"
+              @click="deleteItem(item)"
+            />
           </td>
         </tr>
         <tr v-if="lanche01.length === 0">
@@ -111,7 +132,7 @@
         <tr v-for="(item, index) in lanche02" :key="index">
           <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
           <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
-          <td class="tdQtde" style="display: flex; justify-content: center;">
+          <td class="tdQtde" style="display: flex; justify-content: center">
             <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
               <span>-</span>
             </button>
@@ -123,28 +144,41 @@
           </td>
           <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
           <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
-          <td v-if="item.type_preparation === 'Fora de Estoque'">Fora de Estoque</td>
+          <td v-if="item.type_preparation === 'Fora de Estoque'">
+            Fora de Estoque
+          </td>
           <td v-else></td>
           <td v-if="item.method_of_preparation === 'roast'">Assado</td>
           <td v-else>Congelado</td>
-          <td v-if="item.v_unidade">R$ {{ totalValue(item.v_unidade, item.qtde) }}</td>
-          <td v-else>R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}</td>
+          <td v-if="item.v_unidade">
+            R$ {{ totalValue(item.v_unidade, item.qtde) }}
+          </td>
+          <td v-else>
+            R$ {{ totalValue(item.v_unidade_foraEstoque, item.qtde) }}
+          </td>
           <td>
-            <img src="../../assets/icons/delete.svg" alt="" class="btnDelete" @click="deleteItem(item)">
+            <img
+              src="../../assets/icons/delete.svg"
+              alt=""
+              class="btnDelete"
+              @click="deleteItem(item)"
+            />
           </td>
         </tr>
         <tr v-if="lanche02.length === 0">
           Não possui...
         </tr>
       </table>
-     
+
       <!-- <textarea name="" id="" cols="30" rows="6" style="border: solid 1px #fa5c4f; border-radius: 4px; padding: 1rem;" ></textarea> -->
       <div class="finalizar-pedido-content">
-        <span>Total Pedido: R$ {{ countdejejum + countlanche01 + countlanche02.toFixed(2) }}</span>
+        <span
+          >Total Pedido:
+          {{ valueOrder(countdejejum + countlanche01 + countlanche02) }}</span
+        >
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
-
   </ModalPreview>
 </template>
 
@@ -172,7 +206,7 @@ export default Vue.extend({
 
       countdejejum: 0,
       countlanche01: 0,
-      countlanche02: 0
+      countlanche02: 0,
     }
   },
 
@@ -186,14 +220,13 @@ export default Vue.extend({
         // console.log(newValue)
         this.$emit('listaAtualizadaDoModal', newValue)
       },
-      deep: true
+      deep: true,
     },
     listaForaEstoque: {
       handler(newValue) {
-        // console.log(newValue)
         this.$emit('listaAtualizadaForaEstoque', newValue)
       },
-      deep: true
+      deep: true,
     },
 
     dejejum: {
@@ -201,14 +234,17 @@ export default Vue.extend({
         this.countdejejum = 0
         this.dejejum.map((res) => {
           if (res.v_unidade_foraEstoque === undefined) {
-            this.countdejejum = this.countdejejum + (Number(res.qtde) * Number(res.v_unidade))
+            this.countdejejum =
+              this.countdejejum + Number(res.qtde) * Number(res.v_unidade)
             return
           } else {
-            this.countdejejum = this.countdejejum + (Number(res.qtde) * Number(res.v_unidade_foraEstoque))
+            this.countdejejum =
+              this.countdejejum +
+              Number(res.qtde) * Number(res.v_unidade_foraEstoque)
           }
         })
       },
-      deep: true
+      deep: true,
     },
 
     lanche01: {
@@ -216,14 +252,17 @@ export default Vue.extend({
         this.countlanche01 = 0
         this.lanche01.map((res) => {
           if (res.v_unidade_foraEstoque === undefined) {
-            this.countlanche01 = this.countlanche01 + (Number(res.qtde) * Number(res.v_unidade))
+            this.countlanche01 =
+              this.countlanche01 + Number(res.qtde) * Number(res.v_unidade)
             return
           } else {
-            this.countlanche01 = this.countlanche01 + (Number(res.qtde) * Number(res.v_unidade_foraEstoque))
+            this.countlanche01 =
+              this.countlanche01 +
+              Number(res.qtde) * Number(res.v_unidade_foraEstoque)
           }
         })
       },
-      deep: true
+      deep: true,
     },
 
     lanche02: {
@@ -231,20 +270,31 @@ export default Vue.extend({
         this.countlanche02 = 0
         this.lanche02.map((res) => {
           if (res.v_unidade_foraEstoque === undefined) {
-            this.countlanche02 = this.countlanche02 + (Number(res.qtde) * Number(res.v_unidade))
+            this.countlanche02 =
+              this.countlanche02 + Number(res.qtde) * Number(res.v_unidade)
             return
           } else {
-            this.countlanche02 = this.countlanche02 + (Number(res.qtde) * Number(res.v_unidade_foraEstoque))
+            this.countlanche02 =
+              this.countlanche02 +
+              Number(res.qtde) * Number(res.v_unidade_foraEstoque)
           }
         })
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
 
   methods: {
     totalValue(unity, qtde) {
       return Number(unity) * Number(qtde)
+    },
+    valueOrder(listOrder) {
+      const formattedTotal = listOrder.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+
+      return formattedTotal
     },
 
     async renderList() {
@@ -270,7 +320,7 @@ export default Vue.extend({
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            method_of_preparation: item.method_of_preparation
+            method_of_preparation: item.method_of_preparation,
           })
         }
 
@@ -282,7 +332,7 @@ export default Vue.extend({
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
-            method_of_preparation: item.method_of_preparation
+            method_of_preparation: item.method_of_preparation,
           })
         }
       })
@@ -299,7 +349,7 @@ export default Vue.extend({
             v_unidade: item.listReceita.valeuRevenue,
             v_unidade_foraEstoque: item.listReceita.value,
             method_of_preparation: item.method_of_preparation,
-            type_preparation: 'Fora de Estoque'
+            type_preparation: 'Fora de Estoque',
           })
         }
 
@@ -314,7 +364,7 @@ export default Vue.extend({
             v_unidade: item.listReceita.valeuRevenue,
             v_unidade_foraEstoque: item.listReceita.value,
             method_of_preparation: item.method_of_preparation,
-            type_preparation: 'Fora de Estoque'
+            type_preparation: 'Fora de Estoque',
           })
         }
 
@@ -329,7 +379,7 @@ export default Vue.extend({
             v_unidade: item.listReceita.valeuRevenue,
             v_unidade_foraEstoque: item.listReceita.value,
             method_of_preparation: item.method_of_preparation,
-            type_preparation: 'Fora de Estoque'
+            type_preparation: 'Fora de Estoque',
           })
         }
       })
@@ -342,7 +392,10 @@ export default Vue.extend({
       value.qtde--
 
       this.listaCompletaReceita.map((item) => {
-        if (item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+        if (
+          item.listReceita.description === value.receita_descricao &&
+          item.fk_categoryOrderItem === value.category
+        ) {
           item.amountItem = value.qtde
         }
       })
@@ -351,7 +404,10 @@ export default Vue.extend({
       value.qtde++
 
       this.listaCompletaReceita.map((item) => {
-        if (item.listReceita.description === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
+        if (
+          item.listReceita.description === value.receita_descricao &&
+          item.fk_categoryOrderItem === value.category
+        ) {
           item.amountItem = value.qtde
         }
       })
@@ -360,8 +416,11 @@ export default Vue.extend({
     deleteItem(value) {
       const listaTemporaria = this.listaCompletaReceita
       listaTemporaria.map((item) => {
-        if (item.listReceita.descriptionRevenue === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
-          const indice = listaTemporaria.indexOf(item);
+        if (
+          item.listReceita.descriptionRevenue === value.receita_descricao &&
+          item.fk_categoryOrderItem === value.category
+        ) {
+          const indice = listaTemporaria.indexOf(item)
           // console.log(indice);
 
           // eslint-disable-next-line vue/no-mutating-props
@@ -371,8 +430,11 @@ export default Vue.extend({
 
       const listaTemporariaForaEstoque = this.listaForaEstoque
       listaTemporariaForaEstoque.map((item) => {
-        if (item.listReceita.descriptionRevenue === value.receita_descricao && item.fk_categoryOrderItem === value.category) {
-          const indice = listaTemporariaForaEstoque.indexOf(item);
+        if (
+          item.listReceita.descriptionRevenue === value.receita_descricao &&
+          item.fk_categoryOrderItem === value.category
+        ) {
+          const indice = listaTemporariaForaEstoque.indexOf(item)
 
           // eslint-disable-next-line vue/no-mutating-props
           this.listaForaEstoque.splice(indice, 1)
@@ -388,7 +450,7 @@ export default Vue.extend({
     finalizarPedido() {
       this.$emit('finalizarPedido')
     },
-  }
+  },
 })
 </script>
 

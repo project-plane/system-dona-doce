@@ -56,7 +56,7 @@
         </tr>
       </table>
       <div class="finalizar-pedido-content">
-        <span>Total Pedido: R$ {{ totalPedido.toFixed(2) }}</span>
+        <span>Total Pedido: {{ valueOrder(totalPedido) }}</span>
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
     </div>
@@ -65,7 +65,6 @@
 
 <script lang="js">
 import Vue from 'vue'
-import dayjs from 'dayjs'
 import http from "../../server/pedidos/index.js"
 export default Vue.extend({
   props: {
@@ -102,6 +101,14 @@ export default Vue.extend({
 
   },
   methods: {
+    valueOrder(listOrder) {
+      const formattedTotal = listOrder.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+
+      return formattedTotal
+    },
     handleChange() {
     console.log(this.selectedUnit);
     this.$store.commit("addOrder", { id: this.selectedUnit, data: null });
