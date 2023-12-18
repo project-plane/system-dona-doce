@@ -107,7 +107,7 @@
           <div class="btn-options">
             <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
 
-          <img v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
+          <img  src="~/assets/icons/3dot.svg" alt=""
                 @click="statusOrder" />
           </div>
 
@@ -206,7 +206,7 @@ export default Vue.extend({
           this.loading = false
         })
         .catch((error) => {
-          console.log(error)
+          alert(error)
         })
       this.modalPedido = false
       this.$nuxt.refresh()

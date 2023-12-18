@@ -13,7 +13,7 @@
       />
     </svg>
 
-    <div id="mostrar">Fora do Cardapio</div>
+    <div id="mostrar"> Fora do Cardapio</div>
   </div>
 </template>
 <style scoped>

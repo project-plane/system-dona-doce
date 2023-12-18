@@ -20,6 +20,14 @@ export default {
   formtDateAddHour: (date, hour) => {
     return dayjs(date).add(hour, 'h').utc(false).toDate()
   },
+  valueorder(listOrder) {
+    const formattedTotal = listOrder.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+
+    return formattedTotal
+},
 }
 
 

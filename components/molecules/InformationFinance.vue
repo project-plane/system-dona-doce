@@ -1,6 +1,51 @@
 <template>
   <div class="informationFinance">
-    <div v-if="orderFindClient" class="orderClient">
+    <div class="informationOrder">
+      <h3
+          @click="showListaCompras"
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            cursor: pointer;
+          "
+        >
+          <div>Lista de Compras</div>
+          <div>R$: {{ valueListBuy.toFixed(2) }}</div>
+        </h3>
+      <div class="list-buy" v-if="showImpressao">
+
+        <div v-if="loadingListBuy == true">
+          <LoadingPage />
+        </div>
+        <div v-else>
+          <button
+            class="btnExibir"
+            v-if="gerarPdfVariable == true"
+            @click="gerarPDF"
+          >
+            Gerar PDF de Compras
+          </button>
+          <div style="display: flex; gap: 3px" v-else>
+            <button class="btnExibir" @click="voltarNormaly">Voltar</button>
+            <button class="btnExibir" @click="gerarPDF">Gerar PDF</button>
+          </div>
+
+          <div v-for="(l, index) in listBuy" :key="index">
+            <div class="line-buy">
+              <div>
+                {{ l.quantity_to_buy }}{{ l.unit_of_measurement }} -
+                {{ l.description }}
+              </div>
+              <div>R$: {{ l.value_prediction }}</div>
+            </div>
+            <div style="border: 1.5px dashed rgba(69, 64, 64, 0.968)"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div v-if="orderFindClient || showImpressao === false" class="orderClient"  >
       <BeadFrame @pedidos="pedidos" @entrega="entrega">
         <div v-if="statusAba" class="order">
           <div>
@@ -17,143 +62,210 @@
               >Programado</span
             >
           </div>
-
-          <div
-            v-for="(dadosPedidos, index) in orderFindClient.orderItem"
-            :key="index"
-            class="order"
-          >
-            <div
-              v-if="dadosPedidos.categoryOrderItem.description === 'Dejejum'"
-            >
-              <h3>Desjejum</h3>
-              <table>
-               
-                <thead>
-                  <tr>
-                    <th v-if="dadosPedidos.of_menu === false"><IconAlert/></th>
-                    <th>Quantidade</th>
-                    <th>Pedido</th>
-                    <th>Valor Unit.</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td>{{ dadosPedidos.amountItem }}</td>
-                    <td>{{ dadosPedidos.revenues.description }}</td>
-                    <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
-                    <td>R$ {{ (dadosPedidos.valueOrderItem * dadosPedidos.amountItem).toFixed(2) }}</td>
-                    
-                  </tr>
-                  <tr >
-                    
-                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
-                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div
-              v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 1'"
-            >
-              <h3>Lanche 01</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th v-if="dadosPedidos.of_menu === false"><IconAlert/></th>
-                    <th>Quantidade</th>
-                    <th>Pedido</th>
-                    <th>Preço</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td>{{ dadosPedidos.amountItem }}</td>
-                    <td>{{ dadosPedidos.revenues.description }}</td>
-                    <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
-                  </tr>
-                  <tr >
-                    <td style="font-size: 15px; color: gray;"> <strong>Observações:</strong></td>
-                   
-                    <td colspan="2" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div
-              v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 2'"
-            >
-              <h3>Lanche 02</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th v-if="dadosPedidos.of_menu === false"><IconAlert/></th>
-                    <th>Quantidade</th>
-                    <th>Pedido</th>
-                    <th>Preço</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td>{{ dadosPedidos.amountItem }}</td>
-                    <td>{{ dadosPedidos.revenues.description }}</td>
-                    <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
-                  </tr>
-                  <tr >
-                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
-                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
-                  </tr>
+   
+        <div  v-if="orderFindClient.order_type === 'programmed'">
+              <div class="desejum">
+                <h3 style="margin-top: 1.5rem; color: chocolate;">Desejum</h3>
+                <div
+                  v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+                  :key="index"
+                >
+                  <table
+                    v-if="dadosPedidos.categoryOrderItem.description === 'Dejejum'"
+                  >
+                      <tr>
+                        <th style="text-align: start;">Item</th>
+                        <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
+                      </tr>
+                      
+                      <tr>
+                        <th>Qtd.</th>
+                        <th>Valor Unit.</th>
+                        <th>Total</th>
+                        <th style="text-align: center;">Cardápio</th>
+                      </tr>
                   
-                  <tr class="totalOrder">
-                    <td>Total</td>
-                    <td colspan="2" style="text-align: end">
-                      R$ {{ orderFindClient.valueOrder.toFixed(2) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                    <tbody>
+                      <tr>
+                        <td>{{ dadosPedidos.amountItem }}</td>
+                        <td>{{  valueorder(dadosPedidos.valueOrderItem) }}</td>
+                        <td>{{ valueorder( dadosPedidos.valueOrderItem * dadosPedidos.amountItem)}}</td>
+                        <td style="display: flex; justify-content: center;">
+                          <img
+                            v-if="dadosPedidos.of_menu === true"
+                            src="../../static/icon/sucesso.png"
+                            alt=""
+                            srcset=""
+                            style="width: 20px"
+                          />
+                          <span v-if="dadosPedidos.of_menu === false"
+                            ><IconAlert
+                          /></span>
+                        </td>
+                      </tr>
 
-            <div v-if="orderFindClient.order_type === 'coffe'">
+                      <tr style="border-bottom: 1px solid var(--border)">
+                        <td style="font-size: 14px; color: gray">
+                          <strong>Observações:</strong>
+                        </td>
+                        <td colspan="3" style="text-align: start; font-size: small; word-break: break-all; margin-left: .5rem;">
+                          {{ dadosPedidos.comment }}
+                        </td>
+                    
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="lanche1">
+                <h3 style="margin-top: 1.5rem; color: chocolate;">Lanche 1</h3>
+                <div
+                  v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+                  :key="index"
+                >
+                  <table
+                    v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 1'"
+                  >
+                      <tr>
+                        <th style="text-align: start;">Item</th>
+                        <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
+                      </tr>
+                      <tr>
+                        <th>Qtd.</th>
+                        <th>Valor Unit.</th>
+                        <th>Total</th>
+                        <th style="text-align: center;">Cardápio</th>
+                      </tr>
+                    
+                    <tbody>
+                      <tr>
+                        
+                        <td>{{ dadosPedidos.amountItem }}</td>
+                        <td>{{ valueorder(dadosPedidos.valueOrderItem) }}</td>
+                        <td>{{ valueorder(dadosPedidos.valueOrderItem * dadosPedidos.amountItem)}}
+                        </td>
+                        <td style="display: flex; justify-content: center;">
+                          <img
+                            v-if="dadosPedidos.of_menu === true"
+                            src="../../static/icon/sucesso.png"
+                            alt=""
+                            srcset=""
+                            style="width: 20px"
+                          />
+                          <span v-if="dadosPedidos.of_menu === false"
+                            ><IconAlert
+                          /></span>
+                        </td>
+                      </tr>
+
+                      <tr style="border-bottom: 1px solid var(--border)">
+                        <td style="font-size: 15px; color: gray" >
+                          <strong >Observações:</strong>
+                        </td>
+                        <td style="text-align: start; font-size: small; word-break: break-all; margin-left: .5rem;">
+                          {{ dadosPedidos.comment }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="lanche2">
+                <h3 style="margin-top: 1.5rem; color: chocolate;">Lanche 2</h3>
+                
+                <div
+                  v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+                  :key="index"
+                >
+                  <table
+                    v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 2'"
+                  >
+                  <tr>
+                        <th style="text-align: start;">Item</th>
+                        <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
+                      </tr>
+                      <tr>
+                      
+                        <th>Qtd.</th>
+                        <th>Valor Unit.</th>
+                        <th>Total</th>
+                        <th style="text-align: center;">Cardápio</th>
+                      </tr>
+                    
+                    <tbody>
+                      <tr>
+                        <td>{{ dadosPedidos.amountItem }}</td>
+                        <td> {{  valueorder(dadosPedidos.valueOrderItem) }}</td>
+                        <td>{{ valueorder( dadosPedidos.valueOrderItem * dadosPedidos.amountItem) }}</td>
+                        <td style="display: flex; justify-content: center;">
+                          <img
+                            v-if="dadosPedidos.of_menu === true"
+                            src="../../static/icon/sucesso.png"
+                            alt=""
+                            srcset=""
+                            style="width: 20px"
+                          />
+                          <span v-if="dadosPedidos.of_menu === false"
+                            ><IconAlert
+                          /></span>
+                        </td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border)">
+                        <td style="font-size: 15px; color: gray">
+                          <strong>Observações:</strong>
+                        </td>
+                        <td style="text-align: start; font-size: small; word-break: break-all; margin-left: .5rem;">
+                          {{ dadosPedidos.comment }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+        
+                </div>
+              </div>
+
+        </div> 
+        <div v-else class="coffe">
+            
+            <div
+              v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+              :key="index"
+            >
+              
+
+          <div v-if="orderFindClient.order_type === 'coffe'">
               <table>
-                <thead>
                   <tr>
                     <th>Quantidade</th>
                     <th>Descrição</th>
                     <th>Preço</th>
                   </tr>
-                </thead>
+                
                 <tr>
                   <td>{{ dadosPedidos.amountItem }}</td>
                   <td>{{ dadosPedidos.revenues.description }}</td>
                   <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
                 </tr>
-                <tr >
+                  <tr>
                     <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
                     <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
                   </tr>
-                <!-- <tr class="totalOrder">
-                    <td>Total</td>
-                    <td colspan="2" style="text-align: end">
-                      R$ {{ orderFindClient.valueOrder.toFixed(2) }}
-                    </td>
-                  </tr> -->
-              </table>
+                </table>
             </div>
           </div>
+        </div>
 
-          <h3
-            style="text-align: right; padding: 1.2rem"
-            v-if="orderFindClient.order_type === 'coffe'"
-          >
-            valor R$ {{ orderFindClient.valueOrder.toFixed(2) }}
-          </h3>
+        <div class="totalPedido">
+            <table>
+              <tr class="totalOrder">
+                <td>Total</td>
+                <td colspan="2" style="text-align: end">
+                  
+                  {{ valueorder(orderFindClient.valueOrder) }}
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
 
         <div v-else>
@@ -166,21 +278,17 @@
                 orderFindClient.orderStatus.description == 'Em Entrega'
               "
             >
-              <!-- <span v-if="orderFindClient.amount_of_boxes != null">
-                Já foi cadastrado um dado anteriormente, caso queira editar é só enviar novamente
-              </span> -->
-
               <Input
                 label="Bandeja"
                 v-model="amount_of_tray"
                 type="text"
-                placeholder="Digita a quantidade de bandeja"
+                placeholder="Digita a Qtd. de bandeja"
               />
               <Input
                 label="Caixa"
                 v-model="amount_of_boxes"
                 type="text"
-                placeholder="Digita a quantidade de caixas"
+                placeholder="Digita a Qtd. de caixas"
               />
               <button class="btn" @click="sendData()">Salvar</button>
               <div
@@ -220,9 +328,10 @@
                     style="width: 100%; height: 100%"
                     placeholder="000 001 001"
                   />
-                  
                 </div>
-                <button style="margin-top: 1rem;" class="btn" @click="sendNF()">Enviar Nota</button>
+                <button style="margin-top: 1rem" class="btn" @click="sendNF()">
+                  Enviar Nota
+                </button>
               </div>
               <div
                 v-if="
@@ -281,8 +390,6 @@
               </div>
 
               <!-- <pre>{{ orderFindClient}}</pre> -->
-
-             
             </div>
             <div v-else class="inputs">
               <span
@@ -294,72 +401,27 @@
         </div>
       </BeadFrame>
     </div>
-    <div v-else class="informationOrder">
-      <div class="list-buy">
-        <h3
-          style="
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-          "
-        >
-          <div>Lista de Compras</div>
-          <div>R$: {{ valueListBuy.toFixed(2) }}</div>
-        </h3>
-        <div v-if="loadingListBuy == true">
-        <LoadingPage />
 
-        </div>
-        <div v-else>
-        <button class="btnExibir" v-if="gerarPdfVariable == true" @click="gerarPDF">Gerar PDF de Compras</button>
-        <div style="display: flex; gap: 3px;" v-else>
-            <button class="btnExibir" @click="voltarNormaly">Voltar</button>
-            <button class="btnExibir" @click="gerarPDF">Gerar PDF</button>
-
-        </div>
-
-        <div  v-for="(l, index) in listBuy" :key="index">
-          <div class="line-buy">
-            <div>
-              {{ l.quantity_to_buy }}{{ l.unit_of_measurement }} -
-              {{ l.description }}
-            </div>
-            <div>R$: {{ l.value_prediction }}</div>
-          </div>
-          <div style="border: 1.5px dashed rgba(69, 64, 64, 0.968) "></div>
-          </div>
-        </div>
-      </div>
-      <img class="imgCooke" src="~/assets/icons/cooke.svg" alt="" />
-
-     
-      <!-- <div>
-        <h3>Informações do pedido</h3>
-        <span
-          >Clique no card de pedido para visualizar as informações
-          secundárias</span
-        >
-      </div> -->
-    </div>
-    
   </div>
 </template>
 
 <script lang="ts">
+
 import httpOrder from '@/server/pedidos/index'
 import httpDash from '@/server/dashboard/index'
 import dayjs from '~/services/dayjs'
 import Vue from 'vue'
 
 export default Vue.extend({
-  props:{
+  props: {
     gerarPdfVariable: {
       default: true,
-    }
+    },
   },
   data() {
     return {
       dadosOrderFindClient: {},
+      showImpressao: true,
       statusAba: true,
       amount_of_tray: '',
       amount_of_boxes: '',
@@ -370,18 +432,25 @@ export default Vue.extend({
       listBuy: [],
       valueListBuy: 0,
       loadingListBuy: false,
-      selectedTipo: this.$store.state.selectedTipo || "",
-      selectedStatus: this.$store.state.selectedStatus || "",
-      selectedClient: this.$store.state.selectedClient || "",
-      dataCalendar: dayjs.formtDateUSA(new Date()) || this.$store.state.dateCalendar
+      selectedTipo: this.$store.state.selectedTipo || '',
+      selectedStatus: this.$store.state.selectedStatus || '',
+      selectedClient: this.$store.state.selectedClient || '',
+      dataCalendar:
+        dayjs.formtDateUSA(new Date()) || this.$store.state.dateCalendar,
     }
   },
   async fetch() {
+    this.$store.commit('limparDadosPedidos');
     this.loadingListBuy = true
     this.valueListBuy = 0
     this.listBuy = []
     this.dadosOrderFindClient = this.$store.state.dadosPedidos
-    const dash = await httpDash.GetListBuy(this.dataCalendar,this.selectedClient, this.selectedStatus, this.selectedTipo)
+    const dash = await httpDash.GetListBuy(
+      this.dataCalendar,
+      this.selectedClient,
+      this.selectedStatus,
+      this.selectedTipo
+    )
     dash.data.map((item) => {
       this.listBuy.push({
         count_rev: item.count_rev,
@@ -400,24 +469,23 @@ export default Vue.extend({
     this.loadingListBuy = false
   },
   watch: {
-    async selectedTipoComputed(newValue){
-        this.selectedTipo = newValue
-        await this.atualizar();
-      },
-    async selectedStatusComputed(newValue){
+    async selectedTipoComputed(newValue) {
+      this.selectedTipo = newValue
+      await this.atualizar()
+    },
+    async selectedStatusComputed(newValue) {
       this.selectedStatus = newValue
-      await this.atualizar();
-
+      await this.atualizar()
     },
-    async selectedClientComputed(newValue){
+    async selectedClientComputed(newValue) {
       this.selectedClient = newValue
-      await this.atualizar();
-
+      await this.atualizar()
     },
-    async selectedCalendarComputed(newValue){
+    async selectedCalendarComputed(newValue) {
       this.dataCalendar = dayjs.formtDateUSA(newValue)
-      await this.atualizar();
-    }
+      await this.atualizar()
+    },
+    
   },
   computed: {
     orderFindClient() {
@@ -426,59 +494,70 @@ export default Vue.extend({
       } else {
         return objectValeu
       }
+      
     },
-    selectedTipoComputed(){
-        return this.$store.state.selectedTipo
-       },
-    selectedStatusComputed(){
-        return this.$store.state.selectedStatus
-       },
-        selectedClientComputed(){
-        return this.$store.state.selectedClient
-       },
-       selectedCalendarComputed(){
-        return this.$store.state.dateCalendar
-       }
+    selectedTipoComputed() {
+      return this.$store.state.selectedTipo
+    },
+    selectedStatusComputed() {
+      return this.$store.state.selectedStatus
+    },
+    selectedClientComputed() {
+      return this.$store.state.selectedClient
+    },
+    selectedCalendarComputed() {
+      return this.$store.state.dateCalendar
+    },
   },
   methods: {
+    
+     showListaCompras() {
+      this.showImpressao = !this.showImpressao
 
-    async gerarPDF(){
+    },
+    valueorder(number) {
+      const value = dayjs.valueorder(number)
+      return value
+    },
+    async gerarPDF() {
       this.gerarPdfVariable = false
-      this.$emit("setVisibleInFi", false)
+      this.$emit('setVisibleInFi', false)
     },
-    async voltarNormaly(){
+    async voltarNormaly() {
       this.gerarPdfVariable = true
-      this.$emit("setVisibleInFi", true)
-
+      this.$emit('setVisibleInFi', true)
     },
-    async atualizar(){
-    this.loadingListBuy = true
-    this.valueListBuy = 0
-    this.listBuy = []
-    const dash = await httpDash.GetListBuy(this.dataCalendar,this.selectedClient, this.selectedStatus, this.selectedTipo)
-    dash.data.map((item) => {
-      this.listBuy.push({
-        count_rev: item.count_rev,
-        description: item.description,
-        quantity_to_buy: this.valueBuy(item.quantity_to_buy),
-        unit_of_measurement: this.unitOfMeasurementVerify(
-          item.unit_of_measurement,
-          item.quantity_to_buy
-        ),
-        value_prediction: item.value_prediction,
+    async atualizar() {
+      this.loadingListBuy = true
+      this.valueListBuy = 0
+      this.listBuy = []
+      const dash = await httpDash.GetListBuy(
+        this.dataCalendar,
+        this.selectedClient,
+        this.selectedStatus,
+        this.selectedTipo
+      )
+      dash.data.map((item) => {
+        this.listBuy.push({
+          count_rev: item.count_rev,
+          description: item.description,
+          quantity_to_buy: this.valueBuy(item.quantity_to_buy),
+          unit_of_measurement: this.unitOfMeasurementVerify(
+            item.unit_of_measurement,
+            item.quantity_to_buy
+          ),
+          value_prediction: item.value_prediction,
+        })
+        this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
       })
-      this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
 
-    })
-
-    this.$store.commit('VALUE_COMPRAS', this.valueListBuy)
-    this.loadingListBuy = false
+      this.$store.commit('VALUE_COMPRAS', this.valueListBuy)
+      this.loadingListBuy = false
     },
     unitOfMeasurementVerify(unidade, valor) {
       if (unidade == 'u') {
-          return 'Unidades'
-      } else
-      if (valor > 1000) {
+        return 'Unidades'
+      } else if (valor > 1000) {
         if (unidade == 'g') {
           return 'KG'
         } else if (unidade == 'ml') {
@@ -527,7 +606,7 @@ export default Vue.extend({
         this.$toast.error('Houve um erro ao processar a solicitação.')
       }
     },
-  
+
     async uploadFileNF(id) {
       try {
         if (!this.selectedFileNF) {
@@ -587,46 +666,42 @@ export default Vue.extend({
         this.$toast.info('Preencha todos os valores!')
       }
     },
-    async sendNF(){
+    async sendNF() {
       try {
-
-      await this.uploadFileNF(this.orderFindClient.id)
-      this.$toast.info('Nota Fiscal enviada')
+        await this.uploadFileNF(this.orderFindClient.id)
+        this.$toast.info('Nota Fiscal enviada')
       } catch (error) {
-      this.$toast.error('Erro: ' + error) 
+        this.$toast.error('Erro: ' + error)
       }
     },
     validate(value) {
-      return !!value 
+      return !!value
     },
 
     async req() {
       try {
-
         // await this.uploadFileNF(this.orderFindClient.id)
         await this.adicionarBandejas(this.orderFindClient.id)
 
         this.$toast.info('Requisição feita com sucesso!')
       } catch (error) {
-        this.$toast.error('Erro: ' + error) 
+        this.$toast.error('Erro: ' + error)
       }
     },
   },
-
 })
 </script>
 
 <style scoped lang="scss">
-
-.imgCooke{
+.imgCooke {
   position: absolute;
   top: 50%;
   z-index: 1;
 }
 .list-buy {
-  min-height: 12rem;
+  min-height: 10rem;
   overflow: scroll;
-  z-index: 9999;
+  
 }
 .line-buy {
   display: flex;
@@ -664,7 +739,7 @@ export default Vue.extend({
   max-height: 100%;
   min-height: 60%;
   // background-color: red;
-  padding: 2.3rem 1rem 1rem 1rem;
+  padding: .5rem 0rem 0rem 0rem;
 
   .orderClient {
     height: 100%;
@@ -674,12 +749,13 @@ export default Vue.extend({
       padding: 1rem;
 
       table {
-        width: 100%;
+        width: 96%;
         text-align: center;
         border-collapse: collapse;
-
+        td, th {
+            text-align: start;
+          }
         thead {
-          border-bottom: 1px solid var(--border);
           padding: 1rem 0;
 
           tr th {
@@ -774,7 +850,7 @@ export default Vue.extend({
   }
   .informationOrder {
     padding: 0 1rem;
-    min-height: 300px;
+    // min-height: 300px;
     max-height: 100vh;
     overflow-y: scroll;
     display: flex;
