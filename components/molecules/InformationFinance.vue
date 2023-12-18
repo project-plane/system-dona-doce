@@ -76,6 +76,7 @@
                       <tr>
                         <th style="text-align: start;">Item</th>
                         <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
+                      
                       </tr>
                       
                       <tr>
