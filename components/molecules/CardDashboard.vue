@@ -78,7 +78,6 @@
             <p>{{ dataPedidos.numberOrder }}</p>
             <div class="descriptionCompany">
               <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
-
               <span v-if="dataPedidos.order_type === 'programmed'" class="date-blue">{{ currentDate() }}</span>
               <span v-if="dataPedidos.order_type === 'coffe'" class="date-red">{{ currentDate() }}</span>
             </div>
@@ -107,7 +106,7 @@
           <div class="btn-options">
             <ButtonPirula title="Exibir Pedidos" @click.native="exibirPedidos(dataPedidos)" />
 
-          <img v-if="dataPedidos.orderStatus.description !== 'Entregue'" src="~/assets/icons/3dot.svg" alt=""
+          <img  src="~/assets/icons/3dot.svg" alt=""
                 @click="statusOrder" />
           </div>
 
@@ -206,7 +205,7 @@ export default Vue.extend({
           this.loading = false
         })
         .catch((error) => {
-          console.log(error)
+          alert(error)
         })
       this.modalPedido = false
       this.$nuxt.refresh()

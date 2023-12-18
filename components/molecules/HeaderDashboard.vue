@@ -36,6 +36,8 @@
             <option value="45690813-1c69-11ee-be56-c691200020241">Em Processamento</option>
             <option value="789850813-1c69-11ee-be56-c691200020241">Em Entrega</option>
             <option value="1c69c120002-575f34-1c69-be56-0242ac1201c69">Entregue</option>
+            <option value="22afa4e4-4e7f-14ee-be56-0222afa2d22afb092">Revisão do cliente</option>
+            <option value="55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4">Cancelados</option>
           </select>
         </div>
         <div class="input">
