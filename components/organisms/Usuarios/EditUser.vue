@@ -1,5 +1,5 @@
 <template>
-  <ModalEdit titleModal="Editar Funcionário" @save="updateFindUser">
+  <ModalEdit titleModal="" @save="updateFindUser">
     <Input
       label="Nome Completo"
       type="text"
@@ -34,7 +34,8 @@
     <div class="input_cargo">
       <div class="input">
         <Label>Cargo</Label>
-        <select v-model="selected">
+      <pre>{{ findUser }}
+</pre>        <select v-model="selected">
           <option disabled value="">Selecionar cargo</option>
           <option>Administrador</option>
           <option>Motorista</option>
@@ -76,11 +77,20 @@ export default Vue.extend({
       if (this.selected === 'Administrador') {
         this.findUser.user.is_admin = true
       }
+      else{
+        this.findUser.user.is_admin = false
+      }
       if (this.selected === 'Motorista') {
         this.findUser.user.is_driver = true
       }
+      else{
+        this.findUser.user.is_driver = false
+      }
       if (this.selected === 'Operador(a)') {
         this.findUser.user.is_production = true
+      }
+      else{
+        this.findUser.user.is_production = false
       }
       const UpdateUser = {
         name: this.findUser.name,

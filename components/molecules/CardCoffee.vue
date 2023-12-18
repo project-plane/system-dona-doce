@@ -9,7 +9,7 @@
     <div class="descriptionPedido">
       <!-- <pre>{{ infoCoffee }}</pre> -->
       <h3>{{ infoCoffee.description }}</h3>
-      <span>R$: {{ infoCoffee.value }}</span>
+      <span>{{ valueorder(infoCoffee.value) }}</span>
     </div>
     <section class="cointainerCard__Inputs">
       <div class="selectPedido">
@@ -53,7 +53,7 @@
         </select>
     
       </div>
-      <input type="text" placeholder="Digite suas observações aqui..." v-model="comentario" style="border-bottom: solid 1px #b9b9b9a1; border-radius: 0px;">
+      <input type="text" placeholder="Digite suas observações aqui..." v-model="pedidoCoffee.comentario" style="border-bottom: solid 1px #b9b9b9a1; border-radius: 0px;">
 
     </section>
    
@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import dayjs from "~/services/dayjs"
 export default Vue.extend({
   props: {
     infoCliente: Array,
@@ -87,6 +87,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    valueorder(number) {
+      const value = dayjs.valueorder(number)
+      return value
+    },
     adicionarPedido() {
     const { amountItem, method_of_preparation, order_time } = this.pedidoCoffee;
 

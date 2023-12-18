@@ -83,6 +83,9 @@ export const mutations = {
     state.nomeCliente = payload
     console.log(state.nomeCliente );
   },
+  limparDadosPedidos(state) {
+    state.dadosPedidos = {};
+  },
   adicionarPedido(state, pedido) {
     state.pedidos.push(pedido);
     console.log(state.pedidos);
