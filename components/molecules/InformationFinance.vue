@@ -1,19 +1,28 @@
 <template>
   <div class="informationFinance">
+    <nuxt-link
+      v-if="valueListBuy != 0"
+      class="btnExibir"
+      :to="{ path: '/impressao', query: { listBuy: JSON.stringify(listBuy) } }"
+      target="_blank"
+    >
+      Gerar PDF de Compras</nuxt-link
+    >
+
     <div class="informationOrder">
       <h3
-          @click="showListaCompras"
-          style="
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            cursor: pointer;
-          "
-        >
-          <div>Lista de Compras</div>
-          <div>R$: {{ valueListBuy.toFixed(2) }}</div>
-        </h3>
-      <div class="list-buy" v-if="showImpressao">
+        @click="showListaCompras"
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          cursor: pointer;
+        "
+      >
+        <div>Lista de Compras</div>
+        <div>R$: {{ valueListBuy.toFixed(2) }}</div>
+      </h3>
+      <!-- <div class="list-buy" v-if="showImpressao">
 
         <div v-if="loadingListBuy == true">
           <LoadingPage />
@@ -42,10 +51,9 @@
             <div style="border: 1.5px dashed rgba(69, 64, 64, 0.968)"></div>
           </div>
         </div>
-      </div>
-
+      </div> -->
     </div>
-    <div v-if="orderFindClient || showImpressao === false" class="orderClient"  >
+    <div v-if="orderFindClient || showImpressao === false" class="orderClient">
       <BeadFrame @pedidos="pedidos" @entrega="entrega">
         <div v-if="statusAba" class="order">
           <div>
@@ -62,206 +70,254 @@
               >Programado</span
             >
           </div>
-   
-        <div  v-if="orderFindClient.order_type === 'programmed'">
-              <div class="desejum">
-                <h3 style="margin-top: 1.5rem; color: chocolate;">Desejum</h3>
-                <div
-                  v-for="(dadosPedidos, index) in orderFindClient.orderItem"
-                  :key="index"
-                >
-                  <table
-                    v-if="dadosPedidos.categoryOrderItem.description === 'Dejejum'"
-                  >
-                      <tr>
-                        <th style="text-align: start;">Item</th>
-                        <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
-                      
-                      </tr>
-                      
-                      <tr>
-                        <th>Qtd.</th>
-                        <th>Valor Unit.</th>
-                        <th>Total</th>
-                        <th style="text-align: center;">Cardápio</th>
-                      </tr>
-                  
-                    <tbody>
-                      <tr>
-                        <td>{{ dadosPedidos.amountItem }}</td>
-                        <td>{{  valueorder(dadosPedidos.valueOrderItem) }}</td>
-                        <td>{{ valueorder( dadosPedidos.valueOrderItem * dadosPedidos.amountItem)}}</td>
-                        <td style="display: flex; justify-content: center;">
-                          <img
-                            v-if="dadosPedidos.of_menu === true"
-                            src="../../static/icon/sucesso.png"
-                            alt=""
-                            srcset=""
-                            style="width: 20px"
-                          />
-                          <span v-if="dadosPedidos.of_menu === false"
-                            ><IconAlert
-                          /></span>
-                        </td>
-                      </tr>
 
-                      <tr style="border-bottom: 1px solid var(--border)">
-                        <td style="font-size: 14px; color: gray">
-                          <strong>Observações:</strong>
-                        </td>
-                        <td colspan="3" style="text-align: start; font-size: small; word-break: break-all; margin-left: .5rem;">
-                          {{ dadosPedidos.comment }}
-                        </td>
-                    
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="lanche1">
-                <h3 style="margin-top: 1.5rem; color: chocolate;">Lanche 1</h3>
-                <div
-                  v-for="(dadosPedidos, index) in orderFindClient.orderItem"
-                  :key="index"
+          <div v-if="orderFindClient.order_type === 'programmed'">
+            <div class="desejum">
+              <h3 style="margin-top: 1.5rem; color: chocolate">Desejum</h3>
+              <div
+                v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+                :key="index"
+              >
+                <table
+                  v-if="
+                    dadosPedidos.categoryOrderItem.description === 'Dejejum'
+                  "
                 >
-                  <table
-                    v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 1'"
-                  >
-                      <tr>
-                        <th style="text-align: start;">Item</th>
-                        <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
-                      </tr>
-                      <tr>
-                        <th>Qtd.</th>
-                        <th>Valor Unit.</th>
-                        <th>Total</th>
-                        <th style="text-align: center;">Cardápio</th>
-                      </tr>
-                    
-                    <tbody>
-                      <tr>
-                        
-                        <td>{{ dadosPedidos.amountItem }}</td>
-                        <td>{{ valueorder(dadosPedidos.valueOrderItem) }}</td>
-                        <td>{{ valueorder(dadosPedidos.valueOrderItem * dadosPedidos.amountItem)}}
-                        </td>
-                        <td style="display: flex; justify-content: center;">
-                          <img
-                            v-if="dadosPedidos.of_menu === true"
-                            src="../../static/icon/sucesso.png"
-                            alt=""
-                            srcset=""
-                            style="width: 20px"
-                          />
-                          <span v-if="dadosPedidos.of_menu === false"
-                            ><IconAlert
-                          /></span>
-                        </td>
-                      </tr>
-
-                      <tr style="border-bottom: 1px solid var(--border)">
-                        <td style="font-size: 15px; color: gray" >
-                          <strong >Observações:</strong>
-                        </td>
-                        <td style="text-align: start; font-size: small; word-break: break-all; margin-left: .5rem;">
-                          {{ dadosPedidos.comment }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="lanche2">
-                <h3 style="margin-top: 1.5rem; color: chocolate;">Lanche 2</h3>
-                
-                <div
-                  v-for="(dadosPedidos, index) in orderFindClient.orderItem"
-                  :key="index"
-                >
-                  <table
-                    v-if="dadosPedidos.categoryOrderItem.description === 'Lanche 2'"
-                  >
                   <tr>
-                        <th style="text-align: start;">Item</th>
-                        <td style="text-align: start;" colspan="4">{{ dadosPedidos.revenues.description }}</td>
-                      </tr>
-                      <tr>
-                      
-                        <th>Qtd.</th>
-                        <th>Valor Unit.</th>
-                        <th>Total</th>
-                        <th style="text-align: center;">Cardápio</th>
-                      </tr>
-                    
-                    <tbody>
-                      <tr>
-                        <td>{{ dadosPedidos.amountItem }}</td>
-                        <td> {{  valueorder(dadosPedidos.valueOrderItem) }}</td>
-                        <td>{{ valueorder( dadosPedidos.valueOrderItem * dadosPedidos.amountItem) }}</td>
-                        <td style="display: flex; justify-content: center;">
-                          <img
-                            v-if="dadosPedidos.of_menu === true"
-                            src="../../static/icon/sucesso.png"
-                            alt=""
-                            srcset=""
-                            style="width: 20px"
-                          />
-                          <span v-if="dadosPedidos.of_menu === false"
-                            ><IconAlert
-                          /></span>
-                        </td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid var(--border)">
-                        <td style="font-size: 15px; color: gray">
-                          <strong>Observações:</strong>
-                        </td>
-                        <td style="text-align: start; font-size: small; word-break: break-all; margin-left: .5rem;">
-                          {{ dadosPedidos.comment }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-        
-                </div>
-              </div>
+                    <th style="text-align: start">Item</th>
+                    <td style="text-align: start" colspan="4">
+                      {{ dadosPedidos.revenues.description }}
+                    </td>
+                  </tr>
 
-        </div> 
-        <div v-else class="coffe">
-            
+                  <tr>
+                    <th>Qtd.</th>
+                    <th>Valor Unit.</th>
+                    <th>Total</th>
+                    <th style="text-align: center">Cardápio</th>
+                  </tr>
+
+                  <tbody>
+                    <tr>
+                      <td>{{ dadosPedidos.amountItem }}</td>
+                      <td>{{ valueorder(dadosPedidos.valueOrderItem) }}</td>
+                      <td>
+                        {{
+                          valueorder(
+                            dadosPedidos.valueOrderItem *
+                              dadosPedidos.amountItem
+                          )
+                        }}
+                      </td>
+                      <td style="display: flex; justify-content: center">
+                        <img
+                          v-if="dadosPedidos.of_menu === true"
+                          src="../../static/icon/sucesso.png"
+                          alt=""
+                          srcset=""
+                          style="width: 20px"
+                        />
+                        <span v-if="dadosPedidos.of_menu === false"
+                          ><IconAlert
+                        /></span>
+                      </td>
+                    </tr>
+
+                    <tr style="border-bottom: 1px solid var(--border)">
+                      <td style="font-size: 14px; color: gray">
+                        <strong>Observações:</strong>
+                      </td>
+                      <td
+                        colspan="3"
+                        style="
+                          text-align: start;
+                          font-size: small;
+                          word-break: break-all;
+                          margin-left: 0.5rem;
+                        "
+                      >
+                        {{ dadosPedidos.comment }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="lanche1">
+              <h3 style="margin-top: 1.5rem; color: chocolate">Lanche 1</h3>
+              <div
+                v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+                :key="index"
+              >
+                <table
+                  v-if="
+                    dadosPedidos.categoryOrderItem.description === 'Lanche 1'
+                  "
+                >
+                  <tr>
+                    <th style="text-align: start">Item</th>
+                    <td style="text-align: start" colspan="4">
+                      {{ dadosPedidos.revenues.description }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Qtd.</th>
+                    <th>Valor Unit.</th>
+                    <th>Total</th>
+                    <th style="text-align: center">Cardápio</th>
+                  </tr>
+
+                  <tbody>
+                    <tr>
+                      <td>{{ dadosPedidos.amountItem }}</td>
+                      <td>{{ valueorder(dadosPedidos.valueOrderItem) }}</td>
+                      <td>
+                        {{
+                          valueorder(
+                            dadosPedidos.valueOrderItem *
+                              dadosPedidos.amountItem
+                          )
+                        }}
+                      </td>
+                      <td style="display: flex; justify-content: center">
+                        <img
+                          v-if="dadosPedidos.of_menu === true"
+                          src="../../static/icon/sucesso.png"
+                          alt=""
+                          srcset=""
+                          style="width: 20px"
+                        />
+                        <span v-if="dadosPedidos.of_menu === false"
+                          ><IconAlert
+                        /></span>
+                      </td>
+                    </tr>
+
+                    <tr style="border-bottom: 1px solid var(--border)">
+                      <td style="font-size: 15px; color: gray">
+                        <strong>Observações:</strong>
+                      </td>
+                      <td
+                        style="
+                          text-align: start;
+                          font-size: small;
+                          word-break: break-all;
+                          margin-left: 0.5rem;
+                        "
+                      >
+                        {{ dadosPedidos.comment }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="lanche2">
+              <h3 style="margin-top: 1.5rem; color: chocolate">Lanche 2</h3>
+
+              <div
+                v-for="(dadosPedidos, index) in orderFindClient.orderItem"
+                :key="index"
+              >
+                <table
+                  v-if="
+                    dadosPedidos.categoryOrderItem.description === 'Lanche 2'
+                  "
+                >
+                  <tr>
+                    <th style="text-align: start">Item</th>
+                    <td style="text-align: start" colspan="4">
+                      {{ dadosPedidos.revenues.description }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Qtd.</th>
+                    <th>Valor Unit.</th>
+                    <th>Total</th>
+                    <th style="text-align: center">Cardápio</th>
+                  </tr>
+
+                  <tbody>
+                    <tr>
+                      <td>{{ dadosPedidos.amountItem }}</td>
+                      <td>{{ valueorder(dadosPedidos.valueOrderItem) }}</td>
+                      <td>
+                        {{
+                          valueorder(
+                            dadosPedidos.valueOrderItem *
+                              dadosPedidos.amountItem
+                          )
+                        }}
+                      </td>
+                      <td style="display: flex; justify-content: center">
+                        <img
+                          v-if="dadosPedidos.of_menu === true"
+                          src="../../static/icon/sucesso.png"
+                          alt=""
+                          srcset=""
+                          style="width: 20px"
+                        />
+                        <span v-if="dadosPedidos.of_menu === false"
+                          ><IconAlert
+                        /></span>
+                      </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border)">
+                      <td style="font-size: 15px; color: gray">
+                        <strong>Observações:</strong>
+                      </td>
+                      <td
+                        style="
+                          text-align: start;
+                          font-size: small;
+                          word-break: break-all;
+                          margin-left: 0.5rem;
+                        "
+                      >
+                        {{ dadosPedidos.comment }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div v-else class="coffe">
             <div
               v-for="(dadosPedidos, index) in orderFindClient.orderItem"
               :key="index"
             >
-              
-
-          <div v-if="orderFindClient.order_type === 'coffe'">
-              <table>
+              <div v-if="orderFindClient.order_type === 'coffe'">
+                <table>
                   <tr>
                     <th>Quantidade</th>
                     <th>Descrição</th>
                     <th>Preço</th>
                   </tr>
-                
-                <tr>
-                  <td>{{ dadosPedidos.amountItem }}</td>
-                  <td>{{ dadosPedidos.revenues.description }}</td>
-                  <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
-                </tr>
+
                   <tr>
-                    <td style="font-size: 15px; color: gray;"><strong>Observações:</strong></td>
-                    <td colspan="3" style="text-align: start; font-size: small;">  {{ dadosPedidos.comment }}</td>
+                    <td>{{ dadosPedidos.amountItem }}</td>
+                    <td>{{ dadosPedidos.revenues.description }}</td>
+                    <td>R$ {{ dadosPedidos.valueOrderItem.toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size: 15px; color: gray">
+                      <strong>Observações:</strong>
+                    </td>
+                    <td colspan="3" style="text-align: start; font-size: small">
+                      {{ dadosPedidos.comment }}
+                    </td>
                   </tr>
                 </table>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="totalPedido">
+          <div class="totalPedido">
             <table>
               <tr class="totalOrder">
                 <td>Total</td>
                 <td colspan="2" style="text-align: end">
-                  
                   {{ valueorder(orderFindClient.valueOrder) }}
                 </td>
               </tr>
@@ -402,12 +458,10 @@
         </div>
       </BeadFrame>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
-
 import httpOrder from '@/server/pedidos/index'
 import httpDash from '@/server/dashboard/index'
 import dayjs from '~/services/dayjs'
@@ -441,7 +495,7 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    this.$store.commit('limparDadosPedidos');
+    this.$store.commit('limparDadosPedidos')
     this.loadingListBuy = true
     this.valueListBuy = 0
     this.listBuy = []
@@ -466,6 +520,7 @@ export default Vue.extend({
       this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
     })
     this.$store.commit('VALUE_COMPRAS', this.valueListBuy)
+    console.log(this.listBuy)
 
     this.loadingListBuy = false
   },
@@ -486,7 +541,6 @@ export default Vue.extend({
       this.dataCalendar = dayjs.formtDateUSA(newValue)
       await this.atualizar()
     },
-    
   },
   computed: {
     orderFindClient() {
@@ -495,7 +549,6 @@ export default Vue.extend({
       } else {
         return objectValeu
       }
-      
     },
     selectedTipoComputed() {
       return this.$store.state.selectedTipo
@@ -511,10 +564,8 @@ export default Vue.extend({
     },
   },
   methods: {
-    
-     showListaCompras() {
+    showListaCompras() {
       this.showImpressao = !this.showImpressao
-
     },
     valueorder(number) {
       const value = dayjs.valueorder(number)
@@ -702,7 +753,6 @@ export default Vue.extend({
 .list-buy {
   min-height: 10rem;
   overflow: scroll;
-  
 }
 .line-buy {
   display: flex;
@@ -740,7 +790,7 @@ export default Vue.extend({
   max-height: 100%;
   min-height: 60%;
   // background-color: red;
-  padding: .5rem 0rem 0rem 0rem;
+  padding: 0.5rem 0rem 0rem 0rem;
 
   .orderClient {
     height: 100%;
@@ -753,9 +803,10 @@ export default Vue.extend({
         width: 96%;
         text-align: center;
         border-collapse: collapse;
-        td, th {
-            text-align: start;
-          }
+        td,
+        th {
+          text-align: start;
+        }
         thead {
           padding: 1rem 0;
 
@@ -848,6 +899,8 @@ export default Vue.extend({
     font-size: 1rem;
     position: relative;
     bottom: 0;
+    display: flex;
+    justify-content: center;
   }
   .informationOrder {
     padding: 0 1rem;
