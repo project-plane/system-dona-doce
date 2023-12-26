@@ -4,6 +4,7 @@ export const state = () => ({
   openModalPreviewEmpresa: false,
   openModalReceita: false,
   openModalHistorico: false,
+  listaCompras:[],
   dataNewOrder: {
     createOrderItemDto: []
   },
@@ -138,6 +139,11 @@ export const mutations = {
   },
   setDataOrder(state, date){
     state.dataPedido = date;
+  },
+  listaDeCompras(state, payload){
+    state.listaCompras = payload;
+    console.log(payload);
+    console.log(state);
   },
 
 }
