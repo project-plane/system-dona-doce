@@ -194,7 +194,7 @@ export default Vue.extend({
     async downloadNF(url) {
       try {
         await fetch(
-          'https://api.donadoce.gedroid.com/invoice/' + url
+          'https://api.donadoce.net/invoice/' + url
         )
           .then((response) => response.blob())
           .then((blob) => {
@@ -226,7 +226,7 @@ export default Vue.extend({
     async downloadFile(item) {
       try {
         await fetch(
-          'https://api.donadoce.gedroid.com/caution/' + item
+          'https://api.donadoce.net/caution/' + item
         )
           .then((response) => response.blob())
           .then((blob) => {

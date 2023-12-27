@@ -31,7 +31,7 @@
             <td>{{ index + 1 }}</td>
             <td class="img">
               <img
-                :src="`https://api.donadoce.gedroid.com/img_revenue/${receita.imagem}`"
+                :src="`https://api.donadoce.net/img_revenue/${receita.imagem}`"
                 alt=""
               />
             </td>

@@ -79,7 +79,7 @@
               </td>
             <td>
               <img
-                :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
+                :src="`https://api.donadoce.net/img_revenue/${item.revenues.imagem}`"
                 alt=""
               />
             </td>
@@ -118,7 +118,7 @@
             </td>
             <td>
               <img
-                :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
+                :src="`https://api.donadoce.net/img_revenue/${item.revenues.imagem}`"
                 alt=""
               />
             </td>
@@ -157,7 +157,7 @@
         
             <td>
               <img
-                :src="`https://api.donadoce.gedroid.com/img_revenue/${item.revenues.imagem}`"
+                :src="`https://api.donadoce.net/img_revenue/${item.revenues.imagem}`"
                 alt=""
               />
             </td>
@@ -338,7 +338,7 @@
 
                 <a
                   :href="
-                    'https://api.donadoce.gedroid.com/caution/' +
+                    'https://api.donadoce.net/caution/' +
                     this.data.file_caution
                   "
                   style="display: none"
@@ -502,7 +502,7 @@ export default Vue.extend({
     async downloadFile() {
       try {
         await fetch(
-          'https://api.donadoce.gedroid.com/caution/' + this.data.file_caution
+          'https://api.donadoce.net/caution/' + this.data.file_caution
         )
           .then((response) => response.blob())
           .then((blob) => {
@@ -520,7 +520,7 @@ export default Vue.extend({
     async downloadNF() {
       try {
         await fetch(
-          'https://api.donadoce.gedroid.com/invoice/' + this.data.file_invoice
+          'https://api.donadoce.net/invoice/' + this.data.file_invoice
         )
           .then((response) => response.blob())
           .then((blob) => {

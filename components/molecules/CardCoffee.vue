@@ -2,7 +2,7 @@
   <div class="containerCard">
     <div class="cointainerCard__ImgProduto">
       <img
-        :src="`https://api.donadoce.gedroid.com/img_revenue/${infoCoffee.imagem}`"
+        :src="`https://api.donadoce.net/img_revenue/${infoCoffee.imagem}`"
         alt="Imagem do produto"
       />
     </div>
