@@ -1,7 +1,7 @@
 <template>
   <div class="containerCard">
     <img
-      :src="`https://api.donadoce.gedroid.com/img_revenue/${foraDeEstoque.imagem}`"
+      :src="`https://api.donadoce.net/img_revenue/${foraDeEstoque.imagem}`"
       alt=""
     />
     <div class="cardPedido">

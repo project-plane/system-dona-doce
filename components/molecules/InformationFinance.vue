@@ -684,7 +684,7 @@ export default Vue.extend({
     async downloadFile() {
       try {
         await fetch(
-          'https://api.donadoce.gedroid.com/payment/' +
+          'https://api.donadoce.net/payment/' +
             this.orderFindClient.file_payment_voucher
         )
           .then((response) => response.blob())

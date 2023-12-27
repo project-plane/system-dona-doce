@@ -8,7 +8,7 @@
             <div class="headerReceita">
               <img
                 :src="
-                  `https://api.donadoce.gedroid.com/img_revenue/` +
+                  `https://api.donadoce.net/img_revenue/` +
                   listFindReceita.imagem
                 "
                 alt=""

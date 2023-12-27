@@ -1,6 +1,6 @@
 <template>
   <div class="containerCard">
-    <img :src="`https://api.donadoce.gedroid.com/img_revenue/${tipoLanches.imagem}`" alt="" />
+    <img :src="`https://api.donadoce.net/img_revenue/${tipoLanches.imagem}`" alt="" />
     <div class="cardPedido">
       <div class="descriptionPedido">
         <h3>{{ tipoLanches.descriptionRevenue }}</h3>
