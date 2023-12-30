@@ -96,9 +96,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--red);
 }
 
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
+// input[type="number"]::-webkit-inner-spin-button {
+//   -webkit-appearance: none;
+// }
 
 input[type="radio"] {
   -webkit-appearance: none;

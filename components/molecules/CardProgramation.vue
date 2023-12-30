@@ -10,7 +10,14 @@
 
       <div class="selectPedido">
         <p>Quantidade</p>
-        <input style="width: 6.5rem;" v-model="qtdPedido" :min="base_min_amount" :max="base_max_amount" type="number" />
+        <input
+    style="width: 6.5rem;"
+    v-model="qtdPedido"
+    :min="base_min_amount"
+    :max="base_max_amount"
+    type="number"
+    @input="handleInput"
+  />
       </div>
       <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -5px; gap: 0.3rem; color: rgb(161, 143, 137); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
         <span>Qtd. Min. {{ base_min_amount }} x </span>  
@@ -69,6 +76,15 @@ export default Vue.extend({
   },
 
   methods: {
+    handleInput(event) {
+      let inputValue = parseInt(event.target.value);
+
+      // Ensure the input value is within the specified range
+      inputValue = Math.min(this.base_max_amount, Math.max(this.base_min_amount, inputValue));
+
+      // Set the input value
+      this.qtdPedido = inputValue;
+    },
     addPedidos(lanche) {
       if (!this.qtdPedido || !this.selected) {
         this.$toast.error('Preencha o campo quantidade!!!')

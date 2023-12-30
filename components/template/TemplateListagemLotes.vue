@@ -106,7 +106,7 @@
                 <span v-if="listPedidos.file_payment_voucher == null" class="spanButton" >
                     Arquivo não anexado
                 </span >
-                <button @click="downloadFile" v-if="listPedidos.file_payment_voucher != null" class="btnDownload">
+                <button @click="downloadComprovante(listPedidos.file_payment_voucher)" v-if="listPedidos.file_payment_voucher != null" class="btnDownload">
                   Baixar Comprovante
                 </button>
             </div>
@@ -208,6 +208,24 @@ export default Vue.extend({
             document.body.appendChild(a);
             a.click()
             document.body.removeChild(a);
+            window.URL.revokeObjectURL(url)
+          })
+      } catch (error) {
+        console.error('Erro ao baixar o arquivo:', error)
+      }
+    },
+    async downloadComprovante(item) {
+      try {
+        await fetch(
+          'https://api.donadoce.net/payment/' + item
+        )
+          .then((response) => response.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'Comprovante'
+            a.click()
             window.URL.revokeObjectURL(url)
           })
       } catch (error) {

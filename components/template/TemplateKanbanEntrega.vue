@@ -12,6 +12,7 @@
                     <span>Ordem de Rota</span>
                 </div>
                 <draggable v-model="list" class="kanban-list" ghost-class="ghost">
+                    <pre>{{ listRotas }}</pre>
                     <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" type-card="entrega"/>
                 </draggable>
             </div>
