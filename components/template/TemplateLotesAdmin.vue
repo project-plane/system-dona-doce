@@ -298,7 +298,9 @@ export default Vue.extend({
           this.$toast.warning('Preencha Todos os campos.');
         })
         this.loading = false
-        window.location.reload();
+        setTimeout(function () {
+          location.reload()
+        }, 4000)
     },
     encontrarDatas() {
       this.initial_date = null
