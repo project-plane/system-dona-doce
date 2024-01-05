@@ -25,13 +25,14 @@
                 <span>Endereço:</span>
                 <span>Bairro</span>
                 <span>CEP:</span>
+                <span>Horario: {{ formatTime(dataObject.deliveryDate) }}</span>
             </div>
             <div class="value" v-for="(item, id) in dataObject" :key="id">
                 <span>{{ item.corporate_name }}</span>
                 <span>{{ item.address }} </span>
                 <span>{{ item.district }}</span>
                 <span>{{ item.cep }}</span>
-
+                
             </div>
         </table>
     </div>
@@ -40,6 +41,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import dayjs from 'dayjs'
+import * as timezone from "dayjs/plugin/timezone"
 export default Vue.extend({
     props: {
         // eslint-disable-next-line vue/require-default-prop
@@ -48,6 +51,13 @@ export default Vue.extend({
         hourCard: String,
         idOrder: Number
     },
+    methods:{
+        formatTime(time) {
+        const dataHoraFormatada = dayjs(time).local().format('HH:mm:ss');
+
+        return dataHoraFormatada
+        }
+    }
 
 })
 </script>
