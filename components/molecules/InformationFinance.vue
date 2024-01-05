@@ -348,7 +348,7 @@
                 placeholder="Digita a Qtd. de caixas"
               />
               <button class="btn" @click="sendData()">Salvar</button>
-              <div
+              <!-- <div
                 v-if="
                   orderFindClient.orderStatus.description === 'Revisão Admin' ||
                   orderFindClient.orderStatus.description === 'Entregue' ||
@@ -389,7 +389,7 @@
                 <button style="margin-top: 1rem" class="btn" @click="sendNF()">
                   Enviar Nota
                 </button>
-              </div>
+              </div> -->
               <div
                 v-if="
                   orderFindClient.orderStatus.description === 'Revisão Admin' ||
@@ -419,7 +419,7 @@
                   />
                 </div> -->
               </div>
-              <div>
+              <!-- <div>
                 <span>Comprovante de Pagamento</span>
                 <div class="img">
                   <label for="inputComprovante">
@@ -444,7 +444,7 @@
                     </p>
                   </label>
                 </div>
-              </div>
+              </div> -->
 
               <!-- <pre>{{ orderFindClient}}</pre> -->
             </div>
