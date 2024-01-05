@@ -11,7 +11,7 @@ export default {
     return await http.patch(`/control-production/kambam/production`, data)
   },
   GetOrderRoute: async ()=> {
-     return await http.get(`/order/kambamRoute`)
+     return await http.get(`/order/kambamRoute?statusOrder=1`)
 
   },
   GetOrderRouteCompany: async ()=> {

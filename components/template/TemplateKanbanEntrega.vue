@@ -11,10 +11,10 @@
                 <div class="column-header">
                     <span>Ordem de Rota</span>
                 </div>
-                <draggable v-model="list" class="kanban-list" ghost-class="ghost">
-                    <pre>{{ listRotas }}</pre>
+                <div class="kanban-list" ghost-class="ghost">
+                    
                     <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" type-card="entrega"/>
-                </draggable>
+                </div>
             </div>
 
         </div>
@@ -50,7 +50,7 @@ export default Vue.extend({
         }
     },
     async fetch(){
-    httpRotas.GetOrderRouteCompany().then((res) => {
+    httpRotas.GetOrderRoute().then((res) => {
       this.listRotas = res.data
       })
       .catch((error) => {
@@ -103,7 +103,7 @@ export default Vue.extend({
                 gap: 1rem;
                 width: 100%;
                 text-align: center;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                
             }
 
             .column-header > span {

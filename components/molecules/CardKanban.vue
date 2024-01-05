@@ -26,11 +26,11 @@
                 <span>Bairro</span>
                 <span>CEP:</span>
             </div>
-            <div class="value">
-                <span>{{ dataObject.corporate_name }}</span>
-                <span>{{ dataObject.address }} </span>
-                <span>{{ dataObject.district }}</span>
-                <span>{{ dataObject.cep }}</span>
+            <div class="value" v-for="(item, id) in dataObject" :key="id">
+                <span>{{ item.corporate_name }}</span>
+                <span>{{ item.address }} </span>
+                <span>{{ item.district }}</span>
+                <span>{{ item.cep }}</span>
 
             </div>
         </table>
@@ -65,15 +65,7 @@ export default Vue.extend({
     padding: 0.5rem;
     // cursor: grab;
 
-    .cardKanban-number {
-        width: 15%;
-        font-weight: 600;
-        font-size: 1.3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-right: 2px solid #f8f8f8;
-    }
+
 
     .cardKanban-infos {
         padding-left: 0.5rem;
