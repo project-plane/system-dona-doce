@@ -7,7 +7,26 @@
       <span>Prioridade de Rotas</span>
       <InputSearch v-model="textSearch" />
     </div>
-    <table>
+    <div style="gap: 1rem; display: flex; flex-direction: column; font-size: small; margin-top: 1rem;">
+      <div class="card" style="padding: 1rem; " v-for="(item, index) in filterItems" :key="index">
+      
+      <span class="spanNameCorporate">
+        <strong> {{ item.corporate_name  }} </strong> </span>
+      
+      <span class="spanEndereco"> <strong>Endereço:</strong> {{ item.address }}, {{ item.district }}</span>
+      <span class="spanData"><strong>Data:</strong> {{ formatDate(item.createdAt) }}</span>
+      
+      <span class="spanId">  
+        <input style="width: 80%; text-align: center;" type="number"  v-model="item.priority" >
+      </span>
+      <section class="button">
+        <Button class="btn" title="Alterar Ordem" type="submit" @click.native="saveData(item.id, item.priority)" />
+      </section>
+  
+
+    </div>
+    </div>
+    <!-- <table>
       <thead>
         <tr>
           <th>Rotas</th>
@@ -29,7 +48,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </ContainerTable>
   
 </template>
@@ -96,6 +115,14 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+input{
+  border-radius: 0;
+  border-bottom: solid 1px var(--red);
+  
+}
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
 .headerTable {
   width: 100%;
   display: flex;
@@ -154,5 +181,51 @@ table {
 
 
   }
+}
+
+.card {
+display: grid;
+grid-template-columns: 60px 1fr 130px;
+grid-template-rows: 30px 60px repeat(2);
+grid-column-gap: 0px;
+grid-row-gap: 5px;
+background: white;
+}
+
+.spanId {grid-area: 1 / 1 / 4 / 2; }
+.spanNameCorporate{ grid-area: 1 / 2 / 2 / 3; }
+.spanData { grid-area: 1 / 3 / 2 / 4; }
+.button { grid-area: 3 / 2 / 4 / 4;
+  position: relative;
+  margin-left: auto
+ }
+
+
+
+@include screen('mobile') {
+  .card {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: 30px auto repeat(2, 30px);
+    grid-column-gap: 0px;
+    grid-row-gap: 4px;
+    background: white;
+}
+
+  .spanNameCorporate{ grid-area: 1 / 2 / 2 / 3; }
+  .spanEndereco { 
+    grid-area: 2 / 2 / 3 / 3;
+    margin: inherit;
+  }
+  .spanData { grid-area: 3 / 2 / 4 / 3; 
+    
+  }
+  .spanId { grid-area: 1 / 1 / 5 / 2; }
+}
+.button {grid-area: 4 / 2 / 5 / 4;
+}
+.btn {
+    height: 2.2rem !important;
+
 }
 </style>
