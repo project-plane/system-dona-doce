@@ -3,7 +3,6 @@
     <span class="loader"></span>
   </div>
   <div v-else>
-    <!-- <pre>{{ this.dataPedidos.orderItem[0].of_menu }}</pre> -->
     <div v-if="modalPedido" class="cardModalPedido">
       <span>Mudar status do pedido</span>
       <select
@@ -75,7 +74,7 @@
       <div class="cards">
         <div class="titleCard">
           <div class="titleCompany">
-            <p>{{ dataPedidos.numberOrder }}</p>
+            <h2>{{ dataPedidos.numberOrder }}</h2>
             <div class="descriptionCompany">
               <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
               <span v-if="dataPedidos.order_type === 'programmed'" class="date-blue">{{ currentDate() }}</span>
@@ -96,10 +95,12 @@
         </div>
         <div class="dataOrder">
           <div class="descriptionOrder">
-            <span>
-              Status:
-              <strong>{{ dataPedidos.orderStatus.description }}</strong>
-            </span>
+                          
+            <section style="display: flex; justify-content: space-between;">
+                <span>Unidade: <strong>{{ dataPedidos.company.corporate_name }}</strong> </span>
+                <span>Status: <strong>{{ dataPedidos.orderStatus.description }}</strong> </span>
+            </section>    
+
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
           </div>
 

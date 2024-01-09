@@ -15,6 +15,7 @@ export const state = () => ({
   selectedTipo: '',
   selectedStatus: '',
   selectedClient: '',
+  unidadeSelecionada: '',
   listAllOrder: [],
   value_buy: 0,
   pedidos: [],
@@ -76,6 +77,10 @@ export const mutations = {
   },
   SELECTED_CLIENT(state, payload) {
     state.selectedClient = payload
+  },
+  select_Unidade(state, payload) {
+    state.unidadeSelecionada = payload
+    console.log(payload);
   },
   VALUE_COMPRAS(state, payload) {
     state.value_buy = payload
