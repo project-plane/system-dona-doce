@@ -6,9 +6,9 @@
             <div class="legend">
                 <span>Receita</span>
                 <span>Qtde</span>
-                <!-- <span>Horário</span> -->
                 <!-- <span v-if="typeCard === 'client'">ID</span> -->
                 <span v-if="typeCard === 'client'">Cliente</span>
+                <span v-if="typeCard === 'client'">Unidade</span>
             </div>
             <div class="value">
                 <span>{{ dataObject.description }}</span>
@@ -16,6 +16,7 @@
                 <!-- <span>{{ hourCard }}</span> -->
                 <!-- <span v-if="typeCard === 'client'">{{ dataObject.seq + 1 }}</span> -->
                 <span v-if="typeCard === 'client'">{{dataObject.corporate_name}}</span>
+                <span v-if="typeCard === 'client'">{{ dataObject.company_name }}</span>
             </div>
         </div>
 
