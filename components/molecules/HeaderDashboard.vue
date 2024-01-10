@@ -47,7 +47,13 @@
             <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
         </select>
         </div>
-
+        <div class="input">
+          <label>Unidade</label>
+          <select v-model="selectedUnidade">
+            <option value="" >Todos</option>
+            <option v-for="item in listEmpresa" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
+          </select>
+        </div>
 
       </div>
     </div>
@@ -68,7 +74,7 @@ import Vue from 'vue'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import httpClients from '~/server/cliente'
-
+import httpEmpresa from '~/server/empresa'
 export default Vue.extend({
 
   props: {
@@ -83,7 +89,9 @@ export default Vue.extend({
       selectedType: '',
       selectedAgenda: '',
       selectedClient: '',
+      selectedUnidade:'',
       listClient: [],
+      listEmpresa:[],
     }
   },
   async fetch() {
@@ -95,8 +103,19 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+
+    await httpEmpresa
+      .GetAllEmpresa()
+      .then((res) => {
+        this.listEmpresa = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     this.loading = false
+
   },
+
   watch: {
     date(newValue) {
 
@@ -119,6 +138,9 @@ export default Vue.extend({
     },
     selectedClient(newValue) {
       this.$store.commit('SELECTED_CLIENT', newValue)
+    },
+    selectedUnidade(newValue) {
+      this.$store.commit('select_Unidade', newValue)
     },
   },
 

@@ -5,40 +5,19 @@
       <div class="header-card">
         <div style="display: flex; justify-content: space-between">
           <span><strong>Pedido:</strong> {{ data.numberOrder }}</span>
-          <span><strong>Total:</strong> {{ valueorder(data.orderItem) }}</span>
-        <!-- <pre>{{ data.orderItem }}</pre> -->
+          <span><strong>Unidade:</strong> {{ data.company.corporate_name }}</span>
+      
         </div>
-
-        <span><strong>Data de Solicitação:</strong> {{ formatDate(data.dateOrder) }}</span>
-        <span><strong>Data de Entrega:</strong> {{ formatDate(data.orderItem[0].delivery_date) }}</span>
-        <!-- <pre>{{ formatDate(data.dateOrder) }}</pre> -->
+        <span style="font-size: 14px;"><strong>Solicitação:</strong> {{ formatDate(data.dateOrder) }}</span>
+        <span style="font-size: 14px;"><strong>Data de Entrega:</strong> {{ formatDate(data.orderItem[0].delivery_date) }}</span>
+     
+ 
       </div>
 
-      <div class="dcardapio">
-        <div style="display: flex; justify-content: center; flex-direction: column;  ">
-          <div style="width: 100%; text-align: center;">
-          <!-- <strong>Itens de Pedido</strong> -->
-        </div>
-        <div  class="dpedidos"  >
-
-        </div>
-        </div>
-        <!-- <div v-for="(iten, index) in data.orderItem" :key="index">
-          <div class="dpedidos">
-            <div>{{ iten.revenues.description }}</div>
-            <div> R$: {{ iten.amountItem * iten.valueOrderItem.toFixed(2) }} </div>
-          </div>
-
-          <div style="border: 1px dashed rgba(69, 64, 64, 0.968)"></div>
-        </div> -->
-      </div>
-
+      <span><strong>Total:</strong> {{ valueorder(data.orderItem) }}</span>
       <div class="footer-card">
-        <span
-          ><strong>Status: </strong><br />{{
-            data.orderStatus.description
-          }}</span
-        >
+        <span><strong>Status: </strong><br />
+        {{data.orderStatus.description}}</span>
 
         <ButtonPirula
           title="Ver Detalhes"
@@ -75,7 +54,7 @@ export default Vue.extend({
       valorTotal: 0,
     }
   },
-
+  
   methods: {
     valueorder(listOrder) {
     const totalOrderValue = listOrder.reduce((total, item) => {
@@ -104,7 +83,6 @@ export default Vue.extend({
 
     openModalHistorico() {
       this.showModal = true
-      // this.$store.commit('OPEN_MODAL_HISTORICO', true)
     },
   },
 })

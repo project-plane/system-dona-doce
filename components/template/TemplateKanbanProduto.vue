@@ -13,6 +13,11 @@
           <option value="client">Produção por cliente</option>
           <option value="product">Produção por produto</option>
         </select>
+
+          <select v-if="typeKanban ==='client'" v-model="selectedUnidade" @change="filterByUnidade">
+            <option value="" >Unidade</option>
+            <option v-for="item in listEmpresa" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
+          </select>
       </div>
     </div>
 
@@ -88,6 +93,7 @@
           class="kanban-list"
           ghost-class="ghost"
         >
+        
           <CardKanban
             v-for="(item, index) in listDejejum"
             :key="index"
@@ -111,6 +117,7 @@ import Vue from 'vue'
 import draggable from 'vuedraggable'
 import dayjs from 'dayjs'
 import httpKanban from '~/server/kanban/index'
+import httpEmpresa from '~/server/empresa'
 
 export default Vue.extend({
   components: { draggable },
@@ -125,7 +132,10 @@ export default Vue.extend({
       listLanche02: [],
       listDejejum: [],
       localList: [],
+      listEmpresa:[],
+      selectedUnidade:'',
       loadingDejejum: true,
+      filterUnity:[]
     }
   },
 
@@ -178,8 +188,14 @@ export default Vue.extend({
 
     //     if(localStorage.getItem('kanbanList') !==  JSON.stringify(res.data)) {
     await this.reqKanban()
-    // })
-    // }
+    await httpEmpresa
+      .GetAllEmpresa()
+      .then((res) => {
+        this.listEmpresa = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
 
   methods: {
@@ -188,7 +204,8 @@ export default Vue.extend({
       await httpKanban.GetKanban(this.typeKanban).then((res) => {
         ;[this.listLanche01, this.listLanche02, this.listDejejum] = [[], [], []]
         this.listKanban = res.data
-
+        console.log(res.data);
+        
         res.data.map((item) => {
           if (item.description_category === 'Lanche 1') {
             this.listLanche01.push(item)
@@ -205,7 +222,31 @@ export default Vue.extend({
       })
       this.loadingDejejum = false
     },
+    filterByUnidade() {
+  this.filter = true;
+  const data = this.listKanban.filter((item) => {
+    return this.selectedUnidade === '' || item.company_name.includes(this.selectedUnidade);
+  });
 
+  this.listLanche01 = [];
+  this.listLanche02 = [];
+  this.listDejejum = [];
+
+  data.forEach((item) => {
+    switch (item.description_category) {
+      case 'Lanche 1':
+        this.listLanche01.push(item);
+        break;
+      case 'Lanche 2':
+        this.listLanche02.push(item);
+        break;
+      case 'Dejejum':
+        this.listDejejum.push(item);
+        break;
+      // Add more cases if needed
+    }
+  });
+},
     formatDate(date) {
       return dayjs(date).format('DD/MM/YY')
     },
