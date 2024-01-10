@@ -103,7 +103,6 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
-    this.loading = false
 
     await httpEmpresa
       .GetAllEmpresa()
