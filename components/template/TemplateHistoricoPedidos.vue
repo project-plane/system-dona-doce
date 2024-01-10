@@ -27,6 +27,14 @@
           <option value="Entregue">Entregue</option>
         </select>
       </div>
+      <div class="input">
+        
+          <label style="display: flex; width: 100%">Unidade</label>
+          <select v-model="selectedUnidade" @change="filterByUnidade">
+            <option value="" >Todos</option>
+            <option v-for="item in listEmpresa" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
+          </select>
+        </div>
       </section>
       <section>
         <div class="input" style="width: 12rem; display: flex;flex-direction: column;">
@@ -50,7 +58,7 @@
     <div class="list-historic" v-if="this.filter === false">
       <div v-for="(item, index) in filteredItems" :key="index">
         <CardHistorico :data="item" />
-        <!-- <pre>{{ item }}</pre> -->
+        <!-- <pre>{{ item.company }}</pre> -->
       </div>
      
 
@@ -67,6 +75,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import HttpHistoryClient from '@/server/pedidos'
+import httpEmpresa from '~/server/empresa'
 import dayjs from 'dayjs'
 export default Vue.extend({
   data() {
@@ -74,10 +83,12 @@ export default Vue.extend({
       historico: [],
       filterData: [],
       listFiltered: [],
+      listEmpresa: [],
       filter: false,
       selectedType: '',
       selectedAgenda: '',
       textSearch: '',
+      selectedUnidade: '',
       filteredData: [],
       range: {
         start: new Date(),
@@ -87,14 +98,20 @@ export default Vue.extend({
   },
 
   async fetch() {
-    await HttpHistoryClient.Orderspercustomer().then((res) => {
-      this.historico = res.data
-    })
+    this.atualizar()
 
+    await httpEmpresa
+      .GetAllEmpresa().then((res) => {
+        this.listEmpresa = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     this.listFiltered = this.historico
   },
 
   watch: {
+
     range: {
       handler(newValue) {
         this.filterByDateRange(
@@ -107,6 +124,18 @@ export default Vue.extend({
   },
 
   methods: {
+    async atualizar(){
+      try{
+        const res = await HttpHistoryClient.Orderspercustomer()
+        this.historico = res.data
+        console.log(res.data);
+        
+      }catch(error){
+        console.log(error);
+        
+      }
+    },
+    
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')
     },
@@ -141,6 +170,14 @@ export default Vue.extend({
         })
       }
     },
+    filterByUnidade() {
+      this.filter = true
+      this.filterData = this.historico.filter((item) => {
+        return this.selectedUnidade === '' ||
+              item.company.corporate_name.includes(this.selectedUnidade);
+      });
+  }
+    
   },
   computed: {
     filteredItems(): any {

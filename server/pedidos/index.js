@@ -24,8 +24,8 @@ export default {
     return await http.get(`/order/all2?listWithOrderBatchNull=${typeLotes}&fk_client=${client}&orderType=${statusOrder}&skip=0&limit=10`)
   },
   
-  Orderspercustomer: async () => {
-    return await http.get(`order/client?clientskip=0&limit=10000`)
+  Orderspercustomer: async (rota) => {
+    return await http.get(`order/client?${rota}`)
   },
 
   UpdateStatusOrder: async (id, data) => {
