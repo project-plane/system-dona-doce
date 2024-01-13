@@ -6,35 +6,51 @@
             <div class="legend">
                 <span>Receita</span>
                 <span>Qtde</span>
-                <!-- <span v-if="typeCard === 'client'">ID</span> -->
+
                 <span v-if="typeCard === 'client'">Cliente</span>
                 <span v-if="typeCard === 'client'">Unidade</span>
+  
             </div>
             <div class="value">
                 <span>{{ dataObject.description }}</span>
                 <span>{{ dataObject.amount_actual }}</span>
-                <!-- <span>{{ hourCard }}</span> -->
-                <!-- <span v-if="typeCard === 'client'">{{ dataObject.seq + 1 }}</span> -->
                 <span v-if="typeCard === 'client'">{{dataObject.corporate_name}}</span>
                 <span v-if="typeCard === 'client'">{{ dataObject.company_name }}</span>
+        
             </div>
         </div>
 
         <table v-else class="cardKanban-infos">
-            <div class="legend">
-                <span>Unidade:</span>
-                <span>Endereço:</span>
-                <span>Bairro</span>
-                <span>CEP:</span>
-                <span>Horario: {{ formatTime(dataObject.deliveryDate) }}</span>
-            </div>
-            <div class="value" v-for="(item, id) in dataObject" :key="id">
-                <span>{{ item.corporate_name }}</span>
-                <span>{{ item.address }} </span>
-                <span>{{ item.district }}</span>
-                <span>{{ item.cep }}</span>
+           
+            <tr class="legend">
+                <td>Cliente:</td>
+                <td>Unidade:</td>
+                <th>Endereço:</th>
+                <th>Bairro</th>
+                <th></th>
+       
+      
+            </tr>
+            <tr class="value" >
+                <h4  style="color: var(--red);"> {{ name.corporate_name }}</h4>
+                <td v-for="(item, id) in dataObject" :key="id">  {{ item.corporate_name }}</td>
+                <td v-for="(item, id) in dataObject" :key="id"> {{ item.address }} </td>
+                <td v-for="(item, id) in dataObject" :key="id">{{ item.district }}</td>
                 
-            </div>
+          
+            </tr>
+            <tr class="value" >
+               
+                <td><strong>Responsavel:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.accountable }}</span></td>
+                <td><strong>Fone:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.fone }}</span> </td>
+                <td><strong>Entrega às:</strong> {{ formatTime(dataObject.deliveryDate) }} </td>
+                <td><strong>CEP:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.cep }}</span></td>
+            </tr>
+            <!-- <tr class="value"  v-for="(item, id) in dataObject" :key="id">
+                <td> {{ item.corporate_name }}</td>
+             
+            </tr> -->
+
         </table>
     </div>
 </template>
@@ -47,7 +63,11 @@ import * as timezone from "dayjs/plugin/timezone"
 export default Vue.extend({
     props: {
         // eslint-disable-next-line vue/require-default-prop
-        dataObject: Object,
+        dataObject: {
+            required: true,
+            type: Object
+        },
+        name:Object,
         typeCard: String,
         hourCard: String,
         idOrder: Number
@@ -80,10 +100,11 @@ export default Vue.extend({
 
     .cardKanban-infos {
         padding-left: 0.5rem;
-        width: 85%;
+        width: 100%;
         display: flex;
+        flex-wrap: wrap;
         text-align: left;
-        gap: 1rem;
+        gap: .5rem;
 
         .legend, .value {
             display: flex;
@@ -96,7 +117,7 @@ export default Vue.extend({
         }
 
         .value > span:first-child {
-            font-weight: 600;
+            font-weight: 500;
             color: var(--red);
             max-width: 18ch;
             overflow: hidden;

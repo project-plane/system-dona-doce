@@ -13,7 +13,7 @@
                 </div>
                 <div class="kanban-list" ghost-class="ghost">
                     
-                    <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" type-card="entrega"/>
+                    <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" :name="item.user.Clients" type-card="entrega"/>
                 </div>
             </div>
 
