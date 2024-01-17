@@ -40,6 +40,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import dayjs from '~/services/dayjs'
+import dayj from 'dayjs'
 import httpCardapio from '~/server/cardapio'
 import httpReceitas from '~/server/receitas'
 export default Vue.extend({
@@ -164,9 +165,16 @@ export default Vue.extend({
     },
 
     formatDate(date) {
-      const data = dayjs.formtDateBr(date)
+      
+      const formattedDate = dayj(date, 'DD/MM/YYYY');
 
-      return data
+      // Subtrai um dia da data
+      const modifiedDate = formattedDate.subtract(0, 'day');
+
+      // Converte a data modificada de volta para a string no formato desejado
+      const result = modifiedDate.format('DD/MM/YYYY');
+
+      return result;
     },
     hasDuplicates(arr) {
       return new Set(arr).size !== arr.length;
