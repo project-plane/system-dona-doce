@@ -34,8 +34,7 @@
     <div class="input_cargo">
       <div class="input">
         <Label>Cargo</Label>
-      <pre>{{ findUser }}
-</pre>        <select v-model="selected">
+       <select v-model="selected">
           <option disabled value="">Selecionar cargo</option>
           <option>Administrador</option>
           <option>Motorista</option>
@@ -131,6 +130,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
+
 .headerModal {
   width: 100%;
   display: flex;
@@ -156,5 +157,8 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
 }
 </style>
