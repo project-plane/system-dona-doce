@@ -68,4 +68,7 @@ export default {
   DeleteLote:async (id) => {
     return await http.delete(`/order_batch/${id}`)
   },
+  updateNF:async (id, data) => {
+    return await http.patch(`/order_batch/invoice/${id}`, data)
+  },
 }
