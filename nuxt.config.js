@@ -70,4 +70,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  apps: [
+    {
+      name: 'app_nuxt_front_end',
+      exec_mode: 'fork',
+      instances: 'max', // Or a number of instances
+      script: 'yarn start',
+      args: 'start'
+    }
+  ],
 }
