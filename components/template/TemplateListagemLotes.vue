@@ -16,6 +16,7 @@
             :valueOrder="item.OrderBatchItem"
             @update-selection="updateSelectedCards"
             @aba-Lotes="pedidos"
+            @change="abaAtiva"
           />
           
           <span v-show="filteredItems.length === 0" style="height: 60vh;  display: flex;
@@ -25,7 +26,7 @@
         </div>
       </main>
       
-      <div class="containerSidebar" >
+      <div class="containerSidebar" v-if="sideBar" >
         <section
           style=" display: flex;      align-items: center;
             justify-content: space-evenly; "
@@ -110,10 +111,41 @@
                   Baixar Comprovante
                 </button>
             </div>
-            
+            <span>Nova NF ? <input type="checkbox" id="checkbox" v-model="checked"> </span> 
+            <section v-if="checked" class="stylesNewNF">
+          <div class="inputContainer">
+            <input
+              type="file"
+              accept="image/*,.pdf"
+              style="width: 85%"
+              @change="onFileChangeNF"
+            />
+            <img
+              v-if="previewNotaFiscal"
+              src="../../assets/icons/Icon_uploadConcluido.svg"
+              alt="Icon concluido"
+              style="width: 27px"
+            />
+            <img
+              v-else
+              src="../../assets/icons/download.svg"
+              alt="Pré-visualização do PDF"
+              style="width: 20px"
+            />
+          </div>
+          <span>Nº da NF</span>
+          <div class="inputContainer" >
+            <input
+              type="text"
+              v-model="invoice_number"
+              style="width: 100%; height: 100%"
+              placeholder="000 001 001"
+            />
       
           </div>
-          
+          <Button @click="send(filteredItems[0].id)" title="Atualizar">  </Button>
+          </section>
+        </div>
         </div>
       </div>
     </div>
@@ -128,26 +160,57 @@ export default Vue.extend({
       abaNotActive: true,
       selectedCards: [],
       cliente: '',
+      invoice_number: '',
       previewNotaFiscal: null,
       loading: false,
       listAllLotes:[],
       listPedidos: [],
       filesCaution: 0,
       textSearch: "",
+      selectedFileNF:"",
+      checked: false,
+      sideBar: false,
     }
   },
   async fetch(){
-    this.request
+    
   },
   methods: {
+    
      async request(searchCliente){ 
-       this.loading = true;
+       
         await httpOrder.ListLotes(searchCliente).then((res) => {
           this.listAllLotes = res.data
-          
+          this.sideBar = true
           this.loading = false;
         })
 
+    },
+    async send(item){
+      console.log(item);
+      
+      const formData = new FormData()
+      formData.append('file_invoice', this.selectedFileNF)
+      formData.append('invoice_number', this.invoice_number)
+
+      try {
+        const res = await httpOrder.updateNF(item, formData);
+        this.request();
+        this.$toast.success('NF atualizada');
+        location.reload(true);
+      } catch (error) {
+        console.error(error);
+        this.$toast.error('Erro ao enviar NF...');
+        throw error;
+      }
+    },
+    onFileChangeNF(event) {
+      const [selectedFile] = event.target.files;
+
+      if (selectedFile) {
+        this.selectedFileNF = selectedFile;
+        this.previewNotaFiscal = URL.createObjectURL(this.selectedFileNF);
+      }
     },
     pedidos() {
       this.abaNotActive = true
@@ -288,6 +351,11 @@ export default Vue.extend({
     color: #fa5c4f;
     margin-left: 0.5rem;
   }
+}
+.stylesNewNF{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .btnDownload {
   display: flex;
