@@ -15,8 +15,7 @@
         <tr>
           <th>ID</th>
           <th>Unidade</th>
-          <th>Fone</th>
-          <th>E-mail</th>
+          <th>Endereço</th>
           <th>Opções</th>
         </tr>
       </thead>
@@ -24,8 +23,7 @@
         <tr v-for="(empresa, index) in filterItems" :key="empresa.id">
           <td>{{ index + 1 }}</td>
           <td>{{ empresa.corporate_name }}</td>
-          <td>{{ empresa.fone }}</td>
-          <td>{{ empresa.email }}</td>
+          <td>{{ empresa.address }}-{{ empresa.district }}, {{ empresa.cep }}</td>
           <td>
             <div class="iconsOptions">
               <button @click="previewEmpresa(empresa.id)">
