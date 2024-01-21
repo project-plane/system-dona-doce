@@ -616,7 +616,7 @@ export default Vue.extend({
           return 'L'
         }
       } else {
-        return unidade.toUpperCase()
+        return unidade
       }
     },
     valueBuy(valor) {
