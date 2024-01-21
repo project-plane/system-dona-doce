@@ -62,12 +62,21 @@ export default {
   ssr: false,
   server: {
     post: 3000,
-    host: '0.0.0.0',
-    timing: false
+    host: 'localhost'
   },
-
-
+  mode: 'universal',
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    analyze: false, // Desativa a análise do pacote para a produção
+    extractCSS: true, // Extraia o CSS em arquivos separados
+    // ...
+  },
+
+  render: {
+    static: {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // Cache estático por uma semana
+    },
+  },
+  target: 'server'
 }
