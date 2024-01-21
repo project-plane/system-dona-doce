@@ -2,10 +2,10 @@ module.exports = {
   apps: [
     {
       name: 'app_nuxt_front_end',
-      exec_mode: 'cluster',
+      exec_mode: 'fork',
       instances: 'max', // Or a number of instances
-      script: 'start',
-      args: 'dev'
+      script: 'yarn start',
+      args: 'start'
     }
   ]
 }
