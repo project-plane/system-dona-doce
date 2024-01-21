@@ -143,7 +143,7 @@
             />
       
           </div>
-          <Button @click="send(filteredItems[0].id)" title="Atualizar">  </Button>
+          <Button @click.native="send(filteredItems[0].id)" title="Atualizar">  </Button>
           </section>
         </div>
         </div>
@@ -197,7 +197,9 @@ export default Vue.extend({
         const res = await httpOrder.updateNF(item, formData);
         this.request();
         this.$toast.success('NF atualizada');
-        location.reload(true);
+        setTimeout(function() {
+            location.reload(true);
+        }, 2000);
       } catch (error) {
         console.error(error);
         this.$toast.error('Erro ao enviar NF...');
