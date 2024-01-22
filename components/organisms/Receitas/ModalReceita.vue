@@ -59,7 +59,7 @@
             </div>
             <div class="footerTable">
               <span class="total">Valor de Custo</span>
-              <span>R$ {{ valorTotal }}</span>
+              <span>R$ {{ valueOrder(valorTotal) }}</span>
               <span class="total">Valor de Venda Padrão</span>
               <input type="number" v-model="valorReceita" />
               <span class="total">Quantidade Mínima</span>
@@ -160,6 +160,14 @@ export default Vue.extend({
   },
 
   methods: {
+    valueOrder(listOrder) {
+      const formattedTotal = listOrder.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+
+      return formattedTotal
+    },
     closeModal() {
       this.$store.commit('OPEN_MODAL_RECEITA', false)
     },

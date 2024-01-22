@@ -144,7 +144,7 @@
             <div style="align-items: center; display: flex; gap: 10px;justify-content: space-around;">
               <div >
               <h3 style="color: var(--red)">Gastos da Receita</h3>
-              <h3>R$ {{  this.listDeCompras }}</h3>
+              <h3> {{  valueOrder(this.listDeCompras) }}</h3>
              </div>  <div>
               <h3 style="color: yellowgreen;">Novo Valor</h3>
               <Input
@@ -284,6 +284,14 @@ export default Vue.extend({
       const file = e.target.files[0]
       this.editUrlImgPreview = URL.createObjectURL(file)
       this.editUrlImgFile = e.target.files[0]
+    },
+    valueOrder(listOrder) {
+      const formattedTotal = listOrder.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+
+      return formattedTotal
     },
 
     refactorUnidadeMedida(unidadeMedida) {
