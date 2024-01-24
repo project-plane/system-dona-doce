@@ -5,6 +5,7 @@
   </div>
     <Title title="Estoque" />
     <div class="inputs">
+    
       <div class="input">
         <span>Ingrediente</span>
         <select v-model="selected">
