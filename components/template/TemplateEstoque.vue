@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <CreateEstoque />
     <TableEstoque />
   </div>

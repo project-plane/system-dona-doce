@@ -27,7 +27,9 @@ export const state = () => ({
   unidadeCliente:"",
   nomeCliente:"",
   dataPedido:"",
-  dateCalendar: null
+  dateCalendar: null,
+  openModalEstoque:false,
+  estoqueDataModal:[]
 })
 
 export const mutations = {
@@ -150,5 +152,10 @@ export const mutations = {
     console.log(payload);
     console.log(state);
   },
-
+  OpenModalEstoque(state, payload){
+    state.openModalEstoque = payload;
+  },
+  EstoqueDataModal(state, payload){
+    state.estoqueDataModal = payload;
+  }
 }

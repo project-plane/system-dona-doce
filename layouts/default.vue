@@ -1,9 +1,11 @@
 <template>
   <div v-if="route === 'index'">
+    
     <Navbar />
     <Nuxt />
   </div>
   <div v-else>
+    <ModalEditEstoque v-if="$store.state.openModalEstoque" @closeModal="closeModal"/>
     <Navbar @showMenu="showMenu"/>
     <div class="content">
       <MenuCreate v-if="menu"/>
@@ -50,7 +52,11 @@ export default Vue.extend({
     handleWindowResize() {
       // Atualize a propriedade windowWidth com o novo tamanho da tela
       this.windowWidth = window.innerWidth;
-    }
+    },
+    closeModal() {
+      this.$store.commit('OpenModalEstoque', false)
+   
+    },
   }
 })
 </script>

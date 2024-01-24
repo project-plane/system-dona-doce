@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <TemplateEstoque />
   </div>
 </template>

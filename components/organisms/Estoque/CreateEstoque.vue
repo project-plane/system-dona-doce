@@ -5,6 +5,7 @@
   </div>
     <Title title="Estoque" />
     <div class="inputs">
+    
       <div class="input">
         <span>Ingrediente</span>
         <select v-model="selected">
@@ -29,12 +30,6 @@
         v-model="quantidade"
       />
     </div>
-    <ContainerInput>
-      <!-- <div class="radio">
-        <input type="radio" v-model="is_output" name="status" :value="false" />
-        <Label>Entrada</Label>
-      </div> -->
-    </ContainerInput>
     <div class="input_create"></div>
     <div class="row-button">
       <Button title="Salvar" @functionClick="saveEstoque" />

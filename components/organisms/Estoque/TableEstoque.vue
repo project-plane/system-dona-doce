@@ -1,10 +1,7 @@
 <template>
   <LoadingPage v-if="loading" />
   <ContainerTable v-else>
-    <!-- <PreviewEstoque
-      v-if="$store.state.openModal"
-      :historicoEstoque="historicoEstoque"
-    /> -->
+
     <div class="headerTable">
       <span>Lista do Estoque</span>
       <InputSearch v-model="textSearch" />
@@ -17,7 +14,7 @@
           <th>Quantidade</th>
           <th>Base Calculada</th>
           <th>Valor / U.M</th>
-          <!-- <th>Histórico</th> -->
+          <th>Opções</th>
         </tr>
       </thead>
       <tbody>
@@ -27,14 +24,11 @@
           <td>{{ estoque.amount_actual }}{{ estoque.unit_of_measurement}}</td>
           <td>{{ estoque.amount }}{{estoque.unit_of_measurement}}/R$ {{ estoque.value.toFixed(2) }}</td>
           <td>R$ {{ estoque.value_per_serving}}/{{estoque.unit_of_measurement}}</td>
-          <!-- <td>
-            <button>
-              <img
-                src="~/assets/icons/eye.svg"
-                @click="previewHistorico(estoque)"
-              />
+          <td>
+            <button @click="editReceita(estoque)">
+                  <img src="~/assets/icons/edit.svg" alt="editReceitas" />
             </button>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -84,6 +78,11 @@ export default Vue.extend({
       this.historicoEstoque = dataEstoque
       this.$store.commit('OPEN_MODAL', true)
     },
+    editReceita(item){
+      const dataModal = item
+      this.$store.commit('EstoqueDataModal', dataModal)
+      this.$store.commit('OpenModalEstoque', true);
+    }
   },
 })
 </script>

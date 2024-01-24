@@ -5,7 +5,7 @@ export default {
     return await http.post('/ingredients', data)
   },
   ListIngredientes: async () => {
-    return await http.get('/ingredients')
+    return await http.get('/ingredients?limit=9999')
   },
   FindIngrediente: async (id) => {
     return await http.get(`/ingredients/${id}`)
