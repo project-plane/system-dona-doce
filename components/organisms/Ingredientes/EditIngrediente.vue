@@ -18,6 +18,8 @@
 
     <Input block="background: #d6d6d6; cursor: no-drop" disabled="disabled" v-model="value_per_serving"
       label="Valor p/ Porção" type="number" placeholder="Digite o preco ingrediente" />
+
+      
   </ModalEdit>
 </template>
 
@@ -44,7 +46,8 @@ export default Vue.extend({
       litro: 'Litro',
       unidade: 'Unidade',
       listFindIngredient: [],
-      newValuePerPorcao: ''
+      newValuePerPorcao: '',
+      qtdAtual: 0
     }
   },
 
@@ -58,6 +61,8 @@ export default Vue.extend({
     await httpIngrediente
       .FindIngrediente(this.findIngrediente)
       .then((res) => {
+        console.log(res);
+        this.qtdAtual= Number(res.data.amount_actual)
         this.listFindIngredient = res.data
         this.nameIngrediente = this.listFindIngredient.description
         this.unit_of_measurement = this.listFindIngredient.unit_of_measurement
@@ -76,6 +81,7 @@ export default Vue.extend({
       // const valorPorcao = 
 
       const dataIngrediente = {
+        amount_actual: Number(this.qtdAtual),
         description: this.nameIngrediente,
         unit_of_measurement: this.unit_of_measurement,
         amount: Number(this.amount),
