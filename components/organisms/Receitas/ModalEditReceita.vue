@@ -146,7 +146,7 @@
               <h3 style="color: var(--red)">Gastos da Receita</h3>
               <h3> R$ {{  this.listDeCompras }}</h3>
              </div>  <div>
-              <h3 style="color: yellowgreen;">Novo Valor</h3>
+              <h3 style="color: yellowgreen;">Valor de Venda</h3>
               <Input
                 style="max-width: 150px; height: auto;"
                 v-model="valorTotal"
@@ -230,9 +230,10 @@ export default Vue.extend({
       immediate: true,
       handler(newValue) {
         var soma = 0
-        console.log(newValue);
 
         newValue.map((receita) => {
+        console.log(receita);
+          
           soma = ((receita.ingredients.value_per_serving *  receita.amount_ingredient) *  receita.ingredients.amount) + soma
             this.valorTotal = receita.value
             this.valorAtual = receita.value
