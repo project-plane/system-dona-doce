@@ -232,11 +232,9 @@ export default Vue.extend({
         var soma = 0
 
         newValue.map((receita) => {
-        console.log(receita);
           
           soma = ((receita.ingredients.value_per_serving *  receita.amount_ingredient) *  receita.ingredients.amount) + soma
-            this.valorTotal = receita.value
-            this.valorAtual = receita.value
+        
         }) 
 
      
@@ -260,7 +258,9 @@ export default Vue.extend({
         this.title = this.listFindReceita.description
         this.listReceitas = this.listFindReceita.ingredients_Revenues
         this.editUrlImgPreview = `https://api.donadoce.net/img_revenue/${this.listFindReceita.imagem}`
-        this.valorAtual = this.listFindReceita.value.toFixed(2)
+        this.valorAtual = this.listFindReceita.value
+        this.valorTotal = this.listFindReceita.value
+        this.valor = this.listFindReceita.value
       })
       .catch((error) => {
         console.log(error)
