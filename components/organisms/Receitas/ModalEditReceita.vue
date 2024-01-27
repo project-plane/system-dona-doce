@@ -108,7 +108,7 @@
               <Input
                 label="Valor Ingrediente"
                 :value="
-                  'R$ ' + receita.ingredients.value_per_serving.toFixed(4)
+                  'R$ ' + receita.ingredients.value_per_serving
                 "
                 type="text"
                 disabled="disabled"
