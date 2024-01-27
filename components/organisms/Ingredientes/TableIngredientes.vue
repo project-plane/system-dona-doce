@@ -31,7 +31,7 @@
               ingrediente.unit_of_measurement.toLowerCase() === "l"? "Litros" :
               "Not Found Unit of Measurement"
           }}</td>
-          <td>R$ {{ingrediente.value_per_serving.toFixed(2)}}/{{ingrediente.unit_of_measurement}}</td>
+          <td>R$ {{ingrediente.value_per_serving}}/{{ingrediente.unit_of_measurement}}</td>
           <td>R$ {{ ingrediente.value.toFixed(2) }}</td>
           <td>
             <div class="iconsOptions">
