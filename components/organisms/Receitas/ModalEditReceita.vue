@@ -108,7 +108,7 @@
               <Input
                 label="Valor Ingrediente"
                 :value="
-                  'R$ ' + receita.ingredients.value_per_serving.toFixed(2)
+                  'R$ ' + receita.ingredients.value_per_serving.toFixed(4)
                 "
                 type="text"
                 disabled="disabled"
@@ -120,7 +120,7 @@
                 v-model="receita.amount_ingredient"
                 type="number"
               />
-
+<!-- <pre>{{ receita }}</pre> -->
               <Input
                 label="Unidade de Medida"
                 :value="
