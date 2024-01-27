@@ -18,6 +18,7 @@
 
     <Input block="background: #d6d6d6; cursor: no-drop" disabled="disabled" v-model="value_per_serving"
       label="Valor p/ Porção" type="number" placeholder="Digite o preco ingrediente" />
+    <!-- <pre>{{ value_per_serving }}</pre> -->
 
       
   </ModalEdit>
@@ -53,7 +54,7 @@ export default Vue.extend({
 
   watch: {
     priceIngrediente(newValue, oldValue) {
-      this.newValuePerPorcao = Number(newValue / this.amount).toFixed(2)
+      this.newValuePerPorcao = Number(newValue / this.amount)
       this.value_per_serving = this.newValuePerPorcao
     }
   },
@@ -68,7 +69,7 @@ export default Vue.extend({
         this.unit_of_measurement = this.listFindIngredient.unit_of_measurement
         this.amount = this.listFindIngredient.amount
         this.value_per_serving = this.listFindIngredient.value_per_serving
-        this.priceIngrediente = Number(this.listFindIngredient.value).toFixed(2)
+        this.priceIngrediente = Number(this.listFindIngredient.value)
       })
       .catch((error) => {
         console.log(error)
