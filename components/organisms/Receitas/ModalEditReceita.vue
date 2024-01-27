@@ -144,7 +144,7 @@
             <div style="align-items: center; display: flex; gap: 10px;justify-content: space-around;">
               <div >
               <h3 style="color: var(--red)">Gastos da Receita</h3>
-              <h3> {{  valueOrder(this.listDeCompras) }}</h3>
+              <h3> R$ {{  this.listDeCompras }}</h3>
              </div>  <div>
               <h3 style="color: yellowgreen;">Novo Valor</h3>
               <Input
