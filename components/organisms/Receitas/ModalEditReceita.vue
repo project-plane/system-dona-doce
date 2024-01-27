@@ -233,11 +233,11 @@ export default Vue.extend({
         console.log(newValue);
 
         newValue.map((receita) => {
-          soma = (receita.ingredients.value_per_serving *  receita.amount_ingredient) + soma
-        })
+          soma = ((receita.ingredients.value_per_serving *  receita.amount_ingredient) *  receita.ingredients.amount) + soma
+        }) 
 
-        this.valorTotal = soma
-        this.valorAtual = soma
+        this.valorTotal = receita.value
+        this.valorAtual = receita.value
         this.listDeCompras = soma
 
       },
