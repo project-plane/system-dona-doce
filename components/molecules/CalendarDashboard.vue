@@ -4,21 +4,21 @@
       <div class="descriptionValue">
         <span class="vendas">Vendas</span>
         <div>
-          <strong v-if="visualization">{{ valorVendas }}</strong>
+          <strong v-if="visualization">R$: {{ valorVendas }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
       <div class="descriptionValue">
         <span class="compras">Compras</span>
         <div>
-          <strong v-if="visualization">{{ valorCompras }}</strong>
+          <strong v-if="visualization">R$: {{ valorCompras }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
       <div class="descriptionValue">
         <span class="lucro">Lucro</span>
         <div>
-          <strong v-if="visualization">{{ valorTotal }}</strong>
+          <strong v-if="visualization">R$: {{ valorTotal }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
@@ -103,40 +103,40 @@ export default Vue.extend({
       const valorVendas = valorVendasOrder
 
       // converte o valor de vendas para moeda BRL
-      const convertMoedasVendas = valorVendas.toLocaleString('pt-br', {
-        style: 'currency',
-        currency: 'BRL',
-      })
+      // const convertMoedasVendas = valorVendas.toLocaleString('pt-br', {
+      //   style: 'currency',
+      //   currency: 'BRL',
+      // })
       // const convertyVendas = convertMoedasVendas
       //   .replace('R$', '')
       //   .replace('.', '')
       //   .replace(',', '.')
 
-      this.valorVendas = convertMoedasVendas
+      this.valorVendas = valorVendasOrder
 
       this.valorCompras = this.valorComprasUpdate
 
       this.valorTotal = valorVendas - this.valorCompras
 
       // converte o valor de compras para moeda BRL
-      const convertMoedasCompras = this.valorCompras.toLocaleString('pt-br', {
-        style: 'currency',
-        currency: 'BRL',
-      })
+      // const convertMoedasCompras = this.valorCompras.toLocaleString('pt-br', {
+      //   style: 'currency',
+      //   currency: 'BRL',
+      // })
       // const convertyCompras = convertMoedasCompras
       //   .replace('R$', '')
       //   .replace('.', '')
       //   .replace(',', '.')
 
-      this.valorCompras = convertMoedasCompras
+      // this.valorCompras = convertMoedasCompras
 
       // converte o valor total para moeda BRL
-      const convertTotal = this.valorTotal.toLocaleString('pt-br', {
-        style: 'currency',
-        currency: 'BRL',
-      })
+      // const convertTotal = this.valorTotal.toLocaleString('pt-br', {
+      //   style: 'currency',
+      //   currency: 'BRL',
+      // })
 
-      this.valorTotal = convertTotal
+      // this.valorTotal = convertTotal
     }
   }
 })
