@@ -20,7 +20,7 @@
         "
       >
         <div>Lista de Compras</div>
-        <div>R$: {{ valueListBuy.toFixed(2) }}</div>
+        <div>R$: {{ valueListBuy }}</div>
       </h3>
       <!-- <div class="list-buy" v-if="showImpressao">
 
@@ -519,8 +519,8 @@ export default Vue.extend({
       })
       this.valueListBuy = this.valueListBuy + Number(item.value_prediction)
     })
+
     this.$store.commit('VALUE_COMPRAS', this.valueListBuy)
-    console.log(this.listBuy)
 
     this.loadingListBuy = false
   },
