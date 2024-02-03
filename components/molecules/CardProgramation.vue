@@ -16,7 +16,7 @@
     :min="base_min_amount"
     :max="base_max_amount"
     type="number"
-    @input="handleInput"
+    
   />
       </div>
       <div style="display: flex; width: 100%;  justify-content: flex-start; margin-top: -5px; gap: 0.3rem; color: rgb(161, 143, 137); font-size: 12px; font-weight: 600; vertical-align: text-top; ">
