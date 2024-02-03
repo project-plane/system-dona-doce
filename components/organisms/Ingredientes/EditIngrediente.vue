@@ -2,15 +2,27 @@
 <template>
   <ModalEdit title-modal="Editar Ingrediente" @save="updateIngrediente">
     <Input v-model="nameIngrediente" label="Nome" type="text" placeholder="Digite o nome ingrediente" />
-
-    <Input block="background: #d6d6d6; cursor: no-drop" disabled="disabled" v-if="unit_of_measurement === 'g'"
-      v-model="grama" label="Medida" type="text" placeholder="Digite a medida do ingrediente" />
-
+<!-- 
+    <Input block="background: #d6d6d6; cursor: no-drop" v-if="unit_of_measurement === 'g'"
+      v-model="grama" label="Medida" type="text" placeholder="Digite a medida do ingrediente" /> -->
+      <div class="input" style="width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;">
+        <span>Medida</span>
+        <select v-model="unit_of_measurement" style="border: 0.06rem solid var(--border);">
+          <option disabled value="">Selecionar Tipo de Medida</option>
+          <option value="g" >Grama</option>
+          <option value="ml">Mililitro</option>
+          <option value="u">Unidade</option>
+        </select>
+      </div>
+<!-- 
     <Input block="background: #d6d6d6; cursor: no-drop" disabled="disabled" v-if="unit_of_measurement === 'ml'"
       v-model="litro" label="Medida" type="text" placeholder="Digite a medida do ingrediente" />
 
     <Input block="background: #d6d6d6; cursor: no-drop" disabled="disabled" v-if="unit_of_measurement === 'u'"
-      v-model="unidade" label="Medida" type="text" placeholder="Digite a medida do ingrediente" />
+      v-model="unidade" label="Medida" type="text" placeholder="Digite a medida do ingrediente" /> -->
 
     <Input v-model="amount" label="Quantidade" type="number" placeholder="Digite a quantidade do ingrediente" />
 
@@ -43,7 +55,7 @@ export default Vue.extend({
       unit_of_measurement: '',
       value_per_serving: '',
       amount: '',
-      grama: 'Grama',
+      unidadeMedida: "",
       litro: 'Litro',
       unidade: 'Unidade',
       listFindIngredient: [],
