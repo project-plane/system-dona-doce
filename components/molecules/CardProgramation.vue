@@ -11,11 +11,9 @@
       <div class="selectPedido">
         <p>Quantidade</p>
         <input
-    style="width: 6.5rem;"
-    v-model="qtdPedido"
-    :min="base_min_amount"
-    :max="base_max_amount"
-    type="number"
+          style="width: 6.5rem;"
+          v-model="qtdPedido"
+          type="number"
     
   />
       </div>
@@ -39,10 +37,11 @@
     </div>
     <button @click="addPedidos(tipoLanches)">Adicionar</button>
 
+
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -76,21 +75,16 @@ export default Vue.extend({
   },
 
   methods: {
-    handleInput(event) {
-      let inputValue = parseInt(event.target.value);
-
-      // Ensure the input value is within the specified range
-      inputValue = Math.min(this.base_max_amount, Math.max(this.base_min_amount, inputValue));
-
-      // Set the input value
-      this.qtdPedido = inputValue;
-    },
     addPedidos(lanche) {
       if (!this.qtdPedido || !this.selected) {
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
-
+      const fkRevenueExists = this.$store.state.carrinhoProgramado.some(pedido => pedido.fk_revenues === lanche.fk_revenues);
+      if (fkRevenueExists) {
+        this.$toast.info('Esse Pedido já foi adicionado!');
+        return;
+      }
       this.$emit(
         'pedidos',
         this.qtdPedido,
@@ -101,6 +95,22 @@ export default Vue.extend({
 
         
       )
+      const pedidos ={
+        fk_categoryOrderItem: this.tipoPedido,
+        amountItem: Number(this.qtdPedido),
+        fk_revenue: lanche.fk_revenues,
+        method_of_preparation: this.selected,
+        comment: this.comentario,
+      }
+      const data = {
+        pedidos : pedidos,
+        listReceita: this.tipoLanches,
+     
+      };
+
+      this.$store.commit("adicionarPedidoProgramado", data);
+      
+  
       this.qtdPedido = ''
       this.selected = ''
       this.comentario = ''

@@ -22,16 +22,9 @@
             <td v-if="item.receita_descricao">{{ item.receita_descricao }}</td>
             <td v-else>{{ item.receita_descricao_foraEstoque }}</td>
 
-            <td class="tdQtde" style="display: flex; justify-content: center">
-              <!-- <button @click="subtractValue(item)" v-if="item.qtde !== 1">
-                <span>-</span>
-              </button> -->
-              <!-- <button class="btnDisabled" v-else>
-                <span>-</span>
-              </button> -->
-              {{ item.qtde }}
+            <td class="tdQtde" style="display: flex; justify-content: center">       
+            {{ item.qtde }}
 
-              <!-- <button @click="addValue(item)">+</button> -->
             </td>
             <td v-if="item.v_unidade">R$ {{ item.v_unidade }}</td>
             <td v-else>R$ {{ item.v_unidade_foraEstoque }}</td>
@@ -54,7 +47,7 @@
                 src="../../assets/icons/delete.svg"
                 alt=""
                 class="btnDelete"
-                @click="deleteItem(item)"
+                @click="deleteItem(item.id)"
               />
             </td>
           </tr>
@@ -108,7 +101,7 @@
               src="../../assets/icons/delete.svg"
               alt=""
               class="btnDelete"
-              @click="deleteItem(item)"
+              @click="deleteItem(item.id)"
             />
           </td>
         </tr>
@@ -161,7 +154,7 @@
               src="../../assets/icons/delete.svg"
               alt=""
               class="btnDelete"
-              @click="deleteItem(item)"
+              @click="deleteItem(item.id)"
             />
           </td>
         </tr>
@@ -178,13 +171,15 @@
         >
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
+      <pre>{{ this.$store.state.carrinhoProgramado  }}</pre>
     </div>
+        
   </ModalPreview>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-
+import HttpPedidos from '@/server/pedidos'
 export default Vue.extend({
   props: {
     listaCompletaReceita: {
@@ -207,7 +202,9 @@ export default Vue.extend({
       countdejejum: 0,
       countlanche01: 0,
       countlanche02: 0,
-    }
+      pedidosP: [],
+      pedidosNormais: []
+      }
   },
 
   async fetch() {
@@ -298,41 +295,44 @@ export default Vue.extend({
     },
 
     async renderList() {
-      await this.listaCompletaReceita.map(async (item) => {
+      await this.$store.state.carrinhoProgramado.map(async (item) => {
         if (
-          item.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
+          item.pedidos.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
         ) {
           this.dejejum.push({
-            qtde: item.amountItem,
+            qtde: item.pedidos.amountItem,
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
             method_of_preparation: item.method_of_preparation,
+            id: item.pedidos.fk_revenue,
             // comentario: item.observacoesDoPedido
           })
         }
 
         if (
-          item.fk_categoryOrderItem === '518a6828-1c69-11ee-be56-0242ac120002'
+          item.pedidos.fk_categoryOrderItem === '518a6828-1c69-11ee-be56-0242ac120002'
         ) {
           this.lanche01.push({
-            qtde: item.amountItem,
+            qtde: item.pedidos.amountItem,
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
             method_of_preparation: item.method_of_preparation,
+            id: item.pedidos.fk_revenue,
           })
         }
 
         if (
-          item.fk_categoryOrderItem === '57c25f34-1c69-11ee-be56-0242ac120002'
+          item.pedidos.fk_categoryOrderItem === '57c25f34-1c69-11ee-be56-0242ac120002'
         ) {
           this.lanche02.push({
-            qtde: item.amountItem,
+            qtde: item.pedidos.amountItem,
             receita_descricao: item.listReceita.descriptionRevenue,
             category: item.fk_categoryOrderItem,
             v_unidade: item.listReceita.valeuRevenue,
             method_of_preparation: item.method_of_preparation,
+            id: item.pedidos.fk_revenue,
           })
         }
       })
@@ -388,32 +388,36 @@ export default Vue.extend({
     closeModal() {
       this.$emit('closeModal')
     },
-    subtractValue(value) {
-      value.qtde--
+    // subtractValue(value) {
+    //   value.qtde--
 
-      this.listaCompletaReceita.map((item) => {
-        if (
-          item.listReceita.description === value.receita_descricao &&
-          item.fk_categoryOrderItem === value.category
-        ) {
-          item.amountItem = value.qtde
-        }
-      })
-    },
-    addValue(value) {
-      value.qtde++
+    //   this.listaCompletaReceita.map((item) => {
+    //     if (
+    //       item.listReceita.description === value.receita_descricao &&
+    //       item.fk_categoryOrderItem === value.category
+    //     ) {
+    //       item.amountItem = value.qtde
+    //     }
+    //   })
+    // },
+    // addValue(value) {
+    //   value.qtde++
 
-      this.listaCompletaReceita.map((item) => {
-        if (
-          item.listReceita.description === value.receita_descricao &&
-          item.fk_categoryOrderItem === value.category
-        ) {
-          item.amountItem = value.qtde
-        }
-      })
-    },
+    //   this.listaCompletaReceita.map((item) => {
+    //     if (
+    //       item.listReceita.description === value.receita_descricao &&
+    //       item.fk_categoryOrderItem === value.category
+    //     ) {
+    //       item.amountItem = value.qtde
+    //     }
+    //   })
+    // },
 
     deleteItem(value) {
+      console.log(value);
+      
+      this.$store.commit('removerPedidoProgramado', value)
+      
       const listaTemporaria = this.listaCompletaReceita
       listaTemporaria.map((item) => {
         if (
@@ -448,8 +452,42 @@ export default Vue.extend({
     },
 
     finalizarPedido() {
-      this.$emit('finalizarPedido')
+      // this.$emit('finalizarPedido')
+      this.pedidosP = this.$store.state.carrinhoProgramado.map((item) => {
+        const pedidos = item.pedidos; 
+        return pedidos; 
+    });    
+      
+      const pedidosForaDoMenu= []
+      const request ={
+        fk_company: this.$store.state.unidadeCliente,
+        fk_menu: this.$route.query.id,
+        createOrderItemDto: this.pedidosP,
+        createOrderNotMenuItemDto: pedidosForaDoMenu,
+      }
+      this.savePedido(request);
+
+      
     },
+    async savePedido(pedido){
+      console.log(pedido);
+      
+      // await HttpPedidos.CreateNewOrder(pedido)
+      //     .then((res) => {
+      //       this.$toast.success('Pedido realizado com sucesso!!!')
+      //       this.showModal = false
+      //       this.listaCompletaReceita = []
+      //       this.listaForaEstoque = []
+      //       this.$router.push('/pedidos/historico-pedidos')
+      //       this.$store.commit('selectUnity','')
+      //     })
+      //     .catch((error) => {
+      //       const message = error.response.data.message;
+      //        this.$toast.warning('Revise,' + message);
+      //     })
+      
+    }
+    
   },
 })
 </script>

@@ -29,7 +29,8 @@ export const state = () => ({
   dataPedido:"",
   dateCalendar: null,
   openModalEstoque:false,
-  estoqueDataModal:[]
+  estoqueDataModal:[],
+  carrinhoProgramado:[]
 })
 
 export const mutations = {
@@ -157,5 +158,17 @@ export const mutations = {
   },
   EstoqueDataModal(state, payload){
     state.estoqueDataModal = payload;
-  }
+  },
+  adicionarPedidoProgramado(state, pedido) {
+    state.carrinhoProgramado.push(pedido);
+    console.log(state.pedidos);
+  },
+  removerPedidoProgramado(state, fk_revenue) {
+    const index = state.carrinhoProgramado.findIndex((pedido) => pedido.pedidos.fk_revenue === fk_revenue);
+
+    if (index !== -1) {
+      state.carrinhoProgramado.splice(index, 1);
+    }
+  },
+  
 }
