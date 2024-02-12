@@ -50,7 +50,6 @@
     </div>
     <input type="text" placeholder="Observacoes sobre o pedido..." v-model="comentario" style="border-bottom: solid 1px #b9b9b9a1; border-radius: 0px;">
     <button @click="addPedidos(foraDeEstoque)">Adicionar</button>
-    
   </div>
 </template>
 
@@ -92,15 +91,7 @@ export default Vue.extend({
         this.foraDeEstoque,
         this.selected,
         this.comentario
-        
       )
-      const dataForaEstoque =  {
-      fk_revenue: "string",
-      fk_categoryOrderItem: "string",
-      amountItem: Number(this.qtdPedido),
-      method_of_preparation: "string",
-      comment: "string"
-    }
       this.qtdPedido = ''
       this.selected = ''
       this.comentario = ""

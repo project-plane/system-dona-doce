@@ -171,7 +171,8 @@
         >
         <Button @click.native="finalizarPedido" title="Finalizar Pedido" />
       </div>
-      <pre>{{ this.$store.state.carrinhoProgramado  }}</pre>
+      
+      <pre>{{ this.$store.state.carrinhoForaEstoque  }}</pre>
     </div>
         
   </ModalPreview>
@@ -203,7 +204,7 @@ export default Vue.extend({
       countlanche01: 0,
       countlanche02: 0,
       pedidosP: [],
-      pedidosNormais: []
+      pedidosForaEstoque: []
       }
   },
 
@@ -341,6 +342,8 @@ export default Vue.extend({
         if (
           item.fk_categoryOrderItem === '491aebc2-1c69-11ee-be56-0242ac120002'
         ) {
+          console.log(item);
+          
           this.dejejum.push({
             qtde: item.amountItem,
             receita_descricao: item.listReceita.descriptionRevenue,
@@ -351,6 +354,16 @@ export default Vue.extend({
             method_of_preparation: item.method_of_preparation,
             type_preparation: 'Fora de Estoque',
           })
+          const dataForaEstoque =  {
+            fk_revenue: item.fk_revenue,
+            fk_categoryOrderItem: "491aebc2-1c69-11ee-be56-0242ac120002",
+            amountItem: Number(item.amountItem),
+            method_of_preparation: item.method_of_preparation,
+            comment: item.observacoesDoPedido
+          }
+
+          this.$store.commit("adicionarPedidoForaEstoque", dataForaEstoque);
+          
         }
 
         if (
@@ -451,19 +464,24 @@ export default Vue.extend({
       this.renderList()
     },
 
+
     finalizarPedido() {
       // this.$emit('finalizarPedido')
       this.pedidosP = this.$store.state.carrinhoProgramado.map((item) => {
         const pedidos = item.pedidos; 
         return pedidos; 
     });    
-      
-      const pedidosForaDoMenu= []
+      this.pedidosForaEstoque =this.$store.state.carrinhoForaEstoque.map((item) => {
+        const pedidos = item.pedidos; 
+        return pedidos; 
+    });    
+    console.log(this.pedidosForaEstoque);
+    
       const request ={
         fk_company: this.$store.state.unidadeCliente,
         fk_menu: this.$route.query.id,
         createOrderItemDto: this.pedidosP,
-        createOrderNotMenuItemDto: pedidosForaDoMenu,
+        createOrderNotMenuItemDto:  this.pedidosForaEstoque,
       }
       this.savePedido(request);
 

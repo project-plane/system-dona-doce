@@ -85,16 +85,16 @@ export default Vue.extend({
         this.$toast.info('Esse Pedido já foi adicionado!');
         return;
       }
-      this.$emit(
-        'pedidos',
-        this.qtdPedido,
-        lanche.fk_revenues,
-        this.tipoLanches,
-        this.selected,
-        this.comentario
+      // this.$emit(
+      //   'pedidos',
+      //   this.qtdPedido,
+      //   lanche.fk_revenues,
+      //   this.tipoLanches,
+      //   this.selected,
+      //   this.comentario
 
         
-      )
+      // )
       const pedidos ={
         fk_categoryOrderItem: this.tipoPedido,
         amountItem: Number(this.qtdPedido),

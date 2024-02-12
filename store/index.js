@@ -30,7 +30,8 @@ export const state = () => ({
   dateCalendar: null,
   openModalEstoque:false,
   estoqueDataModal:[],
-  carrinhoProgramado:[]
+  carrinhoProgramado:[],
+  carrinhoForaEstoque:[],
 })
 
 export const mutations = {
@@ -163,12 +164,22 @@ export const mutations = {
     state.carrinhoProgramado.push(pedido);
     console.log(state.pedidos);
   },
-  removerPedidoProgramado(state, fk_revenue) {
-    const index = state.carrinhoProgramado.findIndex((pedido) => pedido.pedidos.fk_revenue === fk_revenue);
-
-    if (index !== -1) {
-      state.carrinhoProgramado.splice(index, 1);
-    }
+  adicionarPedidoForaEstoque(state, pedido) {
+    state.carrinhoForaEstoque.push(pedido);
+    console.log(state.pedidos);
   },
-  
+  removerPedidoProgramado(state, fk_revenue) {
+    const indexProgramado = state.carrinhoProgramado.findIndex((pedido) => pedido.pedidos.fk_revenue === fk_revenue);
+
+    if (indexProgramado !== -1) {
+      state.carrinhoProgramado.splice(indexProgramado, 1);
+    }
+    
+    const indexEstoque = state.carrinhoForaEstoque.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
+
+    if (indexEstoque !== -1) {
+      state.carrinhoForaEstoque.splice(indexEstoque, 1);
+    }
+}
+
 }
