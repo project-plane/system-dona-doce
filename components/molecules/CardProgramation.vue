@@ -11,11 +11,9 @@
       <div class="selectPedido">
         <p>Quantidade</p>
         <input
-    style="width: 6.5rem;"
-    v-model="qtdPedido"
-    :min="base_min_amount"
-    :max="base_max_amount"
-    type="number"
+          style="width: 6.5rem;"
+          v-model="qtdPedido"
+          type="number"
     
   />
       </div>
@@ -39,10 +37,11 @@
     </div>
     <button @click="addPedidos(tipoLanches)">Adicionar</button>
 
+
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -52,11 +51,11 @@ export default Vue.extend({
       required: true,
     },
     base_max_amount:{
-      type: String,
+      type: Number,
       required: true,
     },
     base_min_amount:{
-      type: String,
+      type: Number,
       required: true,
     },
 
@@ -76,31 +75,46 @@ export default Vue.extend({
   },
 
   methods: {
-    handleInput(event) {
-      let inputValue = parseInt(event.target.value);
-
-      // Ensure the input value is within the specified range
-      inputValue = Math.min(this.base_max_amount, Math.max(this.base_min_amount, inputValue));
-
-      // Set the input value
-      this.qtdPedido = inputValue;
-    },
     addPedidos(lanche) {
       if (!this.qtdPedido || !this.selected) {
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
-
-      this.$emit(
-        'pedidos',
-        this.qtdPedido,
-        lanche.fk_revenues,
-        this.tipoLanches,
-        this.selected,
-        this.comentario
+      if (this.qtdPedido < lanche.base_min_amount) {
+        this.$toast.error('Valor menor que o pedido menino')
+        return
+      }
+      if (this.qtdPedido > lanche.base_max_amount) {
+        this.$toast.error('Valor maior que o pedido maximo')
+        
+        return
+      }
+      // this.$emit(
+      //   'pedidos',
+      //   this.qtdPedido,
+      //   lanche.fk_revenues,
+      //   this.tipoLanches,
+      //   this.selected,
+      //   this.comentario
 
         
-      )
+      // )
+      const pedidos ={
+        fk_categoryOrderItem: this.tipoPedido,
+        amountItem: Number(this.qtdPedido),
+        fk_revenue: lanche.fk_revenues,
+        method_of_preparation: this.selected,
+        comment: this.comentario,
+      }
+      const data = {
+        pedidos : pedidos,
+        listReceita: this.tipoLanches,
+     
+      };
+
+      this.$store.commit("adicionarPedidoProgramado", data);
+      
+  
       this.qtdPedido = ''
       this.selected = ''
       this.comentario = ''

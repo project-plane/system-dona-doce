@@ -31,20 +31,20 @@
 
     <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
       <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido" @pedidos="pedidos" :base_max_amount="pedidosProgramation.base_max_amount" :base_min_amount="pedidosProgramation.base_min_amount" />
+        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido"  :base_max_amount="pedidosProgramation.base_max_amount" :base_min_amount="pedidosProgramation.base_min_amount" />
       </div>
 
       </div>
     <h2>Fora do Cardapio</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido"  />
       </div>
     </div>
 
     <div class="cardsPedidos unique" v-else>
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" @pedidosForeEstoque="pedidosForeEstoque" />
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido"  />
       </div>
 
     </div>
@@ -180,63 +180,63 @@ export default Vue.extend({
 
     },
 
-    pedidos(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
+    // pedidos(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
       
-      const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
-        return (
-          item.fk_categoryOrderItem === this.tipoPedido &&
-          item.fk_revenue === fk_revenue
-        )
-      })
+    //   const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
+    //     return (
+    //       item.fk_categoryOrderItem === this.tipoPedido &&
+    //       item.fk_revenue === fk_revenue
+    //     )
+    //   })
 
-      if (existecategoryOrderItem) {
-        this.$toast.error('Receita já adicionada ao pedido!!!')
-        return
-      }
-      this.listaCompletaReceita.push({
-        fk_categoryOrderItem: this.tipoPedido,
-        amountItem: Number(qtdOrder),
-        fk_revenue: fk_revenue,
-        listReceita: index,
-        method_of_preparation: typeOrder,
-        observacoesDoPedido: pedidos
-      })
-      this.listPedidos.itemMenu.map((item) => {
-        if (fk_revenue === item.revenues.id) {
-          this.$toast.info(
-            `(${qtdOrder}X) ${item.revenues.description} ADICIONADO AO CARRINHO`
-          )
-        }
-      })
-    },
+    //   if (existecategoryOrderItem) {
+    //     this.$toast.error('Receita já adicionada ao pedido!!!')
+    //     return
+    //   }
+    //   this.listaCompletaReceita.push({
+    //     fk_categoryOrderItem: this.tipoPedido,
+    //     amountItem: Number(qtdOrder),
+    //     fk_revenue: fk_revenue,
+    //     listReceita: index,
+    //     method_of_preparation: typeOrder,
+    //     observacoesDoPedido: pedidos
+    //   })
+    //   this.listPedidos.itemMenu.map((item) => {
+    //     if (fk_revenue === item.revenues.id) {
+    //       this.$toast.info(
+    //         `(${qtdOrder}X) ${item.revenues.description} ADICIONADO AO CARRINHO`
+    //       )
+    //     }
+    //   })
+    // },
 
-    pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
-      const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
-        return (
-          item.fk_categoryOrderItem === this.tipoPedido &&
-          item.fk_revenue === fk_revenue
-        )
-      })
-      if (existecategoryOrderItem) {
-        this.$toast.error('Receita já adicionada ao pedido!!!')
-        return
-      }
-      this.listaForaEstoque.push({
-        fk_categoryOrderItem: this.tipoPedido,
-        amountItem: Number(qtdOrder),
-        fk_revenue: fk_revenue,
-        listReceita: index,
-        method_of_preparation: typeOrder,
-        observacoesDoPedido: pedidos
-      })
-      this.foraEstoque.map((item) => {
-        if (fk_revenue === item.id) {
-          this.$toast.info(
-            `(${qtdOrder}X) ${item.description} ADICIONADO AO CARRINHO`
-          )
-        }
-      })
-    },
+    // pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
+    //   const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
+    //     return (
+    //       item.fk_categoryOrderItem === this.tipoPedido &&
+    //       item.fk_revenue === fk_revenue
+    //     )
+    //   })
+    //   if (existecategoryOrderItem) {
+    //     this.$toast.error('Receita já adicionada ao pedido!!!')
+    //     return
+    //   }
+    //   this.listaForaEstoque.push({
+    //     fk_categoryOrderItem: this.tipoPedido,
+    //     amountItem: Number(qtdOrder),
+    //     fk_revenue: fk_revenue,
+    //     listReceita: index,
+    //     method_of_preparation: typeOrder,
+    //     observacoesDoPedido: pedidos
+    //   })
+    //   this.foraEstoque.map((item) => {
+    //     if (fk_revenue === item.id) {
+    //       this.$toast.info(
+    //         `(${qtdOrder}X) ${item.description} ADICIONADO AO CARRINHO`
+    //       )
+    //     }
+    //   })
+    // },
     showCar(){
       if (!this.$store.state.unidadeCliente) {
         this.$toast.error('Selecione uma unidade')
