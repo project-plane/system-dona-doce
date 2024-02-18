@@ -161,12 +161,26 @@ export const mutations = {
     state.estoqueDataModal = payload;
   },
   adicionarPedidoProgramado(state, pedido) {
-    state.carrinhoProgramado.push(pedido);
-    console.log(state.pedidos);
-  },
+    const existePedido = state.carrinhoProgramado.find(item =>  item.listReceita.fk_revenues === pedido.listReceita.fk_revenues &&
+      item.pedidos.fk_categoryOrderItem === pedido.pedidos.fk_categoryOrderItem);
+    if (!existePedido) {
+      state.carrinhoProgramado.push(pedido);
+      console.log(state.carrinhoProgramado);
+    } else {
+      this.$toast.warning('Pedido duplicado. Receita já adicionada ao pedido!!!')
+    }
+},
   adicionarPedidoForaEstoque(state, pedido) {
-    state.carrinhoForaEstoque.push(pedido);
-    console.log(state.pedidos);
+    const existePedido = state.carrinhoForaEstoque.find(item => item.listReceita.id === pedido.pedidos.fk_revenue &&
+      item.pedidos.fk_categoryOrderItem === pedido.pedidos.fk_categoryOrderItem );
+    if (!existePedido) {
+      state.carrinhoForaEstoque.push(pedido);
+     
+    } else {
+      this.$toast.warning('Pedido duplicado. Receita já adicionada ao pedido!!!')
+      console.log(pedido);
+    }
+
   },
   removerPedidoProgramado(state, fk_revenue) {
     const indexProgramado = state.carrinhoProgramado.findIndex((pedido) => pedido.pedidos.fk_revenue === fk_revenue);
@@ -175,11 +189,67 @@ export const mutations = {
       state.carrinhoProgramado.splice(indexProgramado, 1);
     }
     
-    const indexEstoque = state.carrinhoForaEstoque.findIndex((pedido) => pedido.fk_revenue === fk_revenue);
+  },
+  removerPedidoForaEstoque(state, fk_revenue) {
 
-    if (indexEstoque !== -1) {
-      state.carrinhoForaEstoque.splice(indexEstoque, 1);
+    const indexProgramado = state.carrinhoForaEstoque.findIndex((pedido) => pedido.pedidos.fk_revenue === fk_revenue);
+
+    if (indexProgramado !== -1) {
+      state.carrinhoForaEstoque.splice(indexProgramado, 1);
     }
-}
+
+  },
+  aumentarQuantidade(state, { fk_revenue, fk_categoryOrderItem }) {
+    console.log(state);
+    
+    const item = state.carrinhoProgramado.find(item => 
+      item.pedidos.fk_revenue === fk_revenue && item.pedidos.fk_categoryOrderItem === fk_categoryOrderItem
+    );
+  
+    if (item) {
+      item.pedidos.amountItem++;
+      console.log("Quantidade aumentada:", item.pedidos.amountItem);
+    } else {
+      console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
+    }
+  },
+  diminuirQuantidade(state,  { fk_revenue, fk_categoryOrderItem }) {
+    const item = state.carrinhoProgramado.find(item => 
+      item.pedidos.fk_revenue === fk_revenue && item.pedidos.fk_categoryOrderItem === fk_categoryOrderItem
+    );
+  
+    if (item) {
+      item.pedidos.amountItem--;
+      console.log("Quantidade aumentada:", item.pedidos.amountItem);
+    } else {
+      console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
+    }
+},
+  addItemForaEstoque(state, { fk_revenue, fk_categoryOrderItem }) {
+    console.log(state);
+    
+    const item = state.carrinhoForaEstoque.find(item => 
+      item.pedidos.fk_revenue === fk_revenue && item.pedidos.fk_categoryOrderItem === fk_categoryOrderItem
+    );
+
+    if (item) {
+      item.pedidos.amountItem++;
+      console.log("Quantidade aumentada:", item.pedidos.amountItem);
+    } else {
+      console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
+    }
+  },
+  removeItemForaEstoque(state,  { fk_revenue, fk_categoryOrderItem }) {
+    const item = state.carrinhoForaEstoque.find(item => 
+      item.pedidos.fk_revenue === fk_revenue && item.pedidos.fk_categoryOrderItem === fk_categoryOrderItem
+    );
+
+    if (item) {
+      item.pedidos.amountItem--;
+      console.log("Quantidade aumentada:", item.pedidos.amountItem);
+    } else {
+      console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
+    }
+  },
 
 }

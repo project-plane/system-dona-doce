@@ -51,11 +51,11 @@ export default Vue.extend({
       required: true,
     },
     base_max_amount:{
-      type: String,
+      type: Number,
       required: true,
     },
     base_min_amount:{
-      type: String,
+      type: Number,
       required: true,
     },
 
@@ -80,10 +80,14 @@ export default Vue.extend({
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
-      const fkRevenueExists = this.$store.state.carrinhoProgramado.some(pedido => pedido.fk_revenues === lanche.fk_revenues);
-      if (fkRevenueExists) {
-        this.$toast.info('Esse Pedido já foi adicionado!');
-        return;
+      if (this.qtdPedido < lanche.base_min_amount) {
+        this.$toast.error('Valor menor que o pedido menino')
+        return
+      }
+      if (this.qtdPedido > lanche.base_max_amount) {
+        this.$toast.error('Valor maior que o pedido maximo')
+        
+        return
       }
       // this.$emit(
       //   'pedidos',

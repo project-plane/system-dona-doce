@@ -40,10 +40,7 @@ export default Vue.extend({
       type: [Array, Object],
       required: true,
     },
-    listaCompletaReceita: {
-      type: [Array, Object],
-      required: true,
-    },
+    
   },
   data() {
     return {
@@ -88,9 +85,9 @@ export default Vue.extend({
       this.lanche02 = true
       this.$emit('lanche3')
     },
-    finalizarPedidosProgramados() {
-      this.$emit('finalizarPedido')
-    },
+    // finalizarPedidosProgramados() {
+    //   this.$emit('finalizarPedido')
+    // },
   },
 })
 </script>

@@ -15,8 +15,6 @@
           <input
             style="width: 6.5rem"
             v-model="qtdPedido"
-            :min="foraDeEstoque.base_min_amount"
-            :max="foraDeEstoque.base_max_amount"
             type="number"
           />
         </div>
@@ -83,15 +81,51 @@ export default Vue.extend({
         this.$toast.error('Preencha o campo quantidade!!!')
         return
       }
+      if (this.qtdPedido < lanche.base_min_amount) {
+        this.$toast.error('Valor menor que o pedido menino')
+        return
+      }
+      if (this.qtdPedido > lanche.base_max_amount) {
+        this.$toast.error('Valor maior que o pedido maximo')
+        
+        return
+      }
 
-      this.$emit(
-        'pedidosForeEstoque',
-        this.qtdPedido,
-        lanche.id,
-        this.foraDeEstoque,
-        this.selected,
-        this.comentario
-      )
+   
+
+      // this.$emit(
+      //   'pedidosForeEstoque',
+      //   this.qtdPedido,
+      //   lanche.id,
+      //   this.foraDeEstoque,
+      //   this.selected,
+      //   this.comentario
+      // )
+
+      // console.log(
+      //   'pedidosForeEstoque',
+      //   this.qtdPedido,
+      //   lanche.id,
+      //   this.foraDeEstoque,
+      //   this.selected,
+      //   this.comentario
+      // );
+      
+      const tipoPedido ={
+        fk_categoryOrderItem: this.tipoPedido, //ok
+        amountItem: Number(this.qtdPedido), //ok
+        fk_revenue: lanche.id,
+        method_of_preparation: this.selected,
+        comment: this.comentario,
+      }
+      const data = {
+        pedidos : tipoPedido,
+        listReceita: this.foraDeEstoque, //ok
+     
+      };
+
+      this.$store.commit("adicionarPedidoForaEstoque", data);
+
       this.qtdPedido = ''
       this.selected = ''
       this.comentario = ""
