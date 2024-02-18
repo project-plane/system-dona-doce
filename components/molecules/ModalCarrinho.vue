@@ -379,14 +379,11 @@ export default Vue.extend({
         type_preparation: type_preparation,
       };
 
-      // Encontrar o índice do item no array
       const index = array.findIndex(existingItem => existingItem.id === newItem.id);
 
       if (index !== -1) {
-        // Se o item já existe, atualizar a quantidade
         this.$set(array, index, newItem);
       } else {
-        // Se o item não existe, adicionar ao array
         array.push(newItem);
       }
     }
@@ -434,21 +431,22 @@ export default Vue.extend({
       
     },
     async savePedido(pedido){      
-      console.log(pedido);
-      
-      await HttpPedidos.CreateNewOrder(pedido)
-          .then((res) => {
-            this.$toast.success('Pedido realizado com sucesso!!!')
-            this.showModal = false
-            this.listaCompletaReceita = []
-            this.listaForaEstoque = []
-            this.$router.push('/pedidos/historico-pedidos')
-            this.$store.commit('selectUnity','')
-          })
-          .catch((error) => {
-            const message = error.response.data.message;
-             this.$toast.warning('Revise,' + message);
-          })
+      if (pedido.createOrderItemDto.length === 0 && pedido.createOrderNotMenuItemDto.length === 0) {
+        this.$toast.warning('Revise, nenhum pedido foi selecionado' );
+      } else {
+        try {
+          const res = await HttpPedidos.CreateNewOrder(pedido);
+          this.$toast.success('Pedido realizado com sucesso!!!');
+          this.showModal = false;
+          this.listaCompletaReceita = [];
+          this.listaForaEstoque = [];
+          this.$router.push('/pedidos/historico-pedidos');
+          this.$store.commit('selectUnity', '');
+        } catch (error) {
+          const message = error.response.data.message;
+          this.$toast.warning('Revise,' + message);
+        }
+      }
       
     }   
   },

@@ -234,7 +234,7 @@ export const mutations = {
 
     if (item) {
       item.pedidos.amountItem++;
-      console.log("Quantidade aumentada:", item.pedidos.amountItem);
+      
     } else {
       console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
     }
@@ -246,7 +246,6 @@ export const mutations = {
 
     if (item) {
       item.pedidos.amountItem--;
-      console.log("Quantidade aumentada:", item.pedidos.amountItem);
     } else {
       console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
     }
