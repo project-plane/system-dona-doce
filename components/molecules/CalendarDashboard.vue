@@ -15,13 +15,13 @@
           <strong v-else>R$: --------</strong>
         </div>
       </div>
-      <div class="descriptionValue">
+      <!-- <div class="descriptionValue">
         <span class="lucro">Lucro</span>
         <div>
           <strong v-if="visualization">R$: {{ valorTotal }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
-      </div>
+      </div> -->
     </div>
     <img
       v-if="visualization"

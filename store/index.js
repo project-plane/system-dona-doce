@@ -165,7 +165,7 @@ export const mutations = {
       item.pedidos.fk_categoryOrderItem === pedido.pedidos.fk_categoryOrderItem);
     if (!existePedido) {
       state.carrinhoProgramado.push(pedido);
-      console.log(state.carrinhoProgramado);
+      this.$toast.success('Pedido adicionado.' );
     } else {
       this.$toast.warning('Pedido duplicado. Receita já adicionada ao pedido!!!')
     }
@@ -175,7 +175,7 @@ export const mutations = {
       item.pedidos.fk_categoryOrderItem === pedido.pedidos.fk_categoryOrderItem );
     if (!existePedido) {
       state.carrinhoForaEstoque.push(pedido);
-     
+      this.$toast.success('Pedido adicionado.' );
     } else {
       this.$toast.warning('Pedido duplicado. Receita já adicionada ao pedido!!!')
       console.log(pedido);
@@ -226,7 +226,6 @@ export const mutations = {
     }
 },
   addItemForaEstoque(state, { fk_revenue, fk_categoryOrderItem }) {
-    console.log(state);
     
     const item = state.carrinhoForaEstoque.find(item => 
       item.pedidos.fk_revenue === fk_revenue && item.pedidos.fk_categoryOrderItem === fk_categoryOrderItem
@@ -234,6 +233,7 @@ export const mutations = {
 
     if (item) {
       item.pedidos.amountItem++;
+      
       
     } else {
       console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
@@ -250,5 +250,4 @@ export const mutations = {
       console.log("Item não encontrado ou valores de fk_categoryOrderItem e fk_revenue inválidos.");
     }
   },
-
 }
