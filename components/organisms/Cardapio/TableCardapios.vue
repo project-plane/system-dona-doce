@@ -4,6 +4,10 @@
         <ModalEditCardapio v-if="$store.state.openModal" :cardapioModal="cardapioModal"/>
       <div class="headerTable">
         <span>Dias Cadastrados</span>
+        <div class="containerSearch" >
+              <input  placeholder="Filtrar por Data" type="text" v-model="textSearch" >
+          </div>
+          
       </div>
       <table>
         <thead>
@@ -17,8 +21,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in listCardapio" :key="index">
-            <td>{{ formatDate(item.dateMenu) }}</td>
+          <!-- <pre>{{ filterItems }}</pre> -->
+          <tr v-for="(item, index) in filterItems" :key="index">
+            <td>{{formatDate(item.dateMenu) }}</td>
             <td>{{ item.itemMenu[0].revenues.description }}</td>
             <td>{{ item.itemMenu[1].revenues.description }}</td>
             <td>{{ item.itemMenu[2].revenues.description }}</td>
@@ -33,12 +38,15 @@
           </tr>
         </tbody>
       </table>
+      <ButtonPagination />
     </ContainerTable>
   </template>
 
   <script lang="ts">
   import Vue from 'vue'
   import dayjs from '~/services/dayjs'
+  import dayj from 'dayjs'
+  
   import httpCardapio from '~/server/cardapio'
 
   export default Vue.extend({
@@ -60,16 +68,12 @@
     },
     computed: {
       filterItems() {
-        let itemSearch = []
-        itemSearch = this.listCardapio.filter((item) => {
-          return (
-            item.corporate_name
-              .toLowerCase()
-              .indexOf(this.textSearch.toLowerCase()) > -1
-          )
-        })
-        return itemSearch
-      },
+        const searchText = this.textSearch.toLowerCase();
+    return this.listCardapio.filter(item => {
+        const formattedDate = dayj(item.dateMenu).add(1, 'day').format('DD/MM/YYYY');
+        return formattedDate.includes(searchText);
+    });
+  },
     },
     methods: {
       previewClient(idClient) {
@@ -91,23 +95,29 @@
       },
 
       formatDate(date) {
-      const data = dayjs.formtDateBr(date)
-      //  console.log(data);
-
-      return data
-
-
-    },
+        const data = dayjs.formtDateBr(date)
+        return data
+     }
     },
   })
   </script>
 
   <style lang="scss" scoped>
+  .containerSearch{
+    display: grid;
+    input{
+      background-image: url(../../../assets/icons/IconSearch.svg);
+      background-repeat: no-repeat;
+      background-position-x: right;
+      background-position-y: center;
+      background-size: 20px;
+    }
+  }
   .headerTable {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     span {
     font-size: 1.35rem;

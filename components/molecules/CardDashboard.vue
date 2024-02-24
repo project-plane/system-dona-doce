@@ -206,7 +206,7 @@ export default Vue.extend({
           this.loading = false
         })
         .catch((error) => {
-          alert(error)
+          alert(error.response.data.message)
         })
       this.modalPedido = false
       this.$nuxt.refresh()
