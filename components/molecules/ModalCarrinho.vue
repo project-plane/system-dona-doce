@@ -230,14 +230,6 @@
 import Vue from 'vue'
 import HttpPedidos from '@/server/pedidos'
 export default Vue.extend({
-  // props: {
-  
-  //   listaForaEstoque: {
-  //     type: [Array, Object],
-  //     required: true,
-  //   },
-  // },
-
   data() {
     return {
       dejejum: [],
@@ -259,7 +251,6 @@ export default Vue.extend({
   watch: {
     listaCompletaReceita: {
       handler(newValue) {
-        // console.log(newValue)
         this.$emit('listaAtualizadaDoModal', newValue)
       },
       deep: true,
