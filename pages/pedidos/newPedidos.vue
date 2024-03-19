@@ -18,7 +18,7 @@ export default Vue.extend({
     await HttpMeusDados.MeusDados().then( (res) => {
       this.myData = res.data
 
-      if(!this.myData.is_client) {
+      if(!this.myData.is_client && !this.myData.is_company) {
         this.$router.push('/login')
         this.$toast.error(`Opa! Parece que você não é um CLIENTE.\nUtilize uma conta de cliente para realizar as operações`)
       }

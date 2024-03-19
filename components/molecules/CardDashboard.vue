@@ -40,7 +40,7 @@
         </option>
       </select>
       <div class="btnConfirm">
-        
+
         <section v-show="selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' ">
           <span>Anexar cautela</span>
         <div class="inputContainer">
@@ -64,7 +64,7 @@
             />
         </div>
         </section>
-        <section style="display: flex;     justify-content: flex-end; gap: 1rem;">     
+        <section style="display: flex;     justify-content: flex-end; gap: 1rem;">
           <ButtonPirula title="Cancelar" @click.native="cancelarStatus" />
           <ButtonPirula  title="Salvar" @click.native="statusPedido" />
         </section>
@@ -76,17 +76,21 @@
           <div class="titleCompany">
             <h2>{{ dataPedidos.numberOrder }}</h2>
             <div class="descriptionCompany">
-              <h2>{{ dataPedidos.user.Clients.corporate_name }}</h2>
+              <h2 v-if="!dataPedidos.is_created_by_company">{{ dataPedidos.user.Clients.corporate_name.slice(0,8) }}</h2>
+              <h2 v-if="dataPedidos.is_created_by_company">{{ dataPedidos.company.corporate_name.slice(0,8)  }}</h2>
               <span v-if="dataPedidos.order_type === 'programmed'" class="date-blue">{{ currentDate() }}</span>
               <span v-if="dataPedidos.order_type === 'coffe'" class="date-red">{{ currentDate() }}</span>
             </div>
           </div>
 
           <div class="iconsStatus">
-            <div class="icons">
+            <div class="icons" style="text-align: center">
               <span v-if="shouldDisplayIcon">
-            
+
                 <IconAlert />
+              </span>
+              <span v-if="dataPedidos.is_created_by_company">
+                <IconAlertUnidade />
               </span>
               <img v-if="dataPedidos.order_type === 'programmed'" src="~/assets/icons/programado.svg" alt="" />
               <img v-else src="~/assets/icons/coffee.svg" alt="" />
@@ -95,11 +99,11 @@
         </div>
         <div class="dataOrder">
           <div class="descriptionOrder">
-                          
+
             <section style="display: flex; justify-content: space-between;">
                 <span>Unidade: <strong>{{ dataPedidos.company.corporate_name }}</strong> </span>
                 <span>Status: <strong>{{ dataPedidos.orderStatus.description }}</strong> </span>
-            </section>    
+            </section>
 
             <span>Total R$ {{ dataPedidos.valueOrder.toFixed(2) }}</span>
           </div>
@@ -122,6 +126,7 @@ import Vue from 'vue'
 
 import httpOrder from '@/server/pedidos'
 import dayjs from "~/services/dayjs"
+import IconAlertUnidadeVue from '../atoms/IconAlertUnidade.vue'
 export default Vue.extend({
   props: {
     dataPedidos: {
@@ -136,7 +141,7 @@ export default Vue.extend({
       type: Number,
       required: true,
     },
-    
+
   },
   data() {
     return {
@@ -163,7 +168,7 @@ export default Vue.extend({
       this.$store.commit('DADOS_PEDIDOS', dataPedidos)
       this.pedidoForaEstoque = this.dataPedidos.orderItem[0].of_menu
       console.log(this.dataPedidos.orderItem[0].of_menu);
-      
+
     },
     statusOrder() {
       this.modalPedido = true
@@ -181,11 +186,11 @@ export default Vue.extend({
     },
     statusPedido(){
       if (
-        (this.selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' && this.selectedFile === null) 
+        (this.selected === '1c69c120002-575f34-1c69-be56-0242ac1201c69' && this.selectedFile === null)
       ) {
         this.$toast.warning('anexar cautela');
       } else if (
-        this.selected !== '1c69c120002-575f34-1c69-be56-0242ac1201c69' 
+        this.selected !== '1c69c120002-575f34-1c69-be56-0242ac1201c69'
       ) {
         this.saveStatus()
       }else{
@@ -194,7 +199,7 @@ export default Vue.extend({
       }
     },
     async saveStatus() {
-     
+
       const statuOrder = {
         fk_orderstatus: this.selected,
       }

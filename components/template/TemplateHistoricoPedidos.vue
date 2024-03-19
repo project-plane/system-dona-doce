@@ -28,7 +28,7 @@
         </select>
       </div>
       <div class="input">
-        
+
           <label style="display: flex; width: 100%">Unidade</label>
           <select v-model="selectedUnidade" @change="filterByUnidade">
             <option value="" >Todos</option>
@@ -47,7 +47,7 @@
     <div class="list-historic" v-if="this.filter === true">
       <div v-for="(item, index) in filterData" :key="index">
         <CardHistorico :data="item" />
-        
+
       </div>
       <span v-if="filterData.length === 0" class="spanError">
         Nenhum resultado encontrado. Tente ajustar os filtros da sua pesquisa e
@@ -60,7 +60,7 @@
         <CardHistorico :data="item" />
         <!-- <pre>{{ item.company }}</pre> -->
       </div>
-     
+
 
       <span v-if="filteredItems.length === 0" class="spanError"
         >Nenhum resultado encontrado. Tente ajustar os filtros da sua pesquisa e
@@ -128,14 +128,13 @@ export default Vue.extend({
       try{
         const res = await HttpHistoryClient.Orderspercustomer()
         this.historico = res.data
-        console.log(res.data);
-        
+
       }catch(error){
         console.log(error);
-        
+
       }
     },
-    
+
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')
     },
@@ -177,7 +176,7 @@ export default Vue.extend({
               item.company.corporate_name.includes(this.selectedUnidade);
       });
   }
-    
+
   },
   computed: {
     filteredItems(): any {
