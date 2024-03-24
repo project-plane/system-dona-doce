@@ -70,5 +70,10 @@ export default {
   },
   updateNF:async (id, data) => {
     return await http.patch(`/order_batch/invoice/${id}`, data)
+    // novo
+  },
+  findListExport:async (data) => {
+    return await http.patch(`/order/findExportFaturamento`, data)
+    // novo
   },
 }
