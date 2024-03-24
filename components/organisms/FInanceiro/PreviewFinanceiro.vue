@@ -136,7 +136,8 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    // this.loading = true
+    this.loading = true
+    // ola mundo
 
     await httpClients
       .GetAllClients()
@@ -157,7 +158,7 @@ export default Vue.extend({
       })
 
     await this.findList();
-    // this.loading = false
+     this.loading = false
   },
   methods: {
     convertData(data){
