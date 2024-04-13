@@ -1,12 +1,11 @@
 <template>
   <div>
   <Loading v-if="loading" /> 
-  <ModalPreview style="overflow: hidden;" titleModal="Lista de Pedidos / Faturamento" @closeModal="closeModal">
-    <div>
-      <div class="filter">
+  <ModalTable style="overflow: hidden;" titleModal="Lista de Pedidos / Faturamento">
+    <div class="filter">
         <!-- Filtros -->
         <div class="input">
-          <label>Tipo Pedido</label>
+          <label class="titleFilter">Tipo Pedido</label>
           <select v-model="selectedType">
             <option value="">Todos</option>
             <option value="programmed">Programado</option>
@@ -14,7 +13,7 @@
           </select>
         </div>
         <div class="input">
-          <label>Status</label>
+          <label class="titleFilter" >Status</label>
           <select v-model="selectedAgenda">
             <option value="">Todos</option>
             <option value="022ac120002-1c69-11ee-be56-0242ac120002">Solicitado</option>
@@ -28,14 +27,14 @@
           </select>
         </div>
         <div class="input">
-          <label>Clientes</label>
+          <label class="titleFilter">Clientes</label>
           <select v-model="selectedClient">
             <option value="">Todos</option>
             <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
           </select>
         </div>
         <div class="input">
-          <label>Unidade</label>
+          <label class="titleFilter">Unidade</label>
           <select v-model="selectedUnidade">
             <option value="">Todos</option>
             <option v-for="item in listEmpresa" :value="item.id" :key="item.id">{{ item.corporate_name }}</option> 
@@ -43,63 +42,92 @@
         </div>
 
         <div class="input">
-          <label>Data Inicial</label>
+          <label class="titleFilter">Data Inicial</label>
           <input v-model="dataInicial"  type="date">
 
         </div>
 
         <div class="input">
-          <label>Data Final</label>
+          <label class="titleFilter">Data Final</label>
            <input  v-model="dataFinal" type="date">
         </div>
 
       </div>
-      <div style="overflow: auto; height: 450px; overflow: scroll;">
+    <div>
+      <div class="containerTotal">
+        <section>
+          <Strong>Custo Total:</Strong>  Falta no Objeto
+        </section>
+        <section>
+         <strong> Valor Total:</strong>  {{ teste.toFixed(2) }}
+        </section>
+        <section>
+          <strong>Lucro Total: </strong>  Falta no Objeto
+        </section>
+      </div>
+    
+      <div class="containerTable">
         <!-- Tabela de Dados -->
-        <table>
+        <table >
           <thead>
             <tr>
               <th>Data</th>
-              <th>Status</th>
               <th>Empresa</th>
               <th>Fabrica</th>
+              <th>Horario</th>
+              <!-- <th>Status</th> -->
               <th>Produto</th>
               <th>Quantidade</th>
-              <th>Valor Unit.</th>
-              <th>Valot Total</th>
+              <th>Venda Unit.</th>
+              <th>Custo Unit**</th>
+              <th>Lucro Unit**</th>
+              <th>Valor Total</th>
+              
+             
             </tr>
+           
           </thead>
           <tbody>
-        <tr v-for="(list) in listOrders" :key="list"> 
-        
-                         
+            <tr v-for="(list) in listOrders" :key="list">          
               <td>{{ convertData(list.dateOrder) }}</td>
               <td>{{ list.client }}</td>
-              <td>{{ list.descriptionStatus }}</td>
               <td>{{ list.company }}</td>
+              <td>Horario**</td>
               <td>{{ list.description }}</td>
               <td>{{ list.amountItem }}</td>
-              <td>{{ list.valueOrderItem}}</td>
-              <td>{{ list.valueItemTotal }}</td>
-            </tr>
+              <td> R$ {{  list.valueOrderItem.toFixed(2)}}</td>
+              <td>Custo Unit**</td>
+              <td>Lucro Unit**</td>
+
+              
+              <td> R$ {{ list.valueItemTotal.toFixed(2) }}</td>
+        
+           </tr>
+         
+      <tr v-for="(list) in listOrders" :key="list"> 
+  
+                   
+  
+      </tr>
           </tbody>
         </table>
 
       </div>
-      <div style="display: flex; justify-content: space-evenly; align-items: center;">
+      
+    </div>
+    <div class="footerModal">
         <!-- Exportar -->
         <button @click="exportToCsv()" class="button">
          Exportar
       </button>
 
-      <button @click="find()"class="button">
+      <button @click="find()" class="button">
          Buscar
       </button>
 
       
       </div>
-    </div>
-  </ModalPreview>
+  </ModalTable>ModalPreview
 </div>
 </template>
 
@@ -133,6 +161,7 @@ export default Vue.extend({
       listOrders: [],
       listClient: [],
       listEmpresa: [],
+      teste: 0
     }
   },
   async fetch() {
@@ -158,12 +187,13 @@ export default Vue.extend({
     await this.findList();
   },
   methods: {
+    totalValueItemTotal() {
+      this.teste = this.listOrders.reduce((total, item) => total + item.valueItemTotal, 0);
+    },
     convertData(data){
       return dayjs.formtDateBr(data)
     },
-     closeModal() {
-      this.$emit('closeModal')
-    },
+    
     exportToCsv() {
       this.loading = true
       
@@ -200,16 +230,33 @@ export default Vue.extend({
       }
       await httpOrder.findListExport(data).then((res) => {
         this.listOrders = res.data
+        this.totalValueItemTotal()
       })
       .catch((error) => {
         console.log(error)
       })
     }
   },
+  computed: {
+    
+  }
 })
 </script>
 
 <style scoped lang="scss">
+.titleFilter{
+  font-weight: 600;
+}
+.containerTotal{
+  display: flex;
+    justify-content: flex-start;
+    gap: 4rem;
+    padding: .5rem 0;
+}
+.containerTable{
+  height: 400px;
+  overflow-y: scroll;
+}
 
 button {
       width: 7rem;
@@ -233,21 +280,30 @@ button:hover {
 
 .filter {
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   display: flex;
-
+  padding: 0.5rem  0;
+  flex-direction: row;
+  gap: 10px;
   .input {
-    width: 100%;
+    // width: 100%;
     display: flex;
     flex-direction: column;
-  
-    label {
-         padding: 10px;
-   
-         background: var(--bg_heade_table)
+    select, input{
+      border: solid 1px rgba(59, 56, 56, 0.637);
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+      background: #00000008;
+      color: black;
     }
+    // label {
+    //      padding: 10px;
+   
+    //      background: var(--bg_heade_table)
+    // }
   }
 }
 
@@ -273,6 +329,8 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  // position: sticky;
+   
 
   span {
     font-size: 1.35rem;
@@ -282,54 +340,45 @@ button:hover {
 
 table {
   width: 100%;
+  overflow: scroll;
+  height: 350px;
+  // border: 1px solid black;
+  
+  // margin-top: 1rem;
+  font-size: .95rem;
+
+  border: solid 1px rgba(59, 56, 56, 0.637);
+  border-top-left-radius: .6rem;
+  border-top-right-radius: .6rem;
   border-collapse: collapse;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-
-  thead {
-    width: 100%;
-    background: var(--bg_heade_table);
-
-    tr th {
-      padding: 0.6rem 0;
-    }
+  text-align: left;
+  
+  th{
+    height: 3.5rem;
+    border-bottom: solid 1px black;
+    padding: .5rem;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    
   }
-
-
-  tbody tr td {
-    text-align: center;
-    padding: 1rem 0;
-    max-width: 100px; /* largura máxima da célula */
-  overflow: hidden; /* esconder o conteúdo excedente */
-  white-space: nowrap; /* evitar quebra de linha */
-  text-overflow: ellipsis; /* exibir reticências (...) quando o texto for cortado */
+  td{
+    height: 1rem;
+    padding: .5rem;
   }
- 
-  tbody tr td:hover {
-  white-space: normal; /* exibir o texto completo ao passar o mouse */
-  text-overflow: clip; /* evitar reticências ao passar o mouse */
+  
+
+  tr:nth-child(even) {
+  background-color: #ffefdb;
 }
-
-
-  tbody tr .img img {
-    width: 50px;
-    height: 50px;
-  }
-
-  tbody tr .iconsOptions {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-
-    button {
-      background: transparent;
-
-      img {
-        width: 1.2rem;
-      }
-    }
-  }
+ 
+}
+.footerModal{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  bottom: 7%;
+  width: 88%;
+  position: fixed;
 }
 </style>

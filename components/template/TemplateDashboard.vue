@@ -3,6 +3,7 @@
     <Loading />
   </div>
   <div v-else class="dashboardPage">
+
     <div v-if="histOrderVisilble" class="historicOrders">
       <CalendarHeader />
       <ListDashboard />
