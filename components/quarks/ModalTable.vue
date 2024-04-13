@@ -1,12 +1,12 @@
 <template>
     <div class="negativeSpace">
     <div class="container">
-      <div v-if="closeModal" class="modal">
+      <div class="modal">
         <div class="header">
         <h2>{{titleModal}}</h2>
 
-        <div @click="closeModal">
-          <img class="btnClose" src="~/assets/icons/close.svg" alt="" />
+        <div>
+          <img class="btnClose" src="~/assets/icons/close.svg" alt="" @click="closeModal" />
         </div>
       </div>
         <slot />
@@ -22,7 +22,7 @@
   export default Vue.extend({
     data() {
       return {
-        closeModal: true,
+
       }
     },
     props:{
@@ -30,7 +30,7 @@
     },
     methods: {
     closeModal() {
-      this.$store.commit('OPEN_MODAL_PREVIEW_RECEITA', false)
+      this.$store.commit('OPEN_visualizationFin', false)
     }
   }
   

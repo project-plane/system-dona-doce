@@ -25,9 +25,9 @@
     </div>
     <div class="d-options">
       <div>
-        <img @click="visualizationFin = true" class="img-carteira" src="~/assets/icons/icon-carteira.png" alt="" />
-         <PreviewFinanceiro v-show="visualizationFin"  @closeModal="closeModal"/>
-     
+        <img @click="visualizationFin" class="img-carteira" src="~/assets/icons/icon-carteira.png" alt="" />
+         <PreviewFinanceiro v-show="this.$store.state.openModalRelatorio" />
+  
       </div>
       <div>
         <img v-if="visualization" @click="visualization = false" src="~/assets/icons/eye.svg" alt="" />
@@ -47,7 +47,6 @@ export default Vue.extend({
   data() {
     return {
       visualization: true,
-      visualizationFin: false,
       valorVendas: 0,
       valorCompras: this.$store.state.value_buy,
       valorComprasUpdate: 0,
@@ -93,9 +92,12 @@ export default Vue.extend({
 
   },
   methods: {
-    closeModal(){
-      this.visualizationFin = false;
+    visualizationFin(){
+      this.$store.commit('OPEN_visualizationFin', true)
     },
+    // closeModal(){
+    //   this.visualizationFin = false;
+    // },
     async atualizar() {
       const valorUniqOrder = []
       var valorVendasOrder = 0;

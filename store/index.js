@@ -1,5 +1,6 @@
 export const state = () => ({
   openModal: false,
+  openModalRelatorio: false,
   openModalPreviewReceita: false,
   openModalPreviewEmpresa: false,
   openModalReceita: false,
@@ -35,6 +36,10 @@ export const state = () => ({
 })
 
 export const mutations = {
+  OPEN_visualizationFin(state, payload){
+    state.openModalRelatorio = payload
+
+  },
   NEWDATECALENDAR(state, payload){
     state.dateCalendar = payload
 

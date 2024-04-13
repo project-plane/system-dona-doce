@@ -68,7 +68,10 @@
     
       <div class="containerTable">
         <!-- Tabela de Dados -->
-        <table >
+        <div v-if="listOrders.length === 0" style=" display: flex; align-items: center; justify-content: center; height: 72%;">
+          <img src="@/static/noInform.png" alt="" style="height: 8rem; margin: auto;">
+        </div>
+        <table v-else>
           <thead>
             <tr>
               <th>Data</th>
@@ -87,7 +90,10 @@
             </tr>
            
           </thead>
+       
+
           <tbody>
+       
             <tr v-for="(list) in listOrders" :key="list">          
               <td>{{ convertData(list.dateOrder) }}</td>
               <td>{{ list.client }}</td>
@@ -103,15 +109,8 @@
               <td> R$ {{ list.valueItemTotal.toFixed(2) }}</td>
         
            </tr>
-         
-      <tr v-for="(list) in listOrders" :key="list"> 
-  
-                   
-  
-      </tr>
           </tbody>
         </table>
-
       </div>
       
     </div>
@@ -140,12 +139,12 @@ import dayjs from "./../../../services/dayjs"
 
 
 export default Vue.extend({
-  props: {
-    findPreviewEmpresa: {
-      type: [Array, Object],
-      required: true,
-    },
-  },
+  // props: {
+  //   findPreviewEmpresa: {
+  //     type: [Array, Object],
+  //     required: true,
+  //   },
+  // },
   data() {
     return {
       isToday: true,
@@ -299,11 +298,6 @@ button:hover {
       background: #00000008;
       color: black;
     }
-    // label {
-    //      padding: 10px;
-   
-    //      background: var(--bg_heade_table)
-    // }
   }
 }
 
@@ -342,9 +336,6 @@ table {
   width: 100%;
   overflow: scroll;
   height: 350px;
-  // border: 1px solid black;
-  
-  // margin-top: 1rem;
   font-size: .95rem;
 
   border: solid 1px rgba(59, 56, 56, 0.637);
