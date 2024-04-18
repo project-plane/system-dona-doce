@@ -32,6 +32,10 @@
                 <div class="textReceita">
                   <h1>Editar Receita</h1>
                   <Title :title="title" />
+                 <!-- <pre> {{ listFindReceita.order_type }}</pre> -->
+            
+                  <StwitchButton  @updateEmit="handleType" :type="listFindReceita.order_type"/>
+                  
                 </div>
               </div>
               <div @click="closeModal">
@@ -212,6 +216,7 @@ export default Vue.extend({
     },
   },
   watch: {
+    
     selected(newId){
       this.ingredienteSel = this.listIngredients.find((item) => newId == item.id);
       if(this.ingredienteSel){
@@ -278,6 +283,10 @@ export default Vue.extend({
     this.loading = false
   },
   methods: {
+    handleType(value){
+        console.log(value);
+        
+      },
     addIngrediente() {
       this.statusAddIngrediente = true
     },
