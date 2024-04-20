@@ -27,14 +27,14 @@
           <option value="Entregue">Entregue</option>
         </select>
       </div>
-      <div class="input">
+      <!-- <div class="input">
 
           <label style="display: flex; width: 100%">Unidade</label>
           <select v-model="selectedUnidade" @change="filterByUnidade">
             <option value="" >Todos</option>
             <option v-for="item in listEmpresa" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
           </select>
-        </div>
+        </div> -->
       </section>
       <section>
         <div class="input" style="width: 12rem; display: flex;flex-direction: column;">
@@ -58,7 +58,7 @@
     <div class="list-historic" v-if="this.filter === false">
       <div v-for="(item, index) in filteredItems" :key="index">
         <CardHistorico :data="item" />
-        <!-- <pre>{{ item.company }}</pre> -->
+   
       </div>
 
 
