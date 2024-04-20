@@ -3,17 +3,17 @@
     <div v-else class="meusDados-container">
         <span>Informações Pessoais</span>
         <div class="inputs-container">
-            <Input class="input-local-style" label="Nome da Empresa" :value="myData.Clients.corporate_name" type="text" placeholder="nome da empresa..." disabled="false"/>
-            <Input class="input-local-style" label="CNPJ" :value="myData.Clients.cnpj" type="text" placeholder="cnpj da empresa..." disabled="true"/>
-            <Input class="input-local-style" label="CEP" type="text" :value="myData.Clients.cep" placeholder="cep da empresa..." disabled="true"/>
-            <Input class="input-local-style" label="Cidade" type="text" :value="myData.Clients.county" placeholder="endereço da empresa..." disabled="true"/>
-            <Input class="input-local-style" label="Bairro" type="text" :value="myData.Clients.district" placeholder="endereço da empresa..." disabled="true"/>
-            <Input class="input-local-style" label="Telefone" type="text" :value="myData.Clients.fone" placeholder="telefone da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="Nome da Empresa" :value="myData.Client_Company.company.corporate_name" type="text" placeholder="nome da empresa..." disabled="false"/>
+            <Input class="input-local-style" label="CNPJ" :value="myData.Client_Company.company.cnpj" type="text" placeholder="cnpj da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="CEP" type="text" :value="myData.Client_Company.company.cep" placeholder="cep da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="Cidade" type="text" :value="myData.Client_Company.company.county" placeholder="endereço da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="Bairro" type="text" :value="myData.Client_Company.company.district" placeholder="endereço da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="Telefone" type="text" :value="myData.Client_Company.fone" placeholder="telefone da empresa..." disabled="true"/>
             <Input class="input-local-style" label="Email" type="text" :value="myData.email" placeholder="email da empresa..." disabled="true"/>
-            <Input class="input-local-style" label="Responsável" type="text" :value="myData.Clients.accountable" placeholder="email da empresa..." disabled="true"/>
+            <Input class="input-local-style" label="Responsável" type="text" :value="myData.Client_Company.accountable" placeholder="email da empresa..." disabled="true"/>
         </div>   
 
-        <ModalDadosCliente  :infoCliente="myData"  v-if="showModal"  @closeModal="() => (showModal = false)" />
+        <ModalDadosCliente  :infoCliente="myData.Client_Company" :moreInfo="myData"  v-if="showModal"  @closeModal="() => (showModal = false)" />
         <button class="btnEdit" @click="() => (showModal = true)" >Atualizar dados</button>
     </div>
 </template>

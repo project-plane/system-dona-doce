@@ -7,6 +7,10 @@
       <nuxt-link to="/pedidos-unidade/historico-pedidos">Histórico de Pedidos</nuxt-link>
       <nuxt-link to="/lotes/listagemCliente">Lotes de Pedidos</nuxt-link>
       <nuxt-link to="/pedidos-unidade/meus-dados">Meus Dados</nuxt-link>
+      <div class="containerUnidade"> 
+        <h4>{{ responsavel.accountable }}</h4>
+        <h6 style="margin-top: -5px;">{{ unidade.corporate_name }}</h6>
+      </div>
 
       <button class="logout" @click="logout">
         <img src="~/assets/icons/logout.svg" alt="" />
@@ -19,8 +23,25 @@
 <script lang="ts">
 import Vue from 'vue'
 import Button from '../atoms/Button.vue'
+import HttpMeusDados from '@/server/meusDados/index'
+
 export default Vue.extend({
+  data(){
+        return{
+          responsavel: {},
+          unidade: {}
+        }
+    },
+  async created(){
+  
+    await HttpMeusDados.MeusDados().then( (res) => {
+        this.responsavel = res.data.Client_Company
+        this.unidade = res.data.Client_Company.clients
+    })
+
+  },
   methods: {
+
     routePedido() {
       Button
       this.$store.commit('BARRA_PEDIDOS_NAV', true)
@@ -67,6 +88,11 @@ export default Vue.extend({
     a.nuxt-link-exact-active {
       color: var(--red);
       border-bottom: 5px solid var(--red);
+    }
+    .containerUnidade{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .logout {
