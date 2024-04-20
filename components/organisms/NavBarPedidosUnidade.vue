@@ -36,7 +36,7 @@ export default Vue.extend({
   
     await HttpMeusDados.MeusDados().then( (res) => {
         this.responsavel = res.data.Client_Company
-        this.unidade = res.data.Client_Company.clients
+        this.unidade = res.data.Client_Company.company
     })
 
   },
