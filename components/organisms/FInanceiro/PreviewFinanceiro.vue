@@ -74,17 +74,22 @@
         <table v-else>
           <thead>
             <tr>
+              <th>Quantidade</th>
+              <th>Valor Unit.</th>
+              <th>Valor Total</th>
+              <th>Custo Total</th>
+              <th>Lucro Total</th>
+
               <th>Data</th>
               <th>Empresa</th>
               <th>Fabrica</th>
               <th>Horario</th>
               <!-- <th>Status</th> -->
               <th>Produto</th>
-              <th>Quantidade</th>
-              <th>Venda Unit.</th>
-              <th>Custo Unit**</th>
-              <th>Lucro Unit**</th>
-              <th>Valor Total</th>
+              
+              <!-- <th>Custo Unit**</th>
+              <th>Lucro Unit**</th> -->
+              
               
              
             </tr>
@@ -94,19 +99,23 @@
 
           <tbody>
        
-            <tr v-for="(list) in listOrders" :key="list">          
+            <tr v-for="(list) in listOrders" :key="list">
+              <td>{{ list.amountItem }}</td>
+              <td> R$ {{  list.valueOrderItem.toFixed(2)}}</td>              
+              <td> R$ {{ list.valueItemTotal.toFixed(2) }}</td>
+              <td>Custo Total</td>
+              <td>Lucro Total</td>
+
               <td>{{ convertData(list.dateOrder) }}</td>
               <td>{{ list.client }}</td>
               <td>{{ list.company }}</td>
               <td>Horario**</td>
               <td>{{ list.description }}</td>
-              <td>{{ list.amountItem }}</td>
-              <td> R$ {{  list.valueOrderItem.toFixed(2)}}</td>
-              <td>Custo Unit**</td>
-              <td>Lucro Unit**</td>
+              
+              <!-- <td>Custo Unit**</td>
+              <td>Lucro Unit**</td> -->
 
               
-              <td> R$ {{ list.valueItemTotal.toFixed(2) }}</td>
         
            </tr>
           </tbody>
