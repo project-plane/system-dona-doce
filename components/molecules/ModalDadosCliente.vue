@@ -3,30 +3,32 @@
       <Loading/>
     </div>
     <ModalPreview v-else titleModal="Editar Dados" @closeModal="closeModal" style="">
+       <!-- <pre> {{ moreInfo }}</pre>
+       <pre> {{ moreInfo.email }}</pre> -->
         <div class="inputs-container">
             <label for="" class="containerLabel" style="width: 60%;"> <strong>Nome da empresa</strong>
-                 <input type="text" class="inputForm" placeholder="Nome da empresa..." v-model="infoCliente.Clients.corporate_name">
+                 <input type="text" class="inputForm" placeholder="Nome da empresa..." v-model="infoCliente.company.corporate_name">
              </label>
              <label for="" class="containerLabel" style="width: 37%;"> <strong>CNPJ</strong>
-                 <input type="text" class="inputForm" disabled :value="infoCliente.Clients.cnpj" placeholder="24.377.651/0001-63">
+                 <input type="text" class="inputForm" disabled :value="infoCliente.company.cnpj" placeholder="24.377.651/0001-63">
              </label>
              <label for="" class="containerLabel" style="width: 60%;"> <strong>Responsável</strong>
-                 <input type="text" class="inputForm" placeholder="Fernanda Fernandes"  v-model="infoCliente.Clients.accountable">
+                 <input type="text" class="inputForm" placeholder="Fernanda Fernandes"  v-model="infoCliente.accountable">
              </label>
              <label for="" class="containerLabel" style="width: 37%;"> <strong>Telefone</strong>
-                 <input type="text" class="inputForm" v-model="infoCliente.Clients.fone" placeholder="(00) 00000-0000">
+                 <input type="text" class="inputForm" v-model="infoCliente.fone" placeholder="(00) 00000-0000">
              </label>
              <label for="" class="containerLabel" style="width: 37%;"> <strong>CEP</strong>
-                <input type="number" class="inputForm" v-model="infoCliente.Clients.cep" placeholder="69075-771" >
+                <input type="number" class="inputForm" v-model="infoCliente.company.cep" placeholder="69075-771" >
             </label>
             <label for="" class="containerLabel" style="width: 60%;"> <strong>Bairro</strong>
-                <input type="text" class="inputForm" v-model="infoCliente.Clients.district" placeholder="Nome do Bairro..">
+                <input type="text" class="inputForm" v-model="infoCliente.company.district" placeholder="Nome do Bairro..">
             </label>
             <label for="" class="containerLabel" style="width: 20%;"> <strong>UF</strong>
-                 <input type="text" class="inputForm" v-model=" this.infoCliente.Clients.uf"  placeholder="Nova Senha"  >
+                 <input type="text" class="inputForm" v-model=" this.infoCliente.company.uf"  placeholder="Nova Senha"  >
              </label>
              <label for="" class="containerLabel"> <strong>Cidade</strong>
-                 <input type="text" class="inputForm" v-model="infoCliente.Clients.county" placeholder="Cidade...">
+                 <input type="text" class="inputForm" v-model="infoCliente.company.county" placeholder="Cidade...">
              </label>
              <label for="" class="containerLabel" style="width: 40%;"> <strong>Senha</strong>
                  <input type="text" class="inputForm" v-model="password"  placeholder="Nova Senha"  >
@@ -48,6 +50,10 @@
             type: [Array, Object],
             required: true,
         },
+        moreInfo: {
+            type: [Array, Object],
+            required: true,
+        },
     },
     data(){
         return{
@@ -61,29 +67,33 @@
         this.$emit('closeModal')
         },
         async updateData(){
-            const dadoCliente={
-            corporate_name: this.infoCliente.Clients.corporate_name,
-            cnpj: this.infoCliente.Clients.cnpj,
-            fone: this.infoCliente.Clients.fone,
-            name_fantasy: this.infoCliente.Clients.name_fantasy,
-            county: this.infoCliente.Clients.county,
-            district: this.infoCliente.Clients.district,
-            ie: this.infoCliente.Clients.ie,
-            uf: this.infoCliente.Clients.uf,
-            address: this.infoCliente.Clients.address,
-            cep: this.infoCliente.Clients.cep,
-            accountable: this.infoCliente.Clients.accountable,
+        const dadoCliente ={
+            corporate_name: this.infoCliente.company.corporate_name,
+            cnpj: this.infoCliente.company.cnpj,
+            fone: this.infoCliente.fone,
+            // name_fantasy: this.infoCliente.company.name_fantasy,
+            county: this.infoCliente.company.county,
+            district: this.infoCliente.company.district,
+            // ie: this.infoCliente.company.ie,
+            uf: this.infoCliente.company.uf,
+            address: this.infoCliente.company.address,
+            cep: this.infoCliente.company.cep,
+            accountable: this.infoCliente.accountable,
             updateUserDto: {
-                email:  this.infoCliente.email,
+                email:  this.moreInfo.email,
                 password: this.password,
-                is_enabled: this.infoCliente.is_enabled,
-                is_admin: this.infoCliente.is_admin,
-                is_client: this.infoCliente.is_client,
-                is_driver: this.infoCliente.is_driver,
-                is_production: this.infoCliente.is_production,
+                is_admin: this.moreInfo.is_admin,
+                is_client: this.moreInfo.is_client,
+                is_company: this.moreInfo.is_company,
+                is_enabled: this.moreInfo.is_enabled,
+                is_production: this.moreInfo.is_production,
+                is_driver: this.moreInfo.is_driver,
+                
             }
         } 
         this.loading = true
+        console.log(dadoCliente);
+        
         try{
         await http.UpdateCustomerData(this.infoCliente.id, dadoCliente ).then(response => {
             this.loading = false

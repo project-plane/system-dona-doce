@@ -1,0 +1,3 @@
+<template>
+    <TemplateControleCaixas />
+</template>

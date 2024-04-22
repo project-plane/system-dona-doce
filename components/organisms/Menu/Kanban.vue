@@ -22,6 +22,9 @@
           <li>
             <NuxtLink to="/kanban/entrega">Ir para Entrega</NuxtLink>
           </li>
+          <li>
+            <NuxtLink to="/kanban/controleMateriais">Bandejas e Caixas</NuxtLink>
+          </li>
         </ul>
       </nav>
     </div>

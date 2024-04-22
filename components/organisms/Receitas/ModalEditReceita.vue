@@ -34,7 +34,7 @@
                   <Title :title="title" />
                  <!-- <pre> {{ listFindReceita.order_type }}</pre> -->
             
-                  <StwitchButton  @updateEmit="handleType" :type="listFindReceita.order_type"/>
+                  <!-- <StwitchButton  @updateEmit="handleType" :type="listFindReceita.order_type"/> -->
                   
                 </div>
               </div>
