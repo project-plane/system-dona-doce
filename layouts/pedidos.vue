@@ -1,7 +1,7 @@
 <template>
   
   <div class="templatePedidos">
-    <NavBarPedidos />
+    <NavBarPedidosUnidade />
     <Nuxt />
   </div>
 </template>
@@ -13,7 +13,7 @@ export default Vue.extend({
   methods: {
     routePedido() {
       this.$store.commit('BARRA_PEDIDOS_NAV', true)
-      this.$router.push('/pedidos/newPedidos')      
+      this.$router.push('/pedidos/newPedidos')
     },
 
     

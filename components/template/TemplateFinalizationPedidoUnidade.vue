@@ -104,7 +104,7 @@ export default Vue.extend({
     }
   },
 
-  async fetch() {
+  async mounted() {
     const id = this.$route.query.id
     this.dataPedido = this.$route.query.dataPedido
     this.loading = true
@@ -117,7 +117,7 @@ export default Vue.extend({
       .then((res) => {
         this.myData = res.data
         this.addPedidos.fk_company = this.myData.Client_Company.company.id
-        this.idClient = this.myData.Client_Company.clients.id
+        this.idClient = res.data.Client_Company.clients.id
         this.$store.commit('selectUnity', this.myData.Client_Company.company.id)
       })
       .catch((error) => {
