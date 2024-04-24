@@ -1,5 +1,5 @@
 <template>
-    <TemplateMeusDadosUnidade />
+   <TemplateMeusDados />
 </template>
 
 <script lang="ts">

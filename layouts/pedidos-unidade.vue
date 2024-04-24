@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import NavBarPedidosUnidade from '~/components/organisms/NavBarPedidosUnidade.vue';
+
 
 export default Vue.extend({
   methods: {

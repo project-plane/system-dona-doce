@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div v-if="loading">
     <Loading/>
 
@@ -29,13 +29,14 @@
       @closeModal="() => (showModal = false)" @finalizarPedido="finalizarPedido"
       @listaAtualizadaDoModal="listaAtualizadaDoModal" @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque" />
 
+      {{  revenueClient }}
     <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
       <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
         <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido"  :base_max_amount="pedidosProgramation.base_max_amount" :base_min_amount="pedidosProgramation.base_min_amount" />
       </div>
 
       </div>
-    <h2>Fora do Cardapio</h2>
+    <h2>Fora do Cardapioss</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
         <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido"  />
@@ -90,10 +91,10 @@ export default Vue.extend({
     }
   },
 
-  async fetch() {
+  async mounted() {
     const id = this.$route.query.id
     this.dataPedido = this.$route.query.dataPedido
-   this.loading = true;
+    this.loading = true;
     await httpCompany.getUnidades().then((res) => {
         this.dataClientes =res.data
 
@@ -111,7 +112,7 @@ export default Vue.extend({
     await httpMeusDados
       .MeusDados()
       .then((res) => {
-        this.idClient = res.data.id
+        this.idClient = res.data.Client_Company.clients.id
       })
       .catch((error) => {
         console.log(error)
@@ -396,4 +397,4 @@ export default Vue.extend({
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
-</style>
+</style> -->
