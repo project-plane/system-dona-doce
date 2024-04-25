@@ -33,9 +33,14 @@ export const state = () => ({
   estoqueDataModal:[],
   carrinhoProgramado:[],
   carrinhoForaEstoque:[],
+  buttonType:false,
 })
 
 export const mutations = {
+  selectButton(state, id) {
+    state.buttonType = id;
+
+  },
   OPEN_visualizationFin(state, payload){
     state.openModalRelatorio = payload
 

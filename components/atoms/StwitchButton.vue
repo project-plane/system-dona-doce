@@ -1,39 +1,35 @@
-<template>
-    <div class="containerSwitch">
-        <span v-if="type === 'programmed'"> Programado</span>
-      <label class="switch" for="checkMedico">
-        <input type="checkbox" id="checkMedico" @click="toggleSwitch" />
-        <span class="slider round"></span>
-      </label>
-      <span v-if="type === 'coffe'"> Coffe</span>
-    </div>
-  </template>
+<!-- <template>
+  <div class="containerSwitch">
+    <label class="switch" for="checkMedico">
+      <input type="checkbox" id="checkMedico" v-model="ativo" />
+      <span :class="['slider', { 'slider-active': ativo }]"></span>
+    </label>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      ativo: this.$store.state.buttonType
+    };
+  },
   
-  <script>
-    export default {
-    data() {
-        return {
-        doctor: false
-        };
-    },
-    props:{
-        type: String
-    },
-    methods: {
-        toggleSwitch() {
-        this.doctor = !this.doctor;
-        this.$emit('updateEmit', this.doctor);
-        }
-    },
+  watch: {
+    ativo(newValue) {
+      this.$emit('updateEmit', newValue); // Emitir evento sempre que 'ativo' mudar
+    }
+  }
 };
-  </script>
-  
+</script>
+
   <style lang="scss" scoped>
   .containerSwitch {
   
     display: flex;
     align-items: flex-end;
     gap: 6px;
+    
   
     p {
       font-size: 14px;
@@ -45,6 +41,7 @@
       display: inline-block;
       width: 42px;
       height: 20px;
+      
     }
   
     .switch input {
@@ -60,9 +57,10 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #b2b299;
+      background-color: var(--red);
       -webkit-transition: 0.4s;
       transition: 0.4s;
+      border-radius: 1rem;
     }
   
     .slider:before {
@@ -75,6 +73,7 @@
       background-color: white;
       -webkit-transition: 0.4s;
       transition: 0.4s;
+      border-radius: 1rem;
     }
   
     input:checked+.slider {
@@ -100,4 +99,4 @@
       border-radius: 50%;
     }
   }
-  </style>
+  </style> -->

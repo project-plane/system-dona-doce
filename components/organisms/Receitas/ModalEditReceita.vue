@@ -32,9 +32,15 @@
                 <div class="textReceita">
                   <h1>Editar Receita</h1>
                   <Title :title="title" />
-                 <!-- <pre> {{ listFindReceita.order_type }}</pre> -->
-            
-                  <!-- <StwitchButton  @updateEmit="handleType" :type="listFindReceita.order_type"/> -->
+                  <div style="display: flex; gap: 11px;">
+
+                      <input type="radio" id="one" :value="0" v-model="typePedido" />
+                      <label for="coffe">coffe</label>
+
+                      <input type="radio" id="two" :value="1" v-model="typePedido" />
+                      <label for="programado">programado</label>
+
+                  </div>
                   
                 </div>
               </div>
@@ -160,7 +166,7 @@
             </div>
 
             <Button
-              @functionClick="editarIngredienteReceita(listReceitas)"
+              @click.native="editarIngredienteReceita(listReceitas)"
               title="Salvar"
             />
 
@@ -205,8 +211,8 @@ export default Vue.extend({
       loading: false,
       status: null,
       listDeCompras: 0,
-      ingredienteSel: null
-
+      ingredienteSel: null,
+      typePedido: '',
     }
   },
   props: {
@@ -256,6 +262,7 @@ export default Vue.extend({
       .then((res) => {
 
         this.listFindReceita = res.data
+        this.typePedido = res.data.status
         this.maximo = this.listFindReceita.base_max_amount
         this.minimo = this.listFindReceita.base_min_amount
         this.status = this.listFindReceita.status
@@ -266,6 +273,7 @@ export default Vue.extend({
         this.valorAtual = this.listFindReceita.value
         this.valorTotal = this.listFindReceita.value
         this.valor = this.listFindReceita.value
+
       })
       .catch((error) => {
         console.log(error)
@@ -283,10 +291,6 @@ export default Vue.extend({
     this.loading = false
   },
   methods: {
-    handleType(value){
-        console.log(value);
-        
-      },
     addIngrediente() {
       this.statusAddIngrediente = true
     },
@@ -385,6 +389,7 @@ export default Vue.extend({
             console.log(error)
           })
       })
+     
       await this.editReceita(this.idReceita);
       this.$toast.success('Valor Atualizado com sucesso!!!')
 
@@ -425,6 +430,7 @@ export default Vue.extend({
       }
 
       if (this.amountValue.length > 0) {
+        const status = Number(this.typePedido)
         const formData = new FormData()
         formData.append('description', this.listFindReceita.description)
         formData.append('value', this.valorTotal)
@@ -436,7 +442,7 @@ export default Vue.extend({
         formData.append('imagem', this.editUrlImgFile)
         formData.append('base_max_amount', this.maximo)
         formData.append('base_min_amount', this.minimo)
-        formData.append('status', this.status)
+        formData.append('status', status)
         formData.append('yield_per_quantity', this.yield_per_quantity)
         formData.append('time_in_hours', this.time_in_hours)
         formData.append('presumed_profit', this.presumed_profit)
