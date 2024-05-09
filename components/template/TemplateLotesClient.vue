@@ -168,7 +168,7 @@ export default Vue.extend({
   methods: {
      async request(id){ 
       try {
-         const res = await httpOrder.ListLotes(id);
+         const res =  await HttpMeusDados.lotesByToken();
          this.listAllLotes = res.data;
       }
       catch (error) {

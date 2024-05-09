@@ -9,12 +9,15 @@
           <label>Clientes</label>
           <select v-model="selectedClient" @change="searchCliente">
             <option value="" disabled>Selecionar Cliente</option>
-            <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
+            <option  v-for="(client, index) in filteredClients" :key="index" :value="client.id"> 
+              {{ client.Clients ? client.Clients.corporate_name : 'N/A' }}
+            </option>
         </select>
         </div>
+   
         <div class="input" v-if="select === true">
           <label>Unidades</label>
-          <select v-model="selectedUnity" >
+          <select v-model="selectedUnity" @change="searchCliente">
             <option value="" disabled>Selecionar Unidade</option>
             <option v-for="(item, index) in uniqueCompanies" :key="index" :value="item.id">
               {{ item.Client_Company && item.Client_Company.company ? item.Client_Company.company.corporate_name : 'N/A' }}
@@ -23,13 +26,6 @@
        
         </select>
         </div>
-        
-        <!-- <ul v-for="(item, index) in uniqueCompanies" :key="index" :value="item.id">
-           <li>
-            <pre>{{ item}}</pre>
-           </li>
-        </ul> -->
-
         <div class="input" v-if="typeOrder === true">
             <label>Tipo Pedido</label>
             <select v-model="selectedType"  @change="searchCliente">
@@ -122,7 +118,7 @@
         return item.data >= this.startDate && item.data <= this.endDate;
       });
     },
-   uniqueCompanies() {
+     uniqueCompanies() {
       // Criar um conjunto para manter apenas os ids únicos
       const uniqueIds = new Set();
       const uniqueItems = [];
@@ -137,8 +133,11 @@
       });
 
       return uniqueItems;
+    },
+    filteredClients() {
+      // Filtrar os itens para incluir apenas aqueles com 'Clients' definido
+      return this.listUnidades.filter(item => item.is_client && item.Clients);
     }
-  
   },
   methods:{
     searchCliente() {

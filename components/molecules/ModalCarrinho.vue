@@ -421,9 +421,9 @@ export default Vue.extend({
 
       
     },
-    async savePedido(pedido){      
+    async savePedido(pedido) {
       if (pedido.createOrderItemDto.length === 0 && pedido.createOrderNotMenuItemDto.length === 0) {
-        this.$toast.warning('Revise, nenhum pedido foi selecionado' );
+        this.$toast.warning('Revise, nenhum pedido foi selecionado');
       } else {
         try {
           const res = await HttpPedidos.CreateNewOrder(pedido);
@@ -431,15 +431,15 @@ export default Vue.extend({
           this.showModal = false;
           this.listaCompletaReceita = [];
           this.listaForaEstoque = [];
-          this.$router.push('/pedidos/historico-pedidos');
-          this.$store.commit('selectUnity', '');
+          setTimeout(() => {
+            location.reload();
+          }, 3000);
         } catch (error) {
           const message = error.response.data.message;
-          this.$toast.warning('Revise,' + message);
+          this.$toast.warning('Revise, ' + message);
         }
-      }
-      
-    }   
+  }
+}  
   },
 })
 </script>
