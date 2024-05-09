@@ -9,42 +9,48 @@
 
                 <span v-if="typeCard === 'client'">Cliente</span>
                 <span v-if="typeCard === 'client'">Unidade</span>
-  
+
             </div>
             <div class="value">
                 <span>{{ dataObject.description }}</span>
                 <span>{{ dataObject.amount_actual }}</span>
-                <span v-if="typeCard === 'client'">{{dataObject.corporate_name}}</span>
+                <span v-if="typeCard === 'client'">{{ dataObject.corporate_name }}</span>
                 <span v-if="typeCard === 'client'">{{ dataObject.company_name }}</span>
-        
+
             </div>
         </div>
 
         <table v-else class="cardKanban-infos">
-           
+
             <tr class="legend">
                 <td>Cliente:</td>
                 <td>Unidade:</td>
                 <th>Endereço:</th>
                 <th>Bairro</th>
                 <th></th>
-       
-      
+
+
             </tr>
-            <tr class="value" >
-                <h4  style="color: var(--red);"> {{ name.corporate_name }}</h4>
-                <td v-for="(item, id) in dataObject" :key="id">  {{ item.corporate_name }}</td>
+            <tr class="value">
+                <h4 style="color: var(--red);"> {{ name.corporate_name }}</h4>
+                <td v-for="(item, id) in dataObject" :key="id"> {{ item.corporate_name }}</td>
                 <td v-for="(item, id) in dataObject" :key="id"> {{ item.address }} </td>
                 <td v-for="(item, id) in dataObject" :key="id">{{ item.district }}</td>
-                
-          
+
+
             </tr>
-            <tr class="value" >
-               
-                <td><strong>Responsavel:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.accountable }}</span></td>
-                <td><strong>Fone:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.fone }}</span> </td>
+            <tr class="value">
+
+                <td><strong>Responsavel:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.accountable}}</span></td>
+                <td><strong>Fone:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.fone }}</span>
+                </td>
                 <td><strong>Entrega às:</strong> {{ formatTime(dataObject.deliveryDate) }} </td>
                 <td><strong>CEP:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.cep }}</span></td>
+                <div v-if="dataObject && Object.keys(dataObject).length > 0" style="    overflow-y: scroll;    display: flex;">
+                    <td v-for="(item, id) in dataObject" :key="id">
+                            <span v-if="!null && !''"> {{ formatItem(item) }}</span>
+                    </td>
+                </div>
             </tr>
             <!-- <tr class="value"  v-for="(item, id) in dataObject" :key="id">
                 <td> {{ item.corporate_name }}</td>
@@ -52,6 +58,7 @@
             </tr> -->
 
         </table>
+     
     </div>
 </template>
 
@@ -67,17 +74,27 @@ export default Vue.extend({
             required: true,
             type: Object
         },
-        name:Object,
+        name: Object,
         typeCard: String,
         hourCard: String,
         idOrder: Number
     },
-    methods:{
+    methods: {
         formatTime(time) {
-        const dataHoraFormatada = dayjs(time).local().format('HH:mm:ss');
+            const dataHoraFormatada = dayjs(time).local().format('HH:mm:ss');
 
-        return dataHoraFormatada
-        }
+            return dataHoraFormatada
+        },
+        formatItem(item) {
+      if (item.amountItem !== undefined && item.revenues && item.revenues.description) {
+        return `Qtd: ${item.amountItem} - Item:${item.revenues.description}`;
+      } else if (item.amountItem !== undefined) {
+        return `${item.amountItem} `;
+      } else {
+        return null;
+      }
+    }
+
     }
 
 })
@@ -106,7 +123,8 @@ export default Vue.extend({
         text-align: left;
         gap: .5rem;
 
-        .legend, .value {
+        .legend,
+        .value {
             display: flex;
             flex-direction: column;
         }
@@ -116,7 +134,7 @@ export default Vue.extend({
             font-weight: 600;
         }
 
-        .value > span:first-child {
+        .value>span:first-child {
             font-weight: 500;
             color: var(--red);
             max-width: 18ch;

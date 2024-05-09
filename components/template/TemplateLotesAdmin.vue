@@ -265,8 +265,9 @@ export default Vue.extend({
       }
     },
     lotes() {
+      const fk_unity = this.$store.state.unidadeClienteLote
       const formData = new FormData()
-      formData.append('fk_client', this.cliente)
+      formData.append('fk_user', this.fk_unity)
       formData.append('file_invoice', this.selectedFileNF)
       formData.append('invoice_number', this.invoice_number)
       formData.append('initial_date', this.initial_date)

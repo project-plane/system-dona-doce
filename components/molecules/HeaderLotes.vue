@@ -11,9 +11,26 @@
             <option value="" disabled>Selecionar Cliente</option>
             <option v-for="item in listClient" :value="item.id" :key="item.id">{{ item.corporate_name }}</option>
         </select>
-        <!-- <pre>{{ listClient[0].id }}</pre> -->
         </div>
-          <div class="input" v-if="typeOrder === true">
+        <div class="input" v-if="select === true">
+          <label>Unidades</label>
+          <select v-model="selectedUnity" >
+            <option value="" disabled>Selecionar Unidade</option>
+            <option v-for="(item, index) in uniqueCompanies" :key="index" :value="item.id">
+              {{ item.Client_Company && item.Client_Company.company ? item.Client_Company.company.corporate_name : 'N/A' }}
+            </option>
+            
+       
+        </select>
+        </div>
+        
+        <!-- <ul v-for="(item, index) in uniqueCompanies" :key="index" :value="item.id">
+           <li>
+            <pre>{{ item}}</pre>
+           </li>
+        </ul> -->
+
+        <div class="input" v-if="typeOrder === true">
             <label>Tipo Pedido</label>
             <select v-model="selectedType"  @change="searchCliente">
               <option value="">Todos</option>
@@ -67,7 +84,9 @@
         selectedType: '',
         selectedAgenda: '',
         selectedClient: '',
+        selectedUnity: '',
         listClient:[],
+        listUnidades:[],
         startDate: '',
         endDate: '',
         loading: false,
@@ -84,14 +103,42 @@
       .catch((error) => {
         console.log(error)
       })
+
+      await httpClients
+      .GetUsers()
+      .then((res) => {
+        this.listUnidades = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     this.loading = false
+    
   },
+
     computed: {
     filteredData() {
       return this.data.filter(item => {
         return item.data >= this.startDate && item.data <= this.endDate;
       });
     },
+   uniqueCompanies() {
+      // Criar um conjunto para manter apenas os ids únicos
+      const uniqueIds = new Set();
+      const uniqueItems = [];
+
+      // Filtrar os itens para manter apenas um item de cada empresa única
+       this.listUnidades.forEach(item => {
+        const companyId = item.Client_Company && item.Client_Company.company ? item.Client_Company.company.id : null;
+        if (companyId && !uniqueIds.has(companyId)) {
+          uniqueIds.add(companyId);
+          uniqueItems.push(item);
+        }
+      });
+
+      return uniqueItems;
+    }
+  
   },
   methods:{
     searchCliente() {
@@ -116,7 +163,9 @@
     selectedClient(newValue) {
       this.$store.commit('SELECTED_NAME_CLIENT', newValue)
     },
- 
+    selectedUnity(newValue) {
+      this.$store.commit('SELECTED_UNIDADE_ID', newValue)
+    },
     
   },
   })

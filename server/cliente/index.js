@@ -10,5 +10,7 @@ export default {
   UpdateCustomerData: async (id,data) => {
     return await http.put(`/clients/${id}`,data)
   },
-
+  GetUsers: async () => {
+    return await http.get(`order_batch/usersForOrderBatch`)
+  },
 }

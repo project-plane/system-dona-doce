@@ -27,6 +27,7 @@ export const state = () => ({
   dadosCliente:[],
   unidadeCliente:"",
   nomeCliente:"",
+  unidadeClienteLote:"",
   dataPedido:"",
   dateCalendar: null,
   openModalEstoque:false,
@@ -102,6 +103,10 @@ export const mutations = {
   SELECTED_NAME_CLIENT(state, payload) {
     state.nomeCliente = payload
     console.log(state.nomeCliente );
+  },
+  SELECTED_UNIDADE_ID(state, payload) {
+    state.unidadeClienteLote = payload
+    console.log(state.unidadeClienteLote );
   },
   limparDadosPedidos(state) {
     state.dadosPedidos = {};
