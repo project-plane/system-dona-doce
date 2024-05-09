@@ -82,8 +82,7 @@
 
               <th>Data</th>
               <th>Empresa</th>
-              <th>Fabrica</th>
-              <th>Horario</th>
+              <th>Status</th>
               <!-- <th>Status</th> -->
               <th>Produto</th>
               
@@ -103,13 +102,13 @@
               <td>{{ list.amountItem }}</td>
               <td> R$ {{  list.valueOrderItem.toFixed(2)}}</td>              
               <td> R$ {{ list.valueItemTotal.toFixed(2) }}</td>
-              <td>Custo Total</td>
-              <td>Lucro Total</td>
+              <td>{{ A }}</td>
+              <td>{{ a }}</td>
 
               <td>{{ convertData(list.dateOrder) }}</td>
-              <td>{{ list.client }}</td>
+        
               <td>{{ list.company }}</td>
-              <td>Horario**</td>
+              <td>{{ list.descriptionStatus }}</td>
               <td>{{ list.description }}</td>
               
               <!-- <td>Custo Unit**</td>
