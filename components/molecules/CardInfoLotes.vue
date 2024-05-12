@@ -88,7 +88,7 @@ export default Vue.extend({
         user: key.user.Clients.corporate_name,
         orderItem: key.orderItem,
         selected: this.infoPedidos.selected || false,
-        dateOrderPedido: key.dateOrder
+        dateOrderPedido: key
       }
       this.$emit('update-selection', pedidos);
       

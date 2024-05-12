@@ -1,95 +1,99 @@
 <template>
-   <Loading v-if="loading"  />
-    <div v-else class="headerBashboard">
-      <h1>{{title}}</h1>
-      <div class="btns">
-       
-        <div class="selectInput" >
-          <div class="input" v-if="select === true">
+  <Loading v-if="loading" />
+  <div v-else class="headerBashboard">
+    <h1>{{ title }}</h1>
+    <div class="btns">
+     <!-- <pre> {{ selectedClient }}</pre> -->
+      <div class="selectInput">
+        <div class="input" v-if="select === true">
           <label>Clientes</label>
           <select v-model="selectedClient" @change="searchCliente">
             <option value="" disabled>Selecionar Cliente</option>
-            <option  v-for="(client, index) in filteredClients" :key="index" :value="client.id"> 
+            <option v-for="(client, index) in listUnidades" :key="index" :value="client">
               {{ client.Clients ? client.Clients.corporate_name : 'N/A' }}
             </option>
-        </select>
+          </select>
         </div>
    
         <div class="input" v-if="select === true">
           <label>Unidades</label>
           <select v-model="selectedUnity" @change="searchCliente">
             <option value="" disabled>Selecionar Unidade</option>
-            <option v-for="(item, index) in uniqueCompanies" :key="index" :value="item.id">
-              {{ item.Client_Company && item.Client_Company.company ? item.Client_Company.company.corporate_name : 'N/A' }}
+            <option v-for="(item, index) in selectedClient.Client_Company" :key="index" :value="item">
+              {{ item.corporate_name }}
             </option>
-            
-       
-        </select>
+
+
+          </select>
         </div>
         <div class="input" v-if="typeOrder === true">
-            <label>Tipo Pedido</label>
-            <select v-model="selectedType"  @change="searchCliente">
-              <option value="">Todos</option>
-              <option value="programmed">Programado</option>
-              <option value="coffe">Coffee</option>
-            </select>
-          </div>
-      
-          <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
-         <label for="">
-          <p>Data Inicio</p>
-           <input type="date" id="startDate" style="background-color: white;" v-model="startDate"  @change="emitDateRange" />
-         </label>
-         <label for="">
-          <p>Data Final</p>
-           <input type="date" id="endDate"   style="background-color: white;"  v-model="endDate" @change="emitDateRange" />
-         </label>
+          <label>Tipo Pedido</label>
+          <select v-model="selectedType" @change="searchCliente">
+            <option value="">Todos</option>
+            <option value="programmed">Programado</option>
+            <option value="coffe">Coffee</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
+          <label for="">
+            <p>Data Inicio</p>
+            <input type="date" id="startDate" style="background-color: white;" v-model="startDate"
+              @change="emitDateRange" />
+          </label>
+          <label for="">
+            <p>Data Final</p>
+            <input type="date" id="endDate" style="background-color: white;" v-model="endDate"
+              @change="emitDateRange" />
+          </label>
         </div>
         <div class="searchId" v-if="filterSearch === true">
-             <label :for="label">{{ label }}</label>
-              <input  placeholder="Pesquisar por Id" type="text" :id="label" :value="value" @input="$emit('input', $event.target.value)">
-          </div>
-      </div>
-
-       
+          <label :for="label">{{ label }}</label>
+          <input placeholder="Pesquisar por Id" type="text" :id="label" :value="value"
+            @input="$emit('input', $event.target.value)">
         </div>
       </div>
 
-  </template>
-  
-  <script lang="ts">
-  import Vue from 'vue'
-  import httpClients from '~/server/cliente'
-  import 'dayjs/locale/pt-br'
-  
-  export default Vue.extend({
-  
-    props: {
-      label: String,
-      value: String,
-      title: String,
-      typeOrder: Boolean,
-      filterData: Boolean,
-      filterSearch:Boolean,
-      select: Boolean
-    },
-    data() {
-      return {
-        textSearch:'',
-        
-        selectedType: '',
-        selectedAgenda: '',
-        selectedClient: '',
-        selectedUnity: '',
-        listClient:[],
-        listUnidades:[],
-        startDate: '',
-        endDate: '',
-        loading: false,
 
-      }
-    },
-    async fetch() {
+    </div>
+
+  </div>
+
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import httpClients from '~/server/cliente'
+import 'dayjs/locale/pt-br'
+
+export default Vue.extend({
+
+  props: {
+    label: String,
+    value: String,
+    title: String,
+    typeOrder: Boolean,
+    filterData: Boolean,
+    filterSearch: Boolean,
+    select: Boolean
+  },
+  data() {
+    return {
+      textSearch: '',
+
+      selectedType: '',
+      selectedAgenda: '',
+      selectedClient: '',
+      selectedUnity: '',
+      listClient: [],
+      listUnidades: [],
+      startDate: '',
+      endDate: '',
+      loading: false,
+
+    }
+  },
+  async fetch() {
     this.loading = true
     await httpClients
       .GetAllClients()
@@ -100,7 +104,7 @@
         console.log(error)
       })
 
-      await httpClients
+    await httpClients
       .GetUsers()
       .then((res) => {
         this.listUnidades = res.data
@@ -109,22 +113,22 @@
         console.log(error)
       })
     this.loading = false
-    
+
   },
 
-    computed: {
+  computed: {
     filteredData() {
       return this.data.filter(item => {
         return item.data >= this.startDate && item.data <= this.endDate;
       });
     },
-     uniqueCompanies() {
+    uniqueCompanies() {
       // Criar um conjunto para manter apenas os ids únicos
       const uniqueIds = new Set();
       const uniqueItems = [];
 
       // Filtrar os itens para manter apenas um item de cada empresa única
-       this.listUnidades.forEach(item => {
+      this.listUnidades.forEach(item => {
         const companyId = item.Client_Company && item.Client_Company.company ? item.Client_Company.company.id : null;
         if (companyId && !uniqueIds.has(companyId)) {
           uniqueIds.add(companyId);
@@ -139,9 +143,9 @@
       return this.listUnidades.filter(item => item.is_client && item.Clients);
     }
   },
-  methods:{
+  methods: {
     searchCliente() {
-      this.$emit('searchCliente', this.selectedClient, this.selectedType )
+      this.$emit('searchCliente', this.selectedClient.id, this.selectedType)
     },
     emitDateRange() {
       this.$emit('dateRangeSelected', {
@@ -150,8 +154,8 @@
       });
     }
   },
-  
-   
+
+
   watch: {
     selectedType(newValue) {
       this.$store.commit('SELECTED_TIPO', newValue)
@@ -163,60 +167,62 @@
       this.$store.commit('SELECTED_NAME_CLIENT', newValue)
     },
     selectedUnity(newValue) {
-      this.$store.commit('SELECTED_UNIDADE_ID', newValue)
+      this.$store.commit('SELECTED_UNIDADE_ID', '2c81db9c-06e2-47b1-aca9-93239a245dd9')
     },
-    
+
   },
-  })
-  </script>
-  
-  <style scoped lang="scss">
-  .headerBashboard {
-    width: 100%;
+})
+</script>
+
+<style scoped lang="scss">
+.headerBashboard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  // border-bottom: 1px solid var(--border);
+
+  .btns {
     display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    // border-bottom: 1px solid var(--border);
-  
-    .btns {
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    button {
+      width: 7rem;
+      height: 2.5rem;
+      border-radius: 6rem;
+      font-size: 1rem;
+      font-weight: 600;
+      background-color: transparent;
+      border: 1px solid var(--red);
+      margin-top: 1rem;
+    }
+
+    .focus {
+      background-color: var(--red);
+      color: var(--white);
+    }
+
+    .selectInput {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+
       gap: 1rem;
-  
-      button {
-        width: 7rem;
-        height: 2.5rem;
-        border-radius: 6rem;
-        font-size: 1rem;
-        font-weight: 600;
-        background-color: transparent;
-        border: 1px solid var(--red);
-        margin-top: 1rem;
-      }
-  
-      .focus {
-        background-color: var(--red);
-        color: var(--white);
-      }
-  
-      .selectInput {
+
+      .input {
+        width: 100%;
         display: flex;
-  
-        gap: 1rem;
-  
-        .input {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-        }
+        flex-direction: column;
       }
     }
   }
-  .searchId{
-    @extend .input;
-    right: auto;
-    input {
+}
+
+.searchId {
+  @extend .input;
+  right: auto;
+
+  input {
     width: 100%;
     border: 0.03rem solid var(--border);
     border-radius: 0.25rem;
@@ -225,10 +231,9 @@
     background-repeat: no-repeat;
     background-position-x: right;
     background-size: 22px;
-    
-  }
-    
 
   }
-  </style>
-  
+
+
+}
+</style>

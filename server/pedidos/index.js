@@ -23,7 +23,9 @@ export default {
    GetOrderCliente2: async (typeLotes, client, statusOrder) => {
     return await http.get(`/order/all2?listWithOrderBatchNull=${typeLotes}&fk_client=${client}&orderType=${statusOrder}&skip=0&limit=1000`)
   },
-  
+  GetProdutosLotes: async (client, tipoPedido) => {
+    return await http.get(`/order/allOrdersToBatch?fk_client=${client}&orderType=${tipoPedido}`)
+  },
   Orderspercustomer: async (rota) => {
     return await http.get(`order/client?${rota}`)
   },

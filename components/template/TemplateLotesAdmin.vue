@@ -20,6 +20,7 @@
           :infoPedidos="item"
           @update-selection="updateSelectedCards"
         />
+      <pre>  {{ dataPedidos }}</pre>
 
         <span v-show="dataPedidos.length === 0" class="no-results-message">
           Não encontramos resultados, Escolha um cliente...
@@ -34,6 +35,7 @@
           @update-selection="updateSelectedCards"
           
         />
+
 
         <span v-show="datasFiltradas.length === 0" class="no-results-message">
           Não encontramos resultados nesse intervalo de tempo.
@@ -98,7 +100,7 @@
                 :key="id"
                 style="width: 100%; display: flex; flex-direction: column"
               >
-                R$ {{ receita.valueOrderItem }}</span
+                R$ {{ receita.valueOrder }}</span
               >
             </td>
           </tr>
@@ -228,13 +230,15 @@ export default Vue.extend({
 
     async fetchOrderData(typeLotes, selectedClient, selectedType) {
       try {
-        return await httpOrder.GetOrderCliente2(typeLotes, selectedClient, selectedType);
+        return await httpOrder.GetProdutosLotes(selectedClient, selectedType);
       } catch (error) {
         console.error(error);
         throw error;
       }
     },
     updateSelectedCards(selectedCard) {
+      console.log(selectedCard);
+      
       this.shoeSideBar()
       if (selectedCard.selected) {
         const client = this.selectedCards.some(
@@ -265,9 +269,9 @@ export default Vue.extend({
       }
     },
     lotes() {
-      const fk_unity = this.$store.state.unidadeClienteLote
+      const fk_unity = '70b8571a-b56e-47e2-94fc-4132bfd88824'
       const formData = new FormData()
-      formData.append('fk_user', this.fk_unity)
+      formData.append('fk_user', fk_unity)
       formData.append('file_invoice', this.selectedFileNF)
       formData.append('invoice_number', this.invoice_number)
       formData.append('initial_date', this.initial_date)
@@ -280,7 +284,7 @@ export default Vue.extend({
         'createOrderBatchItem',
         JSON.stringify(orderBatchItemArray)
       )
-
+      
       this.postOrderLotes(formData)
     },
     formatDate(date: Date) {
@@ -307,8 +311,10 @@ export default Vue.extend({
       this.initial_date = null
       this.end_date = null
 
+      console.log('oii', this.selectedCards);
+      
       this.selectedCards.forEach((item) => {
-        const dataPedidoItem = new Date(item.dateOrderPedido)
+        const dataPedidoItem = new Date(item.dateOrderPedido.dateOrder)
 
         if (!isNaN(dataPedidoItem.getTime())) {
           if (
