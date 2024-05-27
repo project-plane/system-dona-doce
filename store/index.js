@@ -106,7 +106,7 @@ export const mutations = {
   },
   SELECTED_UNIDADE_ID(state, payload) {
     state.unidadeClienteLote = payload
-    console.log(state.unidadeClienteLote );
+    // console.log(state.unidadeClienteLote );
   },
   limparDadosPedidos(state) {
     state.dadosPedidos = {};

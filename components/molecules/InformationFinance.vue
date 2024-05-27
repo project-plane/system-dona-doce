@@ -57,7 +57,7 @@
       <BeadFrame @pedidos="pedidos" @entrega="entrega">
         <div v-if="statusAba" class="order">
           <div>
-            <h2>{{ orderFindClient.user.Clients.corporate_name }}</h2>
+            <!-- <h2>{{ orderFindClient.user.Clients.corporate_name }}</h2> -->
             <span
               style="color: var(--red)"
               v-if="orderFindClient.order_type === 'coffe'"

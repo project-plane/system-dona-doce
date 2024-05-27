@@ -15,12 +15,12 @@
       <div class="listCards" v-if="!datasFiltradas || datasFiltradas.length === 0">
 
         <CardInfoLotes
-          v-for="(item, id) in dataPedidos"
+          v-for="(item, id) in dataPedidos.data"
           :key="id"
           :infoPedidos="item"
           @update-selection="updateSelectedCards"
         />
-      <pre>  {{ dataPedidos }}</pre>
+      <!-- <pre>  {{ dataPedidos }}</pre> -->
 
         <span v-show="dataPedidos.length === 0" class="no-results-message">
           Não encontramos resultados, Escolha um cliente...
@@ -206,31 +206,31 @@ export default Vue.extend({
   },
   methods: {
    
-    async searchCliente(selectedClient, selectedType) {
+    async searchCliente(cliente, unidade) {
+
+      console.log('c',cliente);
+      console.log('u',unidade);
       try {
         this.loading = true;
 
         const typeLotes = 1;
         // const fkOrderStatus1 = "789850813-1c69-11ee-be56-c691200020241";
         const fkOrderStatus2 = "1c69c120002-575f34-1c69-be56-0242ac1201c69";
-
-        const res = await this.fetchOrderData(typeLotes, selectedClient, selectedType);
+        const res = await this.fetchOrderData(cliente, fkOrderStatus2, unidade );
         
-        this.dataPedidos = res.data.filter(item =>
-          item.fk_orderstatus === fkOrderStatus2
-        );
+        this.dataPedidos = res.data
 
-        this.cliente = selectedClient;
+        this.cliente = cliente;
       } catch (error) {
         console.error(error);
       } finally {
         this.loading = false;
       }
-    },
+      },
 
-    async fetchOrderData(typeLotes, selectedClient, selectedType) {
+    async fetchOrderData(cliente, filtroPedidos, unidade) {
       try {
-        return await httpOrder.GetProdutosLotes(selectedClient, selectedType);
+        return await httpOrder.GetProdutosLotes(cliente, filtroPedidos, unidade);
       } catch (error) {
         console.error(error);
         throw error;
@@ -269,7 +269,7 @@ export default Vue.extend({
       }
     },
     lotes() {
-      const fk_unity = '70b8571a-b56e-47e2-94fc-4132bfd88824'
+      const fk_unity = this.$store.unidadeClienteLote 
       const formData = new FormData()
       formData.append('fk_user', fk_unity)
       formData.append('file_invoice', this.selectedFileNF)
@@ -310,8 +310,6 @@ export default Vue.extend({
     encontrarDatas() {
       this.initial_date = null
       this.end_date = null
-
-      console.log('oii', this.selectedCards);
       
       this.selectedCards.forEach((item) => {
         const dataPedidoItem = new Date(item.dateOrderPedido.dateOrder)

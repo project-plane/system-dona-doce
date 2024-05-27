@@ -3,7 +3,7 @@
   <div v-else class="headerBashboard">
     <h1>{{ title }}</h1>
     <div class="btns">
-     <!-- <pre> {{ selectedClient }}</pre> -->
+
       <div class="selectInput">
         <div class="input" v-if="select === true">
           <label>Clientes</label>
@@ -17,8 +17,8 @@
    
         <div class="input" v-if="select === true">
           <label>Unidades</label>
-          <select v-model="selectedUnity" @change="searchCliente">
-            <option value="" disabled>Selecionar Unidade</option>
+          <select v-model="selectedUnity"  @change="searchCliente">
+            <option value="" disabled selected>Selecionar Unidade</option>
             <option v-for="(item, index) in selectedClient.Client_Company" :key="index" :value="item">
               {{ item.corporate_name }}
             </option>
@@ -145,7 +145,8 @@ export default Vue.extend({
   },
   methods: {
     searchCliente() {
-      this.$emit('searchCliente', this.selectedClient.id, this.selectedType)
+    
+      this.$emit('searchCliente', this.selectedClient.id, this.selectedUnity.id)
     },
     emitDateRange() {
       this.$emit('dateRangeSelected', {
@@ -167,7 +168,7 @@ export default Vue.extend({
       this.$store.commit('SELECTED_NAME_CLIENT', newValue)
     },
     selectedUnity(newValue) {
-      this.$store.commit('SELECTED_UNIDADE_ID', '2c81db9c-06e2-47b1-aca9-93239a245dd9')
+      this.$store.commit('SELECTED_UNIDADE_ID', this.selectedUnity.id)
     },
 
   },

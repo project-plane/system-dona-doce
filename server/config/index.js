@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-
-    // baseURL: 'http://localhost:3100',
-     baseURL: 'http://apitest.donadoce.net',
+     baseURL: 'https://api.donadoce.net',
 
   headers: {
     Accept: 'application/json',

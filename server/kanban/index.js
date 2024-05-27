@@ -20,7 +20,13 @@ export default {
  },
   UpdateOrder: async(id, data)=>{
       return await http.patch(`/company/priority/${id}`, data)
-  }
+  },
+  GetTrayAndBoxes: async ()=> {
+    return await http.get(`/order/findManyTrayAndBoxes?take=300`)
+ },
+ GetAllTrayAndBoxes: async ()=> {
+  return await http.get(`/order/findManyTrayAndBoxes?take=1000`)
+},
 
 
 }

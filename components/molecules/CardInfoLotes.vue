@@ -23,7 +23,7 @@
             </div>
   
 
-            <h2>{{ infoPedidos.user.Clients.corporate_name }}</h2>
+            <h2>{{ infoPedidos.user.Clients.corporate_name}}</h2>
 
             <img v-if="infoPedidos.order_type === 'programmed'" src="../../assets/icons/programado.svg" />
             <img v-else src="../../assets/icons/coffee.svg" alt="" />
