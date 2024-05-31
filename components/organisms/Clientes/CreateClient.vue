@@ -30,23 +30,29 @@
     </ContainerInput>
     <ContainerInput>
 
-      <Input
-      v-model="createUser.password"
-        label="Digitar nova senha"
-        type="password"
-        placeholder="Digitar nova senha"
-        @input="validacaoCaracteres"
-      />
+      <Input v-model="createUser.password" label="Digitar nova senha" type="password" placeholder="Digitar nova senha"
+        @input="validacaoCaracteres" />
     </ContainerInput>
     <section style="display: grid;">
 
       <span style="font-size: 11px; text-align: start;  margin-top: -2rem;">{{ createUser.password }}</span>
-      <span v-if="quantidade <= 5 " style="font-size: 11px; text-align: start; color: red; margin-top: -1rem;">
-            Escolha uma senha com pelo menos seis caracteres</span
-          >
+      <span v-if="quantidade <= 5" style="font-size: 11px; text-align: start; color: red; margin-top: -1rem;">
+        Escolha uma senha com pelo menos seis caracteres</span>
     </section>
 
     <h3>Associar unidade - cliente</h3>
+
+    <ContainerInput>
+      <input style="border: 0.06rem solid var(--border);" v-model="email" label="E-mail" type="email" placeholder="Digitar e-mail" />
+      <div class="line-pass">
+        <input v-model="senha" ref="senha" label="Senha" type="password" placeholder="Digitar senha" />
+        <button class="pass-button" @click="exibirSenha()">
+          <img v-show="!eyeView" src="~/assets/icons/eye.svg" />
+          <img v-show="eyeView" src="~/assets/icons/eyeClose.svg" />
+        </button>
+
+      </div>
+    </ContainerInput>
     <div class="associarEmpresa">
       <div class="input">
         <span>Unidade</span>
@@ -61,6 +67,8 @@
       <Input label="Fone" type="text" placeholder="Digitar fone responsável" v-model="foneCompany" />
       <button @click="addClient">Adicionar</button>
     </div>
+
+
     <table v-if="createCompany.length !== 0">
       <thead>
         <th>ID</th>
@@ -98,6 +106,10 @@ export default Vue.extend({
     return {
       isDisabled: false,
       selected: '',
+      eyeView: true,
+      email: '',
+      img: '~/assets/icons/eye.svg',
+      senha: '',
       corporate_name: '',
       cnpj: '',
       fone: '',
@@ -135,6 +147,22 @@ export default Vue.extend({
       })
   },
   methods: {
+    exibirSenha() {
+      // Acessa o elemento DOM do campo de senha usando $refs
+      const campoSenha = this.$refs.senha;
+
+
+      // Verifica se o tipo do campo de senha é 'password'
+      if (campoSenha.type === 'password') {
+        // Se for, altera o tipo para 'text' para exibir a senha
+        campoSenha.type = 'text';
+        this.eyeView = true;
+        return;
+      }
+      campoSenha.type = 'password';
+      this.eyeView = false;
+
+    },
     validacaoCaracteres() {
       this.quantidade = this.createUser.password.length;
     },
@@ -175,6 +203,16 @@ export default Vue.extend({
         company: this.selected,
         accountable: this.accountableCompany,
         fone: this.foneCompany,
+        user: {
+          email: this.email,
+          password: this.senha,
+          is_enabled: true,
+          is_admin: true,
+          is_client: true,
+          is_driver: true,
+          is_production: true,
+          is_company: true
+        }
       })
       this.selected = ''
       this.accountableCompany = ''
@@ -187,7 +225,7 @@ export default Vue.extend({
     },
 
     async saveClient() {
-      if(this.quantidade <5){
+      if (this.quantidade < 5) {
         this.$toast.info(' Escolha uma senha com pelo menos seis caracteres')
       }
       if (
@@ -225,6 +263,8 @@ export default Vue.extend({
         createCompany: this.createCompany,
       }
 
+
+
       this.isDisabled = true
 
       await httpClient
@@ -237,6 +277,9 @@ export default Vue.extend({
           console.log(error)
         })
 
+
+      this.email = ''
+      this.senha = ''
       this.corporate_name = ''
       this.cnpj = ''
       this.fone = ''
@@ -308,6 +351,21 @@ export default Vue.extend({
     cursor: pointer;
     margin-top: 30px;
   }
+}
+
+.line-pass {
+  display: flex;
+  align-items: center;
+       input {
+        border: 0.06rem solid var(--border);
+
+        }
+}
+
+.pass-button {
+  width: 40px;
+  background: transparent;
+  height: 40px;
 }
 
 .inputCreate {

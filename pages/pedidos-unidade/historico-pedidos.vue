@@ -1,13 +1,13 @@
 <template>
-    <TemplatePedidos />
+    <TemplateHistoricoPedidos />
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import HttpMeusDados from '@/server/meusDados/index'
-export default Vue.extend({
-  layout: 'pedidos',
 
+export default Vue.extend({
+  layout: 'pedidos-unidade',
   data () {
     return {
       myData:{}
@@ -17,8 +17,8 @@ export default Vue.extend({
   async fetch() {
     await HttpMeusDados.MeusDados().then( (res) => {
       this.myData = res.data
-
-      if(!this.myData.is_client && !this.myData.is_company) {
+      this.$store.commit('selectUnity', this.myData.Client_Company.company.id)
+      if(!this.myData.is_company) {
         this.$router.push('/login')
         this.$toast.error(`Opa! Parece que você não é um CLIENTE.\nUtilize uma conta de cliente para realizar as operações`)
       }
@@ -26,14 +26,12 @@ export default Vue.extend({
       console.log(error)
       this.$router.push('/login')
       this.$toast.error(`Acesso Não Autorizado`)
+
     })
   },
-
   head: {
-    title: 'Fazer Pedido - Dona Doce'
-  }
+    title: 'Histórico de Pedidos - Dona Doce',
+  },
 })
 </script>
 
-<style scoped>
-</style>

@@ -1,5 +1,6 @@
 export const state = () => ({
   openModal: false,
+  openModalRelatorio: false,
   openModalPreviewReceita: false,
   openModalPreviewEmpresa: false,
   openModalReceita: false,
@@ -26,15 +27,25 @@ export const state = () => ({
   dadosCliente:[],
   unidadeCliente:"",
   nomeCliente:"",
+  unidadeClienteLote:"",
   dataPedido:"",
   dateCalendar: null,
   openModalEstoque:false,
   estoqueDataModal:[],
   carrinhoProgramado:[],
   carrinhoForaEstoque:[],
+  buttonType:false,
 })
 
 export const mutations = {
+  selectButton(state, id) {
+    state.buttonType = id;
+
+  },
+  OPEN_visualizationFin(state, payload){
+    state.openModalRelatorio = payload
+
+  },
   NEWDATECALENDAR(state, payload){
     state.dateCalendar = payload
 
@@ -92,6 +103,10 @@ export const mutations = {
   SELECTED_NAME_CLIENT(state, payload) {
     state.nomeCliente = payload
     console.log(state.nomeCliente );
+  },
+  SELECTED_UNIDADE_ID(state, payload) {
+    state.unidadeClienteLote = payload
+    // console.log(state.unidadeClienteLote );
   },
   limparDadosPedidos(state) {
     state.dadosPedidos = {};

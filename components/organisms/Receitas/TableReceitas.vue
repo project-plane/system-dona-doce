@@ -36,9 +36,10 @@
               />
             </td>
             <td>{{ receita.description }}</td>
-            <td v-if="receita.status === 0">Coffee</td>
+             
+            <td v-if="receita.order_type === 'coffe'">Coffe</td>
             <td v-else>Programado</td>
-            <td>R$ {{ receita.value.toFixed(4) }}</td>
+            <td>R$ {{ receita.value.toFixed(2) }}</td>
             <td>
               <div class="iconsOptions">
                 <button @click="previewReceita(receita.id)">

@@ -15,11 +15,12 @@
       <div class="listCards" v-if="!datasFiltradas || datasFiltradas.length === 0">
 
         <CardInfoLotes
-          v-for="(item, id) in dataPedidos"
+          v-for="(item, id) in dataPedidos.data"
           :key="id"
           :infoPedidos="item"
           @update-selection="updateSelectedCards"
         />
+      <!-- <pre>  {{ dataPedidos }}</pre> -->
 
         <span v-show="dataPedidos.length === 0" class="no-results-message">
           Não encontramos resultados, Escolha um cliente...
@@ -34,6 +35,7 @@
           @update-selection="updateSelectedCards"
           
         />
+
 
         <span v-show="datasFiltradas.length === 0" class="no-results-message">
           Não encontramos resultados nesse intervalo de tempo.
@@ -80,7 +82,7 @@
                 :key="id"
                 style="width: 100%; display: flex; flex-direction: column"
               >
-                {{ receita.revenues.description }}</span
+                {{ receita }}</span
               >
             </td>
             <td>
@@ -93,13 +95,13 @@
               >
             </td>
             <td>
-              <span
-                v-for="(receita, id) in item.orderItem"
+              <!-- <span
+                v-for="(receita, id) in item"
                 :key="id"
                 style="width: 100%; display: flex; flex-direction: column"
               >
-                R$ {{ receita.valueOrderItem }}</span
-              >
+                R$ {{ }}</span
+              > -->
             </td>
           </tr>
         </table>
@@ -204,37 +206,37 @@ export default Vue.extend({
   },
   methods: {
    
-    async searchCliente(selectedClient, selectedType) {
+    async searchCliente(unidade, cliente, typePedido ) {
+
       try {
         this.loading = true;
 
-        const typeLotes = 1;
+        // const typeLotes = 1;
         // const fkOrderStatus1 = "789850813-1c69-11ee-be56-c691200020241";
         const fkOrderStatus2 = "1c69c120002-575f34-1c69-be56-0242ac1201c69";
-
-        const res = await this.fetchOrderData(typeLotes, selectedClient, selectedType);
+        const res = await this.fetchOrderData(unidade, cliente, typePedido );
         
-        this.dataPedidos = res.data.filter(item =>
-          item.fk_orderstatus === fkOrderStatus2
-        );
+        this.dataPedidos = res.data
 
-        this.cliente = selectedClient;
+        this.cliente = cliente;
       } catch (error) {
         console.error(error);
       } finally {
         this.loading = false;
       }
-    },
+      },
 
-    async fetchOrderData(typeLotes, selectedClient, selectedType) {
+    async fetchOrderData(unidade, cliente,typePedido ) {
       try {
-        return await httpOrder.GetOrderCliente2(typeLotes, selectedClient, selectedType);
+        return await httpOrder.GetProdutosLotes(unidade, cliente, typePedido  );
       } catch (error) {
         console.error(error);
         throw error;
       }
     },
     updateSelectedCards(selectedCard) {
+      console.log(selectedCard);
+      
       this.shoeSideBar()
       if (selectedCard.selected) {
         const client = this.selectedCards.some(
@@ -265,8 +267,9 @@ export default Vue.extend({
       }
     },
     lotes() {
+      const fk_unity = this.$store.state.nomeCliente 
       const formData = new FormData()
-      formData.append('fk_client', this.cliente)
+      formData.append('fk_user', fk_unity)
       formData.append('file_invoice', this.selectedFileNF)
       formData.append('invoice_number', this.invoice_number)
       formData.append('initial_date', this.initial_date)
@@ -279,7 +282,7 @@ export default Vue.extend({
         'createOrderBatchItem',
         JSON.stringify(orderBatchItemArray)
       )
-
+      
       this.postOrderLotes(formData)
     },
     formatDate(date: Date) {
@@ -305,9 +308,9 @@ export default Vue.extend({
     encontrarDatas() {
       this.initial_date = null
       this.end_date = null
-
+      
       this.selectedCards.forEach((item) => {
-        const dataPedidoItem = new Date(item.dateOrderPedido)
+        const dataPedidoItem = new Date(item.dateOrderPedido.dateOrder)
 
         if (!isNaN(dataPedidoItem.getTime())) {
           if (

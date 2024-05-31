@@ -42,21 +42,31 @@
           </div>
         </form>
         <div class="resetSenha" v-else>
-      <Input
+          <Input
             style="color: var(--red)"
             v-model="email"
             label="Email"
             type="text"
             placeholder="Digite seu e-mail "
           />
-        
-      <ButtonPirula @click.native="recoverEmail" title="Resgatar senha" style="border-radius: 0.25rem;"/>
-      <ButtonPirula  @click.native="backToLogin" title="Login" style="border-radius: 0.25rem; background: transparent; color: #fa5c4f;"/>
-    
-    </div>
+
+          <ButtonPirula
+            @click.native="recoverEmail"
+            title="Resgatar senha"
+            style="border-radius: 0.25rem"
+          />
+          <ButtonPirula
+            @click.native="backToLogin"
+            title="Login"
+            style="
+              border-radius: 0.25rem;
+              background: transparent;
+              color: #fa5c4f;
+            "
+          />
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -71,18 +81,18 @@ export default Vue.extend({
         email: '',
         password: '',
       },
-      email:"",
+      email: '',
       statusMessage: false,
       message: '',
       isDisabled: false,
       loading: false,
-      login: true
+      login: true,
     }
   },
 
   async created() {
     this.loading = true
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     this.loading = false
   },
 
@@ -107,7 +117,22 @@ export default Vue.extend({
                 closeButton: false,
               }
             )
-          } else {
+          } else if (res.data.is_company) {
+
+            sessionStorage.setItem('token', res.data.token)
+
+            sessionStorage.getItem('token')
+            this.$router.push('/pedidos-unidade')
+            this.$toast.success(
+              'Bem-vindo à área de Unidades do sistema Dona Doce!!!',
+              {
+                position: 'top-center',
+                timeout: 5000,
+                icon: false,
+                closeButton: false,
+              }
+            )
+          } else if (res.data.is_admin) {
             sessionStorage.setItem('token', res.data.token)
 
             sessionStorage.getItem('token')
@@ -118,6 +143,16 @@ export default Vue.extend({
               closeButton: false,
             })
             this.$router.push('/dashboard/dashboard')
+          } else {
+            this.$toast.error(
+              'Erro ao entrar, verifique com o administrador seu acesso!!!',
+              {
+                position: 'top-center',
+                timeout: 5000,
+                icon: false,
+                closeButton: false,
+              }
+            )
           }
         })
         .catch((error) => {
@@ -135,7 +170,6 @@ export default Vue.extend({
     },
     recoverPassword() {
       this.login = false
-
     },
     async recoverEmail() {
       await httpRecover
@@ -152,34 +186,33 @@ export default Vue.extend({
           })
         })
     },
-    backToLogin(){
+    backToLogin() {
       // this.$router.push('/login')
       this.login = true
-    }
+    },
   },
 })
 </script>
 
 <style lang="scss" scoped>
-
 #btnEsqueci {
   background-color: #917b79;
 }
 
 #btnlogin:hover {
-  background-color:bisque;
+  background-color: bisque;
   border: 2px solid var(--red);
-  color:  var(--red);
-  transition:  background-color 1s ease-in-out;;
+  color: var(--red);
+  transition: background-color 1s ease-in-out;
 }
 
 #btnEsqueci:hover {
   background-color: bisque;
-  transition:  background-color 1s ease-in-out;;
+  transition: background-color 1s ease-in-out;
   border: 2px solid #917b79;
-  color:  #917b79;
+  color: #917b79;
 }
-.resetSenha{
+.resetSenha {
   display: flex;
   flex-direction: column;
   height: 40vh;
@@ -206,7 +239,6 @@ export default Vue.extend({
     }
   }
 
-
   .main_login {
     width: 100%;
     height: 100%;
@@ -221,7 +253,6 @@ export default Vue.extend({
       justify-content: center;
       gap: 1rem;
       animation: fadeIn 10s;
-
 
       .recupera_senha {
         color: var(--blue);
@@ -247,20 +278,22 @@ export default Vue.extend({
   }
 }
 
-
 @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+  0% {
+    opacity: 0;
   }
-
+  100% {
+    opacity: 1;
+  }
+}
 
 @keyframes fadeBackground {
-  from {   background-color: #fa5c4f }
-  to {  background-color: #ffefdb }
+  from {
+    background-color: #fa5c4f;
+  }
+  to {
+    background-color: #ffefdb;
+  }
 }
 
 .title_login {

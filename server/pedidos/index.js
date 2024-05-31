@@ -20,10 +20,21 @@ export default {
   GetOrderCliente: async (data , client, orderType = "undefined", orderStatus = "undefined") => {
     return await http.get(`order/all?fk_client=${client}&statusOrder=${orderStatus}&orderType=${orderType}&skip=0&limit=10000`)
   },
-   GetOrderCliente2: async (typeLotes, client, statusOrder) => {
+
+  GetOrderCliente2: async (typeLotes, client, statusOrder) => {
     return await http.get(`/order/all2?listWithOrderBatchNull=${typeLotes}&fk_client=${client}&orderType=${statusOrder}&skip=0&limit=1000`)
   },
-  
+
+
+
+  GetProdutosLotes: async (fkUnity, client, type) => {
+    return await http.get(`/order/allOrdersToBatch?fk_company=${fkUnity}&fk_client=${client}&statusOrder=1c69c120002-575f34-1c69-be56-0242ac1201c69&orderType=${type}&skip=0&limit=100`)
+  },
+
+
+
+
+
   Orderspercustomer: async (rota) => {
     return await http.get(`order/client?${rota}`)
   },
@@ -70,5 +81,10 @@ export default {
   },
   updateNF:async (id, data) => {
     return await http.patch(`/order_batch/invoice/${id}`, data)
+    // novo
+  },
+  findListExport:async (data) => {
+    return await http.patch(`/order/findExportFaturamento`, data)
+    // novo
   },
 }

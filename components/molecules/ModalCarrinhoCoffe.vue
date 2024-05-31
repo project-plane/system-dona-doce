@@ -6,13 +6,13 @@
     <div class="dataEmpresa" v-else>
          <div class="selectUnidades" style="display: flex; justify-content: space-between;">
           <h4>Pedido</h4> 
-          <label style=" display: flex; flex-direction: column; align-items: flex-end;"> 
+          <!-- <label style=" display: flex; flex-direction: column; align-items: flex-end;"> 
             <strong>Unidade</strong>
             <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 10rem;border: 1px solid var(--red); height: 2.4rem;" v-model="selectedUnit">
               <option value="Select your option" disabled selected>Select your option</option>
               <option v-for="item in infoncliente" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
             </select>
-          </label>
+          </label> -->
         </div>   
         <!-- <pre>{{ listaCompletaReceita }}</pre> -->
       <table class="resume-content">
@@ -66,6 +66,7 @@
 <script lang="js">
 import Vue from 'vue'
 import http from "../../server/pedidos/index.js"
+import httpMeusDados from '@/server/meusDados'
 export default Vue.extend({
   props: {
     infoncliente:Array,
@@ -87,7 +88,18 @@ export default Vue.extend({
   },
 
   async fetch() {
-    // await this.renderList()
+    await httpMeusDados
+      .MeusDados()
+      .then((res) => {
+       const idCompany =  res.data
+      
+      //  console.log();
+       this.handleChange(idCompany.Client_Company.company.id)
+      })
+      .catch((error) => {
+        this.$toast.error(`Erro ao buscar meus dados.`)
+      })
+
   },
   computed: {
     totalPedido() {
@@ -109,9 +121,9 @@ export default Vue.extend({
 
       return formattedTotal
     },
-    handleChange() {
-    console.log(this.selectedUnit);
-    this.$store.commit("addOrder", { id: this.selectedUnit, data: null });
+    handleChange(idCompany) {
+    // console.log(this.selectedUnit);
+    this.$store.commit("addOrder", { id: idCompany, data: null });
     },
     totalValue(unity, qtde) {
       return Number(unity) * Number(qtde)
@@ -133,10 +145,7 @@ export default Vue.extend({
     async finalizarPedido() {
      
      try{
-      if(!this.selectedUnit) {
-        this.$toast.error('Selecione uma unidade.');
-      }
-      
+    
       await http.CreateNewOrderCoffe(this.$store.state.postCoffe).then(response => {
       // console.log('Resposta da requisição:', response.data);
       this.$toast.info('Pedidos Realizados!')

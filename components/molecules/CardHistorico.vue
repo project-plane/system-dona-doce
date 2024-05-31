@@ -1,12 +1,19 @@
 <template>
   <div class="card">
     <img src="/_nuxt/static/icon/cutEffect.svg" alt="" class="svg" />
+   <!-- <pre> {{ data }}</pre> -->
     <div class="card-historico-container">
       <div class="header-card">
         <div style="display: flex; justify-content: space-between">
-          <span><strong>Pedido:</strong> {{ data.numberOrder }}</span>
-          <span><strong>Unidade:</strong> {{ data.company.corporate_name }}</span>
-      
+          <div>
+            <span><strong>Id:</strong> {{ data.numberOrder }}</span>
+            <span><strong>Unidade:</strong> {{ data.company.corporate_name }}</span>
+          </div>
+          <div>
+            <img style="height: 2.5rem;width: 2.5rem;" v-if="data.order_type === 'programmed'" src="../../assets/icons/programado.svg" />
+            <img style="height: 2.5rem;width: 2.5rem;" v-else src="../../assets/icons/coffee.svg" alt="" />
+         </div>
+         
         </div>
         <span style="font-size: 14px;"><strong>Solicitação:</strong> {{ formatDate(data.dateOrder) }}</span>
         <span style="font-size: 14px;"><strong>Data de Entrega:</strong> {{ formatDate(data.orderItem[0].delivery_date) }}</span>
@@ -94,7 +101,7 @@ export default Vue.extend({
   flex-direction: column;
 }
 .card img {
-  width: 24rem;
+  width: 28rem;
   position: relative;
   top: 0.2999vw;
 }
@@ -104,7 +111,7 @@ export default Vue.extend({
   justify-content: space-between;
 }
 .card-historico-container {
-  width: 24rem;
+  width: 28rem;
   background-color: var(--white);
   border-radius: 0.3rem;
   padding: 1rem;

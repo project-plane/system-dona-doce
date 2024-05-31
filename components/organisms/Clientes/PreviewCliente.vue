@@ -3,6 +3,7 @@
     <div class="dataEmpresa">
       <div>
         <h4>Nome Empresa</h4>
+        <!-- <pre>{{ findPreviewClient }}</pre> -->
         <p>{{ findPreviewClient.corporate_name }}</p>
       </div>
       <div>

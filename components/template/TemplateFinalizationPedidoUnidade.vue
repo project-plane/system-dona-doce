@@ -1,53 +1,66 @@
-<!-- <template>
+<template>
   <div v-if="loading">
-    <Loading/>
-
+    <Loading />
   </div>
   <div v-else class="contentCardPedido">
-    <div class="selectUnidades" style="display: grid; width: 100%;justify-content: flex-end;">
-        <label  class="titleInput">Unidade:</label>
-        <select @change="handleChange" name="" id="" class="inputContainer" style=" width: 12rem; height: 2.5rem" v-model="selectedUnit">
-          <option value="" disabled>Selecionar Unidade</option>
-          <option v-for="item in dataClientes" :value="item.fk_company" :key="item.fk_company">{{ item.company.corporate_name }}</option>
-        </select>
-    </div>
+
     <div class="header-pedidos">
-
-      <MenuPedidos :data-pedido="dataPedido" :qtdPedidos="listaCompletaReceita" @lancheDesjejum="lancheDesjejum"
-        @lanche1="lanche1" @lanche2="lanche2" @finalizarPedido="finalizarPedido" />
-
-        <div class="qtdPedidos" @click="showCar">
+      <MenuPedidos
+        :data-pedido="dataPedido"
+        :qtdPedidos="listaCompletaReceita"
+        @lancheDesjejum="lancheDesjejum"
+        @lanche1="lanche1"
+        @lanche2="lanche2"
+        @finalizarPedido="finalizarPedido"
+      />
+      <div class="qtdPedidos" @click="() => (showModal = true)">
         <img src="~/assets/icons/shopCar.svg" />
         <span v-if="listaCompletaReceita.length > 0 || listaForaEstoque.length > 0">
           <p>{{ listaCompletaReceita.length + listaForaEstoque.length }}</p>
         </span>
         <p style="margin-left: 0.5rem">Carrinho</p>
       </div>
+
+
     </div>
 
-    <ModalCarrinho v-if="showModal" :listaCompletaReceita="listaCompletaReceita" :listaForaEstoque="listaForaEstoque"
-      @closeModal="() => (showModal = false)" @finalizarPedido="finalizarPedido"
-      @listaAtualizadaDoModal="listaAtualizadaDoModal" @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque" />
+    <ModalCarrinho
+      v-if="showModal"
+      :listaCompletaReceita="listaCompletaReceita"
+      :listaForaEstoque="listaForaEstoque"
+      @closeModal="() => (showModal = false)"
+      @finalizarPedido="finalizarPedido"
+      @listaAtualizadaDoModal="listaAtualizadaDoModal"
+      @listaAtualizadaForaEstoque="listaAtualizadaForaEstoque"
+    />
 
-      {{  revenueClient }}
-    <div v-if="statusDesjejum || statusLanche1 || statusLanche2" class="cardsPedidos">
-      <div v-for="pedidosProgramation in revenueClient" :key="pedidosProgramation.id">
-        <CardProgramation :tipo-lanches="pedidosProgramation" :tipo-pedido="tipoPedido"  :base_max_amount="pedidosProgramation.base_max_amount" :base_min_amount="pedidosProgramation.base_min_amount" />
+    <div
+      v-if="statusDesjejum || statusLanche1 || statusLanche2"
+      class="cardsPedidos"
+    >
+      <div
+        v-for="pedidosProgramation in revenueClient"
+        :key="pedidosProgramation.id"
+      >
+        <CardProgramation
+          :tipo-lanches="pedidosProgramation"
+          :tipo-pedido="tipoPedido"
+          :base_max_amount="pedidosProgramation.base_max_amount"
+          :base_min_amount="pedidosProgramation.base_min_amount"
+        />
       </div>
-
-      </div>
-    <h2>Fora do Cardapioss</h2>
+    </div>
+    <h2>Fora do Cardapio</h2>
     <div class="cardsPedidos" v-if="foraEstoque.length > 3">
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido"  />
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" />
       </div>
     </div>
 
     <div class="cardsPedidos unique" v-else>
       <div v-for="p in foraEstoque" :key="p.id">
-        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido"  />
+        <CardForaEstoque :foraDeEstoque="p" :tipo-pedido="tipoPedido" />
       </div>
-
     </div>
   </div>
 </template>
@@ -87,17 +100,28 @@ export default Vue.extend({
       foraEstoque: [],
       listProgramation: [],
       idClient: '',
-      dataClientes:[]
+      dataClientes: [],
     }
   },
 
   async mounted() {
     const id = this.$route.query.id
     this.dataPedido = this.$route.query.dataPedido
-    this.loading = true;
+    this.loading = true
     await httpCompany.getUnidades().then((res) => {
-        this.dataClientes =res.data
+      this.dataClientes = res.data
+    })
 
+    await httpMeusDados
+      .MeusDados()
+      .then((res) => {
+        this.myData = res.data
+        this.addPedidos.fk_company = this.myData.Client_Company.company.id
+        this.idClient = res.data.Client_Company.clients.id
+        this.$store.commit('selectUnity', this.myData.Client_Company.company.id)
+      })
+      .catch((error) => {
+        this.$toast.error(`Erro ao buscar meus dados.`)
       })
 
     await httpCardapio
@@ -109,14 +133,6 @@ export default Vue.extend({
         console.log(error)
       })
 
-    await httpMeusDados
-      .MeusDados()
-      .then((res) => {
-        this.idClient = res.data.Client_Company.clients.id
-      })
-      .catch((error) => {
-        console.log(error)
-      })
 
     await httpRevenueClient
       .GetAllReceitaPorCliente(this.idClient)
@@ -151,12 +167,9 @@ export default Vue.extend({
             imagem: pedidos.revenues.imagem,
             base_max_amount: pedidos.revenues.base_max_amount,
             base_min_amount: pedidos.revenues.base_min_amount,
-
           })
         }
-
       })
-
     })
 
     const foraEstoqueAtualizado = []
@@ -169,90 +182,17 @@ export default Vue.extend({
       }
     })
     this.foraEstoque = foraEstoqueAtualizado
-    this.loading = false;
-
+    this.loading = false
   },
 
   methods: {
-    handleChange() {
-    this.addPedidos.fk_company= this.selectedUnit
-    this.$store.commit('selectUnity',this.selectedUnit)
 
-
-    },
-
-    // pedidos(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
-
-    //   const existecategoryOrderItem = this.listaCompletaReceita.find((item) => {
-    //     return (
-    //       item.fk_categoryOrderItem === this.tipoPedido &&
-    //       item.fk_revenue === fk_revenue
-    //     )
-    //   })
-
-    //   if (existecategoryOrderItem) {
-    //     this.$toast.error('Receita já adicionada ao pedido!!!')
-    //     return
-    //   }
-    //   this.listaCompletaReceita.push({
-    //     fk_categoryOrderItem: this.tipoPedido,
-    //     amountItem: Number(qtdOrder),
-    //     fk_revenue: fk_revenue,
-    //     listReceita: index,
-    //     method_of_preparation: typeOrder,
-    //     observacoesDoPedido: pedidos
-    //   })
-    //   this.listPedidos.itemMenu.map((item) => {
-    //     if (fk_revenue === item.revenues.id) {
-    //       this.$toast.info(
-    //         `(${qtdOrder}X) ${item.revenues.description} ADICIONADO AO CARRINHO`
-    //       )
-    //     }
-    //   })
-    // },
-
-    // pedidosForeEstoque(qtdOrder, fk_revenue, index, typeOrder, pedidos) {
-    //   const existecategoryOrderItem = this.listaForaEstoque.find((item) => {
-    //     return (
-    //       item.fk_categoryOrderItem === this.tipoPedido &&
-    //       item.fk_revenue === fk_revenue
-    //     )
-    //   })
-    //   if (existecategoryOrderItem) {
-    //     this.$toast.error('Receita já adicionada ao pedido!!!')
-    //     return
-    //   }
-    //   this.listaForaEstoque.push({
-    //     fk_categoryOrderItem: this.tipoPedido,
-    //     amountItem: Number(qtdOrder),
-    //     fk_revenue: fk_revenue,
-    //     listReceita: index,
-    //     method_of_preparation: typeOrder,
-    //     observacoesDoPedido: pedidos
-    //   })
-    //   this.foraEstoque.map((item) => {
-    //     if (fk_revenue === item.id) {
-    //       this.$toast.info(
-    //         `(${qtdOrder}X) ${item.description} ADICIONADO AO CARRINHO`
-    //       )
-    //     }
-    //   })
-    // },
-    showCar(){
-      if (!this.$store.state.unidadeCliente) {
-        this.$toast.error('Selecione uma unidade')
-        return
-      }
-      else{
-        this.showModal = true
-      }
-    },
     async finalizarPedido(e) {
       if (
         this.listaCompletaReceita.length === 0 &&
         this.listaForaEstoque.length === 0
       ) {
-        this.$toast.error('Insira ao menos um item para realizar pedido.')
+        this.$toast.error('Insira um item para realizar pedido.')
       } else {
         this.listaCompletaReceita.map((item) => {
           this.addPedidos.createOrderItemDto.push({
@@ -260,7 +200,7 @@ export default Vue.extend({
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
             method_of_preparation: item.method_of_preparation,
-            comment: item.observacoesDoPedido
+            comment: item.observacoesDoPedido,
           })
         })
 
@@ -270,10 +210,12 @@ export default Vue.extend({
             amountItem: Number(item.amountItem),
             fk_revenue: item.fk_revenue,
             method_of_preparation: item.method_of_preparation,
-            comment: item.observacoesDoPedido
+            comment: item.observacoesDoPedido,
           })
         })
-        console.log(this.addPedidos);
+        this.addPedidos.fk_company =  this.$store.state.unidadeCliente
+
+
 
         await HttpPedidos.CreateNewOrder(this.addPedidos)
           .then((res) => {
@@ -282,26 +224,21 @@ export default Vue.extend({
             this.listaCompletaReceita = []
             this.listaForaEstoque = []
             this.$router.push('/pedidos/historico-pedidos')
-            this.$store.commit('selectUnity','')
+            this.$store.commit('selectUnity', '')
           })
           .catch((error) => {
-            const message = error.response.data.message;
-             this.$toast.warning('Revise,' + message);
+            const message = error.response.data.message
+            this.$toast.warning('Revise,' + message)
           })
       }
-
     },
 
     listaAtualizadaDoModal(e) {
       this.listaCompletaReceita = e
-      console.log(e);
-
     },
 
     listaAtualizadaForaEstoque(e) {
       this.listaForaEstoque = e
-      console.log(e);
-
     },
 
     lancheDesjejum() {
@@ -397,4 +334,4 @@ export default Vue.extend({
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
-</style> -->
+</style>

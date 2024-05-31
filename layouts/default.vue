@@ -1,6 +1,5 @@
 <template>
   <div v-if="route === 'index'">
-    
     <Navbar />
     <Nuxt />
   </div>
@@ -55,7 +54,7 @@ export default Vue.extend({
     },
     closeModal() {
       this.$store.commit('OpenModalEstoque', false)
-   
+
     },
   }
 })

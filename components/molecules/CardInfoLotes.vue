@@ -23,7 +23,7 @@
             </div>
   
 
-            <h2>{{ infoPedidos.user.Clients.corporate_name }}</h2>
+            <h2>{{ infoPedidos.user.Clients.corporate_name}}</h2>
 
             <img v-if="infoPedidos.order_type === 'programmed'" src="../../assets/icons/programado.svg" />
             <img v-else src="../../assets/icons/coffee.svg" alt="" />
@@ -88,7 +88,7 @@ export default Vue.extend({
         user: key.user.Clients.corporate_name,
         orderItem: key.orderItem,
         selected: this.infoPedidos.selected || false,
-        dateOrderPedido: key.dateOrder
+        dateOrderPedido: key
       }
       this.$emit('update-selection', pedidos);
       

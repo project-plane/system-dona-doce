@@ -1,5 +1,5 @@
 <template>
-  
+
   <div class="templatePedidos">
     <NavBarPedidosUnidade />
     <Nuxt />
@@ -9,6 +9,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
+
 export default Vue.extend({
   methods: {
     routePedido() {
@@ -16,7 +17,7 @@ export default Vue.extend({
       this.$router.push('/pedidos/newPedidos')
     },
 
-    
+
   },
 
 })

@@ -23,19 +23,19 @@
         </div>
       </div> -->
     </div>
-    <img
-      v-if="visualization"
-      @click="visualization = false"
-      src="~/assets/icons/eye.svg"
-      alt=""
-    />
-    <img
-      v-else
-      @click="visualization = true"
-      src="~/assets/icons/eyeClose.svg"
-      alt=""
-    />
+    <div class="d-options">
+      <div>
+        <img @click="visualizationFin" class="img-carteira" src="~/assets/icons/icon-carteira.png" alt="" />
+         <PreviewFinanceiro v-show="this.$store.state.openModalRelatorio" />
+  
+      </div>
+      <div>
+        <img v-if="visualization" @click="visualization = false" src="~/assets/icons/eye.svg" alt="" />
+        <img v-else @click="visualization = true" src="~/assets/icons/eyeClose.svg" alt="" />
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script lang="ts">
@@ -49,12 +49,12 @@ export default Vue.extend({
       visualization: true,
       valorVendas: 0,
       valorCompras: this.$store.state.value_buy,
-      valorComprasUpdate:0,
+      valorComprasUpdate: 0,
       valorTotal: 0,
       listOrder: this.$store.state.listAllOrder,
     }
   },
-  watch:{
+  watch: {
     async listAllOrderComputed(newValue) {
       this.listOrder = []
       this.listOrder = newValue
@@ -63,7 +63,7 @@ export default Vue.extend({
 
     },
 
-    async valueBuyComputed(newValue){
+    async valueBuyComputed(newValue) {
       this.valorComprasUpdate = newValue
       await this.atualizar();
 
@@ -71,11 +71,11 @@ export default Vue.extend({
     }
   },
   computed: {
-     listAllOrderComputed() {
-     return this.$store.state.listAllOrder
+    listAllOrderComputed() {
+      return this.$store.state.listAllOrder
     },
 
-    valueBuyComputed(){
+    valueBuyComputed() {
       return this.$store.state.value_buy
     },
     async fetch() {
@@ -91,8 +91,14 @@ export default Vue.extend({
     },
 
   },
-  methods:{
-    async atualizar(){
+  methods: {
+    visualizationFin(){
+      this.$store.commit('OPEN_visualizationFin', true)
+    },
+    // closeModal(){
+    //   this.visualizationFin = false;
+    // },
+    async atualizar() {
       const valorUniqOrder = []
       var valorVendasOrder = 0;
       this.listOrder.map((e) => {
@@ -146,6 +152,7 @@ export default Vue.extend({
 .descriptionCalendar {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 4rem;
   padding: 1rem 0;
@@ -179,6 +186,19 @@ export default Vue.extend({
 
   img {
     cursor: pointer;
+    height: 2rem;
+  }
+
+  .img-carteira{
+    cursor: pointer;
+    height: 2.5rem;
+  }
+
+  .d-options{
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>
