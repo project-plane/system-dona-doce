@@ -11,6 +11,9 @@ export default {
     return await http.put(`/clients/${id}`,data)
   },
   GetUsers: async () => {
-    return await http.get(`order_batch/usersForOrderBatch`)
+    return await http.get(`/clients_company`)
+  },
+  GetUnidade: async (fk_client) => {
+    return await http.get(`/clients_company/${fk_client}`)
   },
 }

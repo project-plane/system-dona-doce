@@ -82,7 +82,7 @@
                 :key="id"
                 style="width: 100%; display: flex; flex-direction: column"
               >
-                {{ receita.revenues.description }}</span
+                {{ receita }}</span
               >
             </td>
             <td>
@@ -95,13 +95,13 @@
               >
             </td>
             <td>
-              <span
-                v-for="(receita, id) in item.orderItem"
+              <!-- <span
+                v-for="(receita, id) in item"
                 :key="id"
                 style="width: 100%; display: flex; flex-direction: column"
               >
-                R$ {{ receita.valueOrder }}</span
-              >
+                R$ {{ }}</span
+              > -->
             </td>
           </tr>
         </table>
@@ -206,17 +206,15 @@ export default Vue.extend({
   },
   methods: {
    
-    async searchCliente(cliente, unidade) {
+    async searchCliente(unidade, cliente, typePedido ) {
 
-      console.log('c',cliente);
-      console.log('u',unidade);
       try {
         this.loading = true;
 
-        const typeLotes = 1;
+        // const typeLotes = 1;
         // const fkOrderStatus1 = "789850813-1c69-11ee-be56-c691200020241";
         const fkOrderStatus2 = "1c69c120002-575f34-1c69-be56-0242ac1201c69";
-        const res = await this.fetchOrderData(cliente, fkOrderStatus2, unidade );
+        const res = await this.fetchOrderData(unidade, cliente, typePedido );
         
         this.dataPedidos = res.data
 
@@ -228,9 +226,9 @@ export default Vue.extend({
       }
       },
 
-    async fetchOrderData(cliente, filtroPedidos, unidade) {
+    async fetchOrderData(unidade, cliente,typePedido ) {
       try {
-        return await httpOrder.GetProdutosLotes(cliente, filtroPedidos, unidade);
+        return await httpOrder.GetProdutosLotes(unidade, cliente, typePedido  );
       } catch (error) {
         console.error(error);
         throw error;
@@ -269,7 +267,7 @@ export default Vue.extend({
       }
     },
     lotes() {
-      const fk_unity = this.$store.unidadeClienteLote 
+      const fk_unity = this.$store.state.nomeCliente 
       const formData = new FormData()
       formData.append('fk_user', fk_unity)
       formData.append('file_invoice', this.selectedFileNF)

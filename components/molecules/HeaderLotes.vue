@@ -9,18 +9,18 @@
           <label>Clientes</label>
           <select v-model="selectedClient" @change="searchCliente">
             <option value="" disabled>Selecionar Cliente</option>
-            <option v-for="(client, index) in listUnidades" :key="index" :value="client">
-              {{ client.Clients ? client.Clients.corporate_name : 'N/A' }}
+            <option v-for="(client, index) in listClient" :key="index" :value="client.id">
+              {{ client.corporate_name }}
             </option>
           </select>
         </div>
    
-        <div class="input" v-if="select === true">
+        <div class="input" v-if="filterSearch === false">
           <label>Unidades</label>
           <select v-model="selectedUnity"  @change="searchCliente">
             <option value="" disabled selected>Selecionar Unidade</option>
-            <option v-for="(item, index) in selectedClient.Client_Company" :key="index" :value="item">
-              {{ item.corporate_name }}
+            <option v-for="(item, index) in listUnidades" :key="index" :value="item.fk_company">
+              {{ item.company.corporate_name }}
             </option>
 
 
@@ -33,9 +33,9 @@
             <option value="programmed">Programado</option>
             <option value="coffe">Coffee</option>
           </select>
-        </div>
+        </div> 
 
-        <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
+       <!-- <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
           <label for="">
             <p>Data Inicio</p>
             <input type="date" id="startDate" style="background-color: white;" v-model="startDate"
@@ -46,7 +46,7 @@
             <input type="date" id="endDate" style="background-color: white;" v-model="endDate"
               @change="emitDateRange" />
           </label>
-        </div>
+        </div> -->
         <div class="searchId" v-if="filterSearch === true">
           <label :for="label">{{ label }}</label>
           <input placeholder="Pesquisar por Id" type="text" :id="label" :value="value"
@@ -104,40 +104,19 @@ export default Vue.extend({
         console.log(error)
       })
 
-    await httpClients
-      .GetUsers()
-      .then((res) => {
-        this.listUnidades = res.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    // await httpClients
+    //   .GetUsers()
+    //   .then((res) => {
+    //     this.listUnidades = res.data
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
     this.loading = false
 
   },
 
   computed: {
-    filteredData() {
-      return this.data.filter(item => {
-        return item.data >= this.startDate && item.data <= this.endDate;
-      });
-    },
-    uniqueCompanies() {
-      // Criar um conjunto para manter apenas os ids únicos
-      const uniqueIds = new Set();
-      const uniqueItems = [];
-
-      // Filtrar os itens para manter apenas um item de cada empresa única
-      this.listUnidades.forEach(item => {
-        const companyId = item.Client_Company && item.Client_Company.company ? item.Client_Company.company.id : null;
-        if (companyId && !uniqueIds.has(companyId)) {
-          uniqueIds.add(companyId);
-          uniqueItems.push(item);
-        }
-      });
-
-      return uniqueItems;
-    },
     filteredClients() {
       // Filtrar os itens para incluir apenas aqueles com 'Clients' definido
       return this.listUnidades.filter(item => item.is_client && item.Clients);
@@ -146,13 +125,24 @@ export default Vue.extend({
   methods: {
     searchCliente() {
     
-      this.$emit('searchCliente', this.selectedClient.id, this.selectedUnity.id)
+      this.$emit('searchCliente', this.selectedUnity, this.selectedClient, this.selectedType)
     },
     emitDateRange() {
       this.$emit('dateRangeSelected', {
         startDate: this.startDate,
         endDate: this.endDate,
       });
+    },
+    async getUnit(id){
+      try {
+        const res = await httpClients.GetUnidade(id)
+        this.listUnidades = res.data
+        console.log(this.listUnidades);
+        
+        
+      } catch (error) {
+        
+      }
     }
   },
 
@@ -165,7 +155,9 @@ export default Vue.extend({
       this.$store.commit('SELECTED_STATUS', newValue)
     },
     selectedClient(newValue) {
+      this.getUnit(newValue)
       this.$store.commit('SELECTED_NAME_CLIENT', newValue)
+    
     },
     selectedUnity(newValue) {
       this.$store.commit('SELECTED_UNIDADE_ID', this.selectedUnity.id)
