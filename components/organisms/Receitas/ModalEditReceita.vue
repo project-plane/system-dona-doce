@@ -430,7 +430,7 @@ export default Vue.extend({
       }
 
       if (this.amountValue.length > 0) {
-        const status = Number(this.typePedido)
+        const status = this.typePedido
         const formData = new FormData()
         formData.append('description', this.listFindReceita.description)
         formData.append('value', this.valorTotal)

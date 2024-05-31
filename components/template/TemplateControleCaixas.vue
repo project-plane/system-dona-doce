@@ -2,7 +2,7 @@
   <div class="containerPage">
     <div class="headerTable">
       <span>Controle de bandejas e caixas</span>
-      <InputSearch />
+      <InputSearch v-model="textSearch"/>
     </div>
     <table>
       <thead>
@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, id) in listTrayAndBoxes" :key="id">
+        <tr v-for="(item, id) in itensToShow" :key="id">
           <td>{{ item.numberOrder }}</td>
           <td>{{ formatDate(item.dateOrder) }}</td>
           <td>{{ item.company.corporate_name }}</td>
@@ -28,7 +28,8 @@
           </td>
           <td>
             <button
-              @click="updateItem(item.amount_of_boxes, item.amount_of_tray)"
+            class="buttonUpdate"
+              @click="updateItem(item.amount_of_boxes, item.amount_of_tray, item.id)"
             >
               Atualizar
             </button>
@@ -36,6 +37,10 @@
         </tr>
       </tbody>
     </table>
+    <PaginationController
+        :current-page.sync="currentPage"
+        :total-pages="totalPages"
+      />
   </div>
 </template>
 <script lang="js">
@@ -45,32 +50,62 @@ export default {
   data() {
     return {
       listTrayAndBoxes: [],
+      listBoxes: [],
       orderItem: [],
+      posts:[],
+      textSearch: '',
+      currentPage: 1,
+      itemsPerPage: 8,
     }
   },
   async mounted() {
     try {
-      const res = await http.GetTrayAndBoxes()
+      const res = await http.GetAllTrayAndBoxes()
       console.log(res.data)
       this.listTrayAndBoxes = res.data
     } catch (error) {
       console.error('Erro ao obter os dados:', error)
     }
   },
+  computed: {
+    totalPages() {
+      this.posts = this.listTrayAndBoxes;
+      return Math.ceil(this.posts.length / this.itemsPerPage);
+    },
+    itemsPagination() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.posts.slice(startIndex, endIndex);
+    },
+
+    filteredItems() {
+      let itemSearch = []
+      itemSearch = this.listTrayAndBoxes.filter((item) => {
+        return (
+          item.numberOrder.toString().includes(this.textSearch.toLowerCase())    
+        )
+      })
+      return itemSearch
+    },
+    itensToShow() {
+      return this.textSearch ? this.filteredItems
+        : this.itemsPagination;
+    },
+  },
+
   methods: {
     updateItem(boxes, tray, id) {
       const data = {
-        amount_of_tray: Number(boxes),
-        amount_of_boxes: Number(tray),
+        amount_of_tray: Number(tray),
+        amount_of_boxes: Number(boxes),
       }
       console.log(data)
-      // try {
-      //   const res = http.GetTrayAndBoxes()
-      //   console.log(res.data)
-      //   this.listTrayAndBoxes = res.data
-      // } catch (error) {
-      //   console.error('Erro ao obter os dados:', error)
-      // }
+      try {
+        const res = http.updateBandejas(id, data)
+        this.$toast.success('Itens atualizados com sucesso !!')
+      } catch (error) {
+        this.$toast.error('Erro ao atualizar os dados:', error)
+      }
     },
     formatDate(date) {
       return dayjs(date).format('DD/MM/YYYY')
@@ -86,8 +121,17 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .buttonUpdate{
+    width: 7rem;
+    height: 2.6rem;
+    background-color: var(--red);
+    color: var(--white);
+    border-radius: 0.25rem;
+    text-align: center;
+    transition: 0.2s;
+  }
   .containertTable {
-    height: 90%;
+    height: 100%;
     margin: auto;
     // background: red;
     overflow: scroll;
@@ -100,15 +144,8 @@ export default {
     background: #b9b9b91f;
     text-align: center;
   }
-
-  //   input:disabled {
-  //     cursor: default;
-  //     background-color: light-dark(rgb(250 92 79 / 17%), rgba(59, 59, 59, 0.3));
-  //     color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
-  //     border-color: rgba(118, 118, 118, 0.3);
-  //   }
   .headerTable {
-    width: 80%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -119,7 +156,7 @@ export default {
     }
   }
   table {
-    width: 80%;
+    width: 100%;
     margin: auto;
     border-collapse: collapse;
     margin-top: 1rem;
