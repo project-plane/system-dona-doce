@@ -12,7 +12,7 @@
     </header>
     <Loading v-if="loading" />
     <main v-else>
-      <div class="listCards" v-if="!datasFiltradas || datasFiltradas.length === 0">
+      <div class="listCards" v-if="datasFiltradas.length === 0 && allFalseFilter === null ||allFalseFilter === true ">
 
         <CardInfoLotes
           v-for="(item, id) in dataPedidos.data"
@@ -20,7 +20,6 @@
           :infoPedidos="item"
           @update-selection="updateSelectedCards"
         />
-      <!-- <pre>  {{ dataPedidos }}</pre> -->
 
         <span v-show="dataPedidos.length === 0" class="no-results-message">
           Não encontramos resultados, Escolha um cliente...
@@ -93,15 +92,6 @@
               >
                 {{ receita.amountItem }}</span
               >
-            </td>
-            <td>
-              <!-- <span
-                v-for="(receita, id) in item"
-                :key="id"
-                style="width: 100%; display: flex; flex-direction: column"
-              >
-                R$ {{ }}</span
-              > -->
             </td>
           </tr>
         </table>
@@ -193,6 +183,7 @@ export default Vue.extend({
       loading: false,
       datasFiltradas: [],
       sideBar: false,
+      allFalseFilter: null,
     }
   },
   computed: {
@@ -328,16 +319,27 @@ export default Vue.extend({
     },
 
     handleDateRangeSelected({ startDate, endDate }) {
-      const dataInicialObj = new Date(startDate)
-      const dataFinalObj = new Date(endDate)
+      const dataInicialObj = new Date(startDate);
+      const dataFinalObj = new Date(endDate);
 
-      this.datasFiltradas = this.dataPedidos.filter((data) => {
+      let allFalse = true;
+
+      this.datasFiltradas = this.dataPedidos.data.filter((data) => {
         const dataAtual = new Date(data.dateOrder);
         dataAtual.setDate(dataAtual.getDate() - 1);
-        
-        return dataAtual >= dataInicialObj && dataAtual <= dataFinalObj
-      })
-    },
+        const isInRange = dataAtual >= dataInicialObj && dataAtual <= dataFinalObj;
+
+        if (isInRange) {
+          allFalse = false;
+        }
+
+        console.log(isInRange); // Mantendo o console.log original
+        return isInRange;
+      });
+
+      this.allFalseFilter = allFalse;
+      console.log('Todos os retornos foram false:', this.allFalseFilter);
+},
     onFileChangeNF(event) {
       const [selectedFile] = event.target.files;
 

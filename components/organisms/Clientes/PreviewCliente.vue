@@ -42,6 +42,18 @@
         placeholder="Digitar fone responsável"
         v-model="foneCompany"
       />
+      <Input
+        label="E-mail"
+        type="text"
+        placeholder="Digitar um email"
+        v-model="email"
+      />
+      <Input
+        label="Senha"
+        type="text"
+        placeholder="Digite uma senha"
+        v-model="senha"
+      />
       <button @click="addClient">Adicionar</button>
     </div>
     <div class="empresaAssociada">
@@ -97,6 +109,8 @@ export default Vue.extend({
       selected: '',
       accountableCompany: '',
       foneCompany: '',
+      email: '',
+      senha: '',
     }
   },
   async fetch() {
@@ -185,6 +199,11 @@ export default Vue.extend({
           fk_company: idEmpresa,
           accountable: this.accountableCompany,
           fone: this.foneCompany,
+          user: {
+            email: this.email,
+            password: this.senha,
+            is_company: true
+        }
         },
       ]
 
@@ -222,9 +241,11 @@ export default Vue.extend({
 }
 .associarEmpresa {
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 7rem);
+  grid-column-gap: 10px;
+  grid-row-gap: 0px;
   button {
     border-radius: 0.3rem;
     font-weight: bold;
@@ -237,10 +258,21 @@ export default Vue.extend({
     padding: 0.5rem;
     cursor: pointer;
     margin-top: 30px;
+    height: 2.8rem;
+    &:hover{
+      background: var(--red);
+      color: white;
+    }
   }
   select {
     border: 0.06rem solid var(--border);
     border-radius: 0.25rem;
+  }
+  .input{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
 }
 .empresaAssociada {
