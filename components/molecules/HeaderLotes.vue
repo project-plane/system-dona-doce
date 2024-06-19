@@ -35,7 +35,7 @@
           </select>
         </div> 
 
-       <!-- <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
+       <div style="display: flex; gap: 1rem; align-items: center; width: 50%;" v-if="filterData === true">
           <label for="">
             <p>Data Inicio</p>
             <input type="date" id="startDate" style="background-color: white;" v-model="startDate"
@@ -46,7 +46,7 @@
             <input type="date" id="endDate" style="background-color: white;" v-model="endDate"
               @change="emitDateRange" />
           </label>
-        </div> -->
+        </div>
         <div class="searchId" v-if="filterSearch === true">
           <label :for="label">{{ label }}</label>
           <input placeholder="Pesquisar por Id" type="text" :id="label" :value="value"
