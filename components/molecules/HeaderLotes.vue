@@ -46,6 +46,7 @@
             <input type="date" id="endDate" style="background-color: white;" v-model="endDate"
               @change="emitDateRange" />
           </label>
+          <!-- <Button title="buscar" />  -->
         </div>
         <div class="searchId" v-if="filterSearch === true">
           <label :for="label">{{ label }}</label>

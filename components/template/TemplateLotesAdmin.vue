@@ -12,7 +12,7 @@
     </header>
     <Loading v-if="loading" />
     <main v-else>
-      <div class="listCards" v-if="datasFiltradas.length === 0 && allFalseFilter === null ||allFalseFilter === true ">
+      <!-- <div class="listCards" v-if="datasFiltradas.length === 0 && allFalseFilter === null || allFalseFilter === true ">
 
         <CardInfoLotes
           v-for="(item, id) in dataPedidos.data"
@@ -24,9 +24,9 @@
         <span v-show="dataPedidos.length === 0" class="no-results-message">
           Não encontramos resultados, Escolha um cliente...
         </span>
-      </div>
+      </div> -->
 
-      <div class="listCards" v-else>
+      <div class="listCards" >
         <CardInfoLotes
           v-for="(item, id) in datasFiltradas"
           :key="id"
