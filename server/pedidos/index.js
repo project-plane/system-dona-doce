@@ -25,15 +25,15 @@ export default {
     return await http.get(`/order/all2?listWithOrderBatchNull=${typeLotes}&fk_client=${client}&orderType=${statusOrder}&skip=0&limit=1000`)
   },
 
-
-
   GetProdutosLotes: async (fkUnity, client, type) => {
     return await http.get(`/order/allOrdersToBatch?fk_company=${fkUnity}&fk_client=${client}&statusOrder=1c69c120002-575f34-1c69-be56-0242ac1201c69&orderType=${type}&skip=0&limit=100`)
   },
 
-
-
-
+  downloadExcelLotes: async (id) => {
+    return await http.post(`/order_batch/csv/${id}`, {
+      responseType: "blob",
+    });
+  },
 
   Orderspercustomer: async (rota) => {
     return await http.get(`order/client?${rota}`)
@@ -65,7 +65,7 @@ export default {
     return await http.post(`/order_batch`, data)
   },
   ListLotes: async (id) => {
-    return await http.get(`/order_batch?fk_client=${id}&skip=0&limit=100`);
+    return await http.get(`/order_batch?fk_client=${id}`);
   },
   PatchCancelOrderByClient: async (fk_order) => {
     return await http.patch(`/clients/order/${fk_order}`, {

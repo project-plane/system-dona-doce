@@ -102,7 +102,7 @@ export const mutations = {
   },
   SELECTED_NAME_CLIENT(state, payload) {
     state.nomeCliente = payload
-    console.log(state.nomeCliente );
+    console.log(state.nomeCliente, 'oii' );
   },
   SELECTED_UNIDADE_ID(state, payload) {
     state.unidadeClienteLote = payload

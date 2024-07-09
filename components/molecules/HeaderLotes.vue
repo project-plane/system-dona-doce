@@ -105,14 +105,7 @@ export default Vue.extend({
         console.log(error)
       })
 
-    // await httpClients
-    //   .GetUsers()
-    //   .then((res) => {
-    //     this.listUnidades = res.data
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //   })
+
     this.loading = false
 
   },
@@ -125,7 +118,6 @@ export default Vue.extend({
   },
   methods: {
     searchCliente() {
-    
       this.$emit('searchCliente', this.selectedUnity, this.selectedClient, this.selectedType)
     },
     emitDateRange() {
