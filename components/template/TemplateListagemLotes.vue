@@ -20,7 +20,7 @@
       </div>
 
     </div>
-    <LoadingPage v-if="loading" />
+    <Loading v-if="loading" />
     <main v-else>
       <div class="listCards">
         <CardLotes v-for="(item, id) in filteredItems" :key="id" :infoPedidos="item" :idLote="item.numberOrderBatch"
@@ -163,7 +163,7 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    // this.loading = true
+    this.loading = true
     await httpClients
       .GetAllClients()
       .then((res) => {
@@ -173,7 +173,7 @@ export default Vue.extend({
         console.log(error)
       })
 
-    // this.loading = false
+    this.loading = false
 
   },
   methods: {
@@ -315,12 +315,27 @@ export default Vue.extend({
     async downloadReport(id) {
       try {
         const res = await httpOrder.downloadExcelLotes(id);
-        // this.$toast.success('Lote Deletado');
-        // this.$nuxt.refresh();
+        const data = res.data
+
+          const blob = new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          })
+
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+
+          link.download = 'lotes.csv'
+
+          document.body.appendChild(link)
+
+          link.click()
+
+          document.body.removeChild(link)
+
       } catch (error) {
         console.error(error);
-        // this.$toast.error('Erro ao deletar...');
-        throw error;
+        this.$toast.error('Erro no download');
       }
     },
 

@@ -96,6 +96,12 @@
                     Arquivo não anexado
                 </span >
             </div>
+            <div>
+              <span>Download Relatório</span>
+              <button class="btnDownload" @click="downloadReport(listPedidos.id)">
+                  Baixar Arquivo 
+                </button>
+            </div>
             <div class="sectionComprovante">
               
                 <span>Anexar Comprovante</span>
@@ -176,6 +182,32 @@ export default Vue.extend({
         this.$toast.error('Houve um erro ao processar a solicitação.')
     }
    
+    },
+    async downloadReport(id) {
+      try {
+        const res = await httpOrder.downloadExcelLotes(id);
+        const data = res.data
+
+          const blob = new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          })
+
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+
+          link.download = 'lotes.csv'
+
+          document.body.appendChild(link)
+
+          link.click()
+
+          document.body.removeChild(link)
+
+      } catch (error) {
+        this.$toast.error('Erro no download');
+        console.error(error);
+      }
     },
     pedidos() {
       this.abaNotActive = true
