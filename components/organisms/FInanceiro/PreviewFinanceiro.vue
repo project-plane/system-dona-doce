@@ -56,10 +56,10 @@
     <div>
       <div class="containerTotal">
         <section>
-          <Strong>Custo Total:</Strong>  Falta no Objeto
+         <strong> Valor Total:</strong>  {{ teste }}
         </section>
         <section>
-         <strong> Valor Total:</strong>  {{ teste.toFixed(2) }}
+          <Strong>Custo Total:</Strong>  Falta no Objeto
         </section>
         <section>
           <strong>Lucro Total: </strong>  Falta no Objeto
@@ -74,22 +74,18 @@
         <table v-else>
           <thead>
             <tr>
-              <th>Quantidade</th>
-              <th>Valor Unit.</th>
-              <th>Valor Total</th>
-              <th>Custo Total</th>
-              <th>Lucro Total</th>
-
               <th>Data</th>
               <th>Empresa</th>
-              <th>Status</th>
-              <!-- <th>Status</th> -->
+              <th>Fábrica</th>
+              <th>Hora</th>
               <th>Produto</th>
-              
-              <!-- <th>Custo Unit**</th>
-              <th>Lucro Unit**</th> -->
-              
-              
+              <th>Qtd.</th>
+              <th>Valor Un.</th>
+              <th>Valor Total</th>
+              <th>Custo Un.</th>
+              <th>Lucro Un.</th>
+              <th>Custo Total</th>
+              <th>Lucro Total</th>
              
             </tr>
            
@@ -99,23 +95,19 @@
           <tbody>
        
             <tr v-for="(list) in listOrders" :key="list">
-              <td>{{ list.amountItem }}</td>
-              <td> R$ {{  list.valueOrderItem.toFixed(2)}}</td>              
-              <td> R$ {{ list.valueItemTotal.toFixed(2) }}</td>
-              <td>{{ A }}</td>
-              <td>{{ a }}</td>
-
               <td>{{ convertData(list.dateOrder) }}</td>
-        
+              <!-- <pre>{{ list }}</pre> -->
               <td>{{ list.company }}</td>
-              <td>{{ list.descriptionStatus }}</td>
+              <td>{{ list.client }}</td>
+              <td>-</td>
               <td>{{ list.description }}</td>
-              
-              <!-- <td>Custo Unit**</td>
-              <td>Lucro Unit**</td> -->
-
-              
-        
+              <td>{{ list.amountItem }}</td>
+              <td>{{ list.valueOrderItem }}</td>
+              <td>{{ list.valueItemTotal }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
            </tr>
           </tbody>
         </table>
@@ -138,7 +130,7 @@
 </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue';
 import httpClients from './../../../server/cliente'
 import httpEmpresa from './../../../server/empresa'
@@ -195,7 +187,11 @@ export default Vue.extend({
   },
   methods: {
     totalValueItemTotal() {
-      this.teste = this.listOrders.reduce((total, item) => total + item.valueItemTotal, 0);
+      const soma = this.listOrders.reduce((acumulador, numero) => acumulador + numero.valueItemTotal, 0);
+      const somaFormatada = soma.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  
+      this.teste = somaFormatada;
+
     },
     convertData(data){
       return dayjs.formtDateBr(data)
