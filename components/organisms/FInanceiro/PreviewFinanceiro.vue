@@ -59,10 +59,10 @@
          <strong> Valor Total:</strong>  {{ teste }}
         </section>
         <section>
-          <Strong>Custo Total:</Strong>  Falta no Objeto
+          <Strong>Custo Total:</Strong> {{ custoTotal }}
         </section>
         <section>
-          <strong>Lucro Total: </strong>  Falta no Objeto
+          <strong>Lucro Total: </strong> {{ diferenca  }}
         </section>
       </div>
     
@@ -94,7 +94,7 @@
 
           <tbody>
        
-            <tr v-for="(list) in listOrders" :key="list">
+            <tr v-for="(list, id) in listOrders" :key="id">
               <td>{{ convertData(list.dateOrder) }}</td>
               <!-- <pre>{{ list }}</pre> -->
               <td>{{ list.company }}</td>
@@ -104,10 +104,10 @@
               <td>{{ list.amountItem }}</td>
               <td>{{ list.valueOrderItem }}</td>
               <td>{{ list.valueItemTotal }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ list.unitcostofrevenue }}</td>
+              <td> {{ list.valueOrderItem -  list.unitcostofrevenue}}</td>
+              <td>{{ list.totalcostofrevenue }}</td>
+              <td> {{ list.valueItemTotal -  list.totalcostofrevenue}}</td>
            </tr>
           </tbody>
         </table>
@@ -136,15 +136,10 @@ import httpClients from './../../../server/cliente'
 import httpEmpresa from './../../../server/empresa'
 import httpOrder from './../../../server/pedidos'
 import dayjs from "./../../../services/dayjs"
+import * as XLSX from 'xlsx';
 
 
 export default Vue.extend({
-  // props: {
-  //   findPreviewEmpresa: {
-  //     type: [Array, Object],
-  //     required: true,
-  //   },
-  // },
   data() {
     return {
       isToday: true,
@@ -160,7 +155,9 @@ export default Vue.extend({
       listOrders: [],
       listClient: [],
       listEmpresa: [],
-      teste: 0
+      teste: 0,
+      custoTotal: 0,
+      diferenca: 0,
     }
   },
   async fetch() {
@@ -186,38 +183,77 @@ export default Vue.extend({
     await this.findList();
   },
   methods: {
+    calcularSoma(lista, chave) {
+      const soma = lista.reduce((acumulador, item) => acumulador + item[chave], 0);
+      return soma
+    },
     totalValueItemTotal() {
-      const soma = this.listOrders.reduce((acumulador, numero) => acumulador + numero.valueItemTotal, 0);
-      const somaFormatada = soma.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  
-      this.teste = somaFormatada;
+      this.teste = this.calcularSoma(this.listOrders, 'valueItemTotal');
+    },
+    totalcostofrevenue() {
+      this.custoTotal = this.calcularSoma(this.listOrders, 'totalcostofrevenue');
+    },
+    calcularResultadoFinal() {
+      const diferenca = this.teste - this.custoTotal;
+      this.diferenca = diferenca.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+      const valorTotal = this.teste 
+      this.teste = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      const custo = this.custoTotal 
+      this.custoTotal = custo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     },
     convertData(data){
       return dayjs.formtDateBr(data)
     },
     
     exportToCsv() {
-      this.loading = true
+      this.loading = true;
       
-      const csvContent = this.jsonToCsv(this.listOrders);
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const csvUrl = window.URL.createObjectURL(blob);
+      const headers = [
+        ["Data do Pedido", "Número do Pedido", "Status", "Descrição", "Quantidade", "Valor do Item", "Custo Unitário de Receita", "Custo Total de Receita"]
+      ];
+      
+      // Renomear as chaves do objeto para corresponder aos novos cabeçalhos
+      const updatedData = this.listOrders.map(item => ({
+        "Data do Pedido": item.dateOrder,
+        "Número do Pedido": item.numberOrder,
+        "Status": item.descriptionStatus,
+        "Descrição": item.description,
+        "Quantidade": item.amountItem,
+        "Valor do Item": item.valueOrderItem,
+        "Custo Unitário de Receita": item.unitcostofrevenue,
+        "Custo Total de Receita": item.totalcostofrevenue
+      }));
+
+      // Adicionar os cabeçalhos aos dados
+      const worksheet = XLSX.utils.json_to_sheet([]);
+      XLSX.utils.sheet_add_aoa(worksheet, headers);
+      XLSX.utils.sheet_add_json(worksheet, updatedData, { skipHeader: true, origin: 'A2' });
+
+      // Cria o workbook e adiciona a planilha
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
+      
+      // Gera o buffer de array do workbook
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      
+      // Cria um blob a partir do buffer de array
+      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+      const excelUrl = window.URL.createObjectURL(blob);
+      
+      // Cria um link de download para o arquivo Excel
       const link = document.createElement('a');
-      link.setAttribute('href', csvUrl);
-      link.setAttribute('download', 'data.csv');
+      link.setAttribute('href', excelUrl);
+      link.setAttribute('download', 'Faturamento.xlsx');
       link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      this.loading = false
+      this.loading = false;
     },
-    jsonToCsv(jsonData) {
-      const header = Object.keys(jsonData[0]).join(',') + '\n';
-      const rows = jsonData.map(obj => Object.values(obj).join(',')).join('\n');
-      return header + rows;
-    },
+ 
     async find(){
       this.loading = true
       await this.findList()
@@ -234,6 +270,8 @@ export default Vue.extend({
       await httpOrder.findListExport(data).then((res) => {
         this.listOrders = res.data
         this.totalValueItemTotal()
+        this.totalcostofrevenue()
+        this.calcularResultadoFinal()
       })
       .catch((error) => {
         console.log(error)
