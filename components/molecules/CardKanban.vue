@@ -41,22 +41,17 @@
             </tr>
             <tr class="value">
 
-                <td><strong>Responsavel:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.accountable}}</span></td>
-                <td><strong>Fone:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.fone }}</span>
+                <td><strong>Responsável: </strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.accountable}}</span></td>
+                <td><strong>Fone: </strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.fone }}</span>
                 </td>
-                <td><strong>Entrega às:</strong> {{ formatTime(dataObject.deliveryDate) }} </td>
-                <td><strong>CEP:</strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.cep }}</span></td>
+                <td><strong>Entrega as: </strong> {{ formatTime(dataObject.deliveryDate) }} </td>
+                <td><strong>CEP: </strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.cep }}</span></td>
                 <div v-if="dataObject && Object.keys(dataObject).length > 0" style="    overflow-y: scroll;    display: flex;">
                     <td v-for="(item, id) in dataObject" :key="id">
                             <span v-if="!null && !''"> {{ formatItem(item) }}</span>
                     </td>
                 </div>
             </tr>
-            <!-- <tr class="value"  v-for="(item, id) in dataObject" :key="id">
-                <td> {{ item.corporate_name }}</td>
-             
-            </tr> -->
-
         </table>
      
     </div>
@@ -87,7 +82,7 @@ export default Vue.extend({
         },
         formatItem(item) {
       if (item.amountItem !== undefined && item.revenues && item.revenues.description) {
-        return `Qtd: ${item.amountItem} - Item:${item.revenues.description}`;
+        return `Qtd: ${item.amountItem} - Item: ${item.revenues.description}`;
       } else if (item.amountItem !== undefined) {
         return `${item.amountItem} `;
       } else {
