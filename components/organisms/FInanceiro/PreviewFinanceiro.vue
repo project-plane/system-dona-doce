@@ -104,10 +104,10 @@
               <td>{{ list.amountItem }}</td>
               <td>{{ list.valueOrderItem }}</td>
               <td>{{ list.valueItemTotal }}</td>
-              <td>{{ list.unitcostofrevenue }}</td>
-              <td> {{ list.valueOrderItem -  list.unitcostofrevenue}}</td>
-              <td>{{ list.totalcostofrevenue }}</td>
-              <td> {{ list.valueItemTotal -  list.totalcostofrevenue}}</td>
+              <td>{{ list.unitcostofrevenue.toFixed(2) }}</td>
+              <td> {{ list.valueOrderItem.toFixed(2) -  list.unitcostofrevenue.toFixed(2)}}</td>
+              <td>{{ list.totalcostofrevenue.toFixed(2) }}</td>
+              <td> {{ list.valueItemTotal.toFixed(2) -  list.totalcostofrevenue.toFixed(2)}}</td>
            </tr>
           </tbody>
         </table>
@@ -136,8 +136,6 @@ import httpClients from './../../../server/cliente'
 import httpEmpresa from './../../../server/empresa'
 import httpOrder from './../../../server/pedidos'
 import dayjs from "./../../../services/dayjs"
-import * as XLSX from 'xlsx';
-
 
 export default Vue.extend({
   data() {
@@ -207,50 +205,37 @@ export default Vue.extend({
       return dayjs.formtDateBr(data)
     },
     
-    exportToCsv() {
+    async exportToCsv() {
       this.loading = true;
-      
-      const headers = [
-        ["Data do Pedido", "Número do Pedido", "Status", "Descrição", "Quantidade", "Valor do Item", "Custo Unitário de Receita", "Custo Total de Receita"]
-      ];
-      
-      // Renomear as chaves do objeto para corresponder aos novos cabeçalhos
-      const updatedData = this.listOrders.map(item => ({
-        "Data do Pedido": item.dateOrder,
-        "Número do Pedido": item.numberOrder,
-        "Status": item.descriptionStatus,
-        "Descrição": item.description,
-        "Quantidade": item.amountItem,
-        "Valor do Item": item.valueOrderItem,
-        "Custo Unitário de Receita": item.unitcostofrevenue,
-        "Custo Total de Receita": item.totalcostofrevenue
-      }));
+      try {
+        const data = {
+        orderStatus: this.selectedAgenda ,
+        orderType: this.selectedType,
+        client: this.selectedClient,
+        dataInicial: this.dataInicial,
+        dataFinal: this.dataFinal
+      }
+        const res = await httpOrder.downloadExcelFaturamentoAdmin(data)
+        const dataExcel = res.data
+        const blob = new Blob([dataExcel], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          })
 
-      // Adicionar os cabeçalhos aos dados
-      const worksheet = XLSX.utils.json_to_sheet([]);
-      XLSX.utils.sheet_add_aoa(worksheet, headers);
-      XLSX.utils.sheet_add_json(worksheet, updatedData, { skipHeader: true, origin: 'A2' });
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
 
-      // Cria o workbook e adiciona a planilha
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
-      
-      // Gera o buffer de array do workbook
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      
-      // Cria um blob a partir do buffer de array
-      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-      const excelUrl = window.URL.createObjectURL(blob);
-      
-      // Cria um link de download para o arquivo Excel
-      const link = document.createElement('a');
-      link.setAttribute('href', excelUrl);
-      link.setAttribute('download', 'Faturamento.xlsx');
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+          link.download = 'relatorio.csv'
 
+          document.body.appendChild(link)
+
+          link.click()
+
+          document.body.removeChild(link)
+
+      } catch (error) {
+        console.error('Erro ao baixar o arquivo:', error)
+      }
       this.loading = false;
     },
  

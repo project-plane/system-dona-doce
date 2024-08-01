@@ -87,4 +87,9 @@ export default {
     return await http.patch(`/order/findExportFaturamento`, data)
     // novo
   },
+  downloadExcelFaturamentoAdmin: async (data) => {
+    return await http.patch(`/order/exportCsvFat`, data, {
+      responseType: "blob",
+    });
+  },
 }
