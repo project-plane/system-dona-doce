@@ -105,9 +105,9 @@
               <td>{{ list.valueOrderItem }}</td>
               <td>{{ list.valueItemTotal }}</td>
               <td>{{ list.unitcostofrevenue.toFixed(2) }}</td>
-              <td> {{ list.valueOrderItem.toFixed(2) -  list.unitcostofrevenue.toFixed(2)}}</td>
+              <td> {{ resultLucroUnitario(list.valueOrderItem, list.unitcostofrevenue) }}</td>
               <td>{{ list.totalcostofrevenue.toFixed(2) }}</td>
-              <td> {{ list.valueItemTotal.toFixed(2) -  list.totalcostofrevenue.toFixed(2)}}</td>
+              <td> {{ resultLucroTotal(list.valueItemTotal,   list.totalcostofrevenue) }} </td>
            </tr>
           </tbody>
         </table>
@@ -200,6 +200,14 @@ export default Vue.extend({
 
       const custo = this.custoTotal 
       this.custoTotal = custo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    },
+    resultLucroTotal(valor1, valor2){
+      const result = valor1 - valor2 
+      return result.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    },
+    resultLucroUnitario(valor1, valor2){
+      const result = valor1 - valor2 
+      return result.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     },
     convertData(data){
       return dayjs.formtDateBr(data)

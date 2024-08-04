@@ -26,12 +26,12 @@
           <h4>Bairro</h4>
           <p>{{ findPreviewEmpresa.district }}</p>
         </section>
-       
-      </div>
-      <section class="data-update">
+        <section >
           <h4>Última Atualização: </h4>
           <p> {{ formatDate(findPreviewEmpresa.updateAt) }}</p>
         </section>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -82,6 +82,7 @@ export default Vue.extend({
     max-width: 600px;
     position: relative;
     min-height: 50%;
+    
   }
   .headerModal{
     display: flex;
@@ -105,6 +106,9 @@ export default Vue.extend({
     display: flex;
     flex-wrap: wrap;
     gap: 1.4rem;
+    background: var(--white);
+    padding: 1rem;
+    border-radius: 5px;
   }
   .dataModal section {
     margin-bottom: 10px;
