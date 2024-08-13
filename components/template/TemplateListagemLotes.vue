@@ -12,6 +12,13 @@
             </option>
           </select>
         </div>
+        <div class="input">
+          <label class="titleFilter">Unidade</label>
+          <select v-model="selectedUnidade" @change="request">
+            <option value="">Todos</option>
+            <option v-for="item in listEmpresa" :value="item.id" :key="item.id">{{ item.corporate_name }}</option> 
+          </select>
+        </div>
 
         <div class="searchId">
           <label for="label">Buscar por id</label>
@@ -142,6 +149,7 @@
 import Vue from 'vue'
 import httpOrder from '~/server/pedidos'
 import httpClients from '~/server/cliente'
+import httpEmpresa from '~/server/empresa'
 export default Vue.extend({
   data() {
     return {
@@ -160,6 +168,8 @@ export default Vue.extend({
       selectedFileNF: "",
       checked: false,
       sideBar: false,
+      selectedUnidade: '',
+      listEmpresa: [],
     }
   },
   async fetch() {
@@ -172,6 +182,14 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error)
       })
+      await httpEmpresa
+      .GetAllEmpresa()
+      .then((res) => {
+        this.listEmpresa = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
 
     this.loading = false
 
@@ -179,7 +197,7 @@ export default Vue.extend({
   methods: {
     async request() {
       try {
-        const res = await httpOrder.ListLotes(this.selectedClient)
+        const res = await httpOrder.ListLotes(this.selectedClient, this.selectedUnidade)
         this.listAllLotes = res.data
         this.sideBar = true
         this.loading = false;

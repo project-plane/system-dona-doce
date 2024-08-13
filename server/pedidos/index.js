@@ -64,8 +64,8 @@ export default {
   PostLotes: async (data) => {
     return await http.post(`/order_batch`, data)
   },
-  ListLotes: async (id) => {
-    return await http.get(`/order_batch?fk_client=${id}`);
+  ListLotes: async (id, idCompany) => {
+    return await http.get(`/order_batch?fk_company=${idCompany}&fk_client=${id}`);
   },
   PatchCancelOrderByClient: async (fk_order) => {
     return await http.patch(`/clients/order/${fk_order}`, {
