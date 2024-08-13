@@ -20,39 +20,44 @@
             </div>
         </div>
 
-        <table v-else class="cardKanban-infos">
-
-            <tr class="legend">
-                <td>Cliente:</td>
-                <td>Unidade:</td>
-                <th>Endereço:</th>
-                <th>Bairro</th>
-                <th></th>
-
-
-            </tr>
-            <tr class="value">
-                <h4 style="color: var(--red);"> {{ name.corporate_name }}</h4>
-                <td v-for="(item, id) in dataObject" :key="id"> {{ item.corporate_name }}</td>
-                <td v-for="(item, id) in dataObject" :key="id"> {{ item.address }} </td>
-                <td v-for="(item, id) in dataObject" :key="id">{{ item.district }}</td>
-
-
-            </tr>
-            <tr class="value">
-
-                <td><strong>Responsável: </strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.accountable}}</span></td>
-                <td><strong>Fone: </strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.fone }}</span>
-                </td>
-                <td><strong>Entrega as: </strong> {{ formatTime(dataObject.deliveryDate) }} </td>
-                <td><strong>CEP: </strong> <span v-for="(item, id) in dataObject" :key="id"> {{ item.cep }}</span></td>
-                <div v-if="dataObject && Object.keys(dataObject).length > 0" style="    overflow-y: scroll;    display: flex;">
-                    <td v-for="(item, id) in dataObject" :key="id">
-                            <span v-if="!null && !''"> {{ formatItem(item) }}</span>
-                    </td>
+        <div v-else class="cardKanban">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="customer-name">{{ name.corporate_name }}</h3>
+                    <section class="header-info">
+                        <h4>Unidade:</h4>
+                        <span v-for="(item, id) in dataObject" :key="id">{{ item.corporate_name }}</span>
+                        <strong>Entrega às:</strong>
+                        <span>{{ formatTime(dataObject.deliveryDate) }}</span>
+                    </section>
                 </div>
-            </tr>
-        </table>
+
+                <div class="card-body">
+                    <div class="customer-info">
+                        <h4>Responsável:</h4>
+                        <span v-for="(item, id) in dataObject" :key="id">{{ item.accountable }}</span>
+                        <h4>Fone:</h4>
+                        <span v-for="(item, id) in dataObject" :key="id">{{ item.fone }}</span>
+    
+                        <h4>Endereço:</h4>
+                        <span v-for="(item, id) in dataObject" :key="id">{{ item.address }}</span>
+                        <h4>Bairro:</h4>
+                        <span v-for="(item, id) in dataObject" :key="id">{{ item.district }}</span>
+                        <h4>CEP:</h4>
+                        <span v-for="(item, id) in dataObject" :key="id">{{ item.cep }}</span>
+                    </div>
+
+                    <ul class="order-list">
+                        <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
+                           <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
+                        </li>
+                        <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
+                           <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
      
     </div>
 </template>
@@ -100,15 +105,12 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .cardKanban-container {
-    width: 100%;
+
     height: 100%;
-    background-color: var(--white);
     display: flex;
     border-radius: 0.25rem;
     padding: 0.5rem;
-    // cursor: grab;
-
-
+    background-color: #fff;
 
     .cardKanban-infos {
         padding-left: 0.5rem;
@@ -138,5 +140,64 @@ export default Vue.extend({
             white-space: nowrap;
         }
     }
+}
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    width: 22rem;
+
+
+.card-header {
+    background-color: var(--red);
+    color: #fff;
+    padding: 15px;
+    text-align: start;
+    .header-info{
+        display: flex;
+        gap: 2px;
+    }
+}
+
+.customer-name {
+    margin: 0;
+    font-size: 18px;
+}
+
+.card-body {
+    padding: 15px;
+    .customer-info{
+        display: flex;
+        flex-wrap: wrap;
+        h4{
+            margin-left: 2px;
+            margin-right: 5px;
+        }
+        
+    }
+}
+
+.order-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 15rem;
+    min-height: 15rem;
+    overflow-y: scroll;
+}
+
+.order-item {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
 }
 </style>

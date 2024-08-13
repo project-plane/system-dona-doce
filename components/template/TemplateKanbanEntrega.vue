@@ -3,20 +3,11 @@
         <div class="kanban-header">
             <h3>Entregas: {{formatDate(new Date())}}</h3>
         </div>
-
-        <div class="kanban-content">
-
-            <div class="kanban-column">
-
-                <div class="column-header">
+        <div class="column-header">
                     <span>Ordem de Rota</span>
                 </div>
-                <div class="kanban-list" ghost-class="ghost">
-                    
-                    <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" :name="item.user.Clients" type-card="entrega"/>
-                </div>
-            </div>
-
+        <div class="kanban-content">
+            <CardKanban v-for="(item, index) in listRotas" :key="index" :data-object="item" :name="item.user.Clients" type-card="entrega"/>
         </div>
     </div>
 </template>
@@ -84,45 +75,21 @@ export default Vue.extend({
     .kanban-content {
         display: flex;
         width: 100%;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 3rem;
+        gap: 1.2rem;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     
-        .kanban-column {
-            width: 100%;
-            height: auto;
-            // border: 1px solid red;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-
-            .column-header, .kanban-list {
-                display: grid;
-                gap: 1rem;
-                width: 100%;
-                text-align: center;
-                
-            }
-
-            .column-header > span {
-                background-color: var(--white);
-                font-weight: 600;
-                border-radius: 0.25rem;
-                padding: 0.3rem 0;
-            }
-            .column-header > span:first-child {
-                background-color: var(--red);
-                padding: 1rem 0;
-                color: var(--white);  
-            }
-        }
-    }
-
-    .ghost {
-        opacity: 0.7;
-        background: #c0bcbc;
-    }
+}
+}
+.column-header, .kanban-list {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    text-align: center;
+    background-color: var(--red);
+    padding: 1rem;
+    border-radius: .5rem;
+    color: white;
+    
 }
 </style>
