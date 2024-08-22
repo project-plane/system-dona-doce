@@ -5,8 +5,9 @@
 
       <div class="kanban-selects">
         <select v-model="typeProduct">
+          <option value="" >Todos</option>
           <option value="programmed">Programado</option>
-          <!-- <option value="coffe">Coffee</option> -->
+          <option value="coffe">Coffee</option> 
         </select>
 
         <select v-model="typeKanban">
@@ -15,7 +16,7 @@
         </select>
 
           <select v-if="typeKanban ==='client'" v-model="selectedUnidade" @change="filterByUnidade">
-            <option value="" >Unidade</option>
+            <option value="" >Todas unidades</option>
             <option v-for="item in listEmpresa" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
           </select>
       </div>
@@ -25,7 +26,7 @@
       <div class="kanban-column">
         <div class="column-header">
           <span v-if="typeProduct === 'programmed'">Lanche 01</span>
-          <span v-else>09:00</span>
+          <span v-else> até as 10:00</span>
           <span>Total: {{ amountQtde(listLanche01) }}</span>
         </div>
         <LoadingPage v-if="loadingDejejum" />
@@ -53,7 +54,7 @@
       <div class="kanban-column">
         <div class="column-header">
           <span v-if="typeProduct === 'programmed'">Lanche 02</span>
-          <span v-else>15:00</span>
+          <span v-else>10:00 ás 13:00</span>
           <span>Total: {{ amountQtde(listLanche02) }}</span>
         </div>
         <LoadingPage v-if="loadingDejejum" />
@@ -83,7 +84,7 @@
           <span v-if="typeProduct === 'programmed'"
             >Desjejum {{ formatDateTomorrow(new Date()) }}</span
           >
-          <span v-else>15:00</span>
+          <span v-else>13:00 ás 15:00</span>
           <span>Total: {{ amountQtde(listDejejum) }}</span>
         </div>
         <LoadingPage v-if="loadingDejejum" />
@@ -123,7 +124,7 @@ export default Vue.extend({
   components: { draggable },
   data() {
     return {
-      typeProduct: 'programmed',
+      typeProduct: '',
       typeKanban: 'product',
       dragging: false,
       enabled: false,
