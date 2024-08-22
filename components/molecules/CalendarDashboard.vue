@@ -4,14 +4,14 @@
       <div class="descriptionValue">
         <span class="vendas">Vendas</span>
         <div>
-          <strong v-if="visualization">R$: {{ valorVendas }}</strong>
+          <strong v-if="visualization">R$: {{ valorVendas.toFixed(2)  }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
       <div class="descriptionValue">
         <span class="compras">Compras</span>
         <div>
-          <strong v-if="visualization">R$: {{ valorCompras }}</strong>
+          <strong v-if="visualization">R$: {{ valorCompras.toFixed(2)  }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
