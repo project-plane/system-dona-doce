@@ -2,12 +2,10 @@
   <div class="kanban-container">
     <div class="kanban-header">
       <h3>Produção {{ formatDate(new Date()) }}</h3>
-
       <div class="kanban-selects">
         <select v-model="typeProduct">
-          <option value="" >Todos</option>
           <option value="programmed">Programado</option>
-          <option value="coffe">Coffee</option> 
+          <option value="Coffe">Coffee</option>
         </select>
 
         <select v-model="typeKanban">
@@ -15,259 +13,133 @@
           <option value="product">Produção por produto</option>
         </select>
 
-          <select v-if="typeKanban ==='client'" v-model="selectedUnidade" @change="filterByUnidade">
-            <option value="" >Todas unidades</option>
-            <option v-for="item in listEmpresa" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
-          </select>
+        <select v-if="typeKanban === 'client'" v-model="selectedUnidade" @change="filterByUnidade">
+          <option value="">Todas unidades</option>
+          <option v-for="item in listEmpresa" :value="item.corporate_name" :key="item.id">{{ item.corporate_name }}</option>
+        </select>
       </div>
     </div>
 
     <div class="kanban-content">
-      <div class="kanban-column">
-        <div class="column-header">
-          <span v-if="typeProduct === 'programmed'">Lanche 01</span>
-          <span v-else> até as 10:00</span>
-          <span>Total: {{ amountQtde(listLanche01) }}</span>
-        </div>
-        <LoadingPage v-if="loadingDejejum" />
-
-        <draggable
-          v-model="listLanche01"
-          class="kanban-list"
-          ghost-class="ghost"
-        >
-          <CardKanban
-            v-for="(item, index) in listLanche01"
-            :key="index"
-            :data-object="item"
-            :type-card="typeKanban"
-            :id-order="index + 1"
-            :hourCard="'10:00'"
-          />
-        </draggable>
-
-        <span v-if="!loadingDejejum && listLanche01.length === 0"
-          >Não há produção programada...</span
-        >
-      </div>
-
-      <div class="kanban-column">
-        <div class="column-header">
-          <span v-if="typeProduct === 'programmed'">Lanche 02</span>
-          <span v-else>10:00 ás 13:00</span>
-          <span>Total: {{ amountQtde(listLanche02) }}</span>
-        </div>
-        <LoadingPage v-if="loadingDejejum" />
-
-        <draggable
-          v-model="listLanche02"
-          class="kanban-list"
-          ghost-class="ghost"
-        >
-          <CardKanban
-            v-for="(item, index) in listLanche02"
-            :key="index"
-            :id-order="index + 1"
-            :data-object="item"
-            :type-card="typeKanban"
-            :hourCard="'15:00'"
-          />
-        </draggable>
-
-        <span v-if="!loadingDejejum && listLanche02.length === 0"
-          >Não há produção programada...</span
-        >
-      </div>
-
-      <div class="kanban-column">
-        <div class="column-header">
-          <span v-if="typeProduct === 'programmed'"
-            >Desjejum {{ formatDateTomorrow(new Date()) }}</span
-          >
-          <span v-else>13:00 ás 15:00</span>
-          <span>Total: {{ amountQtde(listDejejum) }}</span>
-        </div>
-        <LoadingPage v-if="loadingDejejum" />
-
-        <draggable
-          v-model="listDejejum"
-          class="kanban-list"
-          ghost-class="ghost"
-        >
-        
-          <CardKanban
-            v-for="(item, index) in listDejejum"
-            :key="index"
-            :id-order="index + 1"
-            :data-object="item"
-            :type-card="typeKanban"
-            :hourCard="'15:00'"
-          />
-        </draggable>
-
-        <span v-if="!loadingDejejum && listDejejum.length === 0"
-          >Não há produção programada...</span
-        >
-      </div>
+      <KanbanColumn 
+        :list="listLanche01" 
+        :loading="loadingDejejum" 
+        :typeProduct="typeProduct" 
+        :typeKanban="typeKanban" 
+        headerText="até as 10:00"
+        defaultHeader="Lanche 01"
+        hourCard="10:00"
+      />
+      <KanbanColumn 
+        :list="listLanche02" 
+        :loading="loadingDejejum" 
+        :typeProduct="typeProduct" 
+        :typeKanban="typeKanban" 
+        headerText="10:00 às 13:00"
+        defaultHeader="Lanche 02"
+        hourCard="15:00"
+      />
+  
+      <KanbanColumn 
+        v-if="typeProduct === 'Coffe'"
+        :list="listCoffe" 
+        :loading="loadingDejejum" 
+        :typeProduct="typeProduct" 
+        :typeKanban="typeKanban" 
+        headerText=" 13:00 às 15:00"
+        defaultHeader="Coffe"
+        hourCard="15:00"
+      />
+      
+      <KanbanColumn 
+         v-else
+        :list="listDejejum" 
+        :loading="loadingDejejum" 
+        :typeProduct="typeProduct" 
+        :typeKanban="typeKanban" 
+        headerText=" 13:00 às 15:00"
+        defaultHeader="Desjejum"
+        hourCard="10:00"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import draggable from 'vuedraggable'
-import dayjs from 'dayjs'
-import httpKanban from '~/server/kanban/index'
-import httpEmpresa from '~/server/empresa'
+import Vue from 'vue';
+import draggable from 'vuedraggable';
+import dayjs from 'dayjs';
+import httpKanban from '~/server/kanban/index';
+import httpEmpresa from '~/server/empresa';
 
 export default Vue.extend({
-  components: { draggable },
+  components: { draggable, },
   data() {
     return {
-      typeProduct: '',
+      typeProduct: 'programmed',
       typeKanban: 'product',
-      dragging: false,
-      enabled: false,
       listKanban: [],
       listLanche01: [],
       listLanche02: [],
       listDejejum: [],
-      localList: [],
-      listEmpresa:[],
-      selectedUnidade:'',
+      listCoffe: [],
+      listEmpresa: [],
+      selectedUnidade: '',
       loadingDejejum: true,
-      filterUnity:[]
-    }
+    };
   },
 
   watch: {
-    listLanche01(newValue, oldvalue) {
-      if (oldvalue.length > 0) {
-        const pos = []
-        if (newValue.length > 0) {
-          newValue.map((item, index) => {
-            pos.push({ id: item.id, set: index + 1 })
-          })
-          httpKanban.UpdateKanban(pos);
-        }
-      }
-    },
-
-    listLanche02(newValue, oldvalue) {
-      if (oldvalue.length > 0) {
-        const pos = []
-        if (newValue.length > 0) {
-          newValue.map((item, index) => {
-            pos.push({ id: item.id, set: index + 1 })
-          })
-          httpKanban.UpdateKanban(pos);
-        }
-      }
-    },
-
-     listDejejum(newValue, oldvalue) {
-      if (oldvalue.length > 0) {
-        const pos = []
-        if (newValue.length > 0) {
-          newValue.map((item, index) => {
-            pos.push({ id: item.id, set: index + 1 })
-          })
-          httpKanban.UpdateKanban(pos);
-        }
-      }
-    },
-
-    typeKanban(newValue){
-      this.reqKanban()
-
-    }
+    listLanche01: 'updateKanban',
+    listLanche02: 'updateKanban',
+    listCoffe: 'updateKanban',
+    typeKanban: 'reqKanban',
   },
 
   async fetch() {
-    // Verificador de mudanças
-    // await httpKanban.GetKanban(this.typeProduct).then(async (res) => {
-
-    //     if(localStorage.getItem('kanbanList') !==  JSON.stringify(res.data)) {
-    await this.reqKanban()
-    await httpEmpresa
-      .GetAllEmpresa()
-      .then((res) => {
-        this.listEmpresa = res.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    await this.reqKanban();
+    await httpEmpresa.GetAllEmpresa().then((res) => {
+      this.listEmpresa = res.data;
+    }).catch((error) => console.log(error));
   },
 
   methods: {
     async reqKanban() {
-      this.loadingDejejum = true
+      this.loadingDejejum = true;
       await httpKanban.GetKanban(this.typeKanban).then((res) => {
-        ;[this.listLanche01, this.listLanche02, this.listDejejum] = [[], [], []]
-        this.listKanban = res.data
-        console.log(res.data);
-        
-        res.data.map((item) => {
-          if (item.description_category === 'Lanche 1') {
-            this.listLanche01.push(item)
-          }
-
-          if (item.description_category === 'Lanche 2') {
-            this.listLanche02.push(item)
-          }
-
-          if (item.description_category === 'Dejejum') {
-            this.listDejejum.push(item)
-          }
-        })
-      })
-      this.loadingDejejum = false
+        this.listKanban = res.data;
+        this.filterKanban();
+      });
+      this.loadingDejejum = false;
     },
+
+    filterKanban() {
+      this.listLanche01 = this.listKanban.filter(item => item.description_category === 'Lanche 1');
+      this.listLanche02 = this.listKanban.filter(item => item.description_category === 'Lanche 2');
+      this.listDejejum =  this.listKanban.filter(item => item.description_category === 'Dejejum');
+      this.listCoffe = this.listKanban.filter(item => item.description_category === 'Coffe');
+    },
+
+    updateKanban(newList) {
+      const pos = newList.map((item, index) => ({ id: item.id, set: index + 1 }));
+      httpKanban.UpdateKanban(pos);
+    },
+
     filterByUnidade() {
-  this.filter = true;
-  const data = this.listKanban.filter((item) => {
-    return this.selectedUnidade === '' || item.company_name.includes(this.selectedUnidade);
-  });
+      const filteredList = this.listKanban.filter(item => 
+        !this.selectedUnidade || item.company_name.includes(this.selectedUnidade)
+      );
+      this.listLanche01 = filteredList.filter(item => item.description_category === 'Lanche 1');
+      this.listLanche02 = filteredList.filter(item => item.description_category === 'Lanche 2');
+      this.listDejejum = filteredList.filter(item => item.description_category === 'Dejejum');;
+      this.listCoffe = filteredList.filter(item => item.description_category === 'Coffe');
+    },
 
-  this.listLanche01 = [];
-  this.listLanche02 = [];
-  this.listDejejum = [];
-
-  data.forEach((item) => {
-    switch (item.description_category) {
-      case 'Lanche 1':
-        this.listLanche01.push(item);
-        break;
-      case 'Lanche 2':
-        this.listLanche02.push(item);
-        break;
-      case 'Dejejum':
-        this.listDejejum.push(item);
-        break;
-      // Add more cases if needed
-    }
-  });
-},
     formatDate(date) {
-      return dayjs(date).format('DD/MM/YY')
-    },
-
-    formatDateTomorrow(date) {
-      return dayjs(date).add(1, 'day').format('DD/MM')
-    },
-
-    amountQtde(list) {
-      let result = 0
-      if (list.length > 0) {
-        list.map((item) => {
-          result = result + item.amount_actual
-        })
-      }
-
-      return result
+      return dayjs(date).format('DD/MM/YY');
     },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
