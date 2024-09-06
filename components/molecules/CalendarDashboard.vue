@@ -4,14 +4,14 @@
       <div class="descriptionValue">
         <span class="vendas">Vendas</span>
         <div>
-          <strong v-if="visualization">R$: {{ valorVendas.toFixed(2)  }}</strong>
+          <strong v-if="visualization"> {{ valueorder(valorVendas)  }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
       <div class="descriptionValue">
         <span class="compras">Compras</span>
         <div>
-          <strong v-if="visualization">R$: {{ valorCompras.toFixed(2)  }}</strong>
+          <strong v-if="visualization"> {{ valueorder(valorCompras)  }}</strong>
           <strong v-else>R$: --------</strong>
         </div>
       </div>
@@ -40,9 +40,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
-import httpOrder from '@/server/pedidos'
-
+import dayjs from '~/services/dayjs'
 export default Vue.extend({
   data() {
     return {
@@ -95,9 +93,10 @@ export default Vue.extend({
     visualizationFin(){
       this.$store.commit('OPEN_visualizationFin', true)
     },
-    // closeModal(){
-    //   this.visualizationFin = false;
-    // },
+    valueorder(number) {
+      const value = dayjs.valueorder(number)
+      return value
+    },
     async atualizar() {
       const valorUniqOrder = []
       var valorVendasOrder = 0;
