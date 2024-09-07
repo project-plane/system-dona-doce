@@ -28,7 +28,7 @@
     </div>
   </template>
   
-  <script lang="ts">
+  <script lang="js">
   import { defineComponent, computed } from 'vue';
   import draggable from 'vuedraggable';
   import LoadingPage from './LoadingPage.vue';

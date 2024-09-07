@@ -116,7 +116,7 @@ export default Vue.extend({
         fk_revenue: this.infoCoffee.id,
         amountItem: parseInt(amountItem),
         delivery_date: this.$store.state.dataPedido,
-        order_time,
+        order_time: this.pedidoCoffee.order_time,
         method_of_preparation,
         infoProduct: this.infoCoffee,
         comment: this.comentario
