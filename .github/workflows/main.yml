@@ -23,6 +23,7 @@ jobs:
           source: "."
           target: "app_nuxt_dona_doce"
           exclude: "node_modules,.git,.github"
+          debug: true
 
       - name: Execute build and start server on remote server
         uses: appleboy/ssh-action@master
