@@ -71,12 +71,16 @@
       const filteredItems = computed(() => {
         if (props.typeProduct === 'Coffe') {
           // Filtra apenas os itens de "Coffe"
-          return props.list.filter(item => item.description_category === 'Coffe');
+          return props.list.filter(item => item.description_category === 'Coffe' );
         } else if (props.typeProduct === 'programmed') {
           // Exibe apenas itens programados
           return props.list;
-        } else {
-          // Exibe todos os itens se o filtro for "Todos"
+        }
+        if (props.typeProduct === 'all') {
+          return props.list.filter(item => item.description_category === 'Coffe' );
+        } 
+        else {
+          // Exibe todos os itens se o filtro for "Todos" 
           return props.list;
         }
       });

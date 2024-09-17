@@ -4,6 +4,7 @@
       <h3>Produção {{ formatDate(new Date()) }}</h3>
       <div class="kanban-selects">
         <select v-model="typeProduct">
+          <option value="">Todos</option>
           <option value="programmed">Programado</option>
           <option value="Coffe">Coffee</option>
         </select>
@@ -39,6 +40,7 @@
         defaultHeader="Lanche 02"
         hourCard="15:00"
       />
+      
   
       <KanbanColumn 
         v-if="typeProduct === 'Coffe'"
@@ -52,7 +54,7 @@
       />
       
       <KanbanColumn 
-         v-else
+         v-else-if="typeProduct === 'programmed'"
         :list="listDejejum" 
         :loading="loadingDejejum" 
         :typeProduct="typeProduct" 
@@ -61,6 +63,17 @@
         defaultHeader="Desjejum"
         hourCard="10:00"
       />
+      <KanbanColumn 
+       v-else-if="typeProduct === ''"
+        :list="listAll" 
+        :loading="loadingDejejum" 
+        typeProduct="all" 
+        :typeKanban="typeKanban" 
+        headerText=" 13:00 às 15:00"
+        defaultHeader="Desjejum"
+        hourCard="10:00"
+      />
+
     </div>
   </div>
 </template>
@@ -76,13 +89,14 @@ export default Vue.extend({
   components: { draggable, },
   data() {
     return {
-      typeProduct: 'programmed',
+      typeProduct: '',
       typeKanban: 'product',
       listKanban: [],
       listLanche01: [],
       listLanche02: [],
       listDejejum: [],
       listCoffe: [],
+      listAll: [],
       listEmpresa: [],
       selectedUnidade: '',
       loadingDejejum: true,
@@ -118,6 +132,7 @@ export default Vue.extend({
       this.listLanche02 = this.listKanban.filter(item => item.description_category === 'Lanche 2');
       this.listDejejum =  this.listKanban.filter(item => item.description_category === 'Dejejum');
       this.listCoffe = this.listKanban.filter(item => item.description_category === 'Coffe');
+      this.listAll = this.listKanban.filter(item => item);
     },
 
     updateKanban(newList) {
