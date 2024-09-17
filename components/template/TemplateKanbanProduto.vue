@@ -28,7 +28,7 @@
         :typeProduct="typeProduct" 
         :typeKanban="typeKanban" 
         headerText="até as 10:00"
-        defaultHeader="Lanche 01"
+        defaultHeader="até as 10:00"
         hourCard="10:00"
       />
       <KanbanColumn 
@@ -37,7 +37,7 @@
         :typeProduct="typeProduct" 
         :typeKanban="typeKanban" 
         headerText="10:00 às 13:00"
-        defaultHeader="Lanche 02"
+        defaultHeader="10:00 às 13:00"
         hourCard="15:00"
       />
       
@@ -48,7 +48,7 @@
         :loading="loadingDejejum" 
         :typeProduct="typeProduct" 
         :typeKanban="typeKanban" 
-        headerText=" 13:00 às 15:00"
+        headerText="13:00 às 15:00"
         defaultHeader="Coffe"
         hourCard="15:00"
       />
@@ -60,7 +60,7 @@
         :typeProduct="typeProduct" 
         :typeKanban="typeKanban" 
         headerText=" 13:00 às 15:00"
-        defaultHeader="Desjejum"
+        defaultHeader="13:00 às 15:00"
         hourCard="10:00"
       />
       <KanbanColumn 
@@ -70,7 +70,7 @@
         typeProduct="all" 
         :typeKanban="typeKanban" 
         headerText=" 13:00 às 15:00"
-        defaultHeader="Desjejum"
+        defaultHeader="13:00 às 15:00"
         hourCard="10:00"
       />
 
