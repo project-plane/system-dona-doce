@@ -51,9 +51,9 @@
                         <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
                            <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
                         </li>
-                        <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
+                        <!-- <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
                            <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
