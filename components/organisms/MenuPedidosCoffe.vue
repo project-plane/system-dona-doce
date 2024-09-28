@@ -14,7 +14,7 @@
 
     <div v-if="showDate ===true" style="position: absolute; margin-top: 3rem;">
       <v-date-picker v-model="selectedDate" 
-      :min-date="formattedDate" color="red"/>
+     color="red"/>
     </div>
       <button class="qtdPedidos" @click="openModal" >
         <img src="../../assets/icons/shopCar.svg" />

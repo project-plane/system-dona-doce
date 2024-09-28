@@ -128,9 +128,9 @@ export default Vue.extend({
     },
 
     filterKanban() {
-      this.listLanche01 = this.listKanban.filter(item => item.description_category === 'Lanche 1');
-      this.listLanche02 = this.listKanban.filter(item => item.description_category === 'Lanche 2');
-      this.listDejejum =  this.listKanban.filter(item => item.description_category === 'Dejejum');
+      this.listLanche01 = this.listKanban.filter(item => item.description_category === '06:00-10:00');
+      this.listLanche02 = this.listKanban.filter(item => item.description_category === '10:00-13:00');
+      this.listDejejum =  this.listKanban.filter(item => item.description_category === '13:00-15:00');
       this.listCoffe = this.listKanban.filter(item => item.description_category === 'Coffe');
       this.listAll = this.listKanban.filter(item => item);
     },
@@ -144,9 +144,9 @@ export default Vue.extend({
       const filteredList = this.listKanban.filter(item => 
         !this.selectedUnidade || item.company_name.includes(this.selectedUnidade)
       );
-      this.listLanche01 = filteredList.filter(item => item.description_category === 'Lanche 1');
-      this.listLanche02 = filteredList.filter(item => item.description_category === 'Lanche 2');
-      this.listDejejum = filteredList.filter(item => item.description_category === 'Dejejum');;
+      this.listLanche01 = filteredList.filter(item => item.description_category === '06:00-10:00');
+      this.listLanche02 = filteredList.filter(item => item.description_category === '10:00-13:00');
+      this.listDejejum = filteredList.filter(item => item.description_category === '13:00-15:00');
       this.listCoffe = filteredList.filter(item => item.description_category === 'Coffe');
     },
 

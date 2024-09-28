@@ -5,8 +5,8 @@
         <span v-else>{{ defaultHeader }}</span>
         <span>Total: {{ amountQtde(filteredItems) }}</span>
       </div>
-      <LoadingPage v-if="loading" />
-  
+      <!-- <LoadingPage v-if="loading" /> -->
+  <pre>{{list  }}</pre>
       <draggable
         v-model="filteredItems"
         class="kanban-list"
@@ -22,9 +22,9 @@
         />
       </draggable>
   
-      <span v-if="!loading && filteredItems.length === 0">
+      <!-- <span v-if="!loading && filteredItems.length === 0">
         Não há produção programada...
-      </span>
+      </span> -->
     </div>
   </template>
   
