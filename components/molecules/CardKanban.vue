@@ -8,12 +8,14 @@
                 <span>Qtde</span>
 
                 <span v-if="typeCard === 'client'">Cliente</span>
-                <span v-if="typeCard === 'client'">Unidade</span>
+                <span v-if="typeCard === 'client'">Unidade111</span>
 
             </div>
             <div class="value">
                 <span>{{ dataObject.description }}</span>
                 <span>{{ dataObject.amount_actual }}</span>
+                <!-- <span>{{ dataObject.order_type }}</span> -->
+                <!-- <span>{{ formatTime(dataObject.delivery_date) }}</span> -->
                 <span v-if="typeCard === 'client'">{{ dataObject.corporate_name }}</span>
                 <span v-if="typeCard === 'client'">{{ dataObject.company_name }}</span>
 
@@ -25,7 +27,7 @@
                 <div class="card-header">
                     <h3 class="customer-name">{{ name.corporate_name }}</h3>
                     <section class="header-info">
-                        <h4>Unidade:</h4>
+                        <h4>Unidade222:</h4>
                         <span v-for="(item, id) in dataObject" :key="id">{{ item.corporate_name }}</span>
                         <strong>Entrega às:</strong>
                         <span>{{ formatTime(dataObject.deliveryDate) }}</span>
@@ -51,9 +53,9 @@
                         <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
                            <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
                         </li>
-                        <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
+                        <!-- <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
                            <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -81,7 +83,7 @@ export default Vue.extend({
     },
     methods: {
         formatTime(time) {
-            const dataHoraFormatada = dayjs(time).local().format('HH:mm:ss');
+            const dataHoraFormatada = dayjs.utc(time).format('HH:mm');
 
             return dataHoraFormatada
         },
@@ -154,7 +156,7 @@ export default Vue.extend({
     background-color: var(--red);
     color: #fff;
     padding: 15px;
-    text-align: start;
+    text-align:  flex-start;
     .header-info{
         display: flex;
         gap: 2px;

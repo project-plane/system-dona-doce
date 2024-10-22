@@ -14,7 +14,7 @@
 
     <div v-if="showDate ===true" style="position: absolute; margin-top: 3rem;">
       <v-date-picker v-model="selectedDate" 
-     color="red"/>
+      :min-date="formattedDate" color="red"/>
     </div>
       <button class="qtdPedidos" @click="openModal" >
         <img src="../../assets/icons/shopCar.svg" />
@@ -115,7 +115,7 @@ export default Vue.extend({
   .btn-calendar {
     background-color: var(--white);
     display: flex;
-    justify-content: flex-start;
+    justify-content: start;
     align-items: center;
     align-items: center;
     padding: 0.3rem;
