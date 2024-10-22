@@ -6,7 +6,9 @@
         <span>Total: {{ amountQtde(filteredItems) }}</span>
       </div>
       <LoadingPage v-if="loading" />
-  
+      <!-- <pre>{{ typeProduct }}</pre>
+      <pre>{{defaultHeader  }}</pre>
+      <pre>{{list  }}</pre> -->
       <draggable
         v-model="filteredItems"
         class="kanban-list"
@@ -69,21 +71,20 @@
     setup(props) {
       // Filtra a lista com base no tipo de produto selecionado (Coffe ou Programado)
       const filteredItems = computed(() => {
-        if (props.typeProduct === 'Coffe') {
-          // Filtra apenas os itens de "Coffe"
-          return props.list.filter(item => item.description_category === 'Coffe' );
-        } else if (props.typeProduct === 'programmed') {
-          // Exibe apenas itens programados
-          return props.list;
-        }
-        if (props.typeProduct === 'all') {
-          return props.list.filter(item => item.description_category === 'Coffe' );
-        } 
-        else {
-          // Exibe todos os itens se o filtro for "Todos" 
-          return props.list;
-        }
-      });
+      if (props.typeProduct === 'Coffe') {
+        // Filtra apenas os itens de "Coffe"
+        return props.list.filter(item => item.description_category === 'Coffe');
+      } else if (props.typeProduct === 'programmed') {
+        // Exibe apenas os itens programados (sem filtro específico, exibe todos os itens programados)
+        return props.list.filter(item => item.order_type === 'programmed');
+      } else if (props.typeProduct === 'all') {
+        // Exibe todos os itens
+        return props.list;
+      } else {
+        // Exibe todos os itens se o filtro não for definido
+        return props.list;
+      }
+    });
   
       const amountQtde = (list) => {
         return list.reduce((total, item) => total + item.amount_actual, 0);

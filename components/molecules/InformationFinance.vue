@@ -84,8 +84,8 @@
                   "
                 >
                   <tr>
-                    <th style="text-align: start">Item</th>
-                    <td style="text-align: start" colspan="4">
+                    <th style="text-align:  flex-start">Item</th>
+                    <td style="text-align:  flex-start" colspan="4">
                       {{ dadosPedidos.revenues.description }}
                     </td>
                   </tr>
@@ -130,7 +130,7 @@
                       <td
                         colspan="3"
                         style="
-                          text-align: start;
+                          text-align: flex-start;
                           font-size: small;
                           word-break: break-all;
                           margin-left: 0.5rem;
@@ -859,7 +859,7 @@ export default Vue.extend({
             width: 100%;
             font-size: 1rem;
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             padding-left: 10px;
           }
 
@@ -927,7 +927,7 @@ export default Vue.extend({
     width: 100%;
     font-size: 1rem;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     padding-left: 10px;
     align-items: center;
     letter-spacing: 0px;

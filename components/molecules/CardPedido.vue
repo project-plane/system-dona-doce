@@ -107,7 +107,7 @@ export default Vue.extend({
   }
   td{
     font-size: 12px;
-    text-align: start;
+    text-align:  flex-start;
   }
   .dataPedido {
     display: flex;

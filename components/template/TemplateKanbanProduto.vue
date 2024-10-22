@@ -23,58 +23,62 @@
 
     <div class="kanban-content">
       <KanbanColumn 
-        :list="listLanche01" 
-        :loading="loadingDejejum" 
-        :typeProduct="typeProduct" 
-        :typeKanban="typeKanban" 
-        headerText="até as 10:00"
-        defaultHeader="até as 10:00"
-        hourCard="10:00"
-      />
-      <KanbanColumn 
-        :list="listLanche02" 
-        :loading="loadingDejejum" 
-        :typeProduct="typeProduct" 
-        :typeKanban="typeKanban" 
-        headerText="10:00 às 13:00"
-        defaultHeader="10:00 às 13:00"
-        hourCard="15:00"
-      />
-      
-  
-      <KanbanColumn 
-        v-if="typeProduct === 'Coffe'"
-        :list="listCoffe" 
-        :loading="loadingDejejum" 
-        :typeProduct="typeProduct" 
-        :typeKanban="typeKanban" 
-        headerText="13:00 às 15:00"
-        defaultHeader="Coffe"
-        hourCard="15:00"
-      />
-      
-      <KanbanColumn 
-         v-else-if="typeProduct === 'programmed'"
-        :list="listDejejum" 
-        :loading="loadingDejejum" 
-        :typeProduct="typeProduct" 
-        :typeKanban="typeKanban" 
-        headerText=" 13:00 às 15:00"
-        defaultHeader="13:00 às 15:00"
-        hourCard="10:00"
-      />
-      <KanbanColumn 
-       v-else-if="typeProduct === ''"
-        :list="listAll" 
-        :loading="loadingDejejum" 
-        typeProduct="all" 
-        :typeKanban="typeKanban" 
-        headerText=" 13:00 às 15:00"
-        defaultHeader="13:00 às 15:00"
-        hourCard="10:00"
-      />
+      :list="listLanche01" 
+      :loading="loadingDejejum" 
+      :typeProduct="typeProduct" 
+      :typeKanban="typeKanban" 
+      headerText="até as 10:00"
+      defaultHeader="até as 10:00"
+      hourCard="10:00"
+    />
+    
+    <KanbanColumn 
+      :list="listLanche02" 
+      :loading="loadingDejejum" 
+      :typeProduct="typeProduct" 
+      :typeKanban="typeKanban" 
+      headerText="10:00 às 13:00"
+      defaultHeader="10:00 às 13:00"
+      hourCard="15:00"
+    />
 
-    </div>
+    <!-- Coluna Dejejum - Coffe -->
+    <KanbanColumn 
+      v-if="typeProduct === 'Coffe'"
+      :list="listDejejum" 
+      :loading="loadingDejejum" 
+      :typeProduct="typeProduct" 
+      :typeKanban="typeKanban" 
+      headerText="13:00 às 15:00"
+      defaultHeader="Coffe"
+      hourCard="15:00 "
+    />
+    
+    <!-- Coluna Programmed -->
+    <KanbanColumn 
+      v-else-if="typeProduct === 'programmed'"
+      :list="listProgammed" 
+      :loading="loadingDejejum" 
+      :typeProduct="typeProduct" 
+      :typeKanban="typeKanban" 
+      headerText="13:00 às 15:00"
+      defaultHeader="13:00 às 15:00"
+      hourCard="15:00"
+    />
+
+    <!-- Coluna All -->
+    <KanbanColumn 
+      v-else-if="typeProduct === ''"
+      :list="listDejejum" 
+      :loading="loadingDejejum" 
+      :typeProduct="'all'" 
+      :typeKanban="typeKanban" 
+      headerText="13:00 às 15:00"
+      defaultHeader="13:00 às 15:00"
+      hourCard="10:00"
+    />
+  </div>
+    
   </div>
 </template>
 
@@ -95,6 +99,7 @@ export default Vue.extend({
       listLanche01: [],
       listLanche02: [],
       listDejejum: [],
+      listProgammed: [],
       listCoffe: [],
       listAll: [],
       listEmpresa: [],
@@ -107,6 +112,7 @@ export default Vue.extend({
     listLanche01: 'updateKanban',
     listLanche02: 'updateKanban',
     listCoffe: 'updateKanban',
+    listAll: 'updateKanban',
     typeKanban: 'reqKanban',
   },
 
@@ -128,18 +134,11 @@ export default Vue.extend({
     },
 
     filterKanban() {
-      // this.listLanche01 = this.listKanban.filter(item => item.description_category === 'Lanche 1');
-      // this.listLanche02 = this.listKanban.filter(item => item.description_category === 'Lanche 2');
-      // this.listDejejum =  this.listKanban.filter(item => item.description_category === 'Dejejum');
-      // this.listCoffe = this.listKanban.filter(item => item.description_category === 'Coffe');
-      // this.listAll = this.listKanban.filter(item => item);
+      // Filtra diretamente de listKanban por intervalo de tempo
+      this.listLanche01 = this.listKanban['06:00-10:00'] || [];
+      this.listLanche02 = this.listKanban['10:00-13:00'] || [];
+      this.listDejejum = this.listKanban['13:00-15:00'] || [];
 
-        this.listLanche01 = this.listKanban['06:00-10:00'];
-        this.listLanche02 = this.listKanban['10:00-13:00'];
-        this.listDejejum =  this.listKanban['13:00-15:00'];
-        var listJoin = [...this.listKanban['06:00-10:00'],...this.listKanban['10:00-13:00'],...this.listKanban['13:00-15:00']]
-        this.listCoffe = listJoin.filter(item => item.description_category === 'Coffe');
-      // this.listAll = this.listKanban.filter(item => item);
     },
 
     updateKanban(newList) {
@@ -148,19 +147,14 @@ export default Vue.extend({
     },
 
     filterByUnidade() {
-      const filteredList = this.listKanban.filter(item => 
-        !this.selectedUnidade || item.company_name.includes(this.selectedUnidade)
-      );
-      // this.listLanche01 = filteredList.filter(item => item.description_category === 'Lanche 1');
-      // this.listLanche02 = filteredList.filter(item => item.description_category === 'Lanche 2');
-      // this.listDejejum = filteredList.filter(item => item.description_category === 'Dejejum');;
       this.listLanche01 = this.listKanban['06:00-10:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
       this.listLanche02 = this.listKanban['10:00-13:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
       this.listDejejum =  this.listKanban['13:00-15:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
      
-      var listJoin = [...this.listLanche01,...this.listLanche02,...this.listDejejum]
+      const listJoin = [...this.listLanche01, ...this.listLanche02, ...this.listDejejum];
      
       this.listCoffe = listJoin.filter(item => item.description_category === 'Coffe');
+      this.listProgammed= listJoin.filter(item => item.description_category === 'programmed');
      
     },
 
