@@ -115,7 +115,7 @@ export default Vue.extend({
   .btn-calendar {
     background-color: var(--white);
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     align-items: center;
     padding: 0.3rem;

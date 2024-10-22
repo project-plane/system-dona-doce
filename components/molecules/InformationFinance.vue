@@ -859,7 +859,7 @@ export default Vue.extend({
             width: 100%;
             font-size: 1rem;
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             padding-left: 10px;
           }
 
@@ -927,7 +927,7 @@ export default Vue.extend({
     width: 100%;
     font-size: 1rem;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     padding-left: 10px;
     align-items: center;
     letter-spacing: 0px;
