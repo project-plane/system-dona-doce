@@ -47,8 +47,8 @@
           <option value="2023-10-21T13:00:00.000Z">13:00</option>
           <option value="2023-10-21T14:00:00.000Z">14:00</option>
           <option value="2023-10-21T15:00:00.000Z">15:00</option>
-          <!-- <option value="2023-10-21T16:00:00.000Z">16:00</option>
-          <option value="2023-10-21T17:00:00.000Z">17:00</option> -->
+          <option value="2023-10-21T16:00:00.000Z">16:00</option>
+          <option value="2023-10-21T17:00:00.000Z">17:00</option>
 
         </select>
     

@@ -8,7 +8,7 @@
                 <span>Qtde</span>
 
                 <span v-if="typeCard === 'client'">Cliente</span>
-                <span v-if="typeCard === 'client'">Unidade111</span>
+                <span v-if="typeCard === 'client'">Unidade</span>
 
             </div>
             <div class="value">
