@@ -49,7 +49,7 @@
       :loading="loadingDejejum" 
       :typeProduct="typeProduct" 
       :typeKanban="typeKanban" 
-      headerText="13:00 às 15:00"
+      headerText="13:00 às 17:00"
       defaultHeader="Coffe"
       hourCard="15:00 "
     />
@@ -61,8 +61,8 @@
       :loading="loadingDejejum" 
       :typeProduct="typeProduct" 
       :typeKanban="typeKanban" 
-      headerText="13:00 às 15:00"
-      defaultHeader="13:00 às 15:00"
+      headerText="13:00 às 17:00"
+      defaultHeader="13:00 às 17:00"
       hourCard="15:00"
     />
 
@@ -73,8 +73,8 @@
       :loading="loadingDejejum" 
       :typeProduct="'all'" 
       :typeKanban="typeKanban" 
-      headerText="13:00 às 15:00"
-      defaultHeader="13:00 às 15:00"
+      headerText="13:00 às 17:00"
+      defaultHeader="13:00 às 17:00"
       hourCard="10:00"
     />
   </div>
@@ -137,7 +137,7 @@ export default Vue.extend({
       // Filtra diretamente de listKanban por intervalo de tempo
       this.listLanche01 = this.listKanban['06:00-10:00'] || [];
       this.listLanche02 = this.listKanban['10:00-13:00'] || [];
-      this.listDejejum = this.listKanban['13:00-15:00'] || [];
+      this.listDejejum = this.listKanban['13:00-17:00'] || [];
 
     },
 
@@ -149,7 +149,7 @@ export default Vue.extend({
     filterByUnidade() {
       this.listLanche01 = this.listKanban['06:00-10:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
       this.listLanche02 = this.listKanban['10:00-13:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
-      this.listDejejum =  this.listKanban['13:00-15:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
+      this.listDejejum =  this.listKanban['13:00-17:00'].filter(item => !this.selectedUnidade || item.company_name.includes(this.selectedUnidade));
      
       const listJoin = [...this.listLanche01, ...this.listLanche02, ...this.listDejejum];
      

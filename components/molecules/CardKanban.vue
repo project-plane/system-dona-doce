@@ -27,7 +27,7 @@
                 <div class="card-header">
                     <h3 class="customer-name">{{ name.corporate_name }}</h3>
                     <section class="header-info">
-                        <h4>Unidade222:</h4>
+                        <h4>Unidade:</h4>
                         <span v-for="(item, id) in dataObject" :key="id">{{ item.corporate_name }}</span>
                         <strong>Entrega às:</strong>
                         <span>{{ formatTime(dataObject.deliveryDate) }}</span>
@@ -51,7 +51,7 @@
 
                     <ul class="order-list">
                         <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
-                           <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
+                           <span> {{ item.revenueDescription }}</span> <span>{{ item.amountItem }} UNID</span> 
                         </li>
                         <!-- <li v-for="(item, id) in dataObject.item" :key="id" class="order-item">
                            <span> {{ item.revenues.description }}</span> <span>{{ item.amountItem }} UNID</span> 
