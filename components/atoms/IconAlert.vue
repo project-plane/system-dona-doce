@@ -1,6 +1,6 @@
 <template>
   <div id="passar_mouse" class="container">
-    <span data-tooltip="Fora do Cardapio"></span>
+    <span data-tooltip="Fora do Cardápio"></span>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"

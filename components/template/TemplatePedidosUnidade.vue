@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponiveis</h3>
+    <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponíveis</h3>
 
     <div v-if="$fetchState.pending && statusPedidos === 0" class="containerLoad">
       <Loading/>

@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponiveis</h3>
+    <h3 v-if="statusPedidos === 0 && !$fetchState.pending">Dias Disponíveis</h3>
 
     <div v-if="$fetchState.pending && statusPedidos === 0" class="containerLoad">
       <Loading/>
@@ -164,7 +164,7 @@ export default Vue.extend({
   },
   methods: {
     atualizarDuracao() {
-      this.duracao = this.duracao + 1; 
+      this.duracao = this.duracao + 1;
     },
     openPedido(pedido) {
       this.$router.push({
