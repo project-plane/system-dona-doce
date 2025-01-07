@@ -3,7 +3,7 @@
     <img  src="/_nuxt/static/icon/cutEffect.svg" alt="" class="svg">
   <div class="containerCard">
     <div class="dataPedido">
-      <span>Cardapio - {{ convertData(dataPedido.dateMenu) }}</span>
+      <span>Cardápio - {{ convertData(dataPedido.dateMenu) }}</span>
 
     </div>
 
