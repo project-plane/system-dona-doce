@@ -1,6 +1,6 @@
 <template>
   <div class="containerPedidosCoffe">
-    <div style="width: 100%;"> 
+    <div style="width: 100%;">
         <h2>Pedidos Coffee</h2></div>
     <div
       class="headerPedidos"
@@ -13,7 +13,7 @@
     </button>
 
     <div v-if="showDate ===true" style="position: absolute; margin-top: 3rem;">
-      <v-date-picker v-model="selectedDate" 
+      <v-date-picker v-model="selectedDate"
       :min-date="formattedDate" color="red"/>
     </div>
       <button class="qtdPedidos" @click="openModal" >
@@ -69,13 +69,13 @@ export default Vue.extend({
     formattedDate() {
       var time = new Date(this.formatDate(this.today));
       var outraData = new Date();
-      outraData.setDate(time.getDate() + 4);
+      outraData.setDate(time.getDate() + 3);
       return new Date(outraData)
     },
     pedidos() {
       return this.$store.state.pedidos
-    },  
-   
+    },
+
   },
   methods: {
     formatDate(date) {
@@ -90,7 +90,7 @@ export default Vue.extend({
     openModalHistorico() {
       this.showModal = true
     },
-    
+
     openModal(){
       if(this.selectedDate === null){
         alert('Selecione uma data')
@@ -101,7 +101,7 @@ export default Vue.extend({
 
     }
 
-    
+
   },
 })
 </script>
@@ -155,7 +155,7 @@ export default Vue.extend({
     height: 2.5rem;
     width: 7.5rem;
     border-radius: 4px;
-    
+
 
     span {
       position: relative;
