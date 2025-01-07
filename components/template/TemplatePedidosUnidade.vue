@@ -38,13 +38,13 @@
       <div v-if="statusPedidos === 0" class="listPedidos" style="margin-top: 2rem" >
         <section style="width: 100%;">
           <div class="input-calendar">
-      <v-date-picker v-model="range" is-range>
-        <template v-slot="{ inputValue, inputEvents }">
-          <button v-on="inputEvents.start" class="btn-calendar">
-            <img src="../../assets/icons/calendar.svg" alt="" />
-          </button>
-        </template>
-      </v-date-picker>
+            <v-date-picker v-model="range" is-range>
+              <template v-slot="{ inputValue, inputEvents }">
+                <button v-on="inputEvents.start" class="btn-calendar">
+                  <img src="../../assets/icons/calendar.svg" alt="Abrir calendário" />
+                </button>
+              </template>
+            </v-date-picker>
 
       <div class="label-calendar">
         <div class="date">
@@ -101,8 +101,9 @@ export default Vue.extend({
       statusPedidos: 0,
       listFiltered: [],
       dataClientes:{},
+      today: new Date(),
       range: {
-        start: new Date(2023, 8, 1),
+        start: new Date(new Date().setHours(0, 0, 0, 0)),
         end: new Date(),
       },
     }
@@ -154,10 +155,9 @@ export default Vue.extend({
   watch: {
     range: {
       handler(newValue) {
-        this.filterByDateRange(
-          new Date(newValue.start).toISOString().split('T')[0],
-          new Date(newValue.end).toISOString().split('T')[0]
-        )
+        const startDate = new Date(newValue.start).toISOString().split('T')[0];
+        const endDate = new Date(newValue.end).toISOString().split('T')[0];
+        this.filterByDateRange(startDate, endDate);
       },
       deep: true,
     },
@@ -184,18 +184,34 @@ export default Vue.extend({
     },
 
     filterByDateRange(startDate, endDate) {
-      this.listFiltered = []
-      this.listPedidos.map((item) => {
-        item.dateMenu = new Date(item.dateMenu).toISOString().split('T')[0]
-        if (
-          new Date(item.dateMenu) >= new Date(startDate) &&
-          new Date(item.dateMenu) <= new Date(endDate)
-        ) {
-          this.listFiltered.push(item)
-        }
-      })
+  console.log('Start:', startDate, 'End:', endDate);
+
+  const start = new Date(startDate).toISOString().split('T')[0]; // Converte para 'YYYY-MM-DD'
+  const end = new Date(endDate).toISOString().split('T')[0];     // Converte para 'YYYY-MM-DD'
+
+  const data = this.listPedidos.map(item => ({ ...item }));
+
+  this.listFiltered = data.filter((item) => {
+    const itemDate = new Date(item.dateMenu);
+
+    // Verificar se itemDate é uma data válida
+    if (isNaN(itemDate.getTime())) {
+      console.error(`Data inválida em item:`, item.dateMenu);
+      return false;
+    }
+
+    const itemDateFormatted = itemDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+
+    console.log('ItemDate:', itemDateFormatted, 'Start:', start, 'End:', end);
+
+    // Comparar strings de datas (YYYY-MM-DD)
+    return itemDateFormatted >= start && itemDateFormatted <= end;
+  });
+
+  console.log('Filtered List:', this.listFiltered);
+},
     },
-  },
+
   computed: {
     itemsToShow(): Array<any> {
       return this.listFiltered.length === 0
